@@ -631,7 +631,7 @@ CMD ["java", "-jar", "my-application.jar"]
 ```dockerfile
 FROM maven:3-eclipse-temurin-21-alpine AS package
 WORKDIR /build
-COPY ../translation .
+COPY .. .
 RUN mvn package -DskipTests && \
     mv target/*.jar target/app.jar
 
