@@ -1,7 +1,7 @@
 ---
 title: "【译】100 倍 Scaling：Figma 如何扩展其数据库"
 date: 2024-05-07 23:30:00+08:00
-draft: false
+draft: true
 slug: "100x-scaling-how-figma-scaled-its-databases"
 categories: [ "translation" ]
 tags: [ "database", "scaling", "architecture" ]

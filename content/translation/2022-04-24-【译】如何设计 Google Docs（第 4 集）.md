@@ -1,7 +1,7 @@
 ---
 title: "【译】如何设计 Google Docs（第 4 集）"
 date: 2022-04-24 00:01:00+08:00
-draft: false
+draft: true
 slug: "how-to-design-google-docs-episode"
 categories: [ "translation" ]
 tags: [ "system-design"]

@@ -1,7 +1,7 @@
 ---
 title: "【译】Tinder 的 API 网关如何处理每天十亿次滑动"
 date: 2025-07-15 23:31:00+08:00
-draft: false
+draft: true
 slug: "how-tinders-api-gateway-handles-a-billion-swipes"
 categories: [ "translation" ]
 tags: [ "api-gateway", "architecture" ]

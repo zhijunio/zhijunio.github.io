@@ -1,7 +1,7 @@
 ---
 title: "【译】Kubernetes 速成课程"
 date: 2023-10-26 23:30:00+08:00
-draft: false
+draft: true
 slug: "a-crash-course-in-kubernetes"
 categories: [ "translation" ]
 tags: [ "kubernetes" ]

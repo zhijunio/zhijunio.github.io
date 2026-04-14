@@ -1,7 +1,7 @@
 ---
 title: "【译】EP34：Session、Cookie、JWT、Token、SSO 和 OAuth"
 date: 2022-11-27 00:30:00+08:00
-draft: false
+draft: true
 slug: "ep34-session-cookie-jwt-token-sso"
 categories: [ "translation" ]
 tags: [ "authentication", "security", "system-design" ]

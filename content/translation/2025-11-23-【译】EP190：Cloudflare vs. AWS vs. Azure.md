@@ -1,7 +1,7 @@
 ---
 title: "【译】EP190：Cloudflare vs. AWS vs. Azure"
 date: 2025-11-23 00:30:00+08:00
-draft: false
+draft: true
 slug: "ep190-cloudflare-vs-aws-vs-azure"
 categories: [ "translation" ]
 tags: [ "cloud" ]

@@ -1,7 +1,7 @@
 ---
 title: "【译】EP35：什么是 Kubernetes"
 date: 2022-12-04 00:36:00+08:00
-draft: false
+draft: true
 slug: "ep35-what-is-kubernetes"
 categories: [ "translation" ]
 tags: [ "kubernetes",  "devops" ]

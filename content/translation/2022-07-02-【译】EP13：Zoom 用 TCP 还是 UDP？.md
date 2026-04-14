@@ -1,7 +1,7 @@
 ---
 title: "【译】EP13：Zoom 用 TCP 还是 UDP？"
 date: 2022-07-02 23:21:00+08:00
-draft: false
+draft: true
 slug: "ep13-tcp-or-udp-for-zoom"
 categories: [ "translation" ]
 tags: [ "networking" ]

@@ -1,7 +1,7 @@
 ---
 title: "【译】EP178：Kubernetes Pod 生命周期"
 date: 2025-08-30 23:49:00+08:00
-draft: false
+draft: true
 slug: "ep178-lifecycle-of-kubernetes-pod"
 categories: [ "translation" ]
 tags: [ "kubernetes" ]

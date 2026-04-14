@@ -1,7 +1,7 @@
 ---
 title: "【译】EP62：为什么 Google 使用 Monorepo"
 date: 2023-06-03 23:30:00+08:00
-draft: false
+draft: true
 slug: "ep62-why-does-google-use-monorepo"
 categories: [ "translation" ]
 tags: [ "architecture" ]

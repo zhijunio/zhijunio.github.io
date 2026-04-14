@@ -1,7 +1,7 @@
 ---
 title: "【译】EP66：URL、URI 和 URN 对比"
 date: 2023-07-01 23:30:00+08:00
-draft: false
+draft: true
 slug: "ep66-comparison-of-url-uri-and-urn"
 categories: [ "translation" ]
 tags: [ "networking" ]

@@ -1,7 +1,7 @@
 ---
 title: "【译】EP106：JavaScript 如何工作？"
 date: 2024-04-06 23:30:00+08:00
-draft: false
+draft: true
 slug: "ep106-how-does-javascript-work"
 categories: [ "translation" ]
 tags: [ "frontend", "programming" ]

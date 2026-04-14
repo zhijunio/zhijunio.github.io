@@ -1,7 +1,7 @@
 ---
 title: "【译】Google Cloud 宕机如何瘫痪互联网"
 date: 2025-06-17 23:30:00+08:00
-draft: false
+draft: true
 slug: "how-the-google-cloud-outage-crashed"
 categories: [ "translation" ]
 tags: [ "reliability" ]

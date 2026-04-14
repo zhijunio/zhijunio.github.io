@@ -1,7 +1,7 @@
 ---
 title: "【译】DoorDash 如何使用 AI 模型理解餐厅菜单"
 date: 2025-09-10 23:30:00+08:00
-draft: false
+draft: true
 slug: "how-doordash-uses-ai-models-to-understand"
 categories: [ "translation" ]
 tags: [ "ai" ]

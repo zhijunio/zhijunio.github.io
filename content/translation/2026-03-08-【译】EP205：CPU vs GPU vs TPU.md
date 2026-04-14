@@ -1,7 +1,7 @@
 ---
 title: "【译】EP205：CPU vs GPU vs TPU"
 date: 2026-03-08 00:31:00+08:00
-draft: false
+draft: true
 slug: "ep205-cpu-vs-gpu-vs-tpu"
 categories: [ "translation" ]
 tags: [ "hardware", "architecture" ]

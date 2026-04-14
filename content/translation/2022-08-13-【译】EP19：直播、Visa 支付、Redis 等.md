@@ -1,7 +1,7 @@
 ---
 title: "【译】EP19：直播、Visa 支付、Redis 等"
 date: 2022-08-13 23:30:00+08:00
-draft: false
+draft: true
 slug: "ep19-live-streaming-visa-payment"
 categories: [ "translation" ]
 tags: [ "payment", "system-design" ]

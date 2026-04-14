@@ -1,7 +1,7 @@
 ---
 title: "【译】EP30：为什么 PostgreSQL 是最受欢迎的数据库"
 date: 2022-10-29 23:39:00+08:00
-draft: false
+draft: true
 slug: "ep30-why-is-postgresql-the-most-loved"
 categories: [ "translation" ]
 tags: [ "database", "system-design" ]

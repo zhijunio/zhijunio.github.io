@@ -1,7 +1,7 @@
 ---
 title: "【译】EP119：Amazon、Netflix 和 Uber 有什么共同点？"
 date: 2024-07-06 23:30:00+08:00
-draft: false
+draft: true
 slug: "ep119-what-do-amazon-netflix-and"
 categories: [ "translation" ]
 tags: [ "scaling", "architecture", "best-practices" ]

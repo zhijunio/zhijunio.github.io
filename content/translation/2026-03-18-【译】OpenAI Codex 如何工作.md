@@ -1,7 +1,7 @@
 ---
 title: "【译】OpenAI Codex 如何工作"
 date: 2026-03-18 23:30:00+08:00
-draft: false
+draft: true
 slug: "how-openai-codex-works"
 categories: [ "translation" ]
 tags: [ "ai", "architecture" ]

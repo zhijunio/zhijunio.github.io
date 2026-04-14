@@ -1,7 +1,7 @@
 ---
 title: "【译】EP86：CAP、BASE、SOLID、KISS，这些缩写是什么意思？"
 date: 2023-11-19 00:30:00+08:00
-draft: false
+draft: true
 slug: "ep86-cap-base-solid-kiss-what-do"
 categories: [ "translation" ]
 tags: [ "system-design" ]

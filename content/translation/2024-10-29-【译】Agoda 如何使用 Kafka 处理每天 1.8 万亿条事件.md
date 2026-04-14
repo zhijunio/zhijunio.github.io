@@ -1,7 +1,7 @@
 ---
 title: "【译】Agoda 如何使用 Kafka 处理每天 1.8 万亿条事件"
 date: 2024-10-29 23:30:00+08:00
-draft: false
+draft: true
 slug: "18-trillion-events-per-day-with-kafka"
 categories: [ "translation" ]
 tags: [ "kafka", "distributed-systems" ]

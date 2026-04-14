@@ -1,7 +1,7 @@
 ---
 title: "【译】EP25：Apple/Google Pay 如何处理卡信息"
 date: 2022-09-24 23:30:00+08:00
-draft: false
+draft: true
 slug: "ep25-how-applegoogle-pay-handle-card"
 categories: [ "translation" ]
 tags: [ "payment", "security" ]

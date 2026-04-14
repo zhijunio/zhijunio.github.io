@@ -1,7 +1,7 @@
 ---
 title: "【译】EP134：Amazon、Netflix 和 Uber 有什么共同点？"
 date: 2024-10-19 23:30:00+08:00
-draft: false
+draft: true
 slug: "ep134-what-do-amazon-netflix-and"
 categories: [ "translation" ]
 tags: [ "scaling", "architecture" ]

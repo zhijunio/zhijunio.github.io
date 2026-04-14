@@ -1,7 +1,7 @@
 ---
 title: "【译】Netflix Tudum 如何使用 CQRS 支持 2000 万用户"
 date: 2025-09-09 23:30:00+08:00
-draft: false
+draft: true
 slug: "how-netflix-tudum-supports-20-million"
 categories: [ "translation" ]
 tags: [ "architecture" ]

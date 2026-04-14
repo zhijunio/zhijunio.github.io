@@ -1,7 +1,7 @@
 ---
 title: "【译】SQL vs. NoSQL：为应用选择正确数据库"
 date: 2025-06-05 23:30:00+08:00
-draft: false
+draft: true
 slug: "sql-vs-nosql-choosing-the-right-database"
 categories: [ "translation" ]
 tags: [ "database" ]
