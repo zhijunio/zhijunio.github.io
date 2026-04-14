@@ -2,7 +2,7 @@
 /**
  * 首页
  *
- * @fileoverview 四宫格：最近博客、最近周报、最近翻译、最近 Wiki（各取自对应集合）。
+ * @fileoverview 两栏：最近博客、最近周报（取自对应集合）。
  */
 import { getCollection } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
@@ -19,10 +19,6 @@ const n = SITE.postPerIndex;
 
 const latestPosts = PostUtils.sort(await getCollection("posts")).slice(0, n);
 const latestBriefs = PostUtils.sort(await getCollection("briefs")).slice(0, n);
-const latestTranslation = PostUtils.sort(
-  await getCollection("translation")
-).slice(0, n);
-const latestWiki = PostUtils.sort(await getCollection("wiki")).slice(0, n);
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
@@ -62,51 +58,6 @@ const latestWiki = PostUtils.sort(await getCollection("wiki")).slice(0, n);
         {
           latestBriefs.map(post => (
             <Card openInNewTab={false} listKind="weekly" {...post} />
-          ))
-        }
-      </ul>
-    </section>
-
-    <section class="min-w-0" aria-labelledby="home-latest-translation-heading">
-      <header class="mb-1.5">
-        <h3 id="home-latest-translation-heading" class="mt-0 mb-0.5 text-base">
-          最近翻译
-        </h3>
-        <p class="mt-0.5 mb-0 text-sm leading-snug text-pretty text-muted">
-          外文技术文章的译文与笔记。
-          <a
-            href="/translation"
-            class="text-accent no-underline hover:underline"
-          >
-            全部翻译
-          </a>
-        </p>
-      </header>
-      <ul class="post-cards-list m-0 list-none p-0" aria-label="译文列表">
-        {
-          latestTranslation.map(post => (
-            <Card openInNewTab={false} dateFormat="absolute" {...post} />
-          ))
-        }
-      </ul>
-    </section>
-
-    <section class="min-w-0" aria-labelledby="home-latest-wiki-heading">
-      <header class="mb-1.5">
-        <h3 id="home-latest-wiki-heading" class="mt-0 mb-0.5 text-base">
-          最近 Wiki
-        </h3>
-        <p class="mt-0.5 mb-0 text-sm leading-snug text-pretty text-muted">
-          主题索引与长期维护的笔记条目。
-          <a href="/wiki" class="text-accent no-underline hover:underline">
-            全部 Wiki
-          </a>
-        </p>
-      </header>
-      <ul class="post-cards-list m-0 list-none p-0" aria-label="Wiki 列表">
-        {
-          latestWiki.map(post => (
-            <Card openInNewTab={false} dateFormat="absolute" {...post} />
           ))
         }
       </ul>

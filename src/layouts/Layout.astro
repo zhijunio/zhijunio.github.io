@@ -62,7 +62,7 @@ const canonicalHref = String(canonicalURL);
 const isArticlePage = Boolean(pubDatetime);
 const isHomePage = pathname === "/";
 const isCollectionPage =
-  /^\/(posts|briefs|translation|wiki|archives|tags)(\/|$)/.test(pathname);
+  /^\/(posts|briefs|archives|tags)(\/|$)/.test(pathname);
 const ogType = isArticlePage ? "article" : "website";
 const defaultSchemaType = isArticlePage
   ? "BlogPosting"

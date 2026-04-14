@@ -73,14 +73,6 @@ const briefs = defineCollection({
   schema: articleSchema,
 });
 
-const translation = defineCollection({
-  loader: glob({
-    pattern: "**/[^_]*.{md,mdx}",
-    base: `./${TRANSLATION_CONTENT_PATH}`,
-  }),
-  schema: articleSchema,
-});
-
 const wiki = defineCollection({
   loader: glob({
     pattern: "**/[^_]*.{md,mdx}",
@@ -89,4 +81,4 @@ const wiki = defineCollection({
   schema: articleSchema,
 });
 
-export const collections = { posts, briefs, translation, wiki };
+export const collections = { posts, briefs, wiki };

@@ -32,7 +32,6 @@ export const GET: APIRoute = async () => {
     { path: "/about", lastmod: latestPostUpdatedAt, priority: "0.80" },
     { path: "/posts", lastmod: latestPostUpdatedAt, priority: "0.80" },
     { path: "/briefs", lastmod: latestPostUpdatedAt, priority: "0.80" },
-    { path: "/translation", lastmod: latestPostUpdatedAt, priority: "0.80" },
     { path: "/wiki", lastmod: latestPostUpdatedAt, priority: "0.80" },
     { path: "/tags", lastmod: latestPostUpdatedAt, priority: "0.80" },
     { path: "/search", lastmod: latestPostUpdatedAt, priority: "0.64" },

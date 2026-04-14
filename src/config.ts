@@ -25,9 +25,9 @@ export const SITE = {
   lightAndDarkMode: true,
 
   /**
-   * 首页各栏（博客 / 周报 / 译文 / Wiki）展示的最近条目数
+   * 首页各栏（博客 / 周报 ）展示的最近条目数
    */
-  postPerIndex: 6,
+  postPerIndex: 12,
 
   /**
    * 定时文章发布的时间容差（毫秒）

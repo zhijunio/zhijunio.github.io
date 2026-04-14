@@ -465,7 +465,6 @@ export function generateLlmsTxt(posts: BlogLikeEntry[]): string {
     formatLinkLine("About", "/about", "Author profile and site background"),
     formatLinkLine("博客", "/posts", "博客目录长文时间线（content/posts）"),
     formatLinkLine("周报", "/briefs", "Weekly notes listing"),
-    formatLinkLine("翻译", "/translation", "Translated articles listing"),
     formatLinkLine("Wiki", "/wiki", "Wiki notes listing"),
     formatLinkLine("Tags", "/tags", "Tag index"),
     "",
@@ -478,7 +477,7 @@ export function generateLlmsTxt(posts: BlogLikeEntry[]): string {
     formatLinkLine("Robots", "/robots.txt"),
     "",
     "## Notes For LLMs",
-    "- Canonical article URLs use top-level prefixes: /posts/, /briefs/, /translation/, /wiki/ (match content type).",
+    "- Canonical article URLs use top-level prefixes: /posts/, /briefs/, /wiki/ (match content type).",
     "- These pages are the primary source of truth; tag, archive, feed, and search pages are navigational.",
     "- Use /tags/ for topical browsing; there is no separate category taxonomy.",
   ];
