@@ -11,11 +11,11 @@
       "yesterday": {
         "total_activities": 1,
         "total_distance": 6.02,
-        "total_duration_hours": 0.7,
-        "avg_pace": "6'58\"",
-        "avg_heart_rate": 129,
-        "avg_vdot": 25.9,
-        "total_training_load": 70
+        "total_duration_hours": 0.8,
+        "avg_pace": "7'48\"",
+        "avg_heart_rate": 150,
+        "avg_vdot": 22.1,
+        "total_training_load": 104
       },
       "week": {
         "total_activities": 2,
@@ -54,7 +54,7 @@
         "total_training_load": 13334
       }
     },
-    "statistics_time": "2026-04-15 23:02:11"
+    "statistics_time": "2026-04-16 00:54:36"
   },
   "runs": [
     {
