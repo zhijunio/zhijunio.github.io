@@ -1,62 +1,133 @@
 {
   "stats": {
-    "total_runs": 257,
-    "total_distance": 994.77,
-    "total_duration": "127小时31分钟",
+    "total_runs": 258,
+    "total_distance": 1000.79,
+    "total_duration": "128小时13分钟",
     "avg_pace": "7'41\"",
     "longest_run": 15.2,
-    "avg_vdot": 23.7,
-    "total_training_load": 13160,
+    "avg_vdot": 23.8,
+    "total_training_load": 13230,
     "period_stats": {
       "yesterday": {
-        "total_activities": 0,
-        "total_distance": 0,
-        "total_duration_hours": 0,
-        "avg_pace": "--",
-        "avg_heart_rate": null,
-        "avg_vdot": null,
-        "total_training_load": 0
+        "total_activities": 1,
+        "total_distance": 6.02,
+        "total_duration_hours": 0.7,
+        "avg_pace": "6'58\"",
+        "avg_heart_rate": 129,
+        "avg_vdot": 25.9,
+        "total_training_load": 70
       },
       "week": {
-        "total_activities": 0,
-        "total_distance": 0,
-        "total_duration_hours": 0,
-        "avg_pace": "--",
-        "avg_heart_rate": null,
-        "avg_vdot": null,
-        "total_training_load": 0
+        "total_activities": 1,
+        "total_distance": 6.02,
+        "total_duration_hours": 0.7,
+        "avg_pace": "6'58\"",
+        "avg_heart_rate": 129,
+        "avg_vdot": 25.9,
+        "total_training_load": 70
       },
       "month": {
-        "total_activities": 11,
-        "total_distance": 61.14,
-        "total_duration_hours": 8.1,
-        "avg_pace": "7'58\"",
-        "avg_heart_rate": 131,
-        "avg_vdot": 22.1,
-        "total_training_load": 783
+        "total_activities": 12,
+        "total_distance": 67.16,
+        "total_duration_hours": 8.8,
+        "avg_pace": "7'53\"",
+        "avg_heart_rate": 130,
+        "avg_vdot": 22.5,
+        "total_training_load": 853
       },
       "year": {
-        "total_activities": 92,
-        "total_distance": 405.98,
-        "total_duration_hours": 51.0,
-        "avg_pace": "7'32\"",
+        "total_activities": 93,
+        "total_distance": 412.0,
+        "total_duration_hours": 51.7,
+        "avg_pace": "7'31\"",
         "avg_heart_rate": 141,
         "avg_vdot": 23.9,
-        "total_training_load": 5592
+        "total_training_load": 5662
       },
       "total": {
-        "total_activities": 257,
-        "total_distance": 993.49,
-        "total_duration_hours": 125.4,
+        "total_activities": 258,
+        "total_distance": 999.51,
+        "total_duration_hours": 126.1,
         "avg_pace": "7'34\"",
         "avg_heart_rate": 140,
-        "avg_vdot": 23.7,
-        "total_training_load": 13160
+        "avg_vdot": 23.8,
+        "total_training_load": 13230
       }
     },
-    "statistics_time": "2026-04-15 12:39:33"
+    "statistics_time": "2026-04-15 15:19:16"
   },
   "runs": [
+    {
+      "date": "2026-04-14 19:53:33",
+      "distance": 6.02,
+      "duration": "42分钟",
+      "pace": "6'59\"",
+      "heart_rate": 129.0,
+      "max_heart_rate": 173,
+      "cadence": 179,
+      "stride_length": 0.83,
+      "avg_power": 172,
+      "max_power": 191,
+      "calories": 444,
+      "elevation_gain": 2.0,
+      "route": "湖北省武汉市江岸区",
+      "weather": "",
+      "activity_type": "户外跑步",
+      "workout_name": "Run from keep",
+      "vdot": 25.9,
+      "training_load": 70,
+      "hr_zone": 3,
+      "segments": [
+        {
+          "km": 1,
+          "pace": "6'49\"",
+          "gap": "6'49\"",
+          "heart_rate": 143,
+          "hr_zone": 3,
+          "cadence": 182
+        },
+        {
+          "km": 2,
+          "pace": "6'59\"",
+          "gap": "6'59\"",
+          "heart_rate": 168,
+          "hr_zone": 5,
+          "cadence": 181
+        },
+        {
+          "km": 3,
+          "pace": "7'38\"",
+          "gap": "7'38\"",
+          "heart_rate": 121,
+          "hr_zone": 2,
+          "cadence": 172
+        },
+        {
+          "km": 4,
+          "pace": "7'32\"",
+          "gap": "7'32\"",
+          "heart_rate": 113,
+          "hr_zone": 2,
+          "cadence": 179
+        },
+        {
+          "km": 5,
+          "pace": "6'40\"",
+          "gap": "6'40\"",
+          "heart_rate": 115,
+          "hr_zone": 2,
+          "cadence": 179
+        },
+        {
+          "km": 6,
+          "pace": "6'19\"",
+          "gap": "6'19\"",
+          "heart_rate": 119,
+          "hr_zone": 2,
+          "cadence": 183
+        }
+      ]
+    },
     {
       "date": "2026-04-12 07:06:25",
       "distance": 4.51,
