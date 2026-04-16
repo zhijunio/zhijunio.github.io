@@ -235,7 +235,7 @@ spec:
     # The ACME server URL
     server: https://acme-staging-v02.api.letsencrypt.org/directory
     # Email address used for ACME registration
-    email: ichensoul@gmail.com
+    email: zhijun.lab@gmail.com
     # Name of a secret used to store the ACME account private key
     privateKeySecretRef:
       name: letsencrypt-staging
@@ -351,7 +351,7 @@ metadata:
   name: letsencrypt-staging
 spec:
   acme:
-    email: ichensoul@gmail.com
+    email: zhijun.lab@gmail.com
     server: https://acme-staging-v02.api.letsencrypt.org/directory
     # Name of a secret used to store the ACME account private key
     privateKeySecretRef:
@@ -359,7 +359,7 @@ spec:
     solvers:
       - dns01:
           cloudflare:
-            email: ichensoul@gmail.com
+            email: zhijun.lab@gmail.com
             apiTokenSecretRef:
               name: cloudflare-api-token-secret
               key: api-token

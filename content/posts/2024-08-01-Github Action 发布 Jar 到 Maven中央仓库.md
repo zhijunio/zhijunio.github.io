@@ -172,9 +172,9 @@ There is NO WARRANTY, to the extent permitted by law.
 GnuPG 需要构建用户标识以辨认您的密钥。
 
 真实姓名： chensoul
-电子邮件地址： ichensoul@gmail.com
+电子邮件地址： zhijun.lab@gmail.com
 您选定了此用户标识：
-    “chensoul <ichensoul@gmail.com>”
+    “chensoul <zhijun.lab@gmail.com>”
 ```
 
 按提示输入两次密码，这里我使用 chensoul 作为密码 。
@@ -187,7 +187,7 @@ GnuPG 需要构建用户标识以辨认您的密钥。
 ---------
 sec   ed25519/93C5993B9F7B43EE 2024-05-08 [SC] [有效至：2027-05-08]
       C83119F1B90238633D766D4B93C5993B9F7B43EE
-uid                   [ 绝对 ] chensoul <ichensoul@gmail.com>
+uid                   [ 绝对 ] chensoul <zhijun.lab@gmail.com>
 ssb   cv25519/116B95FF0068A7E8 2024-05-08 [E] [有效至：2027-05-08]
 ```
 
@@ -297,7 +297,7 @@ $ gpg --list-keys
 ---------
 pub   ed25519 2024-05-08 [SC] [有效至：2027-05-08]
       C83119F1B90238633D766D4B93C5993B9F7B43EE
-uid             [ 绝对 ] chensoul <ichensoul@gmail.com>
+uid             [ 绝对 ] chensoul <zhijun.lab@gmail.com>
 sub   cv25519 2024-05-08 [E] [有效至：2027-05-08]
 
 
@@ -442,7 +442,7 @@ $ gpg --list-secret-keys --keyid-format LONG
 ---------
 sec   ed25519/93C5993B9F7B43EE 2024-05-08 [SC] [有效至：2027-05-08]
       C83119F1B90238633D766D4B93C5993B9F7B43EE
-uid                   [ 绝对 ] chensoul <ichensoul@gmail.com>
+uid                   [ 绝对 ] chensoul <zhijun.lab@gmail.com>
 ssb   cv25519/116B95FF0068A7E8 2024-05-08 [E] [有效至：2027-05-08]
 ```
 

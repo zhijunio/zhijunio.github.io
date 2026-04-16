@@ -114,7 +114,7 @@ export const SITE = {
     { name: "GitHub", url: "https://github.com/zhijunio", icon: "github" },
     { name: "Twitter", url: "https://twitter.com/zhijunio", icon: "twitter" },
     { name: "Telegram", url: "https://t.me/zhijunio", icon: "telegram" },
-    { name: "Email", url: "mailto:ichensoul@gmail.com", icon: "mail" },
+    { name: "Email", url: "mailto:zhijun.lab@gmail.com", icon: "mail" },
     { name: "RSS", url: "/rss.xml", icon: "rss" },
   ],
 

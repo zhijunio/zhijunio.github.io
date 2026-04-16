@@ -88,7 +88,7 @@ public class SpringdocConfig {
   prodServer.setDescription("Server URL in Production environment");
 
   Contact contact = new Contact();
-  contact.setEmail("ichensoul@gmail.com");
+  contact.setEmail("zhijun.lab@gmail.com");
   contact.setName("ChenSoul");
   contact.setUrl("https://blog.chensoul.cc");
 
