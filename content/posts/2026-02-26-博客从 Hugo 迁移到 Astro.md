@@ -112,7 +112,7 @@ ls -la src/pages/posts 2>/dev/null || echo "No posts dir"
 
 #### 1. 站点与作者信息（`src/config.ts`）
 
-- **website**：`https://blog.lhasa.icu` → `https://blog.chensoul.cc`
+- **website**：`https://blog.lhasa.icu` → `https://blog.zhijun.io`
 - **author**：`lhasa` → `chensoul`
 - **profile**：`https://github.com/achuanya` → `https://github.com/zhijunio`
 - **title**：`游钓四方` → `ChenSoul Blog`
@@ -121,8 +121,8 @@ ls -la src/pages/posts 2>/dev/null || echo "No posts dir"
 - **icp**：移除备案号（设为空字符串）。
 - **postPerIndex**：10 → 8。
 - **genDescriptionMaxLines**：30 → 3。
-- **Stats 链接**：指向 `stats.chensoul.cc/blog.chensoul.cc`。
-- **imageConfig**：当前使用 `https://cos.chensoul.cc` 作为图片 CDN；列表用 `favicon` 字段指向 `/favicons/`，与文章图同属 `/images/` 前缀、优先走站内同源路径。
+- **Stats 链接**：指向 `stats.zhijun.io/blog.zhijun.io`。
+- **imageConfig**：当前使用 `https://cos.zhijun.io` 作为图片 CDN；列表用 `favicon` 字段指向 `/favicons/`，与文章图同属 `/images/` 前缀、优先走站内同源路径。
 - **移除**：`displayOptions`（如评论数等）、Feeds 相关配置。
 
 #### 2. Astro 与集成（`astro.config.ts`）

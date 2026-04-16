@@ -17,7 +17,7 @@ export const GET: APIRoute = ({ site }) => {
       ? site
       : site instanceof URL
         ? site.href
-        : "https://blog.chensoul.cc";
+        : "https://blog.zhijun.io";
   const sitemapURL = new URL("/sitemap.xml", base);
   const body = `User-agent: *
 Allow: /

@@ -18,7 +18,7 @@ Docker 打包。
 是一个优秀的自托管书签管理器，以其简洁、快速和易用性而受到社区喜爱。而 [linkding-cn](https://github.com/WooHooDai/linkding-cn)
 是一个针对中文用户优化的 fork 版本，添加了许多实用功能。
 
-合并后的代码在 [chensoul/linkding](https://github.com/zhijunio/linkding/)，**示例项目：** <https://linkding.chensoul.cc/>。
+合并后的代码在 [chensoul/linkding](https://github.com/zhijunio/linkding/)，**示例项目：** <https://linkding.zhijun.io/>。
 
 ## 一、项目对比分析
 

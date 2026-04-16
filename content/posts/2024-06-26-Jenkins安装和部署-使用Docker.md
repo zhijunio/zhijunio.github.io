@@ -165,13 +165,13 @@ map $http_upgrade $connection_upgrade {
 
 server {
     listen 80;
-    server_name jenkins.chensoul.cc;
+    server_name jenkins.zhijun.io;
     rewrite ^ https://$http_host$request_uri? permanent;
 }
 
 server {
     listen 443 ssl;
-    server_name jenkins.chensoul.cc;
+    server_name jenkins.zhijun.io;
     ssl_certificate /etc/nginx/ssl/all.crt;
     ssl_certificate_key /etc/nginx/ssl/all.key;
     ssl_session_timeout 5m;

@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "astro dev --host",
     "build": "astro check && astro build && pagefind --site dist --glob \"**/*.html\"",
-    "preview": "astro preview --host --allowed-hosts=blog.chensoul.cc",
+    "preview": "astro preview --host --allowed-hosts=blog.zhijun.io",
     "sync": "astro sync",
     "astro": "astro",
     "format:check": "pnpm exec prettier --check .",

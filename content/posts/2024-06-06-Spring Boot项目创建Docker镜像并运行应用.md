@@ -204,7 +204,7 @@ ENTRYPOINT [ "java", "org.springframework.boot.loader.launch.JarLauncher" ]
 
 这个Dockerfile文件是用于构建和运行Java应用程序的Docker镜像。它使用多个阶段（stages）来完成不同的任务。
 
-参考《[使用 Docker 容器化并运行 Spring Boot 应用程序](https://blog.chensoul.cc/posts/2024/07/09/docker-for-spring-boot/)》，修改 Dockerfile 后的文件如下：
+参考《[使用 Docker 容器化并运行 Spring Boot 应用程序](https://blog.zhijun.io/posts/2024/07/09/docker-for-spring-boot/)》，修改 Dockerfile 后的文件如下：
 
 ```dockerfile
 # syntax=docker/dockerfile:1

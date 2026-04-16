@@ -267,9 +267,9 @@ spec:
   secretName: chensoul-cc-tls
   issuerRef:
     name: letsencrypt-staging
-  commonName: test.chensoul.cc
+  commonName: test.zhijun.io
   dnsNames:
-  - test.chensoul.cc
+  - test.zhijun.io
 EOF
 ```
 
@@ -393,9 +393,9 @@ spec:
   issuerRef:
     name: letsencrypt-staging
     kind: Issuer
-  commonName: test.chensoul.cc
+  commonName: test.zhijun.io
   dnsNames:
-    - test.chensoul.cc
+    - test.zhijun.io
 EOF
 ```
 

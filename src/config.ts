@@ -3,7 +3,7 @@
  * - **dist**：KaTeX、lazy-list 等 CSS/JS
  * - **图片**：dev/prod 与 CDN 开关见 `src/utils/blogImages/`（`shouldUseCdnForPublicImagePaths`、`siteImageHref` 等）
  */
-export const CDN_ORIGIN = "https://cos.chensoul.cc";
+export const CDN_ORIGIN = "https://cos.zhijun.io";
 
 /** 桶内 `images/` 在 CDN 上的基址（与 Photosuite 生产环境 `imageBase` 一致） */
 export const CDN_IMAGES_BASE = `${CDN_ORIGIN}/images`;
@@ -12,7 +12,7 @@ export const CDN_IMAGES_BASE = `${CDN_ORIGIN}/images`;
 export const CDN_KATEX_STYLESHEET = `${CDN_ORIGIN}/dist/katex/0.16.38/dist/katex.min.css`;
 
 export const SITE = {
-  website: "https://blog.chensoul.cc",
+  website: "https://blog.zhijun.io",
   author: "ChenSoul",
   description:
     "记录 Java、Spring、MicroServices、Architecture、Kubernetes、DevOps、AI 编码工具、架构与个人周报的博客",
@@ -125,7 +125,7 @@ export const SITE = {
   umami: {
     enabled: true,
     websiteId: "2311be4b-ebe4-4a94-9c69-b2e841584d0d",
-    scriptUrl: "https://umami.chensoul.cc/random-string.js",
+    scriptUrl: "https://umami.zhijun.io/random-string.js",
   },
 
   lazyListJsUrl: `${CDN_ORIGIN}/dist/lazy-list.js`,

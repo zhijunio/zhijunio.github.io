@@ -38,14 +38,14 @@ docker run -d --name=gitea -p 2222:2222 -p 3000:3000 -v /data/gitea/data://var/l
 server {
     listen 80;
     listen [::]:80;
-    server_name gitea.chensoul.cc;
+    server_name gitea.zhijun.io;
 
     return 301 https://$host$request_uri;
 }
 
 server {
     listen          443 ssl;
-    server_name     gitea.chensoul.cc;
+    server_name     gitea.zhijun.io;
 
     ssl_certificate      /etc/nginx/ssl/fullchain.cer;
     ssl_certificate_key  /etc/nginx/ssl/chensoul.cc.key;
@@ -73,9 +73,9 @@ server {
 
 - ssl 证书需要提前生成，并放到指定目录，我这里是 /etc/nginx/ssl
 
-执行 `nginx -s reload` 之后，需要在 dns 服务商配置域名解析，gitea.chensoul.cc 指定到你的 VPS IP。
+执行 `nginx -s reload` 之后，需要在 dns 服务商配置域名解析，gitea.zhijun.io 指定到你的 VPS IP。
 
-然后，就可以通过域名访问 <https://gitea.chensoul.cc/> 了
+然后，就可以通过域名访问 <https://gitea.zhijun.io/> 了
 
 ## SSH 容器直通
 
