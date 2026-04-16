@@ -6,12 +6,18 @@ export default [
   ...tseslint.configs.recommended,
   ...eslintPluginAstro.configs.recommended,
   {
+    files: ["**/*.astro"],
     languageOptions: {
       globals: {
         ...globals.browser,
         ...globals.node,
       },
+      parserOptions: {
+        parser: tseslint.parser,
+        extraFileExtensions: [".astro"],
+      },
     },
+    processor: "astro/client-side-ts",
   },
   {
     rules: {
@@ -29,6 +35,6 @@ export default [
     },
   },
   {
-    ignores: ["dist/**", ".astro", "public/pagefind/**"],
+    ignores: ["dist/**", ".astro", "public/pagefind/**", "node_modules/**"],
   },
 ];
