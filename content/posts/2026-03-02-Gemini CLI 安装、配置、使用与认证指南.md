@@ -29,6 +29,46 @@ description: Gemini CLI 是 Google 开源的终端 AI 助手，把 Gemini 的能
 
 ### 安装方式
 
+macOS / Linux 系统上，先安装 Homebrew，再使用 Homebrew 安装 NodeJs：
+
+```bash
+# 下载并安装 Homebrew
+curl -o- https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | bash
+# 设置国内源
+export HOMEBREW_BREW_GIT_REMOTE="https://mirrors4.tuna.tsinghua.edu.cn/git/homebrew/brew.git"
+export HOMEBREW_CORE_GIT_REMOTE="https://mirrors4.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git"
+export HOMEBREW_INSTALL_FROM_API=1
+
+# 下载并安装 Node.js：
+brew install node@24
+
+# 验证 Node.js 版本：
+node -v # Should print "v24.15.0".
+
+# 验证 npm 版本：
+npm -v # Should print "11.12.1".
+```
+window 系统使用 powershell 下载 Chocolatey，再用 Chocolatey 安装 NodeJs：
+
+```bash
+# 下载并安装 Chocolatey：
+powershell -c "irm https://community.chocolatey.org/install.ps1|iex"
+# 下载并安装 Node.js：
+choco install nodejs --version="24.15.0"
+# 验证 Node.js 版本：
+node -v # Should print "v24.15.0".
+# 验证 npm 版本：
+npm -v # Should print "11.12.1".
+```
+
+设置 npm 镜像 (加速国内下载)：
+
+```bash
+npm config set registry https://registry.npmmirror.com
+```
+
+再安装 gemini-cli：
+
 ```bash
 # 不安装，直接运行
 npx @google/gemini-cli
