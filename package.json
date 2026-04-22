@@ -21,7 +21,7 @@
     "md:fix": "pnpm dlx markdownlint-cli2 --fix \"./content/**/*.md\""
   },
   "dependencies": {
-    "@astrojs/mdx": "5.0.3",
+    "@astrojs/mdx": "5.0.4",
     "@astrojs/rss": "4.0.18",
     "@expressive-code/plugin-collapsible-sections": "^0.41.3",
     "@expressive-code/plugin-line-numbers": "^0.41.2",
