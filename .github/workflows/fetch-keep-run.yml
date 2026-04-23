@@ -4,6 +4,12 @@ on:
   schedule:
     - cron: "0 */2 * * *"
   workflow_dispatch:
+    inputs:
+      mode:
+        description: "Sync mode"
+        type: choice
+        options: [incremental, full]
+        default: incremental
 
 permissions:
   contents: write
@@ -30,6 +36,17 @@ jobs:
       - name: Install dependencies
         run: pip install -r scripts/requirements-keep.txt
 
+      - name: Determine sync mode
+        id: mode
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            echo "mode=incremental" >> $GITHUB_OUTPUT
+          elif [ "${{ github.event.inputs.mode }}" = "full" ]; then
+            echo "mode=full" >> $GITHUB_OUTPUT
+          else
+            echo "mode=incremental" >> $GITHUB_OUTPUT
+          fi
+
       - name: Generate running.json from Keep API
         env:
           KEEP_MOBILE: ${{ secrets.KEEP_MOBILE }}
@@ -40,7 +57,14 @@ jobs:
             echo "::error::Configure repository secrets KEEP_MOBILE and KEEP_PASSWORD (Settings → Secrets and variables → Actions)."
             exit 1
           fi
-          python scripts/fetch-keep-run.py
+          MODE="${{ steps.mode.outputs.mode }}"
+          if [ "$MODE" = "full" ]; then
+            echo "模式: 全量获取 (分页获取所有记录)"
+            python scripts/fetch-keep-run.py
+          else
+            echo "模式: 增量获取 (最新 5 条)"
+            python scripts/fetch-keep-run.py --limit 5
+          fi
 
       - name: Commit and push if changed
         run: |
