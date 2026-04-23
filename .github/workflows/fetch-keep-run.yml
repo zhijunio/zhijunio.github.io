@@ -62,8 +62,8 @@ jobs:
             echo "模式: 全量获取 (分页获取所有记录)"
             python scripts/fetch-keep-run.py --mode full
           else
-            echo "模式: 增量获取 (最新 5 条)"
-            python scripts/fetch-keep-run.py --mode incremental
+            echo "模式: 增量获取 (10 条)"
+            python scripts/fetch-keep-run.py --mode incremental --limit 10
           fi
 
       - name: Commit and push if changed

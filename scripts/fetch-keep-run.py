@@ -22,7 +22,7 @@ TZ_SH = timezone(timedelta(hours=8))
 LOGIN_API = "https://api.gotokeep.com/v1.1/users/login"
 RUN_DATA_API = (
     "https://api.gotokeep.com/pd/v3/stats/detail"
-    "?dateUnit=all&type={sport_type}&last_date={last_date}"
+    "?type={sport_type}&last_date={last_date}"
 )
 RUN_LOG_API = "https://api.gotokeep.com/pd/v3/{sport_type}log/{run_id}"
 
@@ -531,9 +531,9 @@ def main():
     p.add_argument("--mobile", default=os.environ.get("KEEP_MOBILE", ""))
     p.add_argument("--password", default=os.environ.get("KEEP_PASSWORD", ""))
     p.add_argument("--mode", choices=["full", "incremental"], default="full",
-                   help="full: 分页获取所有记录; incremental: 仅获取最新 5 条 (默认 full)")
-    p.add_argument("--limit", type=int, default=None, metavar="N",
-                   help="覆盖增量模式的数量上限 (默认 5)")
+                   help="full: 分页获取所有记录 (10条/页); incremental: 获取最新 10 条 (默认 full)")
+    p.add_argument("--limit", type=int, default=10, metavar="N",
+                   help="增量模式的数量上限 (默认 10)")
     p.add_argument("--debug", action="store_true")
     args = p.parse_args()
 
