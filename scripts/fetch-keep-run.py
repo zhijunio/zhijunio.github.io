@@ -425,11 +425,11 @@ def _period_stats(runs: List[Dict], start: datetime, end: datetime) -> Dict:
     hr_sum = hr_cnt = vdot_sum = vdot_cnt = 0
     best_vdot = 0.0
     for r in period:
-        hr = r.get("averageHeartRate", 0)
+        hr = r.get("averageHeartRate") or 0
         if hr > 0:
             hr_sum += hr
             hr_cnt += 1
-        vd = r.get("vDOT", 0)
+        vd = r.get("vDOT") or 0
         if vd > 0:
             vdot_sum += vd
             vdot_cnt += 1
