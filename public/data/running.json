@@ -1,5 +1,5 @@
 {
-  "statistics_time": "2026-04-23 20:56:12",
+  "statistics_time": "2026-04-24 07:43:51",
   "stats": {
     "yesterday": {
       "totalActivities": 0,
@@ -40,8 +40,8 @@
     "month": {
       "totalActivities": 1,
       "totalDistance": 6.02,
-      "totalDuration": 0.78,
-      "averagePace": 477,
+      "totalDuration": 0.8,
+      "averagePace": 478,
       "averageHeartRate": 150,
       "averageVdot": 22.1,
       "bestVdot": 22.1,
@@ -52,8 +52,8 @@
     "year": {
       "totalActivities": 1,
       "totalDistance": 6.02,
-      "totalDuration": 0.78,
-      "averagePace": 477,
+      "totalDuration": 0.8,
+      "averagePace": 478,
       "averageHeartRate": 150,
       "averageVdot": 22.1,
       "bestVdot": 22.1,
@@ -64,8 +64,8 @@
     "total": {
       "totalActivities": 1,
       "totalDistance": 6.02,
-      "totalDuration": 0.78,
-      "averagePace": 477,
+      "totalDuration": 0.8,
+      "averagePace": 478,
       "averageHeartRate": 150,
       "averageVdot": 22.1,
       "bestVdot": 22.1,
@@ -77,13 +77,12 @@
   "runs": [
     {
       "startTime": "2026-04-15 19:13:47",
-      "endTime": "2026-04-15 20:01:47",
+      "endTime": "2026-04-15 20:01:43",
       "type": "outdoorRunning",
       "distance": 6.02,
-      "duration": 2880,
-      "movingTime": 2820,
+      "duration": 2876,
       "averagePace": 477,
-      "averageSpeed": 7.57,
+      "averageSpeed": 7.53922114047288,
       "averageHeartRate": 150,
       "maxHeartRate": 174,
       "calorie": 655,
@@ -91,8 +90,8 @@
       "region": "湖北省武汉市江岸区",
       "weatherInfo": "19°C",
       "activityType": "户外跑步",
-      "name": "清晨跑步",
-      "stepFrequency": 156,
+      "name": "户外跑步",
+      "stepFrequency": 166,
       "strideLength": 0.0,
       "averagePower": 152,
       "maxPower": 152,
