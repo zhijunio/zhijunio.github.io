@@ -62,7 +62,9 @@ const DETAIL_ICONS = {
 
 function _formatPaceDetail(sec: number): string {
   if (!sec || sec <= 0) return "0'00\"";
-  return `${Math.floor(sec / 60)}'${Math.floor(sec % 60).toString().padStart(2, "0")}"`;
+  return `${Math.floor(sec / 60)}'${Math.floor(sec % 60)
+    .toString()
+    .padStart(2, "0")}"`;
 }
 
 function formatDuration(seconds: number): string {
@@ -118,7 +120,9 @@ export function buildRunDetailModalHtml(
 ): string {
   const icons = DETAIL_ICONS;
   const hrZoneBadge =
-    run.heartRateZone && run.heartRateZone > 0 ? hrZoneBadgeHtml(run.heartRateZone, ctx) : "";
+    run.heartRateZone && run.heartRateZone > 0
+      ? hrZoneBadgeHtml(run.heartRateZone, ctx)
+      : "";
 
   const detailStats: { icon: string; label: string; value: string }[] = [];
 
@@ -217,7 +221,8 @@ export function buildRunDetailModalHtml(
 
     const segmentRows = run.segments
       .map((seg, idx) => {
-        const zoneClass = seg.heartRateZone != null ? `zone-${seg.heartRateZone}` : "";
+        const zoneClass =
+          seg.heartRateZone != null ? `zone-${seg.heartRateZone}` : "";
         const zoneLabel =
           seg.heartRateZone != null
             ? (ctx.hrZoneLabels[seg.heartRateZone] || "").split(" ")[0]

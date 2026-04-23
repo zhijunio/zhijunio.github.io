@@ -338,14 +338,15 @@ const linkPreloadOnLoad = "this.onload=null;this.rel='stylesheet'";
       )
     }
 
-    <div class="post-layout flex min-w-0 flex-col gap-5 lg:items-start lg:flex-row">
+    <div
+      class="post-layout flex min-w-0 flex-col gap-5 lg:flex-row lg:items-start"
+    >
       <div class="post-content min-w-0 flex-1 pb-4">
         <Content />
       </div>
       <ArticleToc />
     </div>
   </article>
-
 
   <!-- 正文以下：共用一条顶部分割线，子块之间只用间距，避免多条「横线」叠在一起 -->
   <div
@@ -505,7 +506,8 @@ const linkPreloadOnLoad = "this.onload=null;this.rel='stylesheet'";
   <!-- 评论容器：与主栏同宽（不用 reading-wrap 窄栏） -->
   {
     comments && SITE.giscus.enabled && (
-      <script is:inline
+      <script
+        is:inline
         src="https://giscus.app/client.js"
         data-repo="zhijunio/zhijunio.github.io"
         data-repo-id="R_kgDOIwiKuA"
@@ -521,7 +523,7 @@ const linkPreloadOnLoad = "this.onload=null;this.rel='stylesheet'";
         data-loading="lazy"
         crossorigin="anonymous"
         async
-      ></script>
+      />
     )
   }
   <style is:global>

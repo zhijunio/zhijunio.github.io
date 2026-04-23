@@ -34,7 +34,9 @@ function formatDuration(seconds: number): string {
 // 格式化配速（秒/km -> "7'58""）
 function formatPace(secPerKm: number): string {
   if (!secPerKm || secPerKm <= 0) return "--";
-  return `${Math.floor(secPerKm / 60)}'${Math.floor(secPerKm % 60).toString().padStart(2, "0")}"`;
+  return `${Math.floor(secPerKm / 60)}'${Math.floor(secPerKm % 60)
+    .toString()
+    .padStart(2, "0")}"`;
 }
 
 // 准备日历数据 - 展示最近12个月，从每个月1号开始
@@ -249,14 +251,16 @@ const hrZoneColors: Record<number, string> = {
                             <span class="period-panel-value">
                               {(pStats.totalDuration ?? 0).toFixed(1)}
                             </span>
-                            <span class="period-panel-label">总时长 (小时)</span>
+                            <span class="period-panel-label">
+                              总时长 (小时)
+                            </span>
                           </div>
-                           <div class="period-panel-stat">
-                              <span class="period-panel-value">
-                                {pStats.longestDistance?.toFixed(2) ?? "--"}
-                              </span>
-                              <span class="period-panel-label">最长距离</span>
-                            </div>
+                          <div class="period-panel-stat">
+                            <span class="period-panel-value">
+                              {pStats.longestDistance?.toFixed(2) ?? "--"}
+                            </span>
+                            <span class="period-panel-label">最长距离</span>
+                          </div>
                           <div class="period-panel-stat">
                             <span class="period-panel-value">
                               {formatPace(pStats.averagePace)}
@@ -281,7 +285,6 @@ const hrZoneColors: Record<number, string> = {
                             </span>
                             <span class="period-panel-label">最佳 VDOT</span>
                           </div>
-
                         </div>
                       </div>
                     );
@@ -339,7 +342,9 @@ const hrZoneColors: Record<number, string> = {
                   >
                     <div class="run-main">
                       <div class="run-header">
-                        <time class="run-date">{run.startTime.split(" ")[0]}</time>
+                        <time class="run-date">
+                          {run.startTime.split(" ")[0]}
+                        </time>
                         {run.heartRateZone > 0 && (
                           <span
                             class="hr-zone-badge"
@@ -371,7 +376,9 @@ const hrZoneColors: Record<number, string> = {
                         <span class="stat-label">时长</span>
                       </div>
                       <div class="stat">
-                        <span class="stat-value">{formatPace(run.averagePace ?? 0)}</span>
+                        <span class="stat-value">
+                          {formatPace(run.averagePace ?? 0)}
+                        </span>
                         <span class="stat-label">配速</span>
                       </div>
                       <div class="stat">
@@ -386,10 +393,10 @@ const hrZoneColors: Record<number, string> = {
                         <span class="stat-value">{run.vDOT ?? "-"}</span>
                         <span class="stat-label">VDOT</span>
                       </div>
-                        <div class="stat load-stat">
-                          <span class="stat-value">{run.trainingLoadScore}</span>
-                          <span class="stat-label">负荷</span>
-                        </div>
+                      <div class="stat load-stat">
+                        <span class="stat-value">{run.trainingLoadScore}</span>
+                        <span class="stat-label">负荷</span>
+                      </div>
                     </div>
                   </div>
                 ))}

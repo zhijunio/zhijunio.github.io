@@ -5,14 +5,12 @@
 """
 
 import argparse
-import base64
 import json
 import logging
 import math
 import os
 import sys
 import time
-import zlib
 from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -59,17 +57,6 @@ logger = logging.getLogger(__name__)
 # ═══════════════════════════════════════════════════════════════════════
 # 工具函数
 # ═══════════════════════════════════════════════════════════════════════
-
-def _decode_runmap(text: str, is_geo: bool = False) -> Any:
-    """解码 Keep runmap 数据。"""
-    raw = base64.b64decode(text)
-    if is_geo:
-        from Crypto.Cipher import AES
-        key = base64.b64decode("NTZmZTU5OzgyZzpkODczYw==")
-        iv = base64.b64decode("MjM0Njg5MjQzMjkyMDMwMA==")
-        raw = AES.new(key, AES.MODE_CBC, iv).decrypt(raw)
-    return json.loads(zlib.decompress(raw, 16 + zlib.MAX_WBITS))
-
 
 def _n(val: Any) -> int:
     """安全转 int，无效返回 0。"""
@@ -124,23 +111,6 @@ def _pick(obj: Dict, *keys: str, default: Any = None) -> Any:
     return default
 
 
-def _find_nearest_hr(
-    hr_list: List[Dict], target: int, start_ms: int, threshold: int = 100
-) -> Optional[int]:
-    """找与 target 最近的心率点。"""
-    if target > 3_600_000:
-        target -= start_ms // 100
-    best, best_diff = None, float("inf")
-    for item in hr_list:
-        ts = item.get("timestamp")
-        if ts is None:
-            continue
-        diff = abs(ts - target)
-        if diff <= threshold and diff < best_diff:
-            best, best_diff = item, diff
-    hr = best.get("beatsPerMinute") if best else None
-    return int(hr) if hr and hr > 0 else None
-
 
 # ═══════════════════════════════════════════════════════════════════════
 # Keep API 交互
@@ -154,9 +124,9 @@ def _login(session: requests.Session, mobile: str, password: str):
     }
     r = session.post(LOGIN_API, headers=headers, data={
         "mobile": mobile, "password": password,
-    })
+    }, timeout=10)
     if not r.ok:
-        logger.error("登录失败: HTTP %s", r.status_code)
+        logger.error("登录失败: HTTP %s, 响应: %s", r.status_code, r.text[:500])
         sys.exit(1)
     token = r.json().get("data", {}).get("token")
     if not token:
@@ -166,7 +136,7 @@ def _login(session: requests.Session, mobile: str, password: str):
     return session, headers
 
 
-def _fetch_run_ids(session, headers, sport_type: str) -> List[Dict]:
+def _fetch_run_ids(session, headers, sport_type: str, limit: Optional[int] = None) -> List[Dict]:
     """分页获取跑步记录列表。"""
     result = []
     last_ts = 0
@@ -174,6 +144,7 @@ def _fetch_run_ids(session, headers, sport_type: str) -> List[Dict]:
         r = session.get(
             RUN_DATA_API.format(sport_type=sport_type, last_date=last_ts),
             headers=headers,
+            timeout=10,
         )
         if not r.ok:
             break
@@ -185,6 +156,8 @@ def _fetch_run_ids(session, headers, sport_type: str) -> List[Dict]:
                     if isinstance(stats, dict) and not stats.get("isDoubtful"):
                         if stats.get("id"):
                             result.append(stats)
+                            if limit and len(result) >= limit:
+                                return result
         last_ts = data.get("lastTimestamp") or 0
         if not last_ts:
             break
@@ -196,12 +169,13 @@ def _fetch_detail(session, headers, sport_type: str, run_id: str) -> Optional[Di
     r = session.get(
         RUN_LOG_API.format(sport_type=sport_type, run_id=run_id),
         headers=headers,
+        timeout=10,
     )
     return r.json().get("data") if r.ok else None
 
 
 # ═══════════════════════════════════════════════════════════════════════
-# VDOD / 训练负荷计算
+# VDOT / 训练负荷计算
 # ═══════════════════════════════════════════════════════════════════════
 
 class VDCCalculator:
@@ -269,104 +243,9 @@ def _build_segments_from_cross_km(data: Dict, vc: VDCCalculator) -> List[Dict]:
     return segs
 
 
-def _build_segments_from_geo(data: Dict, vc: VDCCalculator) -> List[Dict]:
-    """从 geoPoints 解码并按公里切分分段。"""
-    try:
-        from haversine import haversine
-    except ImportError:
-        logger.debug("haversine 不可用，跳过 geo 分段")
-        return []
-
-    raw = data.get("geoPoints")
-    if not raw:
-        return []
-    try:
-        points = _decode_runmap(raw, is_geo=True)
-    except Exception as e:
-        logger.debug("geoPoints 解码失败: %s", e)
-        return []
-    if not points or len(points) < 2:
-        return []
-
-    start_ms = _n(data.get("startTime"))
-
-    # 解码心率
-    hr_list = []
-    hr_raw = data.get("heartRate", {}).get("heartRates")
-    if hr_raw:
-        try:
-            hr_list = _decode_runmap(hr_raw)
-        except Exception:
-            pass
-
-    # 附加时间戳和心率到地理点
-    for p in points:
-        p["_ts"] = _n(_pick(p, "timestamp", "unixTimestamp"))
-        p["_hr"] = _find_nearest_hr(hr_list, p["_ts"], start_ms) if hr_list else None
-
-    # 累计距离
-    dists = [0.0]
-    cum = 0.0
-    for i in range(1, len(points)):
-        a, b = points[i - 1], points[i]
-        lat_a, lon_a = a.get("latitude"), a.get("longitude")
-        lat_b, lon_b = b.get("latitude"), b.get("longitude")
-        if None in (lat_a, lon_a, lat_b, lon_b):
-            dists.append(cum)
-            continue
-        cum += haversine((lat_a, lon_a), (lat_b, lon_b)) * 1000
-        dists.append(cum)
-
-    if dists[-1] < 100:
-        return []
-
-    # 按每公里切分
-    segs = []
-    seg_start_dist = seg_start_ts = seg_start_idx = 0.0
-    seg_start_ts = points[0].get("_ts", 0)
-    k = 1
-    while True:
-        target = k * 1000.0
-        if target > dists[-1]:
-            break
-        end_idx = None
-        for i in range(int(seg_start_idx) + 1, len(points)):
-            if dists[i] >= target:
-                end_idx = i
-                break
-        if end_idx is None:
-            break
-
-        seg_dist = dists[end_idx] - seg_start_dist
-        seg_dur_s = max((points[end_idx].get("_ts", 0) - seg_start_ts) / 10.0, 1) if points[end_idx].get("_ts", 0) > seg_start_ts else 1
-        pace = (seg_dur_s / seg_dist) * 1000 if seg_dist > 0 else 0
-
-        hrs = [
-            points[j].get("_hr")
-            for j in range(int(seg_start_idx), end_idx + 1)
-            if points[j].get("_hr") is not None
-        ]
-        avg_hr = int(round(sum(hrs) / len(hrs))) if hrs else 0
-        pace_s = int(round(pace)) if pace > 0 else 0
-
-        segs.append({
-            "km": k,
-            "averagePace": pace_s,
-            "averageSpeed": round(3600 / pace_s, 2) if pace_s > 0 else 0,
-            "averageHeartRate": avg_hr,
-            "heartRateZone": vc.hr_zone(avg_hr),
-            "stepFrequency": 0,
-        })
-        seg_start_idx = end_idx
-        seg_start_dist = dists[end_idx]
-        seg_start_ts = points[end_idx].get("_ts", 0)
-        k += 1
-    return segs
-
-
 def _build_segments(data: Dict, vc: VDCCalculator) -> List[Dict]:
-    """构建分段：优先 crossKmPoints，否则 geoPoints。"""
-    return _build_segments_from_cross_km(data, vc) or _build_segments_from_geo(data, vc)
+    """从 crossKmPoints 构建分段。"""
+    return _build_segments_from_cross_km(data, vc)
 
 
 # ═══════════════════════════════════════════════════════════════════════
@@ -463,12 +342,14 @@ def _build_record(stats: Dict, vc: VDCCalculator, detail: Optional[Dict] = None)
     if stride == 0 and detail:
         stride = _f(_pick(detail, "strideLength", "avgStrideLength", "averageStrideLength"))
 
+    # 爬升
+    elev = _f(stats.get("accumulativeUpliftedHeight"))
+
     # 功率
     avg_pwr = _n(_pick(stats, "avgPower", "averagePower"))
     max_pwr = _n(_pick(stats, "maxPower", "peakPower"))
     if avg_pwr == 0 and max_pwr == 0:
         cross_km = stats.get("crossKmPoints") if isinstance(stats.get("crossKmPoints"), list) else None
-        elev = _f(stats.get("accumulativeUpliftedHeight"))
         est_avg, est_max = _estimate_power(dist_m, dur_s, elev, cross_km)
         avg_pwr = est_avg or 0
         max_pwr = est_max or 0
@@ -481,8 +362,6 @@ def _build_record(stats: Dict, vc: VDCCalculator, detail: Optional[Dict] = None)
     tl = _n(stats.get("trainingLoadScore"))
     if tl == 0:
         tl = round(dur_s / 3600 * 100)
-
-    elev = _f(stats.get("accumulativeUpliftedHeight"))
 
     return {
         "startTime": start_local,
@@ -608,12 +487,11 @@ def fetch_runs(
 ) -> List[Dict]:
     """从 Keep API 拉取跑步数据。"""
     session, headers = _login(requests.Session(), mobile, password)
-    ids = _fetch_run_ids(session, headers, sport_type)
+    ids = _fetch_run_ids(session, headers, sport_type, limit=limit)
     if not ids:
         logger.error("Keep API 未返回任何记录")
         sys.exit(1)
 
-    ids = ids[:limit] if limit else ids
     logger.info("获取 %d 条跑步 ID", len(ids))
 
     vc = VDCCalculator()
@@ -650,13 +528,13 @@ def main():
     p.add_argument("--debug", action="store_true")
     args = p.parse_args()
 
-    mobile = (args.mobile or "").strip() or input("请输入 Keep 登录手机号: ").strip()
+    mobile = (args.mobile or "").strip()
     if not mobile:
-        logger.error("未提供手机号")
+        logger.error("未提供手机号：设置 KEEP_MOBILE 环境变量或使用 --mobile")
         sys.exit(1)
     password = (args.password or "").strip()
     if not password:
-        logger.error("请提供 --password 或设置环境变量 KEEP_PASSWORD")
+        logger.error("未提供密码：设置 KEEP_PASSWORD 环境变量或使用 --password")
         sys.exit(1)
 
     records = fetch_runs(mobile, password, limit=args.limit, debug=args.debug)
