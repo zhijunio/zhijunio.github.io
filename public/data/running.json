@@ -13,6 +13,18 @@
       "totalTrainingLoadScore": 0,
       "totalCalorie": 0
     },
+    "today": {
+      "totalActivities": 0,
+      "totalDistance": 0,
+      "totalDuration": 0,
+      "averagePace": 0,
+      "averageHeartRate": null,
+      "averageVdot": null,
+      "bestVdot": null,
+      "longestDistance": 0,
+      "totalTrainingLoadScore": 0,
+      "totalCalorie": 0
+    },
     "week": {
       "totalActivities": 0,
       "totalDistance": 0,

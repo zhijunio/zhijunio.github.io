@@ -465,8 +465,11 @@ def _calculate_stats(runs: List[Dict]) -> Dict:
     monday = now - timedelta(days=now.isoweekday() - 1)
     w_start = monday.replace(hour=0, minute=0, second=0, microsecond=0)
 
+    today_start = datetime(now.year, now.month, now.day, 0, 0, 0)
+    today_end = now
     return {
         "yesterday": _period_stats(runs, y_start, y_end),
+        "today": _period_stats(runs, today_start, today_end),
         "week": _period_stats(runs, w_start, now),
         "month": _period_stats(runs, datetime(now.year, now.month, 1), now),
         "year": _period_stats(runs, datetime(now.year, 1, 1), now),

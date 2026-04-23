@@ -157,17 +157,18 @@ const stats = data.stats;
 
 // 周期统计数据（昨日、周、月、年、总）- 直接从 stats 获取
 const periodStats = stats;
-const periodOrder = ["yesterday", "week", "month", "year", "total"] as const;
+const periodOrder = ["yesterday", "today", "week", "month", "year", "total"] as const;
 const periodLabels: Record<string, string> = {
   yesterday: "昨日",
+  today: "今日",
   week: "本周",
   month: "本月",
   year: "今年",
   total: "总计",
 };
-const defaultPeriod = periodStats.week
-  ? ("week" as const)
-  : (periodOrder.find(p => periodStats[p]) ?? ("week" as const));
+const defaultPeriod = periodStats.today
+  ? ("today" as const)
+  : (periodOrder.find(p => periodStats[p]) ?? ("today" as const));
 
 // 心率区间标签（7 区间模型）
 const hrZoneLabels: Record<number, string> = {
