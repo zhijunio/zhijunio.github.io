@@ -111,7 +111,6 @@ def _pick(obj: Dict, *keys: str, default: Any = None) -> Any:
     return default
 
 
-
 # ═══════════════════════════════════════════════════════════════════════
 # Keep API 交互
 # ═══════════════════════════════════════════════════════════════════════
@@ -243,11 +242,6 @@ def _build_segments_from_cross_km(data: Dict, vc: VDCCalculator) -> List[Dict]:
     return segs
 
 
-def _build_segments(data: Dict, vc: VDCCalculator) -> List[Dict]:
-    """从 crossKmPoints 构建分段。"""
-    return _build_segments_from_cross_km(data, vc)
-
-
 # ═══════════════════════════════════════════════════════════════════════
 # 估算功率
 # ═══════════════════════════════════════════════════════════════════════
@@ -330,7 +324,7 @@ def _build_record(stats: Dict, vc: VDCCalculator, detail: Optional[Dict] = None)
     # 分段
     segs = []
     if detail:
-        segs = _build_segments(detail, vc) or _build_segments(stats, vc)
+        segs = _build_segments_from_cross_km(detail, vc) or _build_segments_from_cross_km(stats, vc)
 
     # 步频（从 detail 补充）
     step_freq = _n(_pick(stats, "averageStepFrequency"))
@@ -456,7 +450,7 @@ def _period_stats(runs: List[Dict], start: datetime, end: datetime) -> Dict:
 
 
 def _calculate_stats(runs: List[Dict]) -> Dict:
-    """计算各周期统计（昨日/周/月/年/总）。"""
+    """计算各周期统计（昨日/今日/周/月/年/总）。"""
     now = datetime.now(TZ_SH).replace(tzinfo=None)
     yesterday = (datetime.now(TZ_SH) - timedelta(days=1)).date()
     y_start = datetime.combine(yesterday, datetime.min.time())
@@ -466,10 +460,9 @@ def _calculate_stats(runs: List[Dict]) -> Dict:
     w_start = monday.replace(hour=0, minute=0, second=0, microsecond=0)
 
     today_start = datetime(now.year, now.month, now.day, 0, 0, 0)
-    today_end = now
     return {
         "yesterday": _period_stats(runs, y_start, y_end),
-        "today": _period_stats(runs, today_start, today_end),
+        "today": _period_stats(runs, today_start, now),
         "week": _period_stats(runs, w_start, now),
         "month": _period_stats(runs, datetime(now.year, now.month, 1), now),
         "year": _period_stats(runs, datetime(now.year, 1, 1), now),
@@ -555,16 +548,10 @@ def main():
         logger.error("没有读取到任何记录")
         sys.exit(1)
 
-    # 合并并去重
-    all_records = existing_records + new_records
-    seen = set()
-    deduped = []
-    for r in all_records:
-        key = (r.get("startTime", ""), r.get("distance", 0))
-        if key not in seen:
-            seen.add(key)
-            deduped.append(r)
-    records = sorted(deduped, key=lambda x: x["startTime"], reverse=True)
+    # 合并并去重（按 startTime 去重，新数据优先）
+    merged: Dict[str, Dict] = {r["startTime"]: r for r in existing_records}
+    merged.update({r["startTime"]: r for r in new_records})
+    records = sorted(merged.values(), key=lambda x: x["startTime"], reverse=True)
 
     output = {
         "statistics_time": datetime.now(TZ_SH).strftime("%Y-%m-%d %H:%M:%S"),

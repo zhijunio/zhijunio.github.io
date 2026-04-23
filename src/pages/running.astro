@@ -155,9 +155,7 @@ for (let m = 0; m < 12; m++) {
 // 统计数据
 const stats = data.stats;
 
-// 周期统计数据（昨日、周、月、年、总）- 直接从 stats 获取
-const periodStats = stats;
-const periodOrder = ["yesterday", "today", "week", "month", "year", "total"] as const;
+// 周期标签映射
 const periodLabels: Record<string, string> = {
   yesterday: "昨日",
   today: "今日",
@@ -166,9 +164,8 @@ const periodLabels: Record<string, string> = {
   year: "今年",
   total: "总计",
 };
-const defaultPeriod = periodStats.today
-  ? ("today" as const)
-  : (periodOrder.find(p => periodStats[p]) ?? ("today" as const));
+const periodOrder = Object.keys(periodLabels) as const;
+const defaultPeriod: string = stats.today ? "today" : periodOrder.find(p => stats[p]) ?? "today";
 
 // 心率区间标签（7 区间模型）
 const hrZoneLabels: Record<number, string> = {
@@ -204,13 +201,13 @@ const hrZoneColors: Record<number, string> = {
       ) : (
         <div>
           {/* 周期统计卡片 - Tab 切换 */}
-          {periodStats && Object.keys(periodStats).length > 0 && (
+          {stats && Object.keys(stats).length > 0 && (
             <div id="periodStats">
               <div class="period-stats-card">
                 {/* Tab 导航 */}
                 <div class="period-tab-nav" id="periodTabNav">
                   {periodOrder.map(period => {
-                    const pStats = periodStats[period];
+                    const pStats = stats[period];
                     if (!pStats) return null;
                     const isActive = period === defaultPeriod;
                     return (
@@ -227,7 +224,7 @@ const hrZoneColors: Record<number, string> = {
                 {/* Tab 内容 */}
                 <div class="period-tab-content">
                   {periodOrder.map(period => {
-                    const pStats = periodStats[period];
+                    const pStats = stats[period];
                     if (!pStats) return null;
                     const isActive = period === defaultPeriod;
                     return (
