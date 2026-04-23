@@ -540,6 +540,8 @@ def main():
         logger.error("未提供密码：设置 KEEP_PASSWORD 环境变量或使用 --password")
         sys.exit(1)
 
+    new_records = fetch_runs(mobile, password, limit=args.limit, debug=args.debug)
+
     # 加载已有数据
     existing_records = []
     out_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), args.output)
@@ -549,7 +551,6 @@ def main():
         existing_records = old_data.get("runs", [])
         logger.info("已加载 %d 条已有记录", len(existing_records))
 
-    new_records = fetch_runs(mobile, password, limit=args.limit, debug=args.debug)
     if not new_records and not existing_records:
         logger.error("没有读取到任何记录")
         sys.exit(1)
@@ -571,7 +572,6 @@ def main():
         "runs": records,
     }
 
-    out_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), args.output)
     os.makedirs(os.path.dirname(out_path) or ".", exist_ok=True)
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
