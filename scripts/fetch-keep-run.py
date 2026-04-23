@@ -117,6 +117,7 @@ def _pick(obj: Dict, *keys: str, default: Any = None) -> Any:
 
 def _login(session: requests.Session, mobile: str, password: str):
     """Keep 登录，返回 (session, headers) 或退出。"""
+    logger.info("正在登录 Keep API...")
     headers = {
         "User-Agent": USER_AGENT,
         "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
@@ -132,6 +133,7 @@ def _login(session: requests.Session, mobile: str, password: str):
         logger.error("未获取到 token")
         sys.exit(1)
     headers["Authorization"] = f"Bearer {token}"
+    logger.info("登录成功")
     return session, headers
 
 
@@ -139,15 +141,19 @@ def _fetch_run_ids(session, headers, sport_type: str, limit: Optional[int] = Non
     """分页获取跑步记录列表。"""
     result = []
     last_ts = 0
+    page = 0
     while True:
+        page += 1
         r = session.get(
             RUN_DATA_API.format(sport_type=sport_type, last_date=last_ts),
             headers=headers,
             timeout=10,
         )
         if not r.ok:
+            logger.warning("分页请求失败 (第 %d 页), HTTP %d", page, r.status_code)
             break
         data = r.json().get("data") or {}
+        count_before = len(result)
         for group in data.get("records") or []:
             for entry in group.get("logs") or []:
                 if isinstance(entry, dict):
@@ -156,10 +162,14 @@ def _fetch_run_ids(session, headers, sport_type: str, limit: Optional[int] = Non
                         if stats.get("id"):
                             result.append(stats)
                             if limit and len(result) >= limit:
+                                logger.info("第 %d 页后触发 limit(%d)，提前返回 %d 条", page, limit, len(result))
                                 return result
         last_ts = data.get("lastTimestamp") or 0
+        page_count = len(result) - count_before
         if not last_ts:
+            logger.info("第 %d 页获取 %d 条，共 %d 条 (末页)", page, page_count, len(result))
             break
+        logger.info("第 %d 页获取 %d 条，共 %d 条", page, page_count, len(result))
     return result
 
 
@@ -488,7 +498,7 @@ def fetch_runs(
         logger.error("Keep API 未返回任何记录")
         sys.exit(1)
 
-    logger.info("获取 %d 条跑步 ID", len(ids))
+    logger.info("开始获取 %d 条跑步详情 (间隔 0.5s/条)", len(ids))
 
     vc = VDCCalculator()
     records = []
@@ -508,10 +518,10 @@ def fetch_runs(
             print(json.dumps(rec, ensure_ascii=False, indent=2, default=str))
         if rec:
             records.append(rec)
-        if (i + 1) % 20 == 0 and not debug:
-            logger.info("已解析 %d/%d", i + 1, len(ids))
+        if (i + 1) % 20 == 0:
+            logger.info("已解析 %d/%d (有效 %d 条)", i + 1, len(ids), len(records))
 
-    logger.info("有效记录 %d 条", len(records))
+    logger.info("解析完成: %d/%d 条有效 (%d 条被丢弃)", len(records), len(ids), len(ids) - len(records))
     return records
 
 
@@ -534,6 +544,7 @@ def main():
         sys.exit(1)
 
     new_records = fetch_runs(mobile, password, limit=args.limit, debug=args.debug)
+    logger.info("获取 %d 条新记录", len(new_records))
 
     # 加载已有数据
     existing_records = []
@@ -543,9 +554,11 @@ def main():
             with open(out_path, "r", encoding="utf-8") as f:
                 old_data = json.load(f)
             existing_records = old_data.get("runs", [])
-            logger.info("已加载 %d 条已有记录", len(existing_records))
+            logger.info("加载已有 %d 条记录", len(existing_records))
         except json.JSONDecodeError as e:
             logger.warning("已有 running.json 解析失败 (%s)，从空记录开始", e)
+    else:
+        logger.info("running.json 不存在，仅使用新数据")
 
     if not new_records and not existing_records:
         logger.error("没有读取到任何记录")
@@ -553,8 +566,15 @@ def main():
 
     # 合并并去重（按 startTime 去重，新数据优先）
     merged: Dict[str, Dict] = {r["startTime"]: r for r in existing_records}
+    before = len(merged)
     merged.update({r["startTime"]: r for r in new_records})
+    added = len(merged) - before
+    logger.info("合并完成: %d (新增 %d 条)", len(merged), added)
+
     records = sorted(merged.values(), key=lambda x: x["startTime"], reverse=True)
+
+    logger.info("写入 %s", out_path)
+    os.makedirs(os.path.dirname(out_path) or ".", exist_ok=True)
 
     output = {
         "statistics_time": datetime.now(TZ_SH).strftime("%Y-%m-%d %H:%M:%S"),
@@ -562,13 +582,10 @@ def main():
         "runs": records,
     }
 
-    os.makedirs(os.path.dirname(out_path) or ".", exist_ok=True)
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
         f.write("\n")
     logger.info("已保存到 %s", out_path)
-    print("跑步数据已生成并保存。")
-
 
 if __name__ == "__main__":
     main()
