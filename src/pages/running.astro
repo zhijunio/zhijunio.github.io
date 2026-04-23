@@ -177,18 +177,9 @@ for (let m = 0; m < 12; m++) {
 
 // 统计数据
 const stats = data.stats;
-const rawTime =
-  stats != null &&
-  typeof (stats as unknown as Record<string, unknown>)["statistics_time"] ===
-    "string"
-    ? String(
-        (stats as unknown as Record<string, unknown>)["statistics_time"]
-      ).trim()
-    : "";
-const statisticsTime = rawTime || undefined;
 
-// 周期统计数据（昨日、周、月、年、总）
-const periodStats = stats.period_stats || {};
+// 周期统计数据（昨日、周、月、年、总）- 直接从 stats 获取
+const periodStats = stats;
 const periodOrder = ["yesterday", "week", "month", "year", "total"] as const;
 const periodLabels: Record<string, string> = {
   yesterday: "昨日",
@@ -201,38 +192,34 @@ const defaultPeriod = periodStats.week
   ? ("week" as const)
   : (periodOrder.find(p => periodStats[p]) ?? ("week" as const));
 
-// 心率区间标签
+// 心率区间标签（7 区间模型）
 const hrZoneLabels: Record<number, string> = {
   0: "",
-  1: "Z1 热身",
-  2: "Z2 轻松",
-  3: "Z3 有氧",
-  4: "Z4 无氧",
-  5: "Z5 极限",
+  1: "Z1 恢复",
+  2: "Z2 有氧",
+  3: "Z3 节奏",
+  4: "Z4 阈值下",
+  5: "Z5 阈值上",
+  6: "Z6 有氧能力",
+  7: "Z7 无氧",
 };
 
-// 心率区间颜色
+// 心率区间颜色（7 区间模型，基于 Keep App 配色）
 const hrZoneColors: Record<number, string> = {
   0: "var(--text-secondary)",
-  1: "#3489dc", // 蓝色 - 热身
-  2: "#36d9d6", // 蓝色 - 轻松
-  3: "#4ade80", // 黄色 - 有氧
-  4: "#fb923c", // 橙色 - 无氧
-  5: "#f87171", // 红色 - 极限
+  1: "#5FBFAD", // Z1 恢复 - 青绿色
+  2: "#4CAF50", // Z2 有氧 - 绿色
+  3: "#FFC947", // Z3 节奏 - 黄色
+  4: "#FF9F47", // Z4 阈值下 - 橙色
+  5: "#FF5C7C", // Z5 阈值上 - 粉红色
+  6: "#9061F5", // Z6 有氧能力 - 紫色
+  7: "#8B8599", // Z7 无氧 - 深紫灰
 };
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
   <h1>跑步</h1>
   <div class="running-page">
-    <div class="article-header">
-      <h2>跑步统计</h2>
-      {
-        statisticsTime && (
-          <span class="statistics-time">更新时间：{statisticsTime}</span>
-        )
-      }
-    </div>
     {
       !data || !data.stats ? (
         <p>暂无数据。</p>
@@ -240,7 +227,7 @@ const hrZoneColors: Record<number, string> = {
         <div>
           {/* 周期统计卡片 - Tab 切换 */}
           {periodStats && Object.keys(periodStats).length > 0 && (
-            <div class="period-stats-section" id="periodStats">
+            <div id="periodStats">
               <div class="period-stats-card">
                 {/* Tab 导航 */}
                 <div class="period-tab-nav" id="periodTabNav">
@@ -254,6 +241,7 @@ const hrZoneColors: Record<number, string> = {
                         data-period={period}
                       >
                         {periodLabels[period]}
+                        <span class="tab-count">{pStats.total_activities}</span>
                       </button>
                     );
                   })}
@@ -270,32 +258,48 @@ const hrZoneColors: Record<number, string> = {
                         class={`period-panel ${isActive ? "active" : ""}`}
                         data-panel={period}
                       >
-                        <div class="period-panel-header">
-                          <span class="period-panel-title">
-                            {periodLabels[period]}数据统计
-                          </span>
-                          <span class="period-panel-count">
-                            共计跑步 {pStats.total_activities} 次
-                          </span>
-                        </div>
                         <div class="period-panel-grid">
-                          <div class="period-panel-stat">
-                            <span class="period-panel-value">
-                              {pStats.avg_vdot?.toFixed(1) ?? "--"}
-                            </span>
-                            <span class="period-panel-label">当前跑力</span>
-                          </div>
                           <div class="period-panel-stat">
                             <span class="period-panel-value">
                               {pStats.total_distance}
                             </span>
-                            <span class="period-panel-label">距离(公里)</span>
+                            <span class="period-panel-label">距离 (公里)</span>
+                          </div>
+                          <div class="period-panel-stat">
+                            <span class="period-panel-value">
+                              {pStats.total_duration_hours?.toFixed(1) ?? "--"}
+                            </span>
+                            <span class="period-panel-label">总时长 (小时)</span>
                           </div>
                           <div class="period-panel-stat">
                             <span class="period-panel-value">
                               {pStats.avg_pace}
                             </span>
                             <span class="period-panel-label">平均配速</span>
+                          </div>
+                          <div class="period-panel-stat">
+                            <span class="period-panel-value">
+                              {pStats.avg_heart_rate ?? "--"}
+                            </span>
+                            <span class="period-panel-label">平均心率</span>
+                          </div>
+                          <div class="period-panel-stat">
+                            <span class="period-panel-value">
+                              {pStats.avg_vdot?.toFixed(1) ?? "--"}
+                            </span>
+                            <span class="period-panel-label">平均 VDOT</span>
+                          </div>
+                          <div class="period-panel-stat">
+                            <span class="period-panel-value">
+                              {pStats.best_vdot?.toFixed(1) ?? "--"}
+                            </span>
+                            <span class="period-panel-label">最佳 VDOT</span>
+                          </div>
+                          <div class="period-panel-stat">
+                            <span class="period-panel-value">
+                              {(pStats as any).longest_run?.toFixed(2) ?? "--"}
+                            </span>
+                            <span class="period-panel-label">最长距离</span>
                           </div>
                           <div class="period-panel-stat">
                             <span class="period-panel-value">
@@ -307,15 +311,9 @@ const hrZoneColors: Record<number, string> = {
                           </div>
                           <div class="period-panel-stat">
                             <span class="period-panel-value">
-                              {pStats.total_duration_hours.toFixed(1)}
+                              {(pStats as any).total_calories ?? "--"}
                             </span>
-                            <span class="period-panel-label">总时长(小时)</span>
-                          </div>
-                          <div class="period-panel-stat">
-                            <span class="period-panel-value">
-                              {pStats.avg_heart_rate ?? "--"}
-                            </span>
-                            <span class="period-panel-label">平均心率</span>
+                            <span class="period-panel-label">总消耗 (千卡)</span>
                           </div>
                         </div>
                       </div>
@@ -390,7 +388,7 @@ const hrZoneColors: Record<number, string> = {
                         )}
                       </div>
                       <span class="run-type">
-                        {run.activity_type || "室外跑步"}
+                        {run.workout_name || "室外跑步"}
                         {run.route && (
                           <span class="run-route"> · {run.route}</span>
                         )}

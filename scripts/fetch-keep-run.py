@@ -94,6 +94,7 @@ def _keep_get_run_ids(session: Any, headers: Dict[str, str], sport_type: str) ->
             break
         data = r.json().get("data") or {}
         records = data.get("records") or []
+        print(records)
         for i in records:
             logs = [j.get("stats") for j in (i.get("logs") or []) if isinstance(j, dict)]
             for k in logs:
@@ -316,7 +317,7 @@ def _estimate_running_power(
 
 # dataType -> 活动类型中文（与 keep_sync 一致）
 KEEP_DATATYPE_TO_ACTIVITY = {
-    "outdoorRunning": "户外跑步",
+    "outdoorRunning": "室外跑步",
     "indoorRunning": "跑步机",
     "outdoorWalking": "步行",
     "outdoorCycling": "户外骑行",
@@ -491,6 +492,24 @@ def _build_segments_from_keep_api(
     return segments_out
 
 
+def _get_time_of_day(hour: int) -> str:
+    """根据小时数返回时段名称：凌晨 (0-5)/清晨 (6-8)/上午 (9-11)/中午 (12-13)/下午 (14-17)/傍晚 (18-19)/夜晚 (20-23)"""
+    if 0 <= hour <= 5:
+        return "凌晨"
+    elif 6 <= hour <= 8:
+        return "清晨"
+    elif 9 <= hour <= 11:
+        return "上午"
+    elif 12 <= hour <= 13:
+        return "中午"
+    elif 14 <= hour <= 17:
+        return "下午"
+    elif 18 <= hour <= 19:
+        return "傍晚"
+    else:  # 20-23
+        return "夜晚"
+
+
 def _keep_api_run_to_row(
     api_data: Dict[str, Any],
     vdot_calculator: Optional[VDOTCalculator] = None,
@@ -546,10 +565,10 @@ def _keep_api_run_to_row(
     calorie = api_data.get("calorie") or api_data.get("calories")
     calories = _safe_number(calorie, "int")
 
-    # 活动类型：dataType -> 户外跑步/跑步机 等
+    # 活动类型：dataType -> 室外跑步/跑步机 等
     data_type = (api_data.get("dataType") or "").strip()
     activity_type = KEEP_DATATYPE_TO_ACTIVITY.get(
-        data_type, "户外跑步" if "run" in data_type.lower() else "跑步"
+        data_type, "室外跑步" if "run" in data_type.lower() else "跑步机"
     )
 
     # 爬升：若 API 顶层有则用（无则 0；精确爬升需解码 geoPoints 算高程）
@@ -616,6 +635,13 @@ def _keep_api_run_to_row(
             if temperature is not None and str(temperature).strip():
                 weather_str = f"{temperature}".strip()
 
+    # workout_name: 根据开始时间的时段 + data_type 生成，如"清晨室外跑步"、"夜晚跑步机"
+    start_hour = start_date_utc.hour
+    time_of_day = _get_time_of_day(start_hour)
+    # data_type 映射为简短类型名
+    type_short_name = "室外跑步" if "outdoor" in data_type.lower() else "跑步机" if "indoor" in data_type.lower() else "跑步"
+    workout_name = f"{time_of_day}{type_short_name}"
+
     row = {
         "distance": distance_m,
         "moving_time": moving_time,
@@ -628,7 +654,7 @@ def _keep_api_run_to_row(
         "average_heartrate": average_heartrate,
         "location_country": location_country,
         "elevation_gain": elevation_gain,
-        "name": "Run from keep",
+        "name": workout_name,
         "calories": calories,
         "max_heart_rate": max_heart_rate,
         "activity_type": activity_type,
@@ -713,20 +739,23 @@ def format_running_data(
     rows: List[Dict[str, Any]],
     vdot_calculator: Optional[VDOTCalculator] = None,
 ) -> Dict[str, Any]:
-    """将行列表格式化为与 Garmin 脚本一致的 stats + runs 结构。"""
+    """将行列表格式化为新的 stats + runs 结构。"""
     if vdot_calculator is None:
         vdot_calculator = VDOTCalculator()
 
     stats = {
         "total_runs": 0,
         "total_distance": 0,
-        "total_duration": "0小时0分钟",
+        "total_duration": "--",
         "avg_pace": "0'00\"",
         "longest_run": 0,
         "avg_vdot": 0,
         "total_training_load": 0,
         "period_stats": {},
     }
+    if vdot_calculator is None:
+        vdot_calculator = VDOTCalculator()
+
     total_seconds = 0
     total_vdot = 0
     vdot_count = 0
@@ -799,11 +828,11 @@ def format_running_data(
         stride_length = _row_num("stride_length", 0)
         avg_power = _row_num("avg_power", 0)
         max_power = _row_num("max_power", 0)
-        activity_type = (row.get("activity_type") or "").strip() or "户外跑步"
+        activity_type = (row.get("activity_type") or "").strip() or "室外跑步"
 
         run_data = {
             "date": start_local,
-            "distance": int(distance_km * 100) / 100,
+            "distance": round(distance_km * 100 / 100,2),
             "duration": duration_str,
             "pace": pace,
             "heart_rate": round(avg_hr, 1) if avg_hr else 0,
@@ -825,34 +854,16 @@ def format_running_data(
         }
         formatted_runs.append(run_data)
 
-        stats["total_distance"] += distance_km
-        stats["longest_run"] = max(stats["longest_run"], distance_km)
-        stats["total_training_load"] += training_load
-        total_seconds += duration_seconds
-        if vdot:
-            total_vdot += vdot
-            vdot_count += 1
-
-    stats["total_runs"] = len(formatted_runs)
-
-    if stats["total_distance"] > 0:
-        avg_pace_sec = total_seconds / stats["total_distance"]
-        stats["avg_pace"] = f"{int(avg_pace_sec // 60)}'{int(avg_pace_sec % 60):02d}\""
-    if vdot_count > 0:
-        stats["avg_vdot"] = round(total_vdot / vdot_count, 1)
-    stats["total_duration"] = duration_seconds_to_str(total_seconds)
-    stats["total_distance"] = int(stats["total_distance"] * 100) / 100
-    stats["longest_run"] = round(stats["longest_run"], 1)
-
     # 按日期倒序
     formatted_runs.sort(key=lambda x: x["date"], reverse=True)
 
     # 周期统计
-    stats["period_stats"] = _calculate_period_stats(formatted_runs, vdot_calculator)
-    # 统计时间（上海时区）
-    stats["statistics_time"] = datetime.now(TZ_SHANGHAI).strftime("%Y-%m-%d %H:%M:%S")
-
-    return {"stats": stats, "runs": formatted_runs}
+    period_stats = _calculate_period_stats(formatted_runs, vdot_calculator)
+    return {
+        "statistics_time": datetime.now(TZ_SHANGHAI).strftime("%Y-%m-%d %H:%M:%S"),
+        "stats": period_stats,
+        "runs": formatted_runs,
+    }
 
 
 def _calculate_period_stats(
@@ -917,16 +928,21 @@ def _stats_for_period(
             "avg_pace": "--",
             "avg_heart_rate": None,
             "avg_vdot": None,
+            "best_vdot": None,
             "total_training_load": 0,
+            "total_calories": 0,
         }
     total_distance = sum(r["distance"] for r in period_runs)
     total_activities = len(period_runs)
     total_training_load = sum(r.get("training_load", 0) for r in period_runs)
+    longest_run = max(r["distance"] for r in period_runs)
+    total_calories = sum(r.get("calories", 0) for r in period_runs)
     total_seconds = 0
     total_hr = 0
     hr_count = 0
     total_vdot = 0
     vdot_count = 0
+    best_vdot = 0
     for run in period_runs:
         duration_str = run["duration"]
         parts = duration_str.replace("小时", ":").replace("分钟", "").split(":")
@@ -940,19 +956,24 @@ def _stats_for_period(
         if run.get("vdot") and run["vdot"] > 0:
             total_vdot += run["vdot"]
             vdot_count += 1
+            best_vdot = max(best_vdot, run["vdot"])
     if total_distance > 0:
         avg_pace_sec = total_seconds / total_distance
         avg_pace = f"{int(avg_pace_sec // 60)}'{int(avg_pace_sec % 60):02d}\""
     else:
         avg_pace = "--"
+    total_duration_hours = round(total_seconds / 3600, 1)
     return {
         "total_activities": total_activities,
         "total_distance": int(total_distance * 100) / 100,
-        "total_duration_hours": round(total_seconds / 3600, 1),
+        "total_duration_hours": total_duration_hours,
         "avg_pace": avg_pace,
         "avg_heart_rate": round(total_hr / hr_count) if hr_count > 0 else None,
         "avg_vdot": round(total_vdot / vdot_count, 1) if vdot_count > 0 else None,
+        "best_vdot": round(best_vdot, 1) if vdot_count > 0 else None,
+        "longest_run": longest_run,
         "total_training_load": total_training_load,
+        "total_calories": total_calories,
     }
 
 
@@ -1038,7 +1059,7 @@ def _recalculate_stats(
         stats["avg_vdot"] = round(total_vdot / vdot_count, 1)
     stats["total_duration"] = duration_seconds_to_str(total_seconds)
     stats["total_distance"] = int(stats["total_distance"] * 100) / 100
-    stats["longest_run"] = round(stats["longest_run"], 1)
+    stats["longest_run"] = stats["longest_run"]
     stats["period_stats"] = _calculate_period_stats(runs, vdot_calculator)
     stats["statistics_time"] = datetime.now(TZ_SHANGHAI).strftime("%Y-%m-%d %H:%M:%S")
     return stats
@@ -1101,20 +1122,22 @@ def main():
     if save_running_json(
         data, output_path, merge=False, vdot_calculator=vdot_calculator
     ):
-        s = data["stats"]
+        stats = data["stats"]
+        total = stats.get("total", {})
         print("跑步数据已生成并保存。")
-        print(f"  跑步次数: {s['total_runs']}")
-        print(f"  总距离: {s['total_distance']} 公里")
-        print(f"  总时长: {s['total_duration']}")
-        print(f"  平均配速: {s['avg_pace']}")
-        ps = s.get("period_stats") or {}
-        print(f"  昨日距离: {(ps.get('yesterday') or {}).get('total_distance', 0)} 公里")
-        print(f"  本周距离: {(ps.get('week') or {}).get('total_distance', 0)} 公里")
-        print(f"  本月距离: {(ps.get('month') or {}).get('total_distance', 0)} 公里")
-        if s.get("avg_vdot"):
-            print(f"  平均 VDOT: {s['avg_vdot']}")
-        if s.get("total_training_load"):
-            print(f"  总训练负荷: {s['total_training_load']}")
+        print(f"  跑步次数：{total.get('total_activities', 0)}")
+        print(f"  总距离：{total.get('total_distance', 0)} 公里")
+        print(f"  最长距离：{total.get('longest_run', 0)} 公里")
+        print(f"  总时长：{total.get('total_duration_hours', 0)} 小时")
+        print(f"  平均配速：{total.get('avg_pace', '--')}")
+        print(f"  昨日距离：{(stats.get('yesterday') or {}).get('total_distance', 0)} 公里")
+        print(f"  本周距离：{(stats.get('week') or {}).get('total_distance', 0)} 公里")
+        print(f"  本月距离：{(stats.get('month') or {}).get('total_distance', 0)} 公里")
+        print(f"  本年距离：{(stats.get('year') or {}).get('total_distance', 0)} 公里")
+        if total.get("avg_vdot"):
+            print(f"  平均 VDOT: {total['avg_vdot']}")
+        if total.get("total_training_load"):
+            print(f"  总训练负荷：{total['total_training_load']}")
     else:
         print("保存失败。")
 

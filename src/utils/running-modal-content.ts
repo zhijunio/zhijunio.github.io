@@ -282,11 +282,10 @@ export function buildRunDetailModalHtml(
 
   return `
       <div class="detail-header">
-        <h3 class="detail-title">${run.workout_name || "跑步"}</h3>
+        <h3 class="detail-title">${run.workout_name || "室外跑步"}</h3>
         <div class="detail-meta">
           <span class="detail-date">${run.date}</span>
           ${hrZoneBadge}
-          <span class="detail-type">${run.activity_type || "室外跑步"}</span>
           ${detailMetaExtras ? `<span class="detail-meta-sep" aria-hidden="true">·</span>${detailMetaExtras}` : ""}
         </div>
       </div>

@@ -35,6 +35,7 @@ jobs:
         env:
           KEEP_MOBILE: ${{ secrets.KEEP_MOBILE }}
           KEEP_PASSWORD: ${{ secrets.KEEP_PASSWORD }}
+          MAX_HR: ${{ vars.MAX_HR || 180 }}
         run: |
           if [ -z "${KEEP_MOBILE:-}" ] || [ -z "${KEEP_PASSWORD:-}" ]; then
             echo "::error::Configure repository secrets KEEP_MOBILE and KEEP_PASSWORD (Settings → Secrets and variables → Actions)."
