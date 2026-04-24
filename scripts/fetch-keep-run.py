@@ -202,12 +202,12 @@ def _fetch_run_stats(
                 break
         page_count = len(result)
         last_date = data.get("lastTimestamp") or 0
+        time.sleep(1)  # spider rule
         if not last_date or hit_existing:
             reason = "(末页)" if not last_date else "(遇到已有记录)"
             logger.info("第 %d 页获取 %d 条，共 %d 条 %s", page, len(data.get("records", [])), page_count, reason)
             break
         logger.info("第 %d 页获取 %d 条，共 %d 条", page, len(data.get("records", [])), len(result))
-        time.sleep(1.0)
     return result
 
 
@@ -308,11 +308,25 @@ def _estimate_power(
 
 def _build_record(stats: Dict, vc: VDCCalculator, detail: Optional[Dict] = None) -> Optional[Dict]:
     """将 stats + detail API 数据转为 running.json 记录。"""
+    # 距离: kmDistance (km) > accurateDistance (m) > distance (m)
+    if stats.get("kmDistance"):
+        dist_km = _f(stats["kmDistance"])
+    elif stats.get("accurateDistance"):
+        dist_km = _f(stats["accurateDistance"]) / 1000.0
+    else:
+        dist_km = _f(stats.get("distance", 0)) / 1000.0
+    dist_m = dist_km * 1000.0
+
+    # 时长: movingDuration (detail, 不含暂停) > duration (含暂停)
     dur_s = _n(stats.get("duration"))
-    dist_m = _f(stats.get("distance"))
+    if detail:
+        md = _n(detail.get("movingDuration"))
+        if md > 0:
+            dur_s = md
+
     if dur_s <= 0 or dist_m <= 0:
         return None
-    dist_km = round(dist_m / 1000.0, 2)
+    dist_km = round(dist_km, 2)
 
     # 配速 (秒/km)
     pace = _n(stats.get("averagePace"))
