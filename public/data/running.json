@@ -1,5 +1,5 @@
 {
-  "statistics_time": "2026-04-24 07:43:51",
+  "statistics_time": "2026-04-24 09:15:08",
   "stats": {
     "yesterday": {
       "totalActivities": 0,
@@ -38,47 +38,47 @@
       "totalCalorie": 0
     },
     "month": {
-      "totalActivities": 1,
-      "totalDistance": 6.02,
-      "totalDuration": 0.8,
-      "averagePace": 478,
-      "averageHeartRate": 150,
-      "averageVdot": 22.1,
-      "bestVdot": 22.1,
-      "longestDistance": 6.02,
-      "totalTrainingLoadScore": 141,
-      "totalCalorie": 655
+      "totalActivities": 13,
+      "totalDistance": 73.24,
+      "totalDuration": 9.7,
+      "averagePace": 477,
+      "averageHeartRate": 132,
+      "averageVdot": 22.5,
+      "bestVdot": 25.9,
+      "longestDistance": 10.75,
+      "totalTrainingLoadScore": 932,
+      "totalCalorie": 6201
     },
     "year": {
-      "totalActivities": 1,
-      "totalDistance": 6.02,
-      "totalDuration": 0.8,
-      "averagePace": 478,
-      "averageHeartRate": 150,
-      "averageVdot": 22.1,
-      "bestVdot": 22.1,
-      "longestDistance": 6.02,
-      "totalTrainingLoadScore": 141,
-      "totalCalorie": 655
+      "totalActivities": 20,
+      "totalDistance": 104.51,
+      "totalDuration": 13.79,
+      "averagePace": 475,
+      "averageHeartRate": 135,
+      "averageVdot": 22.7,
+      "bestVdot": 26.7,
+      "longestDistance": 10.75,
+      "totalTrainingLoadScore": 1472,
+      "totalCalorie": 9057
     },
     "total": {
-      "totalActivities": 1,
-      "totalDistance": 6.02,
-      "totalDuration": 0.8,
-      "averagePace": 478,
-      "averageHeartRate": 150,
-      "averageVdot": 22.1,
-      "bestVdot": 22.1,
-      "longestDistance": 6.02,
-      "totalTrainingLoadScore": 141,
-      "totalCalorie": 655
+      "totalActivities": 20,
+      "totalDistance": 104.51,
+      "totalDuration": 13.79,
+      "averagePace": 475,
+      "averageHeartRate": 135,
+      "averageVdot": 22.7,
+      "bestVdot": 26.7,
+      "longestDistance": 10.75,
+      "totalTrainingLoadScore": 1472,
+      "totalCalorie": 9057
     }
   },
   "runs": [
     {
       "startTime": "2026-04-15 19:13:47",
       "endTime": "2026-04-15 20:01:43",
-      "type": "outdoorRunning",
+      "type": "running",
       "distance": 6.02,
       "duration": 2876,
       "averagePace": 477,
@@ -88,10 +88,11 @@
       "calorie": 655,
       "elevationGain": 3.0,
       "region": "湖北省武汉市江岸区",
-      "weatherInfo": "19°C",
-      "activityType": "户外跑步",
-      "name": "户外跑步",
+      "weatherInfo": "19°C 87%",
+      "dataType": "户外跑步",
+      "name": "上午户外跑步",
       "stepFrequency": 166,
+      "totalSteps": 7629,
       "strideLength": 0.0,
       "averagePower": 152,
       "maxPower": 152,
@@ -146,6 +147,1279 @@
           "averageHeartRate": 153,
           "heartRateZone": 2,
           "stepFrequency": 173
+        }
+      ]
+    },
+    {
+      "startTime": "2026-04-14 19:53:33",
+      "endTime": "2026-04-14 20:35:39",
+      "type": "running",
+      "distance": 6.02,
+      "duration": 2526,
+      "averagePace": 419,
+      "averageSpeed": 8.580997624703087,
+      "averageHeartRate": 129,
+      "maxHeartRate": 173,
+      "calorie": 444,
+      "elevationGain": 2.0,
+      "region": "湖北省武汉市江岸区",
+      "weatherInfo": "",
+      "dataType": "户外跑步",
+      "name": "上午户外跑步",
+      "stepFrequency": 179,
+      "totalSteps": 7218,
+      "strideLength": 0.0,
+      "averagePower": 173,
+      "maxPower": 173,
+      "vDOT": 25.9,
+      "trainingLoadScore": 63,
+      "heartRateZone": 1,
+      "segments": [
+        {
+          "km": 1,
+          "averagePace": 409,
+          "averageSpeed": 8.8,
+          "averageHeartRate": 143,
+          "heartRateZone": 1,
+          "stepFrequency": 182
+        },
+        {
+          "km": 2,
+          "averagePace": 419,
+          "averageSpeed": 8.59,
+          "averageHeartRate": 168,
+          "heartRateZone": 3,
+          "stepFrequency": 181
+        },
+        {
+          "km": 3,
+          "averagePace": 458,
+          "averageSpeed": 7.86,
+          "averageHeartRate": 121,
+          "heartRateZone": 1,
+          "stepFrequency": 172
+        },
+        {
+          "km": 4,
+          "averagePace": 452,
+          "averageSpeed": 7.96,
+          "averageHeartRate": 113,
+          "heartRateZone": 1,
+          "stepFrequency": 179
+        },
+        {
+          "km": 5,
+          "averagePace": 400,
+          "averageSpeed": 9.0,
+          "averageHeartRate": 115,
+          "heartRateZone": 1,
+          "stepFrequency": 179
+        },
+        {
+          "km": 6,
+          "averagePace": 379,
+          "averageSpeed": 9.5,
+          "averageHeartRate": 119,
+          "heartRateZone": 1,
+          "stepFrequency": 183
+        }
+      ]
+    },
+    {
+      "startTime": "2026-04-12 07:06:25",
+      "endTime": "2026-04-12 07:45:31",
+      "type": "running",
+      "distance": 4.51,
+      "duration": 2346,
+      "averagePace": 519,
+      "averageSpeed": 6.928388746803069,
+      "averageHeartRate": 145,
+      "maxHeartRate": 176,
+      "calorie": 505,
+      "elevationGain": 4.0,
+      "region": "湖北省武汉市新洲区",
+      "weatherInfo": "",
+      "dataType": "户外跑步",
+      "name": "夜晚户外跑步",
+      "stepFrequency": 153,
+      "totalSteps": 5641,
+      "strideLength": 0.0,
+      "averagePower": 140,
+      "maxPower": 140,
+      "vDOT": null,
+      "trainingLoadScore": 88,
+      "heartRateZone": 1,
+      "segments": [
+        {
+          "km": 1,
+          "averagePace": 492,
+          "averageSpeed": 7.32,
+          "averageHeartRate": 145,
+          "heartRateZone": 1,
+          "stepFrequency": 164
+        },
+        {
+          "km": 2,
+          "averagePace": 554,
+          "averageSpeed": 6.5,
+          "averageHeartRate": 143,
+          "heartRateZone": 1,
+          "stepFrequency": 145
+        },
+        {
+          "km": 3,
+          "averagePace": 461,
+          "averageSpeed": 7.81,
+          "averageHeartRate": 154,
+          "heartRateZone": 2,
+          "stepFrequency": 161
+        },
+        {
+          "km": 4,
+          "averagePace": 583,
+          "averageSpeed": 6.17,
+          "averageHeartRate": 140,
+          "heartRateZone": 1,
+          "stepFrequency": 144
+        }
+      ]
+    },
+    {
+      "startTime": "2026-04-11 07:33:38",
+      "endTime": "2026-04-11 08:11:45",
+      "type": "running",
+      "distance": 4.53,
+      "duration": 2287,
+      "averagePace": 505,
+      "averageSpeed": 7.1,
+      "averageHeartRate": 0,
+      "maxHeartRate": 0,
+      "calorie": 363,
+      "elevationGain": 2.1,
+      "region": "湖北省武汉市江岸区",
+      "weatherInfo": "19°C 97%",
+      "dataType": "户外跑步",
+      "name": "夜晚户外跑步",
+      "stepFrequency": 157,
+      "totalSteps": 6009,
+      "strideLength": 0.0,
+      "averagePower": 144,
+      "maxPower": 144,
+      "vDOT": 20.2,
+      "trainingLoadScore": 69,
+      "heartRateZone": 0,
+      "segments": [
+        {
+          "km": 1,
+          "averagePace": 462,
+          "averageSpeed": 7.79,
+          "averageHeartRate": 0,
+          "heartRateZone": 0,
+          "stepFrequency": 168
+        },
+        {
+          "km": 2,
+          "averagePace": 488,
+          "averageSpeed": 7.38,
+          "averageHeartRate": 0,
+          "heartRateZone": 0,
+          "stepFrequency": 153
+        },
+        {
+          "km": 3,
+          "averagePace": 534,
+          "averageSpeed": 6.74,
+          "averageHeartRate": 0,
+          "heartRateZone": 0,
+          "stepFrequency": 140
+        },
+        {
+          "km": 4,
+          "averagePace": 517,
+          "averageSpeed": 6.96,
+          "averageHeartRate": 0,
+          "heartRateZone": 0,
+          "stepFrequency": 164
+        }
+      ]
+    },
+    {
+      "startTime": "2026-04-10 08:41:28",
+      "endTime": "2026-04-10 09:23:06",
+      "type": "running",
+      "distance": 5.0,
+      "duration": 2498,
+      "averagePace": 499,
+      "averageSpeed": 7.212970376301041,
+      "averageHeartRate": 141,
+      "maxHeartRate": 173,
+      "calorie": 507,
+      "elevationGain": 14.0,
+      "region": "湖北省武汉市江夏区",
+      "weatherInfo": "",
+      "dataType": "户外跑步",
+      "name": "凌晨户外跑步",
+      "stepFrequency": 167,
+      "totalSteps": 6637,
+      "strideLength": 0.0,
+      "averagePower": 148,
+      "maxPower": 148,
+      "vDOT": 20.6,
+      "trainingLoadScore": 79,
+      "heartRateZone": 1,
+      "segments": [
+        {
+          "km": 1,
+          "averagePace": 476,
+          "averageSpeed": 7.56,
+          "averageHeartRate": 146,
+          "heartRateZone": 1,
+          "stepFrequency": 174
+        },
+        {
+          "km": 2,
+          "averagePace": 494,
+          "averageSpeed": 7.29,
+          "averageHeartRate": 145,
+          "heartRateZone": 1,
+          "stepFrequency": 168
+        },
+        {
+          "km": 3,
+          "averagePace": 513,
+          "averageSpeed": 7.02,
+          "averageHeartRate": 145,
+          "heartRateZone": 1,
+          "stepFrequency": 161
+        },
+        {
+          "km": 4,
+          "averagePace": 494,
+          "averageSpeed": 7.29,
+          "averageHeartRate": 141,
+          "heartRateZone": 1,
+          "stepFrequency": 163
+        },
+        {
+          "km": 5,
+          "averagePace": 517,
+          "averageSpeed": 6.96,
+          "averageHeartRate": 131,
+          "heartRateZone": 1,
+          "stepFrequency": 169
+        }
+      ]
+    },
+    {
+      "startTime": "2026-04-09 19:26:02",
+      "endTime": "2026-04-09 20:06:09",
+      "type": "running",
+      "distance": 5.03,
+      "duration": 2407,
+      "averagePace": 479,
+      "averageSpeed": 7.518570835064395,
+      "averageHeartRate": 119,
+      "maxHeartRate": 173,
+      "calorie": 361,
+      "elevationGain": 1.0,
+      "region": "湖北省武汉市江岸区",
+      "weatherInfo": "",
+      "dataType": "户外跑步",
+      "name": "上午户外跑步",
+      "stepFrequency": 175,
+      "totalSteps": 6728,
+      "strideLength": 0.0,
+      "averagePower": 151,
+      "maxPower": 151,
+      "vDOT": 21.8,
+      "trainingLoadScore": 35,
+      "heartRateZone": 1,
+      "segments": [
+        {
+          "km": 1,
+          "averagePace": 481,
+          "averageSpeed": 7.48,
+          "averageHeartRate": 151,
+          "heartRateZone": 1,
+          "stepFrequency": 175
+        },
+        {
+          "km": 2,
+          "averagePace": 498,
+          "averageSpeed": 7.23,
+          "averageHeartRate": 126,
+          "heartRateZone": 1,
+          "stepFrequency": 171
+        },
+        {
+          "km": 3,
+          "averagePace": 473,
+          "averageSpeed": 7.61,
+          "averageHeartRate": 107,
+          "heartRateZone": 1,
+          "stepFrequency": 177
+        },
+        {
+          "km": 4,
+          "averagePace": 480,
+          "averageSpeed": 7.5,
+          "averageHeartRate": 106,
+          "heartRateZone": 1,
+          "stepFrequency": 177
+        },
+        {
+          "km": 5,
+          "averagePace": 469,
+          "averageSpeed": 7.68,
+          "averageHeartRate": 108,
+          "heartRateZone": 1,
+          "stepFrequency": 176
+        }
+      ]
+    },
+    {
+      "startTime": "2026-04-08 07:59:40",
+      "endTime": "2026-04-08 08:36:44",
+      "type": "running",
+      "distance": 5.02,
+      "duration": 2224,
+      "averagePace": 442,
+      "averageSpeed": 8.12751798561151,
+      "averageHeartRate": 139,
+      "maxHeartRate": 171,
+      "calorie": 448,
+      "elevationGain": 18.0,
+      "region": "湖北省武汉市江夏区",
+      "weatherInfo": "20°C 61%",
+      "dataType": "户外跑步",
+      "name": "夜晚户外跑步",
+      "stepFrequency": 179,
+      "totalSteps": 6318,
+      "strideLength": 0.0,
+      "averagePower": 169,
+      "maxPower": 169,
+      "vDOT": 24.0,
+      "trainingLoadScore": 53,
+      "heartRateZone": 1,
+      "segments": [
+        {
+          "km": 1,
+          "averagePace": 421,
+          "averageSpeed": 8.55,
+          "averageHeartRate": 118,
+          "heartRateZone": 1,
+          "stepFrequency": 179
+        },
+        {
+          "km": 2,
+          "averagePace": 432,
+          "averageSpeed": 8.33,
+          "averageHeartRate": 144,
+          "heartRateZone": 1,
+          "stepFrequency": 180
+        },
+        {
+          "km": 3,
+          "averagePace": 453,
+          "averageSpeed": 7.95,
+          "averageHeartRate": 143,
+          "heartRateZone": 1,
+          "stepFrequency": 179
+        },
+        {
+          "km": 4,
+          "averagePace": 445,
+          "averageSpeed": 8.09,
+          "averageHeartRate": 143,
+          "heartRateZone": 1,
+          "stepFrequency": 179
+        },
+        {
+          "km": 5,
+          "averagePace": 462,
+          "averageSpeed": 7.79,
+          "averageHeartRate": 145,
+          "heartRateZone": 1,
+          "stepFrequency": 178
+        }
+      ]
+    },
+    {
+      "startTime": "2026-04-07 07:31:04",
+      "endTime": "2026-04-07 08:53:11",
+      "type": "running",
+      "distance": 10.75,
+      "duration": 4927,
+      "averagePace": 461,
+      "averageSpeed": 7.855408970976253,
+      "averageHeartRate": 113,
+      "maxHeartRate": 173,
+      "calorie": 670,
+      "elevationGain": 57.0,
+      "region": "湖北省武汉市江夏区",
+      "weatherInfo": "19°C 92%",
+      "dataType": "户外跑步",
+      "name": "夜晚户外跑步",
+      "stepFrequency": 171,
+      "totalSteps": 13459,
+      "strideLength": 0.0,
+      "averagePower": 165,
+      "maxPower": 165,
+      "vDOT": 24.3,
+      "trainingLoadScore": 56,
+      "heartRateZone": 1,
+      "segments": [
+        {
+          "km": 1,
+          "averagePace": 439,
+          "averageSpeed": 8.2,
+          "averageHeartRate": 156,
+          "heartRateZone": 2,
+          "stepFrequency": 171
+        },
+        {
+          "km": 2,
+          "averagePace": 429,
+          "averageSpeed": 8.39,
+          "averageHeartRate": 135,
+          "heartRateZone": 1,
+          "stepFrequency": 173
+        },
+        {
+          "km": 3,
+          "averagePace": 417,
+          "averageSpeed": 8.63,
+          "averageHeartRate": 106,
+          "heartRateZone": 1,
+          "stepFrequency": 180
+        },
+        {
+          "km": 4,
+          "averagePace": 400,
+          "averageSpeed": 9.0,
+          "averageHeartRate": 109,
+          "heartRateZone": 1,
+          "stepFrequency": 181
+        },
+        {
+          "km": 5,
+          "averagePace": 421,
+          "averageSpeed": 8.55,
+          "averageHeartRate": 110,
+          "heartRateZone": 1,
+          "stepFrequency": 181
+        },
+        {
+          "km": 6,
+          "averagePace": 454,
+          "averageSpeed": 7.93,
+          "averageHeartRate": 110,
+          "heartRateZone": 1,
+          "stepFrequency": 179
+        },
+        {
+          "km": 7,
+          "averagePace": 469,
+          "averageSpeed": 7.68,
+          "averageHeartRate": 119,
+          "heartRateZone": 1,
+          "stepFrequency": 178
+        },
+        {
+          "km": 8,
+          "averagePace": 463,
+          "averageSpeed": 7.78,
+          "averageHeartRate": 109,
+          "heartRateZone": 1,
+          "stepFrequency": 177
+        },
+        {
+          "km": 9,
+          "averagePace": 476,
+          "averageSpeed": 7.56,
+          "averageHeartRate": 112,
+          "heartRateZone": 1,
+          "stepFrequency": 175
+        },
+        {
+          "km": 10,
+          "averagePace": 550,
+          "averageSpeed": 6.55,
+          "averageHeartRate": 101,
+          "heartRateZone": 1,
+          "stepFrequency": 162
+        }
+      ]
+    },
+    {
+      "startTime": "2026-04-05 06:49:49",
+      "endTime": "2026-04-05 07:26:21",
+      "type": "running",
+      "distance": 5.02,
+      "duration": 2192,
+      "averagePace": 436,
+      "averageSpeed": 8.2,
+      "averageHeartRate": 0,
+      "maxHeartRate": 0,
+      "calorie": 366,
+      "elevationGain": 9.2,
+      "region": "湖北省武汉市新洲区",
+      "weatherInfo": "18°C 75%",
+      "dataType": "户外跑步",
+      "name": "夜晚户外跑步",
+      "stepFrequency": 167,
+      "totalSteps": 6111,
+      "strideLength": 0.0,
+      "averagePower": 168,
+      "maxPower": 168,
+      "vDOT": 24.4,
+      "trainingLoadScore": 94,
+      "heartRateZone": 0,
+      "segments": [
+        {
+          "km": 1,
+          "averagePace": 419,
+          "averageSpeed": 8.59,
+          "averageHeartRate": 0,
+          "heartRateZone": 0,
+          "stepFrequency": 166
+        },
+        {
+          "km": 2,
+          "averagePace": 433,
+          "averageSpeed": 8.31,
+          "averageHeartRate": 0,
+          "heartRateZone": 0,
+          "stepFrequency": 167
+        },
+        {
+          "km": 3,
+          "averagePace": 429,
+          "averageSpeed": 8.39,
+          "averageHeartRate": 0,
+          "heartRateZone": 0,
+          "stepFrequency": 170
+        },
+        {
+          "km": 4,
+          "averagePace": 449,
+          "averageSpeed": 8.02,
+          "averageHeartRate": 0,
+          "heartRateZone": 0,
+          "stepFrequency": 165
+        },
+        {
+          "km": 5,
+          "averagePace": 444,
+          "averageSpeed": 8.11,
+          "averageHeartRate": 0,
+          "heartRateZone": 0,
+          "stepFrequency": 167
+        }
+      ]
+    },
+    {
+      "startTime": "2026-04-04 06:39:40",
+      "endTime": "2026-04-04 07:18:30",
+      "type": "running",
+      "distance": 5.1,
+      "duration": 2330,
+      "averagePace": 457,
+      "averageSpeed": 7.878283261802575,
+      "averageHeartRate": 135,
+      "maxHeartRate": 174,
+      "calorie": 447,
+      "elevationGain": 1.0,
+      "region": "湖北省武汉市江岸区",
+      "weatherInfo": "13°C 100%",
+      "dataType": "户外跑步",
+      "name": "夜晚户外跑步",
+      "stepFrequency": 179,
+      "totalSteps": 6650,
+      "strideLength": 0.0,
+      "averagePower": 158,
+      "maxPower": 158,
+      "vDOT": 23.1,
+      "trainingLoadScore": 64,
+      "heartRateZone": 1,
+      "segments": [
+        {
+          "km": 1,
+          "averagePace": 424,
+          "averageSpeed": 8.49,
+          "averageHeartRate": 152,
+          "heartRateZone": 2,
+          "stepFrequency": 182
+        },
+        {
+          "km": 2,
+          "averagePace": 476,
+          "averageSpeed": 7.56,
+          "averageHeartRate": 143,
+          "heartRateZone": 1,
+          "stepFrequency": 175
+        },
+        {
+          "km": 3,
+          "averagePace": 453,
+          "averageSpeed": 7.95,
+          "averageHeartRate": 114,
+          "heartRateZone": 1,
+          "stepFrequency": 179
+        },
+        {
+          "km": 4,
+          "averagePace": 462,
+          "averageSpeed": 7.79,
+          "averageHeartRate": 122,
+          "heartRateZone": 1,
+          "stepFrequency": 182
+        },
+        {
+          "km": 5,
+          "averagePace": 468,
+          "averageSpeed": 7.69,
+          "averageHeartRate": 146,
+          "heartRateZone": 1,
+          "stepFrequency": 180
+        }
+      ]
+    },
+    {
+      "startTime": "2026-04-03 08:23:10",
+      "endTime": "2026-04-03 09:05:11",
+      "type": "running",
+      "distance": 5.02,
+      "duration": 2521,
+      "averagePace": 502,
+      "averageSpeed": 7.164299880999604,
+      "averageHeartRate": 136,
+      "maxHeartRate": 173,
+      "calorie": 487,
+      "elevationGain": 16.0,
+      "region": "湖北省武汉市江夏区",
+      "weatherInfo": "16°C 99%",
+      "dataType": "户外跑步",
+      "name": "凌晨户外跑步",
+      "stepFrequency": 168,
+      "totalSteps": 6561,
+      "strideLength": 0.0,
+      "averagePower": 147,
+      "maxPower": 147,
+      "vDOT": 20.5,
+      "trainingLoadScore": 68,
+      "heartRateZone": 1,
+      "segments": [
+        {
+          "km": 1,
+          "averagePace": 452,
+          "averageSpeed": 7.96,
+          "averageHeartRate": 143,
+          "heartRateZone": 1,
+          "stepFrequency": 182
+        },
+        {
+          "km": 2,
+          "averagePace": 473,
+          "averageSpeed": 7.61,
+          "averageHeartRate": 142,
+          "heartRateZone": 1,
+          "stepFrequency": 171
+        },
+        {
+          "km": 3,
+          "averagePace": 523,
+          "averageSpeed": 6.88,
+          "averageHeartRate": 127,
+          "heartRateZone": 1,
+          "stepFrequency": 165
+        },
+        {
+          "km": 4,
+          "averagePace": 527,
+          "averageSpeed": 6.83,
+          "averageHeartRate": 143,
+          "heartRateZone": 1,
+          "stepFrequency": 163
+        },
+        {
+          "km": 5,
+          "averagePace": 537,
+          "averageSpeed": 6.7,
+          "averageHeartRate": 131,
+          "heartRateZone": 1,
+          "stepFrequency": 159
+        }
+      ]
+    },
+    {
+      "startTime": "2026-04-02 08:17:49",
+      "endTime": "2026-04-02 09:08:27",
+      "type": "running",
+      "distance": 6.01,
+      "duration": 3038,
+      "averagePace": 505,
+      "averageSpeed": 7.121790651744569,
+      "averageHeartRate": 134,
+      "maxHeartRate": 173,
+      "calorie": 571,
+      "elevationGain": 25.0,
+      "region": "湖北省武汉市江夏区",
+      "weatherInfo": "",
+      "dataType": "户外跑步",
+      "name": "凌晨户外跑步",
+      "stepFrequency": 170,
+      "totalSteps": 8149,
+      "strideLength": 0.0,
+      "averagePower": 149,
+      "maxPower": 149,
+      "vDOT": 20.6,
+      "trainingLoadScore": 70,
+      "heartRateZone": 1,
+      "segments": [
+        {
+          "km": 1,
+          "averagePace": 479,
+          "averageSpeed": 7.52,
+          "averageHeartRate": 138,
+          "heartRateZone": 1,
+          "stepFrequency": 181
+        },
+        {
+          "km": 2,
+          "averagePace": 509,
+          "averageSpeed": 7.07,
+          "averageHeartRate": 145,
+          "heartRateZone": 1,
+          "stepFrequency": 168
+        },
+        {
+          "km": 3,
+          "averagePace": 499,
+          "averageSpeed": 7.21,
+          "averageHeartRate": 133,
+          "heartRateZone": 1,
+          "stepFrequency": 171
+        },
+        {
+          "km": 4,
+          "averagePace": 544,
+          "averageSpeed": 6.62,
+          "averageHeartRate": 143,
+          "heartRateZone": 1,
+          "stepFrequency": 164
+        },
+        {
+          "km": 5,
+          "averagePace": 497,
+          "averageSpeed": 7.24,
+          "averageHeartRate": 122,
+          "heartRateZone": 1,
+          "stepFrequency": 170
+        },
+        {
+          "km": 6,
+          "averagePace": 504,
+          "averageSpeed": 7.14,
+          "averageHeartRate": 124,
+          "heartRateZone": 1,
+          "stepFrequency": 169
+        }
+      ]
+    },
+    {
+      "startTime": "2026-04-01 07:52:24",
+      "endTime": "2026-04-01 08:38:10",
+      "type": "running",
+      "distance": 5.21,
+      "duration": 2746,
+      "averagePace": 527,
+      "averageSpeed": 6.823743627093955,
+      "averageHeartRate": 114,
+      "maxHeartRate": 182,
+      "calorie": 377,
+      "elevationGain": 13.0,
+      "region": "湖北省武汉市江夏区",
+      "weatherInfo": "",
+      "dataType": "户外跑步",
+      "name": "夜晚户外跑步",
+      "stepFrequency": 157,
+      "totalSteps": 6744,
+      "strideLength": 0.0,
+      "averagePower": 140,
+      "maxPower": 140,
+      "vDOT": null,
+      "trainingLoadScore": 52,
+      "heartRateZone": 1,
+      "segments": [
+        {
+          "km": 1,
+          "averagePace": 506,
+          "averageSpeed": 7.11,
+          "averageHeartRate": 148,
+          "heartRateZone": 1,
+          "stepFrequency": 167
+        },
+        {
+          "km": 2,
+          "averagePace": 531,
+          "averageSpeed": 6.78,
+          "averageHeartRate": 132,
+          "heartRateZone": 1,
+          "stepFrequency": 154
+        },
+        {
+          "km": 3,
+          "averagePace": 499,
+          "averageSpeed": 7.21,
+          "averageHeartRate": 117,
+          "heartRateZone": 1,
+          "stepFrequency": 162
+        },
+        {
+          "km": 4,
+          "averagePace": 507,
+          "averageSpeed": 7.1,
+          "averageHeartRate": 98,
+          "heartRateZone": 1,
+          "stepFrequency": 159
+        },
+        {
+          "km": 5,
+          "averagePace": 588,
+          "averageSpeed": 6.12,
+          "averageHeartRate": 85,
+          "heartRateZone": 1,
+          "stepFrequency": 147
+        }
+      ]
+    },
+    {
+      "startTime": "2026-03-31 08:04:33",
+      "endTime": "2026-03-31 08:44:37",
+      "type": "running",
+      "distance": 5.03,
+      "duration": 2404,
+      "averagePace": 478,
+      "averageSpeed": 7.530948419301166,
+      "averageHeartRate": 126,
+      "maxHeartRate": 173,
+      "calorie": 401,
+      "elevationGain": 0.0,
+      "region": "湖北省武汉市None",
+      "weatherInfo": "",
+      "dataType": "户外跑步",
+      "name": "凌晨户外跑步",
+      "stepFrequency": 168,
+      "totalSteps": 6399,
+      "strideLength": 0.0,
+      "averagePower": 151,
+      "maxPower": 151,
+      "vDOT": 21.8,
+      "trainingLoadScore": 60,
+      "heartRateZone": 1,
+      "segments": [
+        {
+          "km": 1,
+          "averagePace": 460,
+          "averageSpeed": 7.83,
+          "averageHeartRate": 146,
+          "heartRateZone": 1,
+          "stepFrequency": 173
+        },
+        {
+          "km": 2,
+          "averagePace": 488,
+          "averageSpeed": 7.38,
+          "averageHeartRate": 130,
+          "heartRateZone": 1,
+          "stepFrequency": 167
+        },
+        {
+          "km": 3,
+          "averagePace": 474,
+          "averageSpeed": 7.59,
+          "averageHeartRate": 119,
+          "heartRateZone": 1,
+          "stepFrequency": 167
+        },
+        {
+          "km": 4,
+          "averagePace": 480,
+          "averageSpeed": 7.5,
+          "averageHeartRate": 110,
+          "heartRateZone": 1,
+          "stepFrequency": 167
+        },
+        {
+          "km": 5,
+          "averagePace": 489,
+          "averageSpeed": 7.36,
+          "averageHeartRate": 125,
+          "heartRateZone": 1,
+          "stepFrequency": 166
+        }
+      ]
+    },
+    {
+      "startTime": "2026-03-30 08:38:45",
+      "endTime": "2026-03-30 09:08:51",
+      "type": "running",
+      "distance": 3.15,
+      "duration": 1806,
+      "averagePace": 573,
+      "averageSpeed": 6.2,
+      "averageHeartRate": 0,
+      "maxHeartRate": 0,
+      "calorie": 266,
+      "elevationGain": 0.0,
+      "region": "湖北省武汉市江夏区",
+      "weatherInfo": "16°C 100%",
+      "dataType": "户外跑步",
+      "name": "凌晨户外跑步",
+      "stepFrequency": 150,
+      "totalSteps": 4544,
+      "strideLength": 0.0,
+      "averagePower": 126,
+      "maxPower": 126,
+      "vDOT": null,
+      "trainingLoadScore": 32,
+      "heartRateZone": 0,
+      "segments": [
+        {
+          "km": 1,
+          "averagePace": 534,
+          "averageSpeed": 6.74,
+          "averageHeartRate": 0,
+          "heartRateZone": 0,
+          "stepFrequency": 156
+        },
+        {
+          "km": 2,
+          "averagePace": 567,
+          "averageSpeed": 6.35,
+          "averageHeartRate": 0,
+          "heartRateZone": 0,
+          "stepFrequency": 154
+        },
+        {
+          "km": 3,
+          "averagePace": 618,
+          "averageSpeed": 5.83,
+          "averageHeartRate": 0,
+          "heartRateZone": 0,
+          "stepFrequency": 142
+        }
+      ]
+    },
+    {
+      "startTime": "2026-03-27 08:27:14",
+      "endTime": "2026-03-27 09:07:41",
+      "type": "running",
+      "distance": 5.02,
+      "duration": 2427,
+      "averagePace": 483,
+      "averageSpeed": 7.441779975278121,
+      "averageHeartRate": 126,
+      "maxHeartRate": 166,
+      "calorie": 405,
+      "elevationGain": 11.0,
+      "region": "湖北省武汉市江夏区",
+      "weatherInfo": "17°C 100%",
+      "dataType": "户外跑步",
+      "name": "凌晨户外跑步",
+      "stepFrequency": 178,
+      "totalSteps": 6862,
+      "strideLength": 0.0,
+      "averagePower": 152,
+      "maxPower": 152,
+      "vDOT": 21.5,
+      "trainingLoadScore": 36,
+      "heartRateZone": 1,
+      "segments": [
+        {
+          "km": 1,
+          "averagePace": 468,
+          "averageSpeed": 7.69,
+          "averageHeartRate": 116,
+          "heartRateZone": 1,
+          "stepFrequency": 178
+        },
+        {
+          "km": 2,
+          "averagePace": 476,
+          "averageSpeed": 7.56,
+          "averageHeartRate": 140,
+          "heartRateZone": 1,
+          "stepFrequency": 181
+        },
+        {
+          "km": 3,
+          "averagePace": 484,
+          "averageSpeed": 7.44,
+          "averageHeartRate": 144,
+          "heartRateZone": 1,
+          "stepFrequency": 179
+        },
+        {
+          "km": 4,
+          "averagePace": 507,
+          "averageSpeed": 7.1,
+          "averageHeartRate": 115,
+          "heartRateZone": 1,
+          "stepFrequency": 175
+        },
+        {
+          "km": 5,
+          "averagePace": 484,
+          "averageSpeed": 7.44,
+          "averageHeartRate": 0,
+          "heartRateZone": 0,
+          "stepFrequency": 178
+        }
+      ]
+    },
+    {
+      "startTime": "2026-03-26 07:56:47",
+      "endTime": "2026-03-26 08:27:28",
+      "type": "running",
+      "distance": 3.51,
+      "duration": 1841,
+      "averagePace": 523,
+      "averageSpeed": 6.871482889733841,
+      "averageHeartRate": 135,
+      "maxHeartRate": 170,
+      "calorie": 349,
+      "elevationGain": 9.0,
+      "region": "湖北省武汉市江夏区",
+      "weatherInfo": "",
+      "dataType": "户外跑步",
+      "name": "夜晚户外跑步",
+      "stepFrequency": 169,
+      "totalSteps": 4891,
+      "strideLength": 0.0,
+      "averagePower": 141,
+      "maxPower": 141,
+      "vDOT": null,
+      "trainingLoadScore": 44,
+      "heartRateZone": 1,
+      "segments": [
+        {
+          "km": 1,
+          "averagePace": 500,
+          "averageSpeed": 7.2,
+          "averageHeartRate": 136,
+          "heartRateZone": 1,
+          "stepFrequency": 172
+        },
+        {
+          "km": 2,
+          "averagePace": 529,
+          "averageSpeed": 6.81,
+          "averageHeartRate": 140,
+          "heartRateZone": 1,
+          "stepFrequency": 171
+        },
+        {
+          "km": 3,
+          "averagePace": 520,
+          "averageSpeed": 6.92,
+          "averageHeartRate": 124,
+          "heartRateZone": 1,
+          "stepFrequency": 169
+        }
+      ]
+    },
+    {
+      "startTime": "2026-03-25 21:27:02",
+      "endTime": "2026-03-25 21:42:51",
+      "type": "running",
+      "distance": 2.02,
+      "duration": 949,
+      "averagePace": 470,
+      "averageSpeed": 7.647629083245521,
+      "averageHeartRate": 160,
+      "maxHeartRate": 177,
+      "calorie": 239,
+      "elevationGain": 0.0,
+      "region": "湖北省武汉市江岸区",
+      "weatherInfo": "",
+      "dataType": "户外跑步",
+      "name": "中午户外跑步",
+      "stepFrequency": 182,
+      "totalSteps": 2716,
+      "strideLength": 0.0,
+      "averagePower": 153,
+      "maxPower": 153,
+      "vDOT": 21.0,
+      "trainingLoadScore": 64,
+      "heartRateZone": 2,
+      "segments": [
+        {
+          "km": 1,
+          "averagePace": 449,
+          "averageSpeed": 8.02,
+          "averageHeartRate": 150,
+          "heartRateZone": 1,
+          "stepFrequency": 184
+        },
+        {
+          "km": 2,
+          "averagePace": 491,
+          "averageSpeed": 7.33,
+          "averageHeartRate": 171,
+          "heartRateZone": 4,
+          "stepFrequency": 180
+        }
+      ]
+    },
+    {
+      "startTime": "2026-03-24 08:08:55",
+      "endTime": "2026-03-24 09:04:32",
+      "type": "running",
+      "distance": 8.01,
+      "duration": 3337,
+      "averagePace": 416,
+      "averageSpeed": 8.64453101588253,
+      "averageHeartRate": 166,
+      "maxHeartRate": 182,
+      "calorie": 898,
+      "elevationGain": 17.0,
+      "region": "湖北省武汉市江夏区",
+      "weatherInfo": "",
+      "dataType": "户外跑步",
+      "name": "凌晨户外跑步",
+      "stepFrequency": 180,
+      "totalSteps": 9554,
+      "strideLength": 0.0,
+      "averagePower": 176,
+      "maxPower": 176,
+      "vDOT": 26.7,
+      "trainingLoadScore": 277,
+      "heartRateZone": 3,
+      "segments": [
+        {
+          "km": 1,
+          "averagePace": 388,
+          "averageSpeed": 9.28,
+          "averageHeartRate": 148,
+          "heartRateZone": 1,
+          "stepFrequency": 184
+        },
+        {
+          "km": 2,
+          "averagePace": 400,
+          "averageSpeed": 9.0,
+          "averageHeartRate": 157,
+          "heartRateZone": 2,
+          "stepFrequency": 182
+        },
+        {
+          "km": 3,
+          "averagePace": 425,
+          "averageSpeed": 8.47,
+          "averageHeartRate": 172,
+          "heartRateZone": 4,
+          "stepFrequency": 182
+        },
+        {
+          "km": 4,
+          "averagePace": 425,
+          "averageSpeed": 8.47,
+          "averageHeartRate": 169,
+          "heartRateZone": 3,
+          "stepFrequency": 176
+        },
+        {
+          "km": 5,
+          "averagePace": 437,
+          "averageSpeed": 8.24,
+          "averageHeartRate": 172,
+          "heartRateZone": 4,
+          "stepFrequency": 179
+        },
+        {
+          "km": 6,
+          "averagePace": 371,
+          "averageSpeed": 9.7,
+          "averageHeartRate": 171,
+          "heartRateZone": 4,
+          "stepFrequency": 179
+        },
+        {
+          "km": 7,
+          "averagePace": 421,
+          "averageSpeed": 8.55,
+          "averageHeartRate": 171,
+          "heartRateZone": 4,
+          "stepFrequency": 179
+        },
+        {
+          "km": 8,
+          "averagePace": 465,
+          "averageSpeed": 7.74,
+          "averageHeartRate": 169,
+          "heartRateZone": 3,
+          "stepFrequency": 179
+        }
+      ]
+    },
+    {
+      "startTime": "2026-03-23 08:19:50",
+      "endTime": "2026-03-23 08:52:31",
+      "type": "running",
+      "distance": 4.53,
+      "duration": 1961,
+      "averagePace": 433,
+      "averageSpeed": 8.310657827638959,
+      "averageHeartRate": 120,
+      "maxHeartRate": 165,
+      "calorie": 298,
+      "elevationGain": 17.0,
+      "region": "湖北省武汉市江夏区",
+      "weatherInfo": "15°C 100%",
+      "dataType": "户外跑步",
+      "name": "凌晨户外跑步",
+      "stepFrequency": 182,
+      "totalSteps": 5649,
+      "strideLength": 0.0,
+      "averagePower": 172,
+      "maxPower": 172,
+      "vDOT": 24.5,
+      "trainingLoadScore": 27,
+      "heartRateZone": 1,
+      "segments": [
+        {
+          "km": 1,
+          "averagePace": 431,
+          "averageSpeed": 8.35,
+          "averageHeartRate": 148,
+          "heartRateZone": 1,
+          "stepFrequency": 184
+        },
+        {
+          "km": 2,
+          "averagePace": 415,
+          "averageSpeed": 8.67,
+          "averageHeartRate": 117,
+          "heartRateZone": 1,
+          "stepFrequency": 182
+        },
+        {
+          "km": 3,
+          "averagePace": 426,
+          "averageSpeed": 8.45,
+          "averageHeartRate": 112,
+          "heartRateZone": 1,
+          "stepFrequency": 182
+        },
+        {
+          "km": 4,
+          "averagePace": 448,
+          "averageSpeed": 8.04,
+          "averageHeartRate": 109,
+          "heartRateZone": 1,
+          "stepFrequency": 181
         }
       ]
     }
