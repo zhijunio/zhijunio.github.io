@@ -36,17 +36,6 @@ jobs:
       - name: Install dependencies
         run: pip install -r scripts/requirements-keep.txt
 
-      - name: Determine sync mode
-        id: mode
-        run: |
-          if [ "${{ github.event_name }}" = "schedule" ]; then
-            echo "mode=incremental" >> $GITHUB_OUTPUT
-          elif [ "${{ github.event.inputs.mode }}" = "full" ]; then
-            echo "mode=full" >> $GITHUB_OUTPUT
-          else
-            echo "mode=incremental" >> $GITHUB_OUTPUT
-          fi
-
       - name: Generate running.json from Keep API
         env:
           KEEP_MOBILE: ${{ secrets.KEEP_MOBILE }}
@@ -57,14 +46,7 @@ jobs:
             echo "::error::Configure repository secrets KEEP_MOBILE and KEEP_PASSWORD (Settings → Secrets and variables → Actions)."
             exit 1
           fi
-          MODE="${{ steps.mode.outputs.mode }}"
-          if [ "$MODE" = "full" ]; then
-            echo "模式: 全量获取 (分页获取所有记录)"
-            python scripts/fetch-keep-run.py --mode full
-          else
-            echo "模式: 增量获取 (10 条)"
-            python scripts/fetch-keep-run.py --mode incremental --limit 10
-          fi
+          python scripts/fetch-keep-run.py --limit 10
 
       - name: Commit and push if changed
         run: |

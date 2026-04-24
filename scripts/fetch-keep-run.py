@@ -16,13 +16,12 @@ from typing import Any, Dict, List, Optional, Tuple
 
 import requests
 
-# ─── 常量 ───────────────────────────────────────────────────────────────
 TZ_SH = timezone(timedelta(hours=8))
 
 LOGIN_API = "https://api.gotokeep.com/v1.1/users/login"
 RUN_DATA_API = (
     "https://api.gotokeep.com/pd/v3/stats/detail"
-    "?type={sport_type}&last_date={last_date}"
+    "?dateUnit=all&type={sport_type}&last_date={last_date}"
 )
 RUN_LOG_API = "https://api.gotokeep.com/pd/v3/{sport_type}log/{run_id}"
 
@@ -53,10 +52,6 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-
-# ═══════════════════════════════════════════════════════════════════════
-# 工具函数
-# ═══════════════════════════════════════════════════════════════════════
 
 def _n(val: Any) -> int:
     """安全转 int，无效返回 0。"""
@@ -111,10 +106,6 @@ def _pick(obj: Dict, *keys: str, default: Any = None) -> Any:
     return default
 
 
-# ═══════════════════════════════════════════════════════════════════════
-# Keep API 交互
-# ═══════════════════════════════════════════════════════════════════════
-
 def _login(session: requests.Session, mobile: str, password: str):
     """Keep 登录，返回 (session, headers) 或退出。"""
     logger.info("正在登录 Keep API...")
@@ -137,6 +128,21 @@ def _login(session: requests.Session, mobile: str, password: str):
     return session, headers
 
 
+def _fetch_with_retry(session, url: str, headers: Dict, max_retries: int = 3) -> requests.Response:
+    """发送 GET 请求，遇到 429 时指数退避重试。"""
+    for attempt in range(max_retries):
+        r = session.get(url, headers=headers, timeout=10)
+        if r.status_code == 429:
+            wait = 2 ** attempt
+            logger.warning("请求被限流 (429), %d 秒后重试 (%d/%d)", wait, attempt + 1, max_retries)
+            time.sleep(wait)
+            continue
+        if not r.ok:
+            break
+        return r
+    return r
+
+
 def _fetch_run_ids(session, headers, sport_type: str, limit: Optional[int] = None) -> List[Dict]:
     """分页获取跑步记录列表。"""
     result = []
@@ -144,10 +150,10 @@ def _fetch_run_ids(session, headers, sport_type: str, limit: Optional[int] = Non
     page = 0
     while True:
         page += 1
-        r = session.get(
+        r = _fetch_with_retry(
+            session,
             RUN_DATA_API.format(sport_type=sport_type, last_date=last_ts),
-            headers=headers,
-            timeout=10,
+            headers,
         )
         if not r.ok:
             logger.warning("分页请求失败 (第 %d 页), HTTP %d", page, r.status_code)
@@ -170,22 +176,19 @@ def _fetch_run_ids(session, headers, sport_type: str, limit: Optional[int] = Non
             logger.info("第 %d 页获取 %d 条，共 %d 条 (末页)", page, page_count, len(result))
             break
         logger.info("第 %d 页获取 %d 条，共 %d 条", page, page_count, len(result))
+        time.sleep(1.0)  # 页间暂停
     return result
 
 
 def _fetch_detail(session, headers, sport_type: str, run_id: str) -> Optional[Dict]:
-    """获取单条跑步详情。"""
-    r = session.get(
+    """获取单条跑步详情（含 429 重试）。"""
+    r = _fetch_with_retry(
+        session,
         RUN_LOG_API.format(sport_type=sport_type, run_id=run_id),
-        headers=headers,
-        timeout=10,
+        headers,
     )
     return r.json().get("data") if r.ok else None
 
-
-# ═══════════════════════════════════════════════════════════════════════
-# VDOT / 训练负荷计算
-# ═══════════════════════════════════════════════════════════════════════
 
 class VDCCalculator:
     """VDOT 跑力计算器 (Jack Daniels' Running Formula)。"""
@@ -224,10 +227,6 @@ class VDCCalculator:
         return round(vdot, 1) if 20 <= vdot <= 100 else None
 
 
-# ═══════════════════════════════════════════════════════════════════════
-# 分段数据构建
-# ═══════════════════════════════════════════════════════════════════════
-
 def _build_segments_from_cross_km(data: Dict, vc: VDCCalculator) -> List[Dict]:
     """从 crossKmPoints 构建每公里分段。"""
     points = data.get("crossKmPoints")
@@ -252,10 +251,6 @@ def _build_segments_from_cross_km(data: Dict, vc: VDCCalculator) -> List[Dict]:
     return segs
 
 
-# ═══════════════════════════════════════════════════════════════════════
-# 估算功率
-# ═══════════════════════════════════════════════════════════════════════
-
 def _estimate_power(
     dist_m: float, dur_s: float, elev_m: float = 0, cross_km: Optional[List] = None
 ) -> Tuple[Optional[int], Optional[int]]:
@@ -279,10 +274,6 @@ def _estimate_power(
 
     return avg_pwr or None, max_pwr or None
 
-
-# ═══════════════════════════════════════════════════════════════════════
-# API 数据 -> 记录转换
-# ═══════════════════════════════════════════════════════════════════════
 
 def _build_record(stats: Dict, vc: VDCCalculator, detail: Optional[Dict] = None) -> Optional[Dict]:
     """将 stats + detail API 数据转为 running.json 记录。"""
@@ -312,16 +303,13 @@ def _build_record(stats: Dict, vc: VDCCalculator, detail: Optional[Dict] = None)
     start_local = datetime.fromtimestamp(start_ms / 1000, tz=timezone.utc).astimezone(TZ_SH).strftime("%Y-%m-%d %H:%M:%S")
     end_local = datetime.fromtimestamp((start_ms + dur_s * 1000) / 1000, tz=timezone.utc).astimezone(TZ_SH).strftime("%Y-%m-%d %H:%M:%S")
 
+    # 数据类型
+    dataType = DATATYPE_NAME.get(stats.get("dataType", ""), "户外跑步")
+
     # 名称
     name = (stats.get("name") or "").strip()
     if not name:
-        dtype = (stats.get("dataType") or "").strip()
-        type_short = (
-            "户外跑步" if "outdoor" in dtype.lower()
-            else "跑步机" if "indoor" in dtype.lower()
-            else "跑步"
-        )
-        name = f"{_time_label(datetime.fromtimestamp(start_ms / 1000, tz=timezone.utc).hour)}{type_short}"
+        name = f"{_time_label(datetime.fromtimestamp(start_ms / 1000, tz=timezone.utc).hour)}{dataType}"
 
     # 天气 & 路线
     weather = ""
@@ -370,7 +358,7 @@ def _build_record(stats: Dict, vc: VDCCalculator, detail: Optional[Dict] = None)
     return {
         "startTime": start_local,
         "endTime": end_local,
-        "type": stats.get("dataType", ""),
+        "type": stats.get("type", ""),
         "distance": dist_km,
         "duration": dur_s,
         "averagePace": pace,
@@ -381,7 +369,7 @@ def _build_record(stats: Dict, vc: VDCCalculator, detail: Optional[Dict] = None)
         "elevationGain": round(elev, 1),
         "region": route,
         "weatherInfo": weather,
-        "activityType": DATATYPE_NAME.get(stats.get("dataType", ""), "户外跑步"),
+        "dataType": dataType,
         "name": name,
         "stepFrequency": step_freq,
         "strideLength": round(stride, 2),
@@ -393,10 +381,6 @@ def _build_record(stats: Dict, vc: VDCCalculator, detail: Optional[Dict] = None)
         "segments": segs,
     }
 
-
-# ═══════════════════════════════════════════════════════════════════════
-# 周期统计
-# ═══════════════════════════════════════════════════════════════════════
 
 _EMPTY_PERIOD = {
     "totalActivities": 0,
@@ -480,10 +464,6 @@ def _calculate_stats(runs: List[Dict]) -> Dict:
     }
 
 
-# ═══════════════════════════════════════════════════════════════════════
-# 主流程
-# ═══════════════════════════════════════════════════════════════════════
-
 def fetch_runs(
     mobile: str,
     password: str = "",
@@ -498,13 +478,17 @@ def fetch_runs(
         logger.error("Keep API 未返回任何记录")
         sys.exit(1)
 
-    logger.info("开始获取 %d 条跑步详情 (间隔 0.5s/条)", len(ids))
+    logger.info("开始获取 %d 条跑步详情 (间隔 2s/条, 每 10 条暂停 5s)", len(ids))
 
     vc = VDCCalculator()
     records = []
     for i, stat in enumerate(ids):
         if i > 0:
-            time.sleep(0.5)
+            time.sleep(2.0)
+            # 每 10 条额外暂停
+            if i % 10 == 0:
+                logger.info("已处理 %d 条，暂停 5s 防限流...", i)
+                time.sleep(5.0)
         detail = _fetch_detail(session, headers, sport_type, stat.get("id", ""))
         rec = _build_record(stat, vc, detail)
         if debug and rec:
@@ -530,10 +514,8 @@ def main():
     p.add_argument("--output", default="../public/data/running.json")
     p.add_argument("--mobile", default=os.environ.get("KEEP_MOBILE", ""))
     p.add_argument("--password", default=os.environ.get("KEEP_PASSWORD", ""))
-    p.add_argument("--mode", choices=["full", "incremental"], default="full",
-                   help="full: 分页获取所有记录 (10条/页); incremental: 获取最新 10 条 (默认 full)")
     p.add_argument("--limit", type=int, default=10, metavar="N",
-                   help="增量模式的数量上限 (默认 10)")
+                   help="每次获取的记录数 (默认 10, 0 表示全量)")
     p.add_argument("--debug", action="store_true")
     args = p.parse_args()
 
@@ -546,8 +528,8 @@ def main():
         logger.error("未提供密码：设置 KEEP_PASSWORD 环境变量或使用 --password")
         sys.exit(1)
 
-    limit = None if args.mode == "full" else (args.limit or 5)
-    logger.info("模式: %s", "全量" if limit is None else f"增量 ({limit} 条)")
+    limit = None if args.limit == 0 else (args.limit or 10)
+    logger.info("模式: %s", "全量" if limit is None else f"限 {limit} 条")
 
     new_records = fetch_runs(mobile, password, limit=limit, debug=args.debug)
     logger.info("获取 %d 条新记录", len(new_records))
