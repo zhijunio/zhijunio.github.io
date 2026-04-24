@@ -323,14 +323,16 @@ def _distance_km_for_stats(run: Dict) -> float:
 
 def _build_record(stats: Dict, vc: VDCCalculator, detail: Optional[Dict] = None) -> Optional[Dict]:
     """将 stats + detail API 数据转为 running.json 记录。"""
-    # 距离: 优先使用米级原始值；kmDistance 更接近展示值，逐条取两位后再求和会产生累计误差。
-    distance_m = _f(stats.get("accurateDistance")) or _f(stats.get("distance"))
-    if distance_m > 0:
-        dist_km = distance_m / 1000.0
+    # 距离: 优先使用米级原始值; kmDistance 为展示值, 逐条四舍五入后求和会产生累计误差.
+    # raw_dist_m: API 原始米值 (用于精度统计)
+    # display_dist_km: 展示用公里值 (四舍五入到两位)
+    raw_dist_m = _f(stats.get("accurateDistance")) or _f(stats.get("distance"))
+    if raw_dist_m > 0:
+        dist_km = raw_dist_m / 1000.0
+        raw_dist_m = dist_km * 1000.0  # 统一换算路径
     else:
         dist_km = _f(stats.get("kmDistance"))
-        distance_m = dist_km * 1000.0
-    dist_m = dist_km * 1000.0
+        raw_dist_m = dist_km * 1000.0
 
     # 时长: movingDuration (detail, 不含暂停) > duration (含暂停)
     dur_s = _n(stats.get("duration"))
@@ -339,7 +341,7 @@ def _build_record(stats: Dict, vc: VDCCalculator, detail: Optional[Dict] = None)
         if md > 0:
             dur_s = md
 
-    if dur_s <= 0 or dist_m <= 0:
+    if dur_s <= 0 or dist_km <= 0:
         return None
     display_dist_km = _f(stats.get("kmDistance")) or _round_distance(dist_km)
 
@@ -421,7 +423,7 @@ def _build_record(stats: Dict, vc: VDCCalculator, detail: Optional[Dict] = None)
         "endTime": end_local,
         "type": stats.get("type", ""),
         "distance": display_dist_km,
-        "distanceMeters": round(distance_m, 1),
+        "distanceMeters": round(raw_dist_m, 1),
         "duration": dur_s,
         "averagePace": pace,
         "averageSpeed": speed,
@@ -473,15 +475,22 @@ def _period_stats(runs: List[Dict], start: datetime, end: datetime) -> Dict:
     if not period:
         return dict(_EMPTY_PERIOD)
 
-    total_dist = sum(_distance_km_for_stats(r) for r in period)
-    total_s = sum(r.get("duration", 0) for r in period)
-    total_tl = sum(r.get("trainingLoadScore", 0) for r in period)
-    total_cal = sum(r.get("calorie", 0) for r in period)
-    longest = max(_distance_km_for_stats(r) for r in period)
-
+    total_dist = 0.0
+    total_s = 0
+    total_tl = 0
+    total_cal = 0
+    longest = 0.0
     hr_sum = hr_cnt = vdot_sum = vdot_cnt = 0
     best_vdot = 0.0
+
     for r in period:
+        dist = _distance_km_for_stats(r)
+        total_dist += dist
+        longest = max(longest, dist)
+        dur = r.get("duration", 0)
+        total_s += dur
+        total_tl += r.get("trainingLoadScore", 0)
+        total_cal += r.get("calorie", 0)
         hr = r.get("averageHeartRate") or 0
         if hr > 0:
             hr_sum += hr
@@ -508,22 +517,23 @@ def _period_stats(runs: List[Dict], start: datetime, end: datetime) -> Dict:
 
 def _calculate_stats(runs: List[Dict]) -> Dict:
     """计算各周期统计（昨日/今日/周/月/年/总）。"""
-    now = datetime.now(TZ_SH).replace(tzinfo=None)
-    yesterday = (datetime.now(TZ_SH) - timedelta(days=1)).date()
+    now = datetime.now(TZ_SH)
+    now_naive = now.replace(tzinfo=None)
+    yesterday = (now - timedelta(days=1)).date()
     y_start = datetime.combine(yesterday, datetime.min.time())
     y_end = datetime.combine(yesterday, datetime.max.time())
 
-    monday = now - timedelta(days=now.isoweekday() - 1)
+    monday = now_naive - timedelta(days=now_naive.isoweekday() - 1)
     w_start = monday.replace(hour=0, minute=0, second=0, microsecond=0)
 
-    today_start = datetime(now.year, now.month, now.day, 0, 0, 0)
+    today_start = datetime(now_naive.year, now_naive.month, now_naive.day, 0, 0, 0)
     return {
         "yesterday": _period_stats(runs, y_start, y_end),
-        "today": _period_stats(runs, today_start, now),
-        "week": _period_stats(runs, w_start, now),
-        "month": _period_stats(runs, datetime(now.year, now.month, 1), now),
-        "year": _period_stats(runs, datetime(now.year, 1, 1), now),
-        "total": _period_stats(runs, datetime.min, now),
+        "today": _period_stats(runs, today_start, now_naive),
+        "week": _period_stats(runs, w_start, now_naive),
+        "month": _period_stats(runs, datetime(now_naive.year, now_naive.month, 1), now_naive),
+        "year": _period_stats(runs, datetime(now_naive.year, 1, 1), now_naive),
+        "total": _period_stats(runs, datetime.min, now_naive),
     }
 
 
