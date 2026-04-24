@@ -143,15 +143,24 @@ def _fetch_with_retry(session, url: str, headers: Dict, max_retries: int = 3) ->
     return r
 
 
-def _fetch_run_ids(session, headers, sport_type: str, last_date: int = 0, limit: Optional[int] = None) -> List[str]:
+def _fetch_run_ids(
+    session,
+    headers,
+    sport_type: str,
+    last_date: int = 0,
+    limit: Optional[int] = None,
+    existing_keys: Optional[set] = None,
+) -> List[str]:
     """分页获取跑步 ID 列表。
 
     Args:
         last_date: 分页起始时间戳 (毫秒)。0 = 从最新记录开始。
         limit: 客户端安全上限，超过后停止翻页。
+        existing_keys: 已有记录的 startTime 集合。遇到已存在的记录时提前停止翻页。
     """
     result: List[str] = []
     page = 0
+    hit_existing = False
     while True:
         page += 1
         r = _fetch_with_retry(
@@ -169,13 +178,33 @@ def _fetch_run_ids(session, headers, sport_type: str, last_date: int = 0, limit:
                     stats = entry.get("stats")
                     if isinstance(stats, dict) and not stats.get("isDoubtful") and stats.get("id"):
                         result.append(stats["id"])
+                        # 增量检查：遇到已有记录 → 标记停止
+                        if existing_keys:
+                            start_ms = stats.get("startTime")
+                            if isinstance(start_ms, (int, float)):
+                                key = datetime.fromtimestamp(
+                                    start_ms / 1000, tz=timezone.utc
+                                ).astimezone(TZ_SH).strftime("%Y-%m-%d %H:%M:%S")
+                                if key in existing_keys:
+                                    hit_existing = True
+                                    logger.info(
+                                        "第 %d 页遇到已有记录 %s，增量数据已全部覆盖",
+                                        page, key,
+                                    )
+                                    break
                         if limit and len(result) >= limit:
-                            logger.info("第 %d 页后触发 limit(%d)，提前返回 %d 条", page, limit, len(result))
+                            logger.info(
+                                "第 %d 页后触发 limit(%d)，提前返回 %d 条",
+                                page, limit, len(result),
+                            )
                             return result
+            if hit_existing:
+                break
         page_count = len(result)
         last_date = data.get("lastTimestamp") or 0
-        if not last_date:
-            logger.info("第 %d 页获取 %d 条 ID，共 %d 条 (末页)", page, page_count, len(result))
+        if not last_date or hit_existing:
+            reason = "(末页)" if not last_date else "(遇到已有记录)"
+            logger.info("第 %d 页获取 %d 条 ID，共 %d 条 %s", page, len(data.get("records", [])), page_count, reason)
             break
         logger.info("第 %d 页获取 %d 条 ID，共 %d 条", page, len(data.get("records", [])), len(result))
         time.sleep(1.0)
@@ -475,17 +504,27 @@ def fetch_runs(
     last_date: int = 0,
     limit: Optional[int] = None,
     debug: bool = False,
+    existing_keys: Optional[set] = None,
 ) -> List[Dict]:
     """从 Keep API 拉取跑步数据。
 
     Args:
         last_date: 分页起始时间戳 (毫秒). 0 = 从最新记录开始 (全量)
         limit: 客户端安全上限 (可选)
+        existing_keys: 已有记录的 startTime 集合，用于增量检测.
     """
     session, headers = _login(requests.Session(), mobile, password)
 
-    # 阶段 1: 收集所有记录 ID
-    run_ids = _fetch_run_ids(session, headers, sport_type, last_date=last_date, limit=limit)
+    # 构建已有记录的 startTime 集合
+    if existing_keys is None:
+        existing_keys = set()
+
+    # 阶段 1: 收集所有记录 ID（增量模式在遇到已有记录时停止）
+    run_ids = _fetch_run_ids(
+        session, headers, sport_type,
+        last_date=last_date, limit=limit,
+        existing_keys=existing_keys if existing_keys else None,
+    )
     if not run_ids:
         logger.error("Keep API 未返回任何记录")
         sys.exit(1)
@@ -588,8 +627,16 @@ def main():
         except (ValueError, KeyError) as e:
             logger.warning("无法计算 last_date: %s, 使用全量模式", e)
 
-    # 获取新数据（使用 last_date 作为分页起点）
-    new_records = fetch_runs(mobile, password, last_date=last_date, limit=args.limit, debug=args.debug)
+    # 构建已有记录的 startTime 集合（用于增量检测）
+    existing_keys = {r["startTime"] for r in existing_records}
+
+    # 获取新数据（使用 last_date 作为分页起点 + 增量检测）
+    new_records = fetch_runs(
+        mobile, password,
+        last_date=last_date, limit=args.limit,
+        debug=args.debug,
+        existing_keys=existing_keys,
+    )
     logger.info("获取 %d 条新记录", len(new_records))
 
     if not new_records and not existing_records:
