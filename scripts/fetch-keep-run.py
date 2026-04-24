@@ -193,21 +193,20 @@ def _fetch_run_stats(
             break
         data = r.json().get("data") or {}
         for group in data.get("records") or []:
-            for entry in group.get("logs") or []:
-                if isinstance(entry, dict):
-                    stats = entry.get("stats")
-                    if isinstance(stats, dict) and not stats.get("isDoubtful") and stats.get("id"):
-                        # 增量检查：命中已有记录 → 停止翻页
-                        if existing_keys and _stats_key(stats) in existing_keys:
-                            logger.info("增量数据已全部覆盖，停止翻页")
-                            return result
-                        result.append(stats)
-                        if limit and len(result) >= limit:
-                            logger.info(
-                                "第 %d 页后触发 limit(%d)，提前返回 %d 条",
-                                page, limit, len(result),
-                            )
-                            return result
+            for entry in (e for e in (group.get("logs") or []) if isinstance(e, dict)):
+                stats = entry.get("stats")
+                if isinstance(stats, dict) and not stats.get("isDoubtful") and stats.get("id"):
+                    # 增量检查：命中已有记录 → 停止翻页
+                    if existing_keys and _stats_key(stats) in existing_keys:
+                        logger.info("增量数据已全部覆盖，停止翻页")
+                        return result
+                    result.append(stats)
+                    if limit and len(result) >= limit:
+                        logger.info(
+                            "第 %d 页后触发 limit(%d)，提前返回 %d 条",
+                            page, limit, len(result),
+                        )
+                        return result
         page_count = len(result)
         last_date = data.get("lastTimestamp") or 0
         time.sleep(1)  # 页间暂停
@@ -296,19 +295,15 @@ def _estimate_power(
     if dur_s <= 0 or dist_m <= 0:
         return None, None
     v = dist_m / dur_s
-    avg_pwr = int(round(1.03 * RUNNER_WEIGHT_KG * v))
-    if elev_m > 0:
-        avg_pwr += int(round(RUNNER_WEIGHT_KG * 9.81 * elev_m / dur_s))
+    elev_add = int(round(RUNNER_WEIGHT_KG * 9.81 * elev_m / dur_s)) if elev_m > 0 else 0
+    avg_pwr = int(round(1.03 * RUNNER_WEIGHT_KG * v)) + elev_add
 
     max_pwr = avg_pwr
     if isinstance(cross_km, list):
-        paces = [_f(_pick(pt, "kmPace", "pace", "paceSeconds")) for pt in cross_km if isinstance(pt, dict)]
-        valid = [p for p in paces if p > 0]
+        valid = [p for p in (_f(_pick(pt, "kmPace", "pace", "paceSeconds")) for pt in cross_km if isinstance(pt, dict)) if p > 0]
         if valid:
             v_max = 1000.0 / min(valid)
-            max_pwr = int(round(1.03 * RUNNER_WEIGHT_KG * v_max))
-            if elev_m > 0:
-                max_pwr += int(round(RUNNER_WEIGHT_KG * 9.81 * elev_m / dur_s))
+            max_pwr = int(round(1.03 * RUNNER_WEIGHT_KG * v_max)) + elev_add
 
     return avg_pwr or None, max_pwr or None
 
@@ -324,12 +319,9 @@ def _distance_km_for_stats(run: Dict) -> float:
 def _build_record(stats: Dict, vc: VDCCalculator, detail: Optional[Dict] = None) -> Optional[Dict]:
     """将 stats + detail API 数据转为 running.json 记录。"""
     # 距离: 优先使用米级原始值; kmDistance 为展示值, 逐条四舍五入后求和会产生累计误差.
-    # raw_dist_m: API 原始米值 (用于精度统计)
-    # display_dist_km: 展示用公里值 (四舍五入到两位)
     raw_dist_m = _f(stats.get("accurateDistance")) or _f(stats.get("distance"))
     if raw_dist_m > 0:
         dist_km = raw_dist_m / 1000.0
-        raw_dist_m = dist_km * 1000.0  # 统一换算路径
     else:
         dist_km = _f(stats.get("kmDistance"))
         raw_dist_m = dist_km * 1000.0
@@ -348,7 +340,7 @@ def _build_record(stats: Dict, vc: VDCCalculator, detail: Optional[Dict] = None)
     # 配速 (秒/km)
     pace = _n(stats.get("averagePace"))
     if pace <= 0:
-        pace = round(dur_s / (dist_m / 1000))
+        pace = round(dur_s / (raw_dist_m / 1000))
 
     # 速度 (km/h)
     speed = _f(stats.get("averageSpeed"))
@@ -384,18 +376,18 @@ def _build_record(stats: Dict, vc: VDCCalculator, detail: Optional[Dict] = None)
     if detail:
         segs = _build_segments_from_cross_km(detail, vc) or _build_segments_from_cross_km(stats, vc)
 
-    # 步频（优先从 detail 获取）
+    # 步频
     step_freq = _n(_pick(detail, "averageStepFrequency", "stepFrequency")) if detail else 0
     if step_freq == 0:
         step_freq = _n(_pick(stats, "averageStepFrequency"))
 
-    # 总步数（从 detail 获取）
+    # 总步数
     total_steps = _n(detail.get("totalSteps")) if detail else 0
 
-    # 步幅（从 detail 补充）
-    stride = _f(_pick(stats, "strideLength", "avgStrideLength", "averageStrideLength"))
-    if stride == 0 and detail:
-        stride = _f(_pick(detail, "strideLength", "avgStrideLength", "averageStrideLength"))
+    # 步幅
+    stride = _f(_pick(detail, "strideLength", "avgStrideLength", "averageStrideLength")) if detail else 0
+    if stride == 0:
+        stride = _f(_pick(stats, "strideLength", "avgStrideLength", "averageStrideLength"))
 
     # 爬升
     elev = _f(stats.get("accumulativeUpliftedHeight"))
@@ -405,12 +397,12 @@ def _build_record(stats: Dict, vc: VDCCalculator, detail: Optional[Dict] = None)
     max_pwr = _n(_pick(stats, "maxPower", "peakPower"))
     if avg_pwr == 0 and max_pwr == 0:
         cross_km = stats.get("crossKmPoints") if isinstance(stats.get("crossKmPoints"), list) else None
-        est_avg, est_max = _estimate_power(dist_m, dur_s, elev, cross_km)
+        est_avg, est_max = _estimate_power(raw_dist_m, dur_s, elev, cross_km)
         avg_pwr = est_avg or 0
         max_pwr = est_max or 0
 
     # VDOT / 心率区间
-    vdot = vc.calc_vdot(dist_m, dur_s)
+    vdot = vc.calc_vdot(raw_dist_m, dur_s)
     hr_zone = vc.hr_zone(avg_hr) if avg_hr > 0 else 0
 
     # 训练负荷
@@ -517,23 +509,22 @@ def _period_stats(runs: List[Dict], start: datetime, end: datetime) -> Dict:
 
 def _calculate_stats(runs: List[Dict]) -> Dict:
     """计算各周期统计（昨日/今日/周/月/年/总）。"""
-    now = datetime.now(TZ_SH)
-    now_naive = now.replace(tzinfo=None)
+    now = datetime.now(TZ_SH).replace(tzinfo=None)
     yesterday = (now - timedelta(days=1)).date()
     y_start = datetime.combine(yesterday, datetime.min.time())
     y_end = datetime.combine(yesterday, datetime.max.time())
 
-    monday = now_naive - timedelta(days=now_naive.isoweekday() - 1)
+    monday = now - timedelta(days=now.isoweekday() - 1)
     w_start = monday.replace(hour=0, minute=0, second=0, microsecond=0)
 
-    today_start = datetime(now_naive.year, now_naive.month, now_naive.day, 0, 0, 0)
+    today_start = datetime(now.year, now.month, now.day, 0, 0, 0)
     return {
         "yesterday": _period_stats(runs, y_start, y_end),
-        "today": _period_stats(runs, today_start, now_naive),
-        "week": _period_stats(runs, w_start, now_naive),
-        "month": _period_stats(runs, datetime(now_naive.year, now_naive.month, 1), now_naive),
-        "year": _period_stats(runs, datetime(now_naive.year, 1, 1), now_naive),
-        "total": _period_stats(runs, datetime.min, now_naive),
+        "today": _period_stats(runs, today_start, now),
+        "week": _period_stats(runs, w_start, now),
+        "month": _period_stats(runs, datetime(now.year, now.month, 1), now),
+        "year": _period_stats(runs, datetime(now.year, 1, 1), now),
+        "total": _period_stats(runs, datetime.min, now),
     }
 
 
@@ -645,21 +636,24 @@ def main():
 
     # 构建已有记录的 startTime 集合（用于增量检测）
     existing_keys = {r["startTime"] for r in existing_records}
-    missing_distance_meters = any("distanceMeters" not in r for r in existing_records)
-    force_full_refresh = bool(existing_records and missing_distance_meters and not args.full)
+    force_full_refresh = (
+        existing_records
+        and any("distanceMeters" not in r for r in existing_records)
+        and not args.full
+    )
     if force_full_refresh:
         logger.info("已有记录缺少 distanceMeters，将执行一次全量刷新以修正累计距离统计")
 
-    # 获取新数据
     # 增量: 从最新开始，遇到已有记录停止
     # 全量: 从最新开始，翻遍所有页
     # 无记录: 全量
+    is_incremental = not args.full and not force_full_refresh and existing_keys
     new_records = _fetch_runs_with_session(
         session, headers,
         sport_type="running",
         last_date=0, limit=args.limit,
         debug=args.debug,
-        existing_keys=existing_keys if (not args.full and not force_full_refresh and existing_keys) else None,
+        existing_keys=existing_keys if is_incremental else None,
     )
     logger.info("获取 %d 条新记录", len(new_records))
 
