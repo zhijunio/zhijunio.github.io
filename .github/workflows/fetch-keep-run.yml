@@ -46,7 +46,14 @@ jobs:
             echo "::error::Configure repository secrets KEEP_MOBILE and KEEP_PASSWORD (Settings → Secrets and variables → Actions)."
             exit 1
           fi
-          python scripts/fetch-keep-run.py
+          MODE="${INPUT_MODE:-incremental}"
+          if [ "$MODE" = "full" ]; then
+            echo "全量模式: 获取所有记录"
+            python scripts/fetch-keep-run.py --full
+          else
+            echo "增量模式: 仅获取新记录"
+            python scripts/fetch-keep-run.py
+          fi
 
       - name: Commit and push if changed
         run: |
