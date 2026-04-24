@@ -583,6 +583,8 @@ def main():
     p.add_argument("--limit", type=int, default=None, metavar="N",
                    help="客户端限制: 最多获取 N 条记录 (可选, 仅作为安全上限)")
     p.add_argument("--debug", action="store_true")
+    p.add_argument("--full", action="store_true",
+                   help="全量模式: 获取所有记录，忽略已有数据")
     args = p.parse_args()
 
     mobile = (args.mobile or "").strip()
@@ -615,12 +617,13 @@ def main():
     existing_keys = {r["startTime"] for r in existing_records}
 
     # 获取新数据（分页返回新记录，遇到已有记录即停止）
+    # --full: 忽略已有数据，获取所有记录
     new_records = _fetch_runs_with_session(
         session, headers,
         sport_type="running",
         last_date=0, limit=args.limit,
         debug=args.debug,
-        existing_keys=existing_keys if existing_keys else None,
+        existing_keys=None if args.full else existing_keys if existing_keys else None,
     )
     logger.info("获取 %d 条新记录", len(new_records))
 
