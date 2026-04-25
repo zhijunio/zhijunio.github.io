@@ -2255,6 +2255,13 @@
       "favicon": "/feeds/www_pseudoyu_com_57d6ecebab1bb0a5.ico"
     },
     {
+      "title": "如何像极客一样使用你的Mac？分享下我的Mac工作流",
+      "link": "https://www.youtube.com/watch?v=lGtpuit7Is0",
+      "published": "2025-07-26 14:36:10",
+      "name": "@ZenYarn同学 - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_30ce9061d0b36141.ico"
+    },
+    {
       "title": "周报 #99 - 离开 RSS3，迷茫与重启人生",
       "link": "https://www.pseudoyu.com/posts/weekly_review_99",
       "published": "2025-07-21 14:27:00",
@@ -2283,11 +2290,25 @@
       "favicon": "/feeds/soulteary_com_a5f60b76fca87b33.ico"
     },
     {
+      "title": "让Cursor遵循文档生成代码（以垃圾邮件分类为例）",
+      "link": "https://www.youtube.com/watch?v=x2-iP-A6x-I",
+      "published": "2025-06-24 13:43:34",
+      "name": "@ZenYarn同学 - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_30ce9061d0b36141.ico"
+    },
+    {
       "title": "Java Scripts and JBang.dev",
       "link": "https://joshlong.com/jl/blogpost/java-scripts-and-jbang-dev.html",
       "published": "2025-06-24 00:00:00",
       "name": "@JoshLong.com",
       "favicon": "/feeds/api_joshlong_com_181686d7964bc476.ico"
+    },
+    {
+      "title": "Folo：你的一站式信息订阅平台（可同时订阅YouTube、Bilibili、X等多个平台的博主）",
+      "link": "https://www.youtube.com/watch?v=REg2X6bAkBI",
+      "published": "2025-06-18 15:51:30",
+      "name": "@ZenYarn同学 - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_30ce9061d0b36141.ico"
     },
     {
       "title": "Announcing FeatureTracker Application",
@@ -2318,11 +2339,32 @@
       "favicon": "/feeds/catcoding_me_82c4bcb6bba028cf.ico"
     },
     {
+      "title": "【Suno.ai】Elon Mask diss Trump Rap",
+      "link": "https://www.youtube.com/watch?v=B7OX6bsHR9g",
+      "published": "2025-06-06 15:15:08",
+      "name": "@ZenYarn同学 - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_30ce9061d0b36141.ico"
+    },
+    {
       "title": "Hogyan használják rosszul a BDD-t?",
       "link": "https://www.jtechlog.hu/2025/05/28/bdd-hibak.html",
       "published": "2025-05-28 08:00:00",
       "name": "@JTechLog - Viczián István magyar nyelvű Java blogja",
       "favicon": "/feeds/feeds_feedburner_com_884a13546e12a02f.ico"
+    },
+    {
+      "title": "用Cursor复现现成的项目：这是最高效的项目学习方式",
+      "link": "https://www.youtube.com/watch?v=fO1-qSHLXBI",
+      "published": "2025-05-18 16:52:30",
+      "name": "@ZenYarn同学 - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_30ce9061d0b36141.ico"
+    },
+    {
+      "title": "【提示词技巧】教你轻松套取LLM的系统提示词，ChatGPT等大模型统统中招！",
+      "link": "https://www.youtube.com/watch?v=JMzvTral6dQ",
+      "published": "2025-05-15 17:34:21",
+      "name": "@ZenYarn同学 - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_30ce9061d0b36141.ico"
     },
     {
       "title": "MySQL Query Optimization with Releem",
@@ -2337,6 +2379,20 @@
       "published": "2025-05-11 00:00:00",
       "name": "@Frost's Blog",
       "favicon": "/feeds/frostming_com_50393b8a2dc4f344.ico"
+    },
+    {
+      "title": "【MCP快速入门】用15行代码的MCP Server带你彻底搞懂MCP",
+      "link": "https://www.youtube.com/watch?v=BY5UY_LI1qA",
+      "published": "2025-04-30 07:37:49",
+      "name": "@ZenYarn同学 - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_30ce9061d0b36141.ico"
+    },
+    {
+      "title": "用Cursor交互式学习任何编程框架（以NextJS为例）",
+      "link": "https://www.youtube.com/watch?v=u2pOsZi79z0",
+      "published": "2025-04-30 06:47:50",
+      "name": "@ZenYarn同学 - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_30ce9061d0b36141.ico"
     },
     {
       "title": "只聊感情，不聊技术（三）",
@@ -2682,5 +2738,5 @@
       "favicon": "/feeds/tech_youzan_com_9f45551d47de6b8c.ico"
     }
   ],
-  "updated": "2026-04-25 05:57:38"
+  "updated": "2026-04-25 07:44:44"
 }
