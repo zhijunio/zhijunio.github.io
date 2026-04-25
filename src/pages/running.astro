@@ -165,7 +165,9 @@ const periodLabels: Record<string, string> = {
   total: "总计",
 };
 const periodOrder: string[] = Object.keys(periodLabels);
-const defaultPeriod: string = stats.today ? "today" : periodOrder.find(p => stats[p]) ?? "today";
+const defaultPeriod: string = stats.today
+  ? "today"
+  : (periodOrder.find(p => stats[p]) ?? "today");
 
 // 心率区间标签（7 区间模型）
 const hrZoneLabels: Record<number, string> = {

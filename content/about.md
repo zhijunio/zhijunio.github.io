@@ -13,7 +13,7 @@ description: 关于 ZhiJun：开发背景、正在使用的工具、联系方式
 
 如果有任何工作机会、合作想法或只是想打个招呼，欢迎通过以下方式找到我。
 
-我的邮箱：zhijun.lab@gmail.com；我的社交账号：[Twitter](https://x.com/zhijunio)、[Telegram](https://t.me/zhijunio)、[GitHub](https://github.com/zhijunio)、[Wechat](/images/my-wechat.webp)
+我的邮箱：zhijun.lab@gmail.com；我的社交账号：[Twitter](https://x.com/zhijunio)、[Telegram](https://t.me/zhijunio)、[GitHub](https://github.com/zhijunio)、[Wechat](/images/wechat.webp)
 
 我也有一些闲聊的兴趣群，有意向的话可以添加微信并备注来意，目前还在折腾的兴趣群包括生产力工具、AI、Vibe Coding 等。
 
