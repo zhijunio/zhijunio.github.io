@@ -165,7 +165,10 @@ const periodLabels: Record<string, string> = {
   total: "总计",
 };
 const periodOrder: string[] = Object.keys(periodLabels);
-const statsRecord = stats as Record<string, typeof data.stats[keyof typeof data.stats]>;
+const statsRecord = stats as Record<
+  string,
+  (typeof data.stats)[keyof typeof data.stats]
+>;
 const defaultPeriod: string = stats.today
   ? "today"
   : (periodOrder.find(p => statsRecord[p]) ?? "today");
