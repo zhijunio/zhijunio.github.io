@@ -15,7 +15,7 @@ export const pageTitle = `博客 | ${SITE.title}`;
 const sorted = PostUtils.sort(await getCollection("posts"));
 ---
 
-<Layout title={pageTitle}>
+<Layout title={pageTitle} description="技术、生活等发布在博客目录下的长文，按最近更新排序。">
   <ListLayout
     title="博客"
     description="技术、生活等发布在博客目录下的长文，按最近更新排序。"

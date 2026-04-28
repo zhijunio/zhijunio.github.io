@@ -31,7 +31,7 @@ export async function getStaticPaths() {
 const { tagName, tagPosts } = Astro.props;
 ---
 
-<Layout title={pageTitle} robots="noindex,follow">
+<Layout title={pageTitle} description={`标签「${tagName}」下的文章列表`} robots="noindex,follow">
   <section class="mb-6">
     <div
       class="mb-4 text-sm text-muted [&_a]:text-muted [&_a:hover]:text-accent"

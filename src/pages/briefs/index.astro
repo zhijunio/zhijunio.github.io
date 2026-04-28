@@ -15,7 +15,7 @@ export const pageTitle = `周报 | ${SITE.title}`;
 const sorted = PostUtils.sort(await getCollection("briefs"));
 ---
 
-<Layout title={pageTitle}>
+<Layout title={pageTitle} description="每周开发进展、工具尝试与阶段性想法。">
   <ListLayout title="周报" description="每周开发进展、工具尝试与阶段性想法。">
     <ul class="post-cards-list m-0 list-none p-0" aria-label="周报列表">
       {

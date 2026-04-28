@@ -32,6 +32,8 @@ export interface Props {
   ogImage?: string;
   /** 分享图替代文案（SEO 与无障碍摘要） */
   ogImageAlt?: string;
+  /** 文章标签，用于生成 keywords meta 标签 */
+  tags?: string[];
   canonicalURL?: string;
   schemaType?: string;
   robots?: string;
@@ -46,6 +48,7 @@ const {
   description: descriptionProp,
   ogImage: ogImageProp,
   ogImageAlt: ogImageAltProp,
+  tags: tagsProp,
   canonicalURL = new URL(Astro.url.pathname.replace(/\.html?$/, ""), Astro.url),
   schemaType,
   robots,
@@ -55,6 +58,7 @@ const {
 
 const title = titleProp?.trim() || SITE.title;
 const fullDescription = descriptionProp?.trim() || SITE.description;
+const keywords = tagsProp?.filter(Boolean).join(", ") || "";
 const robotsContent = robots?.trim() || "index,follow";
 const pathname = Astro.url.pathname.replace(/\.html?$/, "") || "/";
 const hasAfterMain = Astro.slots.has("after-main");
@@ -141,6 +145,7 @@ const structuredData = resolvedSchemaType === "BlogPosting"
         : {}),
       datePublished: pubDatetime?.toISOString(),
       ...(modDatetime && { dateModified: modDatetime.toISOString() }),
+      ...(tagsProp?.length && { keywords: tagsProp.join(", ") }),
       author: [
         {
           "@type": "Person",
@@ -184,6 +189,7 @@ const structuredData = resolvedSchemaType === "BlogPosting"
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
     <link rel="canonical" href={canonicalURL} />
+    <link rel="preconnect" href="https://cos.zhijun.io" crossorigin />
     <meta name="generator" content={Astro.generator} />
 
     <!-- General Meta Tags -->
@@ -191,6 +197,7 @@ const structuredData = resolvedSchemaType === "BlogPosting"
     <meta name="title" content={title} />
     <meta name="description" content={fullDescription} />
     <meta name="author" content={author} />
+    {keywords && <meta name="keywords" content={keywords} />}
     <meta name="robots" content={robotsContent} />
     <meta
       name="theme-color"
@@ -220,13 +227,13 @@ const structuredData = resolvedSchemaType === "BlogPosting"
       )
     }
     <meta property="og:locale" content={SITE.langOg} />
+    <meta property="og:site_name" content={SITE.title} />
     <meta property="og:type" content={ogType} />
 
     <!-- Twitter Card -->
-    <meta
-      property="twitter:card"
-      content={ogEnabled ? "summary_large_image" : "summary"}
-    />
+    <meta property="twitter:card" content={ogEnabled ? "summary_large_image" : "summary"} />
+    <meta property="twitter:site" content="@zhijunio" />
+    <meta property="twitter:creator" content="@zhijunio" />
     <meta property="twitter:url" content={canonicalURL} />
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={fullDescription} />

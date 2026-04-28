@@ -1,5 +1,18 @@
 # Cloudflare Pages — https://developers.cloudflare.com/pages/configuration/headers/
 
+# 静态构建产物（CSS/JS/图片/favicons/OG 图）：文件名含 hash，长期缓存
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/images/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/favicons/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/og/*
+  Cache-Control: public, max-age=31536000, immutable
+
 # public/data 下 JSON/文本：与原先 running.json 一致 12h；允许过期后短时复用（SWR）再校验
 /data/*
   Cache-Control: public, max-age=43200, stale-while-revalidate=86400

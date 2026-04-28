@@ -15,7 +15,7 @@ export const pageTitle = `Wiki | ${SITE.title}`;
 const sorted = PostUtils.sort(await getCollection("wiki"));
 ---
 
-<Layout title={pageTitle}>
+<Layout title={pageTitle} description="主题索引与长期维护的笔记条目。">
   <ListLayout title="Wiki" description="主题索引与长期维护的笔记条目。">
     <ul class="post-cards-list m-0 list-none p-0" aria-label="Wiki 列表">
       {
