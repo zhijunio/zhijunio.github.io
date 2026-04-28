@@ -1,6 +1,6 @@
 ---
 title: "Superpowers：让 AI 编程不再每次都从头开始"
-date: 2026-04-28 11:00:00+08:00
+date: 2026-04-28 09:55:00+08:00
 slug: superpowers-discipline-ai-coding
 categories: [ "tech" ]
 tags: [ "sdd","agent-skill","superpowers"]
