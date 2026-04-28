@@ -5,7 +5,7 @@ slug: "20260426-week-review"
 tags: [ "ai", "claude-code", "skills" ]
 categories: [ "weekly" ]
 description: "Cloudflare Worker AI 接入尝试、addyosmani agent-skills、Claude/Cursor 系统提示词、飞书多维表「任务中心」搭建提示词、bookmark 本地书签技能与公众号 Markdown 排版器更新；户外跑 3 次约 15 km；附录含每日工作规划助手提示词与精选开发工具链接。"
-favicon: "hermes.svg"
+favicon: "cloudflare.svg"
 ---
 
 本篇记录最近一周（2026-04-19 ～ 2026-04-26）的**输入、输出与思考。
@@ -13,7 +13,6 @@ favicon: "hermes.svg"
 ## 本周摘要
 
 - 在 Codex / Claude / IDEA 里折腾 **Cloudflare Worker AI**，体感响应优于部分国内 Coding Plan。
-- 试用并推广 **[addyosmani/agent-skills](https://github.com/addyosmani/agent-skills)**，已 [fork 并加 Spring Boot 向支持](https://github.com/zhijunio/agent-skills)。
 - 为 **Claude Code / Codex / Cursor** 接入 [superpowers](https://github.com/obra/superpowers) 与 [karpathy-guidelines](https://github.com/forrestchang/andrej-karpathy-skills) 系系统提示词；收集「寓言学概念」类学习提示词样例。
 - **ChatGPT 智能体**：每日工作规划助手思路，完整提示词见附录。
 - **飞书任务中心**：跟 X 上教程用 `lark-cli` + 一段提示词即可搭多维表与自动化。
@@ -79,7 +78,7 @@ favicon: "hermes.svg"
 
 1. 尝试在 Codex 和 Claude 中使用 Cloudflare Worker AI，但是没有配置成功。在 IDEA 中配置 AI Git Commit 使用 Cloudflare Worker AI，发现响应速度还是蛮快的，至少比使用阿里的 Coding Plan 要快不少。REST 形态可参考 Cloudflare 控制台账户下的 **AI `v1/chat/completions`** 端点；API Key 在 [API Tokens](https://dash.cloudflare.com/profile/api-tokens) 新建或查看。
 
-2. 发现一个好用的 skill [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills)。该技能包括高级工程师在构建软件时使用的工作流程、质量控制点和最佳实践。相比较其他 SDD 工具，比如 [GSD](https://github.com/gsd-build/get-shit-done)、spec-ki、openspec 等等，该技能非常适合小项目。我在我的一些项目中使用它来审核、优化项目。另外，我 fork 了[该项目](https://github.com/zhijunio/agent-skills)，添加了对 Spring Boot 后端项目的支持。
+2. 发现一个好用的 skill [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills)。该技能包括高级工程师在构建软件时使用的工作流程、质量控制点和最佳实践。相比较其他 SDD 工具，比如 [GSD](https://github.com/gsd-build/get-shit-done)、spec-ki、openspec 等等，该技能非常适合小项目。我在我的一些项目中使用它来审核、优化项目。
 
 3. 通过寓言故事学习概念的提示词：
 
