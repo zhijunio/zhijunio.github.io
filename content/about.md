@@ -3,23 +3,30 @@ title: "关于"
 description: 关于 ZhiJun：开发背景、正在使用的工具、联系方式，以及这个博客的更新记录。
 ---
 
-## 自我介绍
+##  👋 自我介绍
 
 你好，我是 zhijun，一个来自中国武汉的 Java 开发者，曾就职于阿里，目前就职于武汉多点，从事新零售、物联网相关的开发工作。
 
-> 健康，爱情和使命，按照这个顺序，其它的都不重要。 ------纳瓦尔
+🚀 软件工程师 | 🧠 系统设计爱好者 | ✍️ 技术内容创作者
 
-## 找到我
+## 👨‍💻 找到我
 
-如果有任何工作机会、合作想法或只是想打个招呼，欢迎通过以下方式找到我。
+- 💻 自2009 年起从事软件开发
+- 🧩 专注于软件架构、模块化系统和可维护性
+- ⚙️ 设计可扩展的后端系统
+- 🤖 探索人工智能驱动的开发者工具
 
-我的邮箱：zhijun.lab@gmail.com；我的社交账号：[Twitter](https://x.com/zhijunio)、[Telegram](https://t.me/zhijunio)、[GitHub](https://github.com/zhijunio)、[Wechat](/images/wechat.webp)
+## 🔗 联系我
 
-我也有一些闲聊的兴趣群，有意向的话可以添加微信并备注来意，目前还在折腾的兴趣群包括生产力工具、AI、Vibe Coding 等。
+- WeChat: [@zhijunio](https://blog.zhijun.io/images/wechat.webp)
+- Twitter：[@zhijunio](https://twitter.com/zhijunio)
+- YouTube：[@zhijunio](https://www.youtube.com/zhijunio)
+- Telegram: [@zhijunio](https://t.me/zhijunio)
+- Telegram Channel: [zhijun_share](https://t.me/zhijun_share)
 
-另外，我在 [VPS](/posts/notes-about-deploy-services-in-vps) 上自建了一些服务：[跑步](https://run.zhijun.io/)、[书签](https://linkding.zhijun.io/)、[Memos](https://memos.zhijun.io/)。
+## 我的收藏
 
-## 博客
+### 博客
 
 - [SivaLabs](https://www.sivalabs.in/blog/) - Java、Spring Boot、微服务、云计算和DevOps教程
 - [Piotr's TechBlog](https://piotrminkowski.com/) - Java, Spring, Kotlin, microservices, Kubernetes, containers
@@ -31,7 +38,7 @@ description: 关于 ZhiJun：开发背景、正在使用的工具、联系方式
 - [Verne in GitHub](https://blog.einverne.info/)
 - [艾逗笔](https://idoubi.ai/) - 独立开发者、全栈工程师
 
-## 文章
+### 文章
 
 - [Teach Yourself Programming in Ten Years](https://norvig.com/21-days.html) - 十年自学编程
 - [Get better at programming by learning how things work](https://jvns.ca/blog/learn-how-things-work/) - 通过学习事物运作原理来提高编程技能。
@@ -41,11 +48,11 @@ description: 关于 ZhiJun：开发背景、正在使用的工具、联系方式
 - [Feeling Left Behind in Tech? This Is Your 90-Day Comeback Plan](https://www.sivalabs.in/feel-left-behind-in-tech-this-is-90-day-comeback-plan/) -
   技术从业者 90 天逆袭计划
 
-## 书籍
+### 书籍
 
 从 2026 年开始，记录每周阅读的书籍。
 
-## 工具
+### 工具
 
 - [z-lib](https://z-lib.ai) - 千万级数字图书馆
 - [sci-hub](https://www.wellesu.com) - 最具争议性的项目，无视版权，提供全领域文献与书籍
@@ -58,9 +65,7 @@ description: 关于 ZhiJun：开发背景、正在使用的工具、联系方式
 - [theSVG](https://www.thesvg.org/) - 一个面向开发者的 SVG 图标库与分发平台
 - [Simple Icons](https://simpleicons.org/) - 流行品牌的 3420 SVG 图标
 
-## 我的日常工具包
-
-2026 年，我使用的软件工具：
+### 使用工具
 
 | 分类        | 软件                               | 备注             |
 |-----------|----------------------------------| ---------------- |
@@ -82,6 +87,6 @@ description: 关于 ZhiJun：开发背景、正在使用的工具、联系方式
 | **终端**    | Ghostty + StarShip + Fish        |                  |
 | **知识管理**  | Obsidian                         |                  |
 
-## 博客更新日志
+## 更新日志
 
 - 2026-02-24 » 从 Hugo 迁移到 Astro，参考 [astro-lhasa](https://github.com/achuanya/astro-lhasa)、[Astro Theme Switcher](https://astro-theme-switcher.netlify.app/)、[Yiran's Blog](https://zdyxry.github.io/) 等主题。
