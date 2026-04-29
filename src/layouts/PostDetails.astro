@@ -9,6 +9,7 @@ import type { BlogLikeEntry } from "@/utils/contentCollections";
 import { ArticleTime } from "@/utils/articleTime";
 import Layout from "@/layouts/Layout.astro";
 import Tag from "@/components/Tag.astro";
+import ShareButtons from "@/components/ShareButtons.astro";
 import Photosuite from "@/components/Photosuite.astro";
 import ArticleToc from "@/components/ArticleToc.astro";
 import { PostUtils, trimUrlSegment } from "@/utils/postUtils";
@@ -207,20 +208,6 @@ const relatedPosts = [
 ].slice(0, relatedPostLimit);
 
 const shareText = `${title} | ${SITE.title}`;
-const shareUrl = encodeURIComponent(canonicalHref);
-const shareTitle = encodeURIComponent(shareText);
-const shareDescription = encodeURIComponent(fullDescription);
-
-/** 订阅/分享卡片：仅用 @theme 映射色，不手写 color-mix */
-const postActionCardClass =
-  "flex h-full min-w-0 flex-col gap-[0.55rem] rounded-xl border border-border/90 bg-background-secondary/40 p-[0.95rem_1rem] transition-colors duration-200 ease-out hover:border-accent/30 hover:bg-accent/5";
-
-const postActionEyebrowClass =
-  "m-0 inline-flex items-center self-start rounded-full bg-accent/8 px-2 py-[0.14rem] text-[0.72rem] font-semibold uppercase tracking-[0.04em] text-accent";
-
-/** 相关文章卡片：内链 hover/focus 时抬高边框与底色 */
-const postRelatedCardClass =
-  "flex h-full min-w-0 flex-col gap-[0.45rem] rounded-[10px] border border-border/90 bg-background-secondary/30 px-[0.95rem] pb-[0.95rem] pt-[0.9rem] transition-colors duration-200 ease-out [&:has(a:hover)]:border-accent/30 [&:has(a:hover)]:bg-accent/5 [&:has(a:focus-visible)]:border-accent/30 [&:has(a:focus-visible)]:bg-accent/5";
 
 const currentPostIndex = allPosts.findIndex(a => a.path === currentPostPath);
 
@@ -351,157 +338,72 @@ const linkPreloadOnLoad = "this.onload=null;this.rel='stylesheet'";
 
   <!-- 正文以下：共用一条顶部分割线，子块之间只用间距，避免多条「横线」叠在一起 -->
   <div
-    class="post-footer-stack clear-both w-full min-w-0 space-y-10 border-t border-border/80 pt-6 max-sm:space-y-9 max-sm:pt-5"
+    class="post-footer-stack clear-both w-full min-w-0 space-y-5 border-t border-border/80 pt-6 max-sm:space-y-5 max-sm:pt-5"
   >
-    {
-      tags.length > 0 && (
-        <div class="flex items-start gap-3">
-          <span class="mt-0.5 shrink-0 text-muted" aria-hidden="true">
-            <IconTag />
-          </span>
-          <ul class="m-0 flex list-none flex-wrap gap-2 p-0" role="list">
+    <!-- 标签 + 分享 -->
+    <div class="flex w-full min-w-0 flex-col items-center gap-3 sm:flex-row sm:items-center sm:justify-between">
+      {
+        tags.length > 0 && (
+          <ul class="m-0 flex list-none flex-wrap justify-center gap-2 p-0" role="list">
             {tags.map((tag: string) => (
               <Tag tag={trimUrlSegment(tag)} tagName={tag} />
             ))}
           </ul>
+        )
+      }
+      <ShareButtons url={canonicalHref} title={shareText} description={fullDescription} />
+    </div>
+
+    <!-- 文章导航 -->
+    {(prevPost || nextPost) && (
+      <nav class="post-nav w-full min-w-0" aria-label="文章导航">
+        <div class="flex flex-col gap-2 sm:flex-row sm:justify-between">
+          {
+            prevPost && (
+              <a
+                href={prevPost.path}
+                class="post-nav-link flex items-center gap-1.5 text-sm text-muted no-underline transition-colors hover:text-accent"
+              >
+                <IconChevronLeft class="h-4 w-4 shrink-0" />
+                <span>{prevPost.title}</span>
+              </a>
+            )
+          }
+          {
+            nextPost && (
+              <a
+                href={nextPost.path}
+                class="post-nav-link flex items-center gap-1.5 text-sm text-muted no-underline transition-colors hover:text-accent sm:text-right sm:justify-end"
+              >
+                <span>{nextPost.title}</span>
+                <IconChevronRight class="h-4 w-4 shrink-0" />
+              </a>
+            )
+          }
         </div>
-      )
-    }
+      </nav>
+    )}
 
-    <section class="action-section w-full min-w-0" aria-label="订阅与分享">
-      <div class="mb-4 block w-full min-w-0">
-        <h3 class="m-0 text-base font-medium">订阅与分享</h3>
-      </div>
-
-      <div class="action-grid grid w-full min-w-0 gap-4 sm:grid-cols-2">
-        <div class={postActionCardClass}>
-          <p class={postActionEyebrowClass}>订阅文章</p>
-          <h3 class="m-0 text-[0.98rem] leading-[1.35]">
-            订阅更新，不错过后续文章
-          </h3>
-          <p class="m-0 text-sm leading-relaxed text-muted">
-            直接通过 RSS 和 Telegram 订阅本站更新。
-          </p>
-          <div
-            class="action-buttons mt-auto flex flex-wrap gap-2 pt-1 max-sm:flex-col max-sm:[&>.btn]:w-full"
-          >
-            <a
-              class="btn btn-secondary inline-flex min-h-10 items-center justify-center rounded-lg border border-border bg-transparent px-4 py-2 text-sm font-medium text-accent no-underline transition-colors hover:border-accent hover:text-accent-strong"
-              href="/rss.xml"
-            >
-              订阅 RSS
-            </a>
-            <a
-              class="btn btn-secondary inline-flex min-h-10 items-center justify-center rounded-lg border border-border bg-transparent px-4 py-2 text-sm font-medium text-accent no-underline transition-colors hover:border-accent hover:text-accent-strong"
-              href="https://t.me/zhijunio"
-            >
-              关注 Telegram
-            </a>
-          </div>
-        </div>
-
-        <div class={postActionCardClass}>
-          <p class={postActionEyebrowClass}>分享文章</p>
-          <h3 class="m-0 text-[0.98rem] leading-[1.35]">
-            如果这篇有帮助，可以顺手转发
-          </h3>
-          <p class="m-0 text-sm leading-relaxed text-muted">
-            直接分享给同事、朋友，或者发到你的社交平台。
-          </p>
-          <div
-            class="action-buttons mt-auto flex flex-wrap gap-2 pt-1 max-sm:flex-col max-sm:[&>.btn]:w-full"
-          >
-            <a
-              class="btn btn-secondary inline-flex min-h-10 items-center justify-center rounded-lg border border-border bg-transparent px-4 py-2 text-sm font-medium text-accent no-underline transition-colors hover:border-accent hover:text-accent-strong"
-              href={`https://x.com/intent/tweet?text=${shareTitle}&url=${shareUrl}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              分享到 X
-            </a>
-            <a
-              class="btn btn-secondary inline-flex min-h-10 items-center justify-center rounded-lg border border-border bg-transparent px-4 py-2 text-sm font-medium text-accent no-underline transition-colors hover:border-accent hover:text-accent-strong"
-              href={`https://t.me/share/url?url=${shareUrl}&text=${shareTitle}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              分享到 Telegram
-            </a>
-            <a
-              class="btn btn-secondary inline-flex min-h-10 items-center justify-center rounded-lg border border-border bg-transparent px-4 py-2 text-sm font-medium text-accent no-underline transition-colors hover:border-accent hover:text-accent-strong"
-              href={`mailto:?subject=${shareTitle}&body=${shareDescription}%0A%0A${shareUrl}`}
-            >
-              邮件分享
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-
+    <!-- 相关文章 -->
     {
       relatedPosts.length > 0 && (
         <section class="related-section w-full min-w-0" aria-label="相关文章">
-          <div class="mb-4 block w-full min-w-0">
-            <h3 class="m-0 text-base font-medium">相关文章</h3>
-          </div>
-          <div class="related-grid grid w-full min-w-0 gap-4 min-[960px]:grid-cols-3 sm:grid-cols-2">
+          <h3 class="m-0 mb-2 text-base font-medium text-foreground">相关文章</h3>
+          <ul class="related-list m-0 list-none divide-y divide-border/50 p-0" role="list">
             {relatedPosts.map(({ post: relatedPost, path }) => (
-              <div class={postRelatedCardClass}>
-                <p class="m-0 text-[0.72rem] font-semibold tracking-[0.04em] text-muted uppercase">
-                  {relatedPost.data.tags
-                    .filter((t: string) => trimUrlSegment(t) !== "Others")
-                    .slice(0, 3)
-                    .join(" / ") || "—"}
-                </p>
-                <p class="m-0">
-                  <a
-                    href={path}
-                    class="leading-[1.42] text-accent no-underline hover:text-accent-strong hover:underline hover:underline-offset-[0.15em] focus-visible:text-accent-strong focus-visible:underline focus-visible:underline-offset-[0.15em]"
-                  >
-                    {relatedPost.data.title}
-                  </a>
-                </p>
-                <p class="m-0 line-clamp-3 text-[0.82rem] leading-relaxed text-muted">
-                  {PostUtils.getPlainTextDescription(
-                    (relatedPost.data.description?.trim() ||
-                      relatedPost.body) ??
-                      ""
-                  )}
-                </p>
-              </div>
+              <li>
+                <a
+                  href={path}
+                  class="related-link block py-1.5 text-sm text-muted no-underline transition-colors hover:text-accent"
+                >
+                  {relatedPost.data.title}
+                </a>
+              </li>
             ))}
-          </div>
+          </ul>
         </section>
       )
     }
-
-    <!-- Previous/Next Post Buttons -->
-    <nav class="post-nav mb-8 grid gap-4 sm:grid-cols-2" aria-label="文章导航">
-      <!-- 上一篇 -->
-      {
-        prevPost && (
-          <a
-            href={prevPost.path}
-            class="nav-link-prev flex items-center gap-2 rounded-[10px] border border-border px-4 py-3 text-base text-accent no-underline transition-colors hover:border-accent hover:text-accent-strong"
-          >
-            <IconChevronLeft />
-            {prevPost.title}
-          </a>
-        )
-      }
-      <!-- 下一篇 -->
-      {
-        nextPost && (
-          <a
-            href={nextPost.path}
-            class="nav-link-next flex items-center justify-end gap-2 rounded-[10px] border border-border px-4 py-3 text-right text-base text-accent no-underline transition-colors hover:border-accent hover:text-accent-strong"
-          >
-            {nextPost.title}
-            <IconChevronRight />
-          </a>
-        )
-      }
-    </nav>
   </div>
 
   <!-- 评论容器：与主栏同宽（不用 reading-wrap 窄栏） -->
@@ -559,6 +461,14 @@ const linkPreloadOnLoad = "this.onload=null;this.rel='stylesheet'";
 
     #main-content .post-content img {
       border-radius: 8px;
+    }
+
+    /** 文章导航：无边框简约样式 */
+    .post-nav-link {
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   </style>
 

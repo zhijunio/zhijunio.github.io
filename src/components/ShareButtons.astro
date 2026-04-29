@@ -1,0 +1,184 @@
+---
+/**
+ * 文章分享按钮组件
+ *
+ * @description 参考 houjoe.me PaperMod 样式的 SVG 图标行
+ */
+export interface Props {
+  url: string;
+  title: string;
+  description: string;
+}
+
+const { url: shareUrl, title: shareTitle, description: shareDescription } = Astro.props;
+
+const encodedUrl = encodeURIComponent(shareUrl);
+const encodedTitle = encodeURIComponent(shareTitle);
+const encodedDesc = encodeURIComponent(shareDescription);
+---
+
+<ul class="share-buttons" aria-label="分享文章">
+  <!-- X (Twitter) -->
+  <li>
+    <a
+      class="share-icon"
+      href={`https://x.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="分享到 X"
+    >
+      <svg viewBox="0 0 24 24" height="18" width="18" fill="currentcolor">
+        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+      </svg>
+    </a>
+  </li>
+  <!-- LinkedIn -->
+  <li>
+    <a
+      class="share-icon"
+      href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodedUrl}&title=${encodedTitle}&summary=${encodedDesc}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="分享到 LinkedIn"
+    >
+      <svg viewBox="0 0 24 24" height="18" width="18" fill="currentcolor">
+        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+      </svg>
+    </a>
+  </li>
+  <!-- Facebook -->
+  <li>
+    <a
+      class="share-icon"
+      href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="分享到 Facebook"
+    >
+      <svg viewBox="0 0 24 24" height="18" width="18" fill="currentcolor">
+        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+      </svg>
+    </a>
+  </li>
+  <!-- WhatsApp -->
+  <li>
+    <a
+      class="share-icon"
+      href={`https://api.whatsapp.com/send?text=${encodedTitle}%20-%20${encodedUrl}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="分享到 WhatsApp"
+    >
+      <svg viewBox="0 0 24 24" height="18" width="18" fill="currentcolor">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
+      </svg>
+    </a>
+  </li>
+  <!-- Reddit -->
+  <li>
+    <a
+      class="share-icon"
+      href={`https://reddit.com/submit?url=${encodedUrl}&title=${encodedTitle}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="分享到 Reddit"
+    >
+      <svg viewBox="0 0 512 512" height="18" width="18" fill="currentcolor">
+        <path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM446 265.638c0-22.964-18.616-41.58-41.58-41.58-11.211.0-21.361 4.457-28.841 11.666-28.424-20.508-67.586-33.757-111.204-35.278l18.941-89.121 61.884 13.157c.756 15.734 13.642 28.29 29.56 28.29 16.407.0 29.706-13.299 29.706-29.701.0-16.403-13.299-29.702-29.706-29.702-11.666.0-21.657 6.792-26.515 16.578l-69.105-14.69c-1.922-.418-3.939-.042-5.585 1.036-1.658 1.073-2.811 2.761-3.224 4.686l-21.152 99.438c-44.258 1.228-84.046 14.494-112.837 35.232-7.468-7.164-17.589-11.591-28.757-11.591-22.965.0-41.585 18.616-41.585 41.58.0 16.896 10.095 31.41 24.568 37.918-.639 4.135-.99 8.328-.99 12.576.0 63.977 74.469 115.836 166.33 115.836s166.334-51.859 166.334-115.836c0-4.218-.347-8.387-.977-12.493 14.564-6.47 24.735-21.034 24.735-38.001zM326.526 373.831c-20.27 20.241-59.115 21.816-70.534 21.816-11.428.0-50.277-1.575-70.522-21.82-3.007-3.008-3.007-7.882.0-10.889 3.003-2.999 7.882-3.003 10.885.0 12.777 12.781 40.11 17.317 59.637 17.317 19.522.0 46.86-4.536 59.657-17.321 3.016-2.999 7.886-2.995 10.885.008 3.008 3.011 3.003 7.882-.008 10.889zm-5.23-48.781c-16.373.0-29.701-13.324-29.701-29.698.0-16.381 13.328-29.714 29.701-29.714 16.378.0 29.706 13.333 29.706 29.714.0 16.374-13.328 29.698-29.706 29.698zM160.91 295.348c0-16.381 13.328-29.71 29.714-29.71 16.369.0 29.689 13.329 29.689 29.71.0 16.373-13.32 29.693-29.689 29.693-16.386.0-29.714-13.32-29.714-29.693z"/>
+      </svg>
+    </a>
+  </li>
+  <!-- Hacker News -->
+  <li>
+    <a
+      class="share-icon"
+      href={`https://news.ycombinator.com/submitlink?t=${encodedTitle}&u=${encodedUrl}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="分享到 Hacker News"
+    >
+      <svg viewBox="0 0 512 512" height="18" width="18" fill="currentcolor">
+        <path d="M449.446.0C483.971.0 512 28.03 512 62.554V449.446C512 483.97 483.97 512 449.446 512H62.554C28.03 512 0 483.97.0 449.446V62.554C0 28.03 28.029.0 62.554.0H449.446zM183.8767 87.9921h-62.034L230.6673 292.4508V424.0079h50.6655V292.4508L390.1575 87.9921H328.1233L256 238.2489z"/>
+      </svg>
+    </a>
+  </li>
+  <!-- Telegram -->
+  <li>
+    <a
+      class="share-icon"
+      href={`https://t.me/share/url?url=${encodedUrl}&text=${encodedTitle}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="分享到 Telegram"
+    >
+      <svg viewBox="0 0 24 24" height="18" width="18" fill="currentcolor">
+        <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+      </svg>
+    </a>
+  </li>
+  <!-- Email -->
+  <li>
+    <a
+      class="share-icon"
+      href={`mailto:?subject=${encodedTitle}&body=${encodedDesc}%0A%0A${encodedUrl}`}
+      aria-label="邮件分享"
+    >
+      <svg viewBox="0 0 24 24" height="18" width="18" fill="currentcolor">
+        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+      </svg>
+    </a>
+  </li>
+</ul>
+
+<style>
+  .share-buttons {
+    display: flex;
+    gap: 0.4rem;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    justify-content: flex-end;
+    flex-wrap: nowrap;
+  }
+
+  .share-buttons li {
+    display: inline-flex;
+  }
+
+  .share-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 0.375rem;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    transition: all 0.15s ease-out;
+  }
+
+  .share-icon:hover {
+    background: var(--border);
+    color: var(--accent);
+  }
+
+  @media (max-width: 639px) {
+    .share-buttons {
+      gap: 0.4rem;
+      justify-content: center;
+    }
+
+    .share-icon {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 0.5rem;
+      border-width: 1px;
+    }
+
+    .share-icon svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+</style>
