@@ -1,17 +1,17 @@
 {
-  "statistics_time": "2026-04-29 23:57:54",
+  "statistics_time": "2026-04-30 01:21:21",
   "stats": {
     "yesterday": {
-      "totalActivities": 1,
-      "totalDistance": 4.02,
-      "totalDuration": 0.46,
-      "averagePace": 407,
-      "averageHeartRate": 137,
-      "averageVdot": 26.2,
-      "bestVdot": 26.2,
-      "longestDistance": 4.03,
-      "totalTrainingLoadScore": 42,
-      "totalCalorie": 320
+      "totalActivities": 0,
+      "totalDistance": 0,
+      "totalDuration": 0,
+      "averagePace": 0,
+      "averageHeartRate": null,
+      "averageVdot": null,
+      "bestVdot": null,
+      "longestDistance": 0,
+      "totalTrainingLoadScore": 0,
+      "totalCalorie": 0
     },
     "today": {
       "totalActivities": 0,
