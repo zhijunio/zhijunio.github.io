@@ -8,11 +8,25 @@
       "favicon": "/feeds/justlovemaki_github_io_660978058ae7ef6c.ico"
     },
     {
+      "title": "Claude 嘴上说不要中国，背地里把中文做得飞起",
+      "link": "https://mp.weixin.qq.com/s?__biz=MzI1MTUxNzgxMA==&mid=2247501966&idx=1&sn=1dfb2c8daa0b85b89a21c3b8da058257",
+      "published": "2026-04-30 05:03:00",
+      "name": "@刘小排r",
+      "favicon": "/feeds/wechat2rss_bestblogs_dev_067bf24ee0a7ae95.ico"
+    },
+    {
       "title": "The Tech Stack Powering Wise",
       "link": "https://blog.bytebytego.com/p/the-tech-stack-powering-wise",
       "published": "2026-04-29 15:31:30",
       "name": "@ByteByteGo Newsletter",
       "favicon": "/feeds/blog_bytebytego_com_a9f456d1e25a66fe.ico"
+    },
+    {
+      "title": "“你们几个先讨论，给我一个综合性的结论”",
+      "link": "https://mp.weixin.qq.com/s?__biz=MzI1MTUxNzgxMA==&mid=2247501948&idx=1&sn=e4d89d2afa9448a60358dab9db1c5062",
+      "published": "2026-04-29 13:57:00",
+      "name": "@刘小排r",
+      "favicon": "/feeds/wechat2rss_bestblogs_dev_067bf24ee0a7ae95.ico"
     },
     {
       "title": "通用 AI Agent 驱动网关路由安全审计实践｜得物技术",
@@ -414,6 +428,13 @@
       "favicon": "/feeds/blog_bytebytego_com_a9f456d1e25a66fe.ico"
     },
     {
+      "title": "Java full stack Interview 03 | Can You Crack Cognizant Java Interview? | Full Stack Q&A",
+      "link": "https://www.youtube.com/watch?v=u1HPKslVBMM",
+      "published": "2026-04-18 06:52:18",
+      "name": "@AMIT IT - Software Training Institute - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_8ce79de617a1d6c6.ico"
+    },
+    {
       "title": "Integrating Bounded Contexts",
       "link": "https://www.arhohuttunen.com/domain-driven-design-integrating-bounded-contexts/",
       "published": "2026-04-18 00:00:00",
@@ -440,13 +461,6 @@
       "published": "2026-04-16 23:02:00",
       "name": "@AI产品黄叔",
       "favicon": "/feeds/wechat2rss_bestblogs_dev_275db3e14384b21c.ico"
-    },
-    {
-      "title": "AI 分叉了：从今天起，最强的那个 Claude，你永远用不上",
-      "link": "https://mp.weixin.qq.com/s?__biz=MzI1MTUxNzgxMA==&mid=2247501750&idx=1&sn=c6f30592705c207827bb1fb3f452ba2b",
-      "published": "2026-04-16 18:12:00",
-      "name": "@刘小排r",
-      "favicon": "/feeds/wechat2rss_bestblogs_dev_067bf24ee0a7ae95.ico"
     },
     {
       "title": "刚刚，Claude Opus 4.7 发布！复杂Coding+视觉能力显著升级",
@@ -477,13 +491,6 @@
       "favicon": "/feeds/atbug_com_32618c21a3351a20.ico"
     },
     {
-      "title": "如果今天你有2小时，应该Build个什么产品好？",
-      "link": "https://mp.weixin.qq.com/s?__biz=MzI1MTUxNzgxMA==&mid=2247501734&idx=1&sn=9beeb1b651010029ceb15d363ead85ad",
-      "published": "2026-04-16 03:47:00",
-      "name": "@刘小排r",
-      "favicon": "/feeds/wechat2rss_bestblogs_dev_067bf24ee0a7ae95.ico"
-    },
-    {
       "title": "The new team",
       "link": "https://callistaenterprise.se/blogg/teknik/2026/04/16/the-new-team/",
       "published": "2026-04-16 00:00:00",
@@ -496,6 +503,13 @@
       "published": "2026-04-15 10:30:00",
       "name": "@得物技术",
       "favicon": "/feeds/wechat2rss_bestblogs_dev_70cfbe4795db294d.ico"
+    },
+    {
+      "title": "Full Stack Java Day 03 | Live demo Session | For Freshers and experience",
+      "link": "https://www.youtube.com/watch?v=9GPdNE_-n98",
+      "published": "2026-04-15 08:45:01",
+      "name": "@AMIT IT - Software Training Institute - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_8ce79de617a1d6c6.ico"
     },
     {
       "title": "Claude Code一夜重构，上线 Routines，现在关机也能修bug干活了",
@@ -538,6 +552,27 @@
       "published": "2026-04-14 13:10:46",
       "name": "@Ben's Bites",
       "favicon": "/feeds/www_bensbites_com_96fe006ed5f7b38b.ico"
+    },
+    {
+      "title": "Concurrent Collection I JAVA I Day 03",
+      "link": "https://www.youtube.com/watch?v=g6A-n5OzCsI",
+      "published": "2026-04-14 09:45:07",
+      "name": "@AMIT IT - Software Training Institute - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_8ce79de617a1d6c6.ico"
+    },
+    {
+      "title": "Full Stack Java Day 02 | Live demo Session | For Freshers and experience",
+      "link": "https://www.youtube.com/watch?v=W1Imc1cLkSM",
+      "published": "2026-04-14 09:30:16",
+      "name": "@AMIT IT - Software Training Institute - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_8ce79de617a1d6c6.ico"
+    },
+    {
+      "title": "Full Stack Java Day 01 | Live Demo Session | For Freshers and experience",
+      "link": "https://www.youtube.com/watch?v=SYvBTCvrcro",
+      "published": "2026-04-13 15:06:01",
+      "name": "@AMIT IT - Software Training Institute - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_8ce79de617a1d6c6.ico"
     },
     {
       "title": "立正请站好：一个组件复用 Skill 的工程化实践｜得物技术",
@@ -657,6 +692,20 @@
       "published": "2026-04-09 13:05:10",
       "name": "@Ben's Bites",
       "favicon": "/feeds/www_bensbites_com_96fe006ed5f7b38b.ico"
+    },
+    {
+      "title": "Java Collections Day 02 HashMap Internals Live Session",
+      "link": "https://www.youtube.com/watch?v=eO_uBYC_pUM",
+      "published": "2026-04-09 12:30:06",
+      "name": "@AMIT IT - Software Training Institute - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_8ce79de617a1d6c6.ico"
+    },
+    {
+      "title": "Java Collections Day 01 HashMap Internals Explained",
+      "link": "https://www.youtube.com/watch?v=amvonlq25qs",
+      "published": "2026-04-09 12:15:01",
+      "name": "@AMIT IT - Software Training Institute - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_8ce79de617a1d6c6.ico"
     },
     {
       "title": "Claude Managed Agents 是什么，如何使用",
@@ -881,6 +930,13 @@
       "published": "2026-04-02 00:00:00",
       "name": "@美团技术团队",
       "favicon": "/feeds/tech_meituan_com_c43bf0e0dd930bc7.ico"
+    },
+    {
+      "title": "Crack Java Interview in First Attempt | Real Mock Interview | Amit IT Classes Pune",
+      "link": "https://www.youtube.com/watch?v=kGRT91pVnFE",
+      "published": "2026-04-01 12:54:26",
+      "name": "@AMIT IT - Software Training Institute - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_8ce79de617a1d6c6.ico"
     },
     {
       "title": "日志诊断 Skill：用 AI + MCP 一键解决BUG｜得物技术",
@@ -1378,6 +1434,20 @@
       "published": "2026-03-07 00:00:00",
       "name": "@Tw93 Blog",
       "favicon": "/feeds/tw93_fun_9843080d5e0c03ca.ico"
+    },
+    {
+      "title": "HTML Tutorial for Beginners 🔥 | Frontend Development Course Day 07 | Learn HTML Step by Step",
+      "link": "https://www.youtube.com/watch?v=GVEvLTf3LPw",
+      "published": "2026-03-06 08:44:01",
+      "name": "@AMIT IT - Software Training Institute - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_8ce79de617a1d6c6.ico"
+    },
+    {
+      "title": "HTML Tutorial for Beginners 🔥 | Frontend Development Course Day 06 | Learn HTML Step by Step",
+      "link": "https://www.youtube.com/watch?v=oG_JobXP2Yw",
+      "published": "2026-03-06 08:42:25",
+      "name": "@AMIT IT - Software Training Institute - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_8ce79de617a1d6c6.ico"
     },
     {
       "title": "那些影响我的咒语",
@@ -2255,6 +2325,13 @@
       "favicon": "/feeds/www_pseudoyu_com_57d6ecebab1bb0a5.ico"
     },
     {
+      "title": "如何像极客一样使用你的Mac？分享下我的Mac工作流",
+      "link": "https://www.youtube.com/watch?v=lGtpuit7Is0",
+      "published": "2025-07-26 14:36:10",
+      "name": "@ZenYarn同学 - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_30ce9061d0b36141.ico"
+    },
+    {
       "title": "周报 #99 - 离开 RSS3，迷茫与重启人生",
       "link": "https://www.pseudoyu.com/posts/weekly_review_99",
       "published": "2025-07-21 14:27:00",
@@ -2283,11 +2360,25 @@
       "favicon": "/feeds/soulteary_com_a5f60b76fca87b33.ico"
     },
     {
+      "title": "让Cursor遵循文档生成代码（以垃圾邮件分类为例）",
+      "link": "https://www.youtube.com/watch?v=x2-iP-A6x-I",
+      "published": "2025-06-24 13:43:34",
+      "name": "@ZenYarn同学 - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_30ce9061d0b36141.ico"
+    },
+    {
       "title": "Java Scripts and JBang.dev",
       "link": "https://joshlong.com/jl/blogpost/java-scripts-and-jbang-dev.html",
       "published": "2025-06-24 00:00:00",
       "name": "@JoshLong.com",
       "favicon": "/feeds/api_joshlong_com_181686d7964bc476.ico"
+    },
+    {
+      "title": "Folo：你的一站式信息订阅平台（可同时订阅YouTube、Bilibili、X等多个平台的博主）",
+      "link": "https://www.youtube.com/watch?v=REg2X6bAkBI",
+      "published": "2025-06-18 15:51:30",
+      "name": "@ZenYarn同学 - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_30ce9061d0b36141.ico"
     },
     {
       "title": "Announcing FeatureTracker Application",
@@ -2318,11 +2409,32 @@
       "favicon": "/feeds/catcoding_me_82c4bcb6bba028cf.ico"
     },
     {
+      "title": "【Suno.ai】Elon Mask diss Trump Rap",
+      "link": "https://www.youtube.com/watch?v=B7OX6bsHR9g",
+      "published": "2025-06-06 15:15:08",
+      "name": "@ZenYarn同学 - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_30ce9061d0b36141.ico"
+    },
+    {
       "title": "Hogyan használják rosszul a BDD-t?",
       "link": "https://www.jtechlog.hu/2025/05/28/bdd-hibak.html",
       "published": "2025-05-28 08:00:00",
       "name": "@JTechLog - Viczián István magyar nyelvű Java blogja",
       "favicon": "/feeds/feeds_feedburner_com_884a13546e12a02f.ico"
+    },
+    {
+      "title": "用Cursor复现现成的项目：这是最高效的项目学习方式",
+      "link": "https://www.youtube.com/watch?v=fO1-qSHLXBI",
+      "published": "2025-05-18 16:52:30",
+      "name": "@ZenYarn同学 - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_30ce9061d0b36141.ico"
+    },
+    {
+      "title": "【提示词技巧】教你轻松套取LLM的系统提示词，ChatGPT等大模型统统中招！",
+      "link": "https://www.youtube.com/watch?v=JMzvTral6dQ",
+      "published": "2025-05-15 17:34:21",
+      "name": "@ZenYarn同学 - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_30ce9061d0b36141.ico"
     },
     {
       "title": "MySQL Query Optimization with Releem",
@@ -2337,6 +2449,20 @@
       "published": "2025-05-11 00:00:00",
       "name": "@Frost's Blog",
       "favicon": "/feeds/frostming_com_50393b8a2dc4f344.ico"
+    },
+    {
+      "title": "【MCP快速入门】用15行代码的MCP Server带你彻底搞懂MCP",
+      "link": "https://www.youtube.com/watch?v=BY5UY_LI1qA",
+      "published": "2025-04-30 07:37:49",
+      "name": "@ZenYarn同学 - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_30ce9061d0b36141.ico"
+    },
+    {
+      "title": "用Cursor交互式学习任何编程框架（以NextJS为例）",
+      "link": "https://www.youtube.com/watch?v=u2pOsZi79z0",
+      "published": "2025-04-30 06:47:50",
+      "name": "@ZenYarn同学 - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_30ce9061d0b36141.ico"
     },
     {
       "title": "只聊感情，不聊技术（三）",
@@ -2682,5 +2808,5 @@
       "favicon": "/feeds/tech_youzan_com_9f45551d47de6b8c.ico"
     }
   ],
-  "updated": "2026-04-30 06:40:04"
+  "updated": "2026-04-30 10:19:42"
 }
