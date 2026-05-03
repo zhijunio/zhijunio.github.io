@@ -29,13 +29,6 @@
       "favicon": "/feeds/www_arhohuttunen_com_b3cc870244818c51.ico"
     },
     {
-      "title": "Build a Multi-Tenant SaaS with Spring Boot",
-      "link": "https://www.youtube.com/watch?v=utSW4EeoguY",
-      "published": "2026-05-01 16:19:30",
-      "name": "@Ali Bouali - YouTube",
-      "favicon": "/feeds/rsshub_zhijun_io_8c72f4c8fc87a4e6.ico"
-    },
-    {
       "title": "GitHeron：把网页标注写到 GitHub",
       "link": "http://catcoding.me/p/githeron/",
       "published": "2026-05-01 13:08:26",
@@ -118,13 +111,6 @@
       "published": "2026-04-29 12:30:00",
       "name": "@夕小瑶科技说",
       "favicon": "/feeds/wechat2rss_bestblogs_dev_2e86e246d8ff26a7.ico"
-    },
-    {
-      "title": "Why 88% of Your AI Projects Will Fail — And How to Actually Fix It",
-      "link": "https://www.youtube.com/watch?v=UHm-6_OM4HU",
-      "published": "2026-04-29 12:01:03",
-      "name": "@Ali Bouali - YouTube",
-      "favicon": "/feeds/rsshub_zhijun_io_8c72f4c8fc87a4e6.ico"
     },
     {
       "title": "通用 AI Agent 驱动网关路由安全审计实践｜得物技术",
@@ -216,13 +202,6 @@
       "published": "2026-04-27 15:30:57",
       "name": "@ByteByteGo Newsletter",
       "favicon": "/feeds/blog_bytebytego_com_a9f456d1e25a66fe.ico"
-    },
-    {
-      "title": "I Made AI Write My Standup Briefs Every Morning (It Actually Works)",
-      "link": "https://www.youtube.com/watch?v=GWHi_nszjPM",
-      "published": "2026-04-27 12:00:06",
-      "name": "@Ali Bouali - YouTube",
-      "favicon": "/feeds/rsshub_zhijun_io_8c72f4c8fc87a4e6.ico"
     },
     {
       "title": "创作者最易获得的一种金矿",
@@ -433,13 +412,6 @@
       "published": "2026-04-20 15:30:47",
       "name": "@ByteByteGo Newsletter",
       "favicon": "/feeds/blog_bytebytego_com_a9f456d1e25a66fe.ico"
-    },
-    {
-      "title": "Build a Price Monitoring Service with Spring Boot and Rotating Proxies",
-      "link": "https://www.youtube.com/watch?v=4H72_xBNxQY",
-      "published": "2026-04-20 12:00:06",
-      "name": "@Ali Bouali - YouTube",
-      "favicon": "/feeds/rsshub_zhijun_io_8c72f4c8fc87a4e6.ico"
     },
     {
       "title": "刚刚，GPT-5.5 的风声突然传开了",
@@ -699,13 +671,6 @@
       "published": "2026-04-10 16:00:00",
       "name": "@Joe 的折腾日记",
       "favicon": "/feeds/houjoe_me_2edbd1b0b3a9f2d3.ico"
-    },
-    {
-      "title": "You’re Not Job Ready Until You Know These 5 Things",
-      "link": "https://www.youtube.com/watch?v=ahmRBjZ9Q5Y",
-      "published": "2026-04-10 13:00:21",
-      "name": "@Ali Bouali - YouTube",
-      "favicon": "/feeds/rsshub_zhijun_io_8c72f4c8fc87a4e6.ico"
     },
     {
       "title": "AI音乐的下半场，是 Vibe music！让Claude Code开口唱歌",
@@ -1835,13 +1800,6 @@
       "favicon": "/feeds/www_skyue_com_ed576c7c0e7c6773.ico"
     },
     {
-      "title": "Why EVERY Developer Needs AI on Their Server (Gemini CLI Setup)",
-      "link": "https://www.youtube.com/watch?v=84moPZ8zybw",
-      "published": "2026-01-16 13:00:14",
-      "name": "@Ali Bouali - YouTube",
-      "favicon": "/feeds/rsshub_zhijun_io_8c72f4c8fc87a4e6.ico"
-    },
-    {
       "title": "Paper Announcement: A Practical Approach to Replenishment Optimization with Extended (R, s, Q) Policy and Probabilistic Models",
       "link": "https://engineering.zalando.com/posts/2026/01/publication-replenishment-engine.html",
       "published": "2026-01-14 23:00:00",
@@ -2010,13 +1968,6 @@
       "favicon": "/feeds/www_danvega_dev_51896a27fecfe2ce.ico"
     },
     {
-      "title": "I Built a Customer Service Voice Agent with Murf Falcon",
-      "link": "https://www.youtube.com/watch?v=0EbTaAgRhTE",
-      "published": "2025-12-22 13:00:06",
-      "name": "@Ali Bouali - YouTube",
-      "favicon": "/feeds/rsshub_zhijun_io_8c72f4c8fc87a4e6.ico"
-    },
-    {
       "title": "Startup CPU Boost in Kubernetes with In-Place Pod Resize",
       "link": "https://piotrminkowski.com/2025/12/22/startup-cpu-boost-in-kubernetes-with-in-place-pod-resize/",
       "published": "2025-12-22 08:22:48",
@@ -2073,13 +2024,6 @@
       "favicon": "/feeds/www_pseudoyu_com_57d6ecebab1bb0a5.ico"
     },
     {
-      "title": "This Trae 3.0 with SOLO Coder Features Shocked Me And It’s UNBELIEVABLE & Super Affordable!",
-      "link": "https://www.youtube.com/watch?v=GGfc_pWETc0",
-      "published": "2025-12-12 13:00:30",
-      "name": "@Ali Bouali - YouTube",
-      "favicon": "/feeds/rsshub_zhijun_io_8c72f4c8fc87a4e6.ico"
-    },
-    {
       "title": "基于飞书 Aily 搭建 sls日志分析助手",
       "link": "https://tech.qimao.com/ji-yu-fei-shu-aily-da-jian-slsri-zhi-fen-xi-zhu-shou/",
       "published": "2025-12-10 02:35:34",
@@ -2122,13 +2066,6 @@
       "favicon": "/feeds/vladmihalcea_com_16d1a0395c43a507.ico"
     },
     {
-      "title": "Buy Skills Not Gadgets: Best Cyber Monday Deals for Developers (2025)",
-      "link": "https://www.youtube.com/watch?v=68FHj_VqJxA",
-      "published": "2025-12-02 02:41:09",
-      "name": "@aiwithbrandon - YouTube",
-      "favicon": "/feeds/rsshub_zhijun_io_0f36ea1d2be4d8a1.ico"
-    },
-    {
       "title": "周报 #103 - 工作随想与被吞噬的生活",
       "link": "https://www.pseudoyu.com/posts/weekly_review_103",
       "published": "2025-12-02 02:40:00",
@@ -2150,13 +2087,6 @@
       "favicon": "/feeds/huongdanjava_com_80ebb4e293eb6645.ico"
     },
     {
-      "title": "How to Deploy a Laravel 10 App on Cloudways in Under 20 Minutes | Complete Step-by-Step Guide",
-      "link": "https://www.youtube.com/watch?v=3L2u576ud1k",
-      "published": "2025-11-28 13:00:07",
-      "name": "@Ali Bouali - YouTube",
-      "favicon": "/feeds/rsshub_zhijun_io_8c72f4c8fc87a4e6.ico"
-    },
-    {
       "title": "AI 编程演进综述 v202510",
       "link": "https://tech.qimao.com/ai-bian-cheng-yan-jin-zong-shu-v202510/",
       "published": "2025-11-28 02:00:00",
@@ -2169,13 +2099,6 @@
       "published": "2025-11-27 01:54:03",
       "name": "@Huong Dan Java",
       "favicon": "/feeds/huongdanjava_com_80ebb4e293eb6645.ico"
-    },
-    {
-      "title": "How to Make AI Videos (Free Source Code + Full Walkthrough)",
-      "link": "https://www.youtube.com/watch?v=QQNQc7cIbu0",
-      "published": "2025-11-26 19:04:05",
-      "name": "@aiwithbrandon - YouTube",
-      "favicon": "/feeds/rsshub_zhijun_io_0f36ea1d2be4d8a1.ico"
     },
     {
       "title": "在开源中使用 LLM",
@@ -2192,20 +2115,6 @@
       "favicon": "/feeds/huongdanjava_com_80ebb4e293eb6645.ico"
     },
     {
-      "title": "TRAE Solo Coder: The Most Powerful AI Coder | Full review",
-      "link": "https://www.youtube.com/watch?v=lyQ9HCCFFSA",
-      "published": "2025-11-25 13:01:39",
-      "name": "@Ali Bouali - YouTube",
-      "favicon": "/feeds/rsshub_zhijun_io_8c72f4c8fc87a4e6.ico"
-    },
-    {
-      "title": "ShipKit.ai Black Friday Deal: $100 Off (Ends Cyber Monday)",
-      "link": "https://www.youtube.com/watch?v=jZF_PZRAmT4",
-      "published": "2025-11-25 00:14:46",
-      "name": "@aiwithbrandon - YouTube",
-      "favicon": "/feeds/rsshub_zhijun_io_0f36ea1d2be4d8a1.ico"
-    },
-    {
       "title": "Book Review – Just Use Postgres!",
       "link": "https://vladmihalcea.com/book-review-just-use-postgres/",
       "published": "2025-11-24 09:00:34",
@@ -2213,32 +2122,11 @@
       "favicon": "/feeds/vladmihalcea_com_16d1a0395c43a507.ico"
     },
     {
-      "title": "Google Nano Banana Pro: MIND-BLOWING AI Images",
-      "link": "https://www.youtube.com/watch?v=S3XGlgNRWbM",
-      "published": "2025-11-20 15:54:09",
-      "name": "@aiwithbrandon - YouTube",
-      "favicon": "/feeds/rsshub_zhijun_io_0f36ea1d2be4d8a1.ico"
-    },
-    {
       "title": "Rust 背锅了：Cloudflare 故障分析",
       "link": "http://catcoding.me/p/rust-in-cloudflare-incident/",
       "published": "2025-11-20 07:07:23",
       "name": "@CatCoding",
       "favicon": "/feeds/catcoding_me_82c4bcb6bba028cf.ico"
-    },
-    {
-      "title": "Is Gemini 3 Pro the best AI model ever?",
-      "link": "https://www.youtube.com/watch?v=sXXbySqIguA",
-      "published": "2025-11-18 16:15:09",
-      "name": "@aiwithbrandon - YouTube",
-      "favicon": "/feeds/rsshub_zhijun_io_0f36ea1d2be4d8a1.ico"
-    },
-    {
-      "title": "Google Antigravity: The New Best AI Editor?",
-      "link": "https://www.youtube.com/watch?v=j0UPItO6BX4",
-      "published": "2025-11-18 16:15:06",
-      "name": "@aiwithbrandon - YouTube",
-      "favicon": "/feeds/rsshub_zhijun_io_0f36ea1d2be4d8a1.ico"
     },
     {
       "title": "通过 AI Agent 自动排查 K8s 问题",
@@ -2269,32 +2157,11 @@
       "favicon": "/feeds/tech_qimao_com_48d71c819e6c5e56.ico"
     },
     {
-      "title": "Cursor 2.0 is INSANE: First Look at Multi-Agents, New 4x faster Model, & Browser Mode",
-      "link": "https://www.youtube.com/watch?v=ywanp9bsvXg",
-      "published": "2025-10-30 13:29:47",
-      "name": "@aiwithbrandon - YouTube",
-      "favicon": "/feeds/rsshub_zhijun_io_0f36ea1d2be4d8a1.ico"
-    },
-    {
-      "title": "Claude Code Skills: Automate Everything You Do",
-      "link": "https://www.youtube.com/watch?v=vOW1xAVbuNI",
-      "published": "2025-10-28 18:46:56",
-      "name": "@aiwithbrandon - YouTube",
-      "favicon": "/feeds/rsshub_zhijun_io_0f36ea1d2be4d8a1.ico"
-    },
-    {
       "title": "周报 #102 - 我是如何使用 AI 的",
       "link": "https://www.pseudoyu.com/posts/weekly_review_102",
       "published": "2025-10-27 18:38:00",
       "name": "@pseudoyu",
       "favicon": "/feeds/www_pseudoyu_com_57d6ecebab1bb0a5.ico"
-    },
-    {
-      "title": "Best AI Coding Tool in 2025? (Cursor vs Claude Code)",
-      "link": "https://www.youtube.com/watch?v=sqj2ATbL7x8",
-      "published": "2025-10-24 15:58:14",
-      "name": "@aiwithbrandon - YouTube",
-      "favicon": "/feeds/rsshub_zhijun_io_0f36ea1d2be4d8a1.ico"
     },
     {
       "title": "Spring AI webinar a NETAcademián",
@@ -2330,13 +2197,6 @@
       "published": "2025-10-15 08:28:01",
       "name": "@Vlad Mihalcea",
       "favicon": "/feeds/vladmihalcea_com_16d1a0395c43a507.ico"
-    },
-    {
-      "title": "How I Won Google's AI Agent Challenge in 5 Hours! [Free Code + 5 AI Dev Strategies]",
-      "link": "https://www.youtube.com/watch?v=g8s6HZZLQsk",
-      "published": "2025-10-13 20:58:37",
-      "name": "@aiwithbrandon - YouTube",
-      "favicon": "/feeds/rsshub_zhijun_io_0f36ea1d2be4d8a1.ico"
     },
     {
       "title": "The only good kind of Javascript is a Java Script",
@@ -2822,5 +2682,5 @@
       "favicon": "/feeds/tech_youzan_com_9f45551d47de6b8c.ico"
     }
   ],
-  "updated": "2026-05-03 19:17:02"
+  "updated": "2026-05-03 21:01:01"
 }
