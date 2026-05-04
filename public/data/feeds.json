@@ -8,6 +8,27 @@
       "favicon": "/feeds/justlovemaki_github_io_660978058ae7ef6c.ico"
     },
     {
+      "title": "周报 #108 - AI 与创作的困境",
+      "link": "https://www.pseudoyu.com/posts/weekly_review_108",
+      "published": "2026-05-04 06:17:00",
+      "name": "@pseudoyu",
+      "favicon": "/feeds/www_pseudoyu_com_57d6ecebab1bb0a5.ico"
+    },
+    {
+      "title": "AI智能客服工单系统（海量数据下的相似性搜索），LSH分桶代码实现，AI调用性能优化，使用缓存",
+      "link": "https://www.bilibili.com/video/BV1jdRcBKE8G",
+      "published": "2026-05-03 14:25:25",
+      "name": "@小编码上说 的 bilibili 空间",
+      "favicon": "/feeds/rsshub_zhijun_io_dd4d9e5e3724fbde.ico"
+    },
+    {
+      "title": "AI智能客服工单系统（LSH分桶算法-海量数据下的相似性搜索）-AI调用性能优化-使用缓存",
+      "link": "https://www.bilibili.com/video/BV1BDRcBzEAp",
+      "published": "2026-05-03 14:20:10",
+      "name": "@小编码上说 的 bilibili 空间",
+      "favicon": "/feeds/rsshub_zhijun_io_dd4d9e5e3724fbde.ico"
+    },
+    {
       "title": "2026-05-03日刊",
       "link": "https://ai.hubtoday.app//2026-05/2026-05-03/",
       "published": "2026-05-03 10:17:59",
@@ -36,6 +57,13 @@
       "favicon": "/feeds/www_arhohuttunen_com_b3cc870244818c51.ico"
     },
     {
+      "title": "Build a Multi-Tenant SaaS with Spring Boot",
+      "link": "https://www.youtube.com/watch?v=utSW4EeoguY",
+      "published": "2026-05-01 16:19:30",
+      "name": "@Ali Bouali - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_8c72f4c8fc87a4e6.ico"
+    },
+    {
       "title": "GitHeron：把网页标注写到 GitHub",
       "link": "http://catcoding.me/p/githeron/",
       "published": "2026-05-01 13:08:26",
@@ -48,13 +76,6 @@
       "published": "2026-05-01 09:46:30",
       "name": "@AI洞察日报 RSS Feed",
       "favicon": "/feeds/justlovemaki_github_io_660978058ae7ef6c.ico"
-    },
-    {
-      "title": "Build an AI Invoice Platform using React, Resend, Supabase | PDF Export (Readdy AI)",
-      "link": "https://www.youtube.com/watch?v=ohnMOlW-VyQ",
-      "published": "2026-05-01 09:36:32",
-      "name": "@TechWithEmma - YouTube",
-      "favicon": "/feeds/rsshub_zhijun_io_36f742dabf41db22.ico"
     },
     {
       "title": "BestBlogs.dev 周刊第 93 期：AI 次方变革",
@@ -125,6 +146,13 @@
       "published": "2026-04-29 12:30:00",
       "name": "@夕小瑶科技说",
       "favicon": "/feeds/wechat2rss_bestblogs_dev_2e86e246d8ff26a7.ico"
+    },
+    {
+      "title": "Why 88% of Your AI Projects Will Fail — And How to Actually Fix It",
+      "link": "https://www.youtube.com/watch?v=UHm-6_OM4HU",
+      "published": "2026-04-29 12:01:03",
+      "name": "@Ali Bouali - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_8c72f4c8fc87a4e6.ico"
     },
     {
       "title": "通用 AI Agent 驱动网关路由安全审计实践｜得物技术",
@@ -216,6 +244,20 @@
       "published": "2026-04-27 15:30:57",
       "name": "@ByteByteGo Newsletter",
       "favicon": "/feeds/blog_bytebytego_com_a9f456d1e25a66fe.ico"
+    },
+    {
+      "title": "Claude Code for Java & Spring Boot Developers – Build AI Agents & Real-World Apps",
+      "link": "https://www.youtube.com/watch?v=j9OYHB9hRFU",
+      "published": "2026-04-27 12:30:58",
+      "name": "@EmbarkX | Real Engineering | Faisal Memon - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_95563b7e43eb3b13.ico"
+    },
+    {
+      "title": "I Made AI Write My Standup Briefs Every Morning (It Actually Works)",
+      "link": "https://www.youtube.com/watch?v=GWHi_nszjPM",
+      "published": "2026-04-27 12:00:06",
+      "name": "@Ali Bouali - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_8c72f4c8fc87a4e6.ico"
     },
     {
       "title": "创作者最易获得的一种金矿",
@@ -421,6 +463,20 @@
       "favicon": "/feeds/blog_bytebytego_com_a9f456d1e25a66fe.ico"
     },
     {
+      "title": "How to Become an AI Engineer FAST | Complete Roadmap for Developers",
+      "link": "https://www.youtube.com/watch?v=njlx6LozZeM",
+      "published": "2026-04-20 12:31:05",
+      "name": "@EmbarkX | Real Engineering | Faisal Memon - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_95563b7e43eb3b13.ico"
+    },
+    {
+      "title": "Build a Price Monitoring Service with Spring Boot and Rotating Proxies",
+      "link": "https://www.youtube.com/watch?v=4H72_xBNxQY",
+      "published": "2026-04-20 12:00:06",
+      "name": "@Ali Bouali - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_8c72f4c8fc87a4e6.ico"
+    },
+    {
       "title": "刚刚，GPT-5.5 的风声突然传开了",
       "link": "https://mp.weixin.qq.com/s?__biz=MzIwNzc2NTk0NQ==&mid=2247616426&idx=1&sn=32989f0a58ae81b91f3e4e7e8170005b",
       "published": "2026-04-20 10:38:00",
@@ -475,6 +531,20 @@
       "published": "2026-04-19 15:15:00",
       "name": "@pseudoyu",
       "favicon": "/feeds/www_pseudoyu_com_57d6ecebab1bb0a5.ico"
+    },
+    {
+      "title": "Springboot+LangChain4j+AI智能客服工单系统-AI调用性能优化-并发编程-CompletableFuture应用实战",
+      "link": "https://www.bilibili.com/video/BV15GoFBeEx3",
+      "published": "2026-04-19 13:05:41",
+      "name": "@小编码上说 的 bilibili 空间",
+      "favicon": "/feeds/rsshub_zhijun_io_dd4d9e5e3724fbde.ico"
+    },
+    {
+      "title": "Springboot+LangChain4j+AI智能客服工单系统-核心代码解读",
+      "link": "https://www.bilibili.com/video/BV1duoFBvEe3",
+      "published": "2026-04-19 13:01:19",
+      "name": "@小编码上说 的 bilibili 空间",
+      "favicon": "/feeds/rsshub_zhijun_io_dd4d9e5e3724fbde.ico"
     },
     {
       "title": "BestBlogs 周刊第 91 期：基建周",
@@ -554,13 +624,6 @@
       "favicon": "/feeds/callistaenterprise_se_a0afdd5cc2c981a5.svg"
     },
     {
-      "title": "Build & Deploy an AI LMS SAAS App Using Next.js, React, Insforge & Vapi",
-      "link": "https://www.youtube.com/watch?v=TZ930X2cGRk",
-      "published": "2026-04-15 17:37:09",
-      "name": "@TechWithEmma - YouTube",
-      "favicon": "/feeds/rsshub_zhijun_io_36f742dabf41db22.ico"
-    },
-    {
       "title": "生成式召回在得物的落地技术分享与思考",
       "link": "https://mp.weixin.qq.com/s?__biz=MzkxNTE3ODU0NA==&mid=2247544067&idx=1&sn=6dfd6e3f1948f4a36d30abf1e79ef6ef",
       "published": "2026-04-15 10:30:00",
@@ -589,6 +652,13 @@
       "favicon": "/feeds/wechat2rss_bestblogs_dev_275db3e14384b21c.ico"
     },
     {
+      "title": "Springboot+LangChain4j AI智能客服工单系统-启动指南-学习指南",
+      "link": "https://www.bilibili.com/video/BV1JyQGBaEuS",
+      "published": "2026-04-14 14:10:20",
+      "name": "@小编码上说 的 bilibili 空间",
+      "favicon": "/feeds/rsshub_zhijun_io_dd4d9e5e3724fbde.ico"
+    },
+    {
       "title": "Agent 装 Agent：用 OpenClaw 安装 Hermes，顺手验证自我进化",
       "link": "https://atbug.com/ai-agent-installs-ai-agent-openclaw-hermes/",
       "published": "2026-04-14 13:34:47",
@@ -601,6 +671,13 @@
       "published": "2026-04-14 13:10:46",
       "name": "@Ben's Bites",
       "favicon": "/feeds/www_bensbites_com_96fe006ed5f7b38b.ico"
+    },
+    {
+      "title": "Java Spring Boot Microservices eCommerce Project | Docker, PostgreSQL, DevOps Full Course",
+      "link": "https://www.youtube.com/watch?v=i_9z3tNrphE",
+      "published": "2026-04-13 12:31:05",
+      "name": "@EmbarkX | Real Engineering | Faisal Memon - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_95563b7e43eb3b13.ico"
     },
     {
       "title": "立正请站好：一个组件复用 Skill 的工程化实践｜得物技术",
@@ -687,6 +764,13 @@
       "favicon": "/feeds/houjoe_me_2edbd1b0b3a9f2d3.ico"
     },
     {
+      "title": "You’re Not Job Ready Until You Know These 5 Things",
+      "link": "https://www.youtube.com/watch?v=ahmRBjZ9Q5Y",
+      "published": "2026-04-10 13:00:21",
+      "name": "@Ali Bouali - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_8c72f4c8fc87a4e6.ico"
+    },
+    {
       "title": "AI音乐的下半场，是 Vibe music！让Claude Code开口唱歌",
       "link": "https://mp.weixin.qq.com/s?__biz=MzIwNzc2NTk0NQ==&mid=2247616352&idx=1&sn=13908e31a4d5890356b8c506bc50beb4",
       "published": "2026-04-10 10:36:00",
@@ -750,11 +834,11 @@
       "favicon": "/feeds/engineering_zalando_com_b56e2c064f7378db.ico"
     },
     {
-      "title": "MERN AI Print-on-Demand App with Node.js & React – Mockup, Stripe, Claude AI, Better Auth",
-      "link": "https://www.youtube.com/watch?v=gKsBR3OlP7c",
-      "published": "2026-04-08 13:46:24",
-      "name": "@TechWithEmma - YouTube",
-      "favicon": "/feeds/rsshub_zhijun_io_36f742dabf41db22.ico"
+      "title": "Java AI应用开发项目实战：AI智能客服工单系统",
+      "link": "https://www.bilibili.com/video/BV155D7BeEbS",
+      "published": "2026-04-08 14:34:11",
+      "name": "@小编码上说 的 bilibili 空间",
+      "favicon": "/feeds/rsshub_zhijun_io_dd4d9e5e3724fbde.ico"
     },
     {
       "title": "财务数仓 Claude AI Coding 应用实战｜得物技术",
@@ -1009,6 +1093,13 @@
       "favicon": "/feeds/wechat2rss_bestblogs_dev_275db3e14384b21c.ico"
     },
     {
+      "title": "Devops vs DevSecOps vs MLOps vs LLMOps vs AIOps | Explained Simply",
+      "link": "https://www.youtube.com/watch?v=6Brx6WQCfk4",
+      "published": "2026-03-30 00:30:02",
+      "name": "@EmbarkX | Real Engineering | Faisal Memon - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_95563b7e43eb3b13.ico"
+    },
+    {
       "title": "杀死那个手工程序员",
       "link": "https://tw93.fun/2026-03-30/kill.html",
       "published": "2026-03-30 00:00:00",
@@ -1121,6 +1212,13 @@
       "favicon": null
     },
     {
+      "title": "Projects that Can Get You Hired Today | We Ranked Them",
+      "link": "https://www.youtube.com/watch?v=qjW-5sY1dnw",
+      "published": "2026-03-25 15:30:30",
+      "name": "@EmbarkX | Real Engineering | Faisal Memon - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_95563b7e43eb3b13.ico"
+    },
+    {
       "title": "Claude在得物App数仓的深度集成与效能演进",
       "link": "https://mp.weixin.qq.com/s?__biz=MzkxNTE3ODU0NA==&mid=2247543910&idx=1&sn=a17a16f6fe78ff1a0940387ecf5137c8",
       "published": "2026-03-25 10:32:00",
@@ -1149,6 +1247,13 @@
       "favicon": "/feeds/piotrminkowski_com_8c608688efa7cd8a.ico"
     },
     {
+      "title": "Full Stack AI DevOps Course + Real Projects 🚀 | Docker + Kubernetes + CI/CD + Terraform | Job Ready",
+      "link": "https://www.youtube.com/watch?v=Kb-sw00KJ10",
+      "published": "2026-03-23 12:30:33",
+      "name": "@EmbarkX | Real Engineering | Faisal Memon - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_95563b7e43eb3b13.ico"
+    },
+    {
       "title": "Claude Code + OpenSpec 正在加速 AICoding 落地：从模型博弈到工程化的范式转移｜得物技术",
       "link": "https://mp.weixin.qq.com/s?__biz=MzkxNTE3ODU0NA==&mid=2247543887&idx=1&sn=4b040af63cd6575b636c2378f6d1d511",
       "published": "2026-03-23 10:35:00",
@@ -1168,6 +1273,13 @@
       "published": "2026-03-23 00:00:00",
       "name": "@潮流周刊",
       "favicon": "/feeds/weekly_tw93_fun_82608c2e23448809.ico"
+    },
+    {
+      "title": "SpringBoot+LangChain4j打造“安全”票务助手：SystemMessage+FunctionCalling实战",
+      "link": "https://www.bilibili.com/video/BV1P1A3zAEbA",
+      "published": "2026-03-22 13:24:02",
+      "name": "@小编码上说 的 bilibili 空间",
+      "favicon": "/feeds/rsshub_zhijun_io_dd4d9e5e3724fbde.ico"
     },
     {
       "title": "一周换了三个育儿嫂",
@@ -1289,11 +1401,39 @@
       "favicon": "/feeds/piotrminkowski_com_8c608688efa7cd8a.ico"
     },
     {
+      "title": "Authentication Concepts for Developers | OAuth2 vs JWT vs Basic Auth | Every Dev should Master",
+      "link": "https://www.youtube.com/watch?v=az5Nppk-Hs0",
+      "published": "2026-03-16 12:30:04",
+      "name": "@EmbarkX | Real Engineering | Faisal Memon - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_95563b7e43eb3b13.ico"
+    },
+    {
+      "title": "LangChain4j用 Function Calling 打通大模型与业务系统（动态数据-数据库）",
+      "link": "https://www.bilibili.com/video/BV1QiwuziEyT",
+      "published": "2026-03-16 12:18:38",
+      "name": "@小编码上说 的 bilibili 空间",
+      "favicon": "/feeds/rsshub_zhijun_io_dd4d9e5e3724fbde.ico"
+    },
+    {
+      "title": "LangChain4j用 Function Calling 打通大模型与业务系统（静态数据-内存）",
+      "link": "https://www.bilibili.com/video/BV19awuzuEn7",
+      "published": "2026-03-16 10:30:00",
+      "name": "@小编码上说 的 bilibili 空间",
+      "favicon": "/feeds/rsshub_zhijun_io_dd4d9e5e3724fbde.ico"
+    },
+    {
       "title": "第260期 - 去太子湾",
       "link": "https://weekly.tw93.fun/posts/260/",
       "published": "2026-03-16 00:00:00",
       "name": "@潮流周刊",
       "favicon": "/feeds/weekly_tw93_fun_82608c2e23448809.ico"
+    },
+    {
+      "title": "LangChain4j 轻松搞定多用户记忆隔离-把 AI 聊天记录持久化到数据库",
+      "link": "https://www.bilibili.com/video/BV1VYwuzzEKE",
+      "published": "2026-03-15 11:02:41",
+      "name": "@小编码上说 的 bilibili 空间",
+      "favicon": "/feeds/rsshub_zhijun_io_dd4d9e5e3724fbde.ico"
     },
     {
       "title": "ThreadLocal, Project Reactor Context és a Java 25 ScopedValue",
@@ -1324,18 +1464,18 @@
       "favicon": "/feeds/blog_zhouyiran_link_05b9ef69660ad7c1.ico"
     },
     {
-      "title": "Build an AI Web Design Agent with Next.js, React, Insforge, Gemini & Claude",
-      "link": "https://www.youtube.com/watch?v=cLhjBkfsyvY",
-      "published": "2026-03-14 16:03:21",
-      "name": "@TechWithEmma - YouTube",
-      "favicon": "/feeds/rsshub_zhijun_io_36f742dabf41db22.ico"
-    },
-    {
       "title": "Building a Spring Initializr Terminal UI with Java",
       "link": "https://www.danvega.dev/blog/spring-initializr-tui",
       "published": "2026-03-14 10:00:00",
       "name": "@Dan Vega",
       "favicon": "/feeds/www_danvega_dev_51896a27fecfe2ce.ico"
+    },
+    {
+      "title": "Will AI Take Developer Jobs? How Should You Find Jobs in 2026?",
+      "link": "https://www.youtube.com/watch?v=FYXH0uJwFEI",
+      "published": "2026-03-13 12:45:06",
+      "name": "@EmbarkX | Real Engineering | Faisal Memon - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_95563b7e43eb3b13.ico"
     },
     {
       "title": "BestBlogs 周刊第 86 期：基建",
@@ -1350,6 +1490,13 @@
       "published": "2026-03-13 00:00:00",
       "name": "@美团技术团队",
       "favicon": "/feeds/tech_meituan_com_c43bf0e0dd930bc7.ico"
+    },
+    {
+      "title": "No.219 关于 OpenClaw，到底是谁养了虾，虾又会养谁？",
+      "link": "https://www.xiaoyuzhoufm.com/episode/69b2b60384bce022f921cd3e",
+      "published": "2026-03-12 13:10:23",
+      "name": "@三五环",
+      "favicon": "/feeds/rsshub_bestblogs_dev_42995d2a92336d07.ico"
     },
     {
       "title": "另一个 OpenClaw：Hermes Agent – Nous Research 的数据飞轮野心",
@@ -1371,6 +1518,20 @@
       "published": "2026-03-12 00:00:00",
       "name": "@Tw93 Blog",
       "favicon": "/feeds/tw93_fun_9843080d5e0c03ca.ico"
+    },
+    {
+      "title": "The Complete DevOps Workflow Explained (CI/CD, Deployments & Tracing)",
+      "link": "https://www.youtube.com/watch?v=eFZY7u1RMQI",
+      "published": "2026-03-11 12:45:06",
+      "name": "@EmbarkX | Real Engineering | Faisal Memon - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_95563b7e43eb3b13.ico"
+    },
+    {
+      "title": "Deployment Strategies Explained: Blue-Green, Canary, Rolling & Shadow Deployments | DevOps Guide",
+      "link": "https://www.youtube.com/watch?v=uIeUiAborZs",
+      "published": "2026-03-09 12:31:14",
+      "name": "@EmbarkX | Real Engineering | Faisal Memon - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_95563b7e43eb3b13.ico"
     },
     {
       "title": "LongCat 为 OpenClaw 装上效率引擎：你的自动化任务还能再快 30%",
@@ -1436,11 +1597,11 @@
       "favicon": "/feeds/engineering_zalando_com_b56e2c064f7378db.ico"
     },
     {
-      "title": "Build an AI Agent Workflow Builder using NextJs, Mongodb, React, Prisma, Upstash",
-      "link": "https://www.youtube.com/watch?v=JZkgGwQLwuw",
-      "published": "2026-03-03 12:05:01",
-      "name": "@TechWithEmma - YouTube",
-      "favicon": "/feeds/rsshub_zhijun_io_36f742dabf41db22.ico"
+      "title": "No.218 孟阳：大厂训练你先算收益，而自由职业教你拥抱随机",
+      "link": "https://www.xiaoyuzhoufm.com/episode/69a3059566e2c30377c88bb2",
+      "published": "2026-03-03 12:00:00",
+      "name": "@三五环",
+      "favicon": "/feeds/rsshub_bestblogs_dev_42995d2a92336d07.ico"
     },
     {
       "title": "Bortom Chatbots – så bygger du nästa generations AI-assistenter",
@@ -1504,13 +1665,6 @@
       "published": "2026-02-27 00:00:00",
       "name": "@Callista Enterprise",
       "favicon": "/feeds/callistaenterprise_se_a0afdd5cc2c981a5.svg"
-    },
-    {
-      "title": "Build an AI Agent Workflow Builder using NextJs, Mongodb, React, Prisma, Upstash",
-      "link": "https://www.youtube.com/watch?v=uGsauG7Btlg",
-      "published": "2026-02-26 14:49:57",
-      "name": "@TechWithEmma - YouTube",
-      "favicon": "/feeds/rsshub_zhijun_io_36f742dabf41db22.ico"
     },
     {
       "title": "20 AI Concepts Explained in 20 Minutes",
@@ -1674,13 +1828,6 @@
       "favicon": "/feeds/houjoe_me_2edbd1b0b3a9f2d3.ico"
     },
     {
-      "title": "Build an Analytics SaaS using Next.js, React, Tailwind, Map View, Insforge",
-      "link": "https://www.youtube.com/watch?v=sJmX9WrjHmM",
-      "published": "2026-02-10 19:06:18",
-      "name": "@TechWithEmma - YouTube",
-      "favicon": "/feeds/rsshub_zhijun_io_36f742dabf41db22.ico"
-    },
-    {
       "title": "美团发布基于 N-gram 全新模型：嵌入扩展新范式，实现轻量化 MoE 高效进化",
       "link": "https://tech.meituan.com/2026/02/10/longcat-flash-lite.html",
       "published": "2026-02-10 00:00:00",
@@ -1737,6 +1884,13 @@
       "favicon": "/feeds/blog_algomaster_io_364e34913eb43f5f.ico"
     },
     {
+      "title": "No.217 请回答 2025：在世界的褶皱里，寻找内心的安宁",
+      "link": "https://www.xiaoyuzhoufm.com/episode/697c4bcc073030367a718bd0",
+      "published": "2026-02-03 12:00:00",
+      "name": "@三五环",
+      "favicon": "/feeds/rsshub_bestblogs_dev_42995d2a92336d07.ico"
+    },
+    {
       "title": "2025美团技术年货，「马」上到来",
       "link": "https://tech.meituan.com/2026/02/02/2025-spring-festival-present.html",
       "published": "2026-02-02 00:00:00",
@@ -1779,6 +1933,13 @@
       "favicon": "/feeds/engineering_zalando_com_b56e2c064f7378db.ico"
     },
     {
+      "title": "No.216 手机热点如果够用，我们为什么还需要随身WiFi？",
+      "link": "https://www.xiaoyuzhoufm.com/episode/69788224cbeabe94f34495af",
+      "published": "2026-01-27 12:08:21",
+      "name": "@三五环",
+      "favicon": "/feeds/rsshub_bestblogs_dev_42995d2a92336d07.ico"
+    },
+    {
       "title": "为什么 flutter 的字体在 iOS 系统上更「细」？",
       "link": "https://tech.qimao.com/wei-shi-yao-flutter-de-zi-ti-zai-ios-xi-tong-shang-geng-xi/",
       "published": "2026-01-26 02:10:02",
@@ -1807,11 +1968,25 @@
       "favicon": "/feeds/www_sivalabs_in_30f8ca319a651c2b.ico"
     },
     {
+      "title": "No.215 红利退去、关注情绪价值的时代，该如何重新理解品牌？",
+      "link": "https://www.xiaoyuzhoufm.com/episode/696ef1e1ef1cf272a75afaca",
+      "published": "2026-01-20 12:00:00",
+      "name": "@三五环",
+      "favicon": "/feeds/rsshub_bestblogs_dev_42995d2a92336d07.ico"
+    },
+    {
       "title": "草莓熟了",
       "link": "https://www.skyue.com/26011920.html",
       "published": "2026-01-19 12:08:00",
       "name": "@拾月",
       "favicon": "/feeds/www_skyue_com_ed576c7c0e7c6773.ico"
+    },
+    {
+      "title": "Why EVERY Developer Needs AI on Their Server (Gemini CLI Setup)",
+      "link": "https://www.youtube.com/watch?v=84moPZ8zybw",
+      "published": "2026-01-16 13:00:14",
+      "name": "@Ali Bouali - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_8c72f4c8fc87a4e6.ico"
     },
     {
       "title": "Paper Announcement: A Practical Approach to Replenishment Optimization with Extended (R, s, Q) Policy and Probabilistic Models",
@@ -1940,6 +2115,13 @@
       "favicon": "/feeds/www_pseudoyu_com_57d6ecebab1bb0a5.ico"
     },
     {
+      "title": "No.214 低能量人的电池使用指南",
+      "link": "https://www.xiaoyuzhoufm.com/episode/6953550a14db1df9ef775507",
+      "published": "2025-12-30 12:00:00",
+      "name": "@三五环",
+      "favicon": "/feeds/rsshub_bestblogs_dev_42995d2a92336d07.ico"
+    },
+    {
       "title": "友好的 Python：从其他语言移植",
       "link": "https://frostming.com/posts/2025/friendly-python-port/",
       "published": "2025-12-30 00:00:00",
@@ -1961,11 +2143,25 @@
       "favicon": "/feeds/api_joshlong_com_181686d7964bc476.ico"
     },
     {
+      "title": "No.213 对谈脉脉创始人林凡：当「找工作太容易」的时代结束之后，职场正在发生什么变化？",
+      "link": "https://www.xiaoyuzhoufm.com/episode/694a01f20f2ae6a867a34826",
+      "published": "2025-12-23 12:00:00",
+      "name": "@三五环",
+      "favicon": "/feeds/rsshub_bestblogs_dev_42995d2a92336d07.ico"
+    },
+    {
       "title": "OpenTelemetry with Spring Boot 4: The New Starter You've Been Waiting For",
       "link": "https://www.danvega.dev/blog/opentelemetry-spring-boot",
       "published": "2025-12-23 09:00:00",
       "name": "@Dan Vega",
       "favicon": "/feeds/www_danvega_dev_51896a27fecfe2ce.ico"
+    },
+    {
+      "title": "I Built a Customer Service Voice Agent with Murf Falcon",
+      "link": "https://www.youtube.com/watch?v=0EbTaAgRhTE",
+      "published": "2025-12-22 13:00:06",
+      "name": "@Ali Bouali - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_8c72f4c8fc87a4e6.ico"
     },
     {
       "title": "Startup CPU Boost in Kubernetes with In-Place Pod Resize",
@@ -1980,13 +2176,6 @@
       "published": "2025-12-22 00:00:00",
       "name": "@Frost's Blog",
       "favicon": "/feeds/frostming_com_50393b8a2dc4f344.ico"
-    },
-    {
-      "title": "Build an AI Mobile App Design Agent with Next.js 16, MongoDB, Inngest, Gemini & Kinde",
-      "link": "https://www.youtube.com/watch?v=WluV9LeDzwo",
-      "published": "2025-12-21 09:49:53",
-      "name": "@TechWithEmma - YouTube",
-      "favicon": "/feeds/rsshub_zhijun_io_36f742dabf41db22.ico"
     },
     {
       "title": "Contributing to Debezium: Fixing Logical Replication at Scale",
@@ -2010,6 +2199,13 @@
       "favicon": "/feeds/engineering_zalando_com_b56e2c064f7378db.ico"
     },
     {
+      "title": "No.212 邯郸：倔了三千年的城，也是山河四省的平均脸 | 山河四省系列",
+      "link": "https://www.xiaoyuzhoufm.com/episode/6940ebfe2a383da1675e42f7",
+      "published": "2025-12-16 12:00:00",
+      "name": "@三五环",
+      "favicon": "/feeds/rsshub_bestblogs_dev_42995d2a92336d07.ico"
+    },
+    {
       "title": "Naming convention for RESTful API specs",
       "link": "https://huongdanjava.com/naming-convention-for-restful-api-specs.html",
       "published": "2025-12-16 00:45:19",
@@ -2022,6 +2218,13 @@
       "published": "2025-12-14 01:54:00",
       "name": "@pseudoyu",
       "favicon": "/feeds/www_pseudoyu_com_57d6ecebab1bb0a5.ico"
+    },
+    {
+      "title": "This Trae 3.0 with SOLO Coder Features Shocked Me And It’s UNBELIEVABLE & Super Affordable!",
+      "link": "https://www.youtube.com/watch?v=GGfc_pWETc0",
+      "published": "2025-12-12 13:00:30",
+      "name": "@Ali Bouali - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_8c72f4c8fc87a4e6.ico"
     },
     {
       "title": "基于飞书 Aily 搭建 sls日志分析助手",
@@ -2038,11 +2241,25 @@
       "favicon": "/feeds/catcoding_me_82c4bcb6bba028cf.ico"
     },
     {
+      "title": "No.211 串台妙妙屋 | 33 号远征队与绝望中的法式浪漫",
+      "link": "https://www.xiaoyuzhoufm.com/episode/69355ab94ef12f9fe95b85d5",
+      "published": "2025-12-07 10:54:55",
+      "name": "@三五环",
+      "favicon": "/feeds/rsshub_bestblogs_dev_42995d2a92336d07.ico"
+    },
+    {
       "title": "Video: Spring 7 BeanRegistrar Explained: Register Beans Programmatically",
       "link": "https://huongdanjava.com/video-spring-7-beanregistrar-explained-register-beans-programmatically-2.html",
       "published": "2025-12-04 14:14:38",
       "name": "@Huong Dan Java",
       "favicon": "/feeds/huongdanjava_com_80ebb4e293eb6645.ico"
+    },
+    {
+      "title": "No.210 腾讯 AI「松弛感」背后：高筑墙、广积粮、缓称王",
+      "link": "https://www.xiaoyuzhoufm.com/episode/69316f4d3fec3166cf43d0ce",
+      "published": "2025-12-04 12:09:20",
+      "name": "@三五环",
+      "favicon": "/feeds/rsshub_bestblogs_dev_42995d2a92336d07.ico"
     },
     {
       "title": "The best way to replace the deprecated GenericGenerator",
@@ -2073,6 +2290,13 @@
       "favicon": "/feeds/huongdanjava_com_80ebb4e293eb6645.ico"
     },
     {
+      "title": "How to Deploy a Laravel 10 App on Cloudways in Under 20 Minutes | Complete Step-by-Step Guide",
+      "link": "https://www.youtube.com/watch?v=3L2u576ud1k",
+      "published": "2025-11-28 13:00:07",
+      "name": "@Ali Bouali - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_8c72f4c8fc87a4e6.ico"
+    },
+    {
       "title": "AI 编程演进综述 v202510",
       "link": "https://tech.qimao.com/ai-bian-cheng-yan-jin-zong-shu-v202510/",
       "published": "2025-11-28 02:00:00",
@@ -2101,6 +2325,13 @@
       "favicon": "/feeds/huongdanjava_com_80ebb4e293eb6645.ico"
     },
     {
+      "title": "TRAE Solo Coder: The Most Powerful AI Coder | Full review",
+      "link": "https://www.youtube.com/watch?v=lyQ9HCCFFSA",
+      "published": "2025-11-25 13:01:39",
+      "name": "@Ali Bouali - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_8c72f4c8fc87a4e6.ico"
+    },
+    {
       "title": "Book Review – Just Use Postgres!",
       "link": "https://vladmihalcea.com/book-review-just-use-postgres/",
       "published": "2025-11-24 09:00:34",
@@ -2120,13 +2351,6 @@
       "published": "2025-11-18 03:33:19",
       "name": "@七猫技术团队",
       "favicon": "/feeds/tech_qimao_com_48d71c819e6c5e56.ico"
-    },
-    {
-      "title": "Learn ReactJS — Beginner to Pro with React 19, Redux Toolkit & Unit Testing",
-      "link": "https://www.youtube.com/watch?v=YvwgdlesdPw",
-      "published": "2025-11-15 14:33:00",
-      "name": "@TechWithEmma - YouTube",
-      "favicon": "/feeds/rsshub_zhijun_io_36f742dabf41db22.ico"
     },
     {
       "title": "The best way to clean up test data with Spring and Hibernate",
@@ -2155,13 +2379,6 @@
       "published": "2025-10-27 18:38:00",
       "name": "@pseudoyu",
       "favicon": "/feeds/www_pseudoyu_com_57d6ecebab1bb0a5.ico"
-    },
-    {
-      "title": "MERN Stack Realtime Chat App - Socket.io, Gemini AI, React.js & Group Chat | Full Course",
-      "link": "https://www.youtube.com/watch?v=9VAYiRUY5s0",
-      "published": "2025-10-23 03:45:13",
-      "name": "@TechWithEmma - YouTube",
-      "favicon": "/feeds/rsshub_zhijun_io_36f742dabf41db22.ico"
     },
     {
       "title": "Spring AI webinar a NETAcademián",
@@ -2269,20 +2486,6 @@
       "favicon": "/feeds/www_pseudoyu_com_57d6ecebab1bb0a5.ico"
     },
     {
-      "title": "如何像极客一样使用你的Mac？分享下我的Mac工作流",
-      "link": "https://www.youtube.com/watch?v=lGtpuit7Is0",
-      "published": "2025-07-26 14:36:10",
-      "name": "@ZenYarn同学 - YouTube",
-      "favicon": "/feeds/rsshub_zhijun_io_30ce9061d0b36141.ico"
-    },
-    {
-      "title": "周报 #99 - 离开 RSS3，迷茫与重启人生",
-      "link": "https://www.pseudoyu.com/posts/weekly_review_99",
-      "published": "2025-07-21 14:27:00",
-      "name": "@pseudoyu",
-      "favicon": "/feeds/www_pseudoyu_com_57d6ecebab1bb0a5.ico"
-    },
-    {
       "title": "EP 69. 对话硅谷AI应用增长顾问陈唱：深度解析HeyGen, Gamma, Otter.ai 百万用户增长实践",
       "link": "https://www.xiaoyuzhoufm.com/episode/686ea9ee60f8f77d40b7975b",
       "published": "2025-07-09 23:30:00",
@@ -2304,25 +2507,11 @@
       "favicon": "/feeds/soulteary_com_a5f60b76fca87b33.ico"
     },
     {
-      "title": "让Cursor遵循文档生成代码（以垃圾邮件分类为例）",
-      "link": "https://www.youtube.com/watch?v=x2-iP-A6x-I",
-      "published": "2025-06-24 13:43:34",
-      "name": "@ZenYarn同学 - YouTube",
-      "favicon": "/feeds/rsshub_zhijun_io_30ce9061d0b36141.ico"
-    },
-    {
       "title": "Java Scripts and JBang.dev",
       "link": "https://joshlong.com/jl/blogpost/java-scripts-and-jbang-dev.html",
       "published": "2025-06-24 00:00:00",
       "name": "@JoshLong.com",
       "favicon": "/feeds/api_joshlong_com_181686d7964bc476.ico"
-    },
-    {
-      "title": "Folo：你的一站式信息订阅平台（可同时订阅YouTube、Bilibili、X等多个平台的博主）",
-      "link": "https://www.youtube.com/watch?v=REg2X6bAkBI",
-      "published": "2025-06-18 15:51:30",
-      "name": "@ZenYarn同学 - YouTube",
-      "favicon": "/feeds/rsshub_zhijun_io_30ce9061d0b36141.ico"
     },
     {
       "title": "Announcing FeatureTracker Application",
@@ -2346,32 +2535,11 @@
       "favicon": "/feeds/www_sivalabs_in_30f8ca319a651c2b.ico"
     },
     {
-      "title": "【Suno.ai】Elon Mask diss Trump Rap",
-      "link": "https://www.youtube.com/watch?v=B7OX6bsHR9g",
-      "published": "2025-06-06 15:15:08",
-      "name": "@ZenYarn同学 - YouTube",
-      "favicon": "/feeds/rsshub_zhijun_io_30ce9061d0b36141.ico"
-    },
-    {
       "title": "Hogyan használják rosszul a BDD-t?",
       "link": "https://www.jtechlog.hu/2025/05/28/bdd-hibak.html",
       "published": "2025-05-28 08:00:00",
       "name": "@JTechLog - Viczián István magyar nyelvű Java blogja",
       "favicon": "/feeds/feeds_feedburner_com_884a13546e12a02f.ico"
-    },
-    {
-      "title": "用Cursor复现现成的项目：这是最高效的项目学习方式",
-      "link": "https://www.youtube.com/watch?v=fO1-qSHLXBI",
-      "published": "2025-05-18 16:52:30",
-      "name": "@ZenYarn同学 - YouTube",
-      "favicon": "/feeds/rsshub_zhijun_io_30ce9061d0b36141.ico"
-    },
-    {
-      "title": "【提示词技巧】教你轻松套取LLM的系统提示词，ChatGPT等大模型统统中招！",
-      "link": "https://www.youtube.com/watch?v=JMzvTral6dQ",
-      "published": "2025-05-15 17:34:21",
-      "name": "@ZenYarn同学 - YouTube",
-      "favicon": "/feeds/rsshub_zhijun_io_30ce9061d0b36141.ico"
     },
     {
       "title": "MySQL Query Optimization with Releem",
@@ -2386,20 +2554,6 @@
       "published": "2025-05-11 00:00:00",
       "name": "@Frost's Blog",
       "favicon": "/feeds/frostming_com_50393b8a2dc4f344.ico"
-    },
-    {
-      "title": "【MCP快速入门】用15行代码的MCP Server带你彻底搞懂MCP",
-      "link": "https://www.youtube.com/watch?v=BY5UY_LI1qA",
-      "published": "2025-04-30 07:37:49",
-      "name": "@ZenYarn同学 - YouTube",
-      "favicon": "/feeds/rsshub_zhijun_io_30ce9061d0b36141.ico"
-    },
-    {
-      "title": "用Cursor交互式学习任何编程框架（以NextJS为例）",
-      "link": "https://www.youtube.com/watch?v=u2pOsZi79z0",
-      "published": "2025-04-30 06:47:50",
-      "name": "@ZenYarn同学 - YouTube",
-      "favicon": "/feeds/rsshub_zhijun_io_30ce9061d0b36141.ico"
     },
     {
       "title": "只聊感情，不聊技术（三）",
@@ -2738,5 +2892,5 @@
       "favicon": "/feeds/tech_youzan_com_9f45551d47de6b8c.ico"
     }
   ],
-  "updated": "2026-05-04 04:07:13"
+  "updated": "2026-05-04 07:23:27"
 }
