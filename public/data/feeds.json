@@ -1,6 +1,13 @@
 {
   "items": [
     {
+      "title": "Connecting LLMs to the Real World: Tool Use, Function Calling, and MCP",
+      "link": "https://blog.bytebytego.com/p/connecting-llms-to-the-real-world",
+      "published": "2026-05-04 15:30:46",
+      "name": "@ByteByteGo Newsletter",
+      "favicon": "/feeds/blog_bytebytego_com_a9f456d1e25a66fe.ico"
+    },
+    {
       "title": "2026-05-04日刊",
       "link": "https://ai.hubtoday.app//2026-05/2026-05-04/",
       "published": "2026-05-04 10:11:23",
@@ -13,6 +20,13 @@
       "published": "2026-05-04 06:17:00",
       "name": "@pseudoyu",
       "favicon": "/feeds/www_pseudoyu_com_57d6ecebab1bb0a5.ico"
+    },
+    {
+      "title": "用AI为自己创造实习机会",
+      "link": "https://lijinma.com/create-internship-opportunities-with-ai/",
+      "published": "2026-05-04 00:00:00",
+      "name": "@赤兔金马奖 – 金马的博客",
+      "favicon": null
     },
     {
       "title": "2026-05-03日刊",
@@ -489,13 +503,6 @@
       "published": "2026-04-19 00:00:00",
       "name": "@Yiran's Blog",
       "favicon": "/feeds/blog_zhouyiran_link_05b9ef69660ad7c1.ico"
-    },
-    {
-      "title": "EP211: How the JVM Works",
-      "link": "https://blog.bytebytego.com/p/ep211-how-the-jvm-works",
-      "published": "2026-04-18 15:30:39",
-      "name": "@ByteByteGo Newsletter",
-      "favicon": "/feeds/blog_bytebytego_com_a9f456d1e25a66fe.ico"
     },
     {
       "title": "Integrating Bounded Contexts",
@@ -1448,13 +1455,6 @@
       "published": "2026-03-01 04:41:04",
       "name": "@AlgoMaster Newsletter",
       "favicon": "/feeds/blog_algomaster_io_364e34913eb43f5f.ico"
-    },
-    {
-      "title": "金马：2026年2月每日复盘",
-      "link": "https://lijinma.com/jinma-2026-02-daily-review/",
-      "published": "2026-03-01 00:00:00",
-      "name": "@赤兔金马奖 – 金马的博客",
-      "favicon": null
     },
     {
       "title": "Weekly Issue-Treeverse",
@@ -2682,5 +2682,5 @@
       "favicon": "/feeds/tech_youzan_com_9f45551d47de6b8c.ico"
     }
   ],
-  "updated": "2026-05-04 14:28:45"
+  "updated": "2026-05-04 17:50:25"
 }
