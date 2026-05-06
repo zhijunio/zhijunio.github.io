@@ -341,25 +341,34 @@ const linkPreloadOnLoad = "this.onload=null;this.rel='stylesheet'";
     class="post-footer-stack clear-both w-full min-w-0 space-y-5 border-t border-border/80 pt-6 max-sm:space-y-5 max-sm:pt-5"
   >
     <!-- 标签 + 分享 -->
-    <div class="flex w-full min-w-0 flex-col items-center gap-3 sm:flex-row sm:items-center sm:justify-between">
+    <div
+      class="flex w-full min-w-0 flex-col items-center gap-3 sm:flex-row sm:items-center sm:justify-between"
+    >
       {
         tags.length > 0 && (
-          <ul class="m-0 flex list-none flex-wrap justify-center gap-2 p-0" role="list">
+          <ul
+            class="m-0 flex list-none flex-wrap justify-center gap-2 p-0"
+            role="list"
+          >
             {tags.map((tag: string) => (
               <Tag tag={trimUrlSegment(tag)} tagName={tag} />
             ))}
           </ul>
         )
       }
-      <ShareButtons url={canonicalHref} title={shareText} description={fullDescription} />
+      <ShareButtons
+        url={canonicalHref}
+        title={shareText}
+        description={fullDescription}
+      />
     </div>
 
     <!-- 文章导航 -->
-    {(prevPost || nextPost) && (
-      <nav class="post-nav w-full min-w-0" aria-label="文章导航">
-        <div class="flex flex-col gap-2 sm:flex-row sm:justify-between">
-          {
-            prevPost && (
+    {
+      (prevPost || nextPost) && (
+        <nav class="post-nav w-full min-w-0" aria-label="文章导航">
+          <div class="flex flex-col gap-2 sm:flex-row sm:justify-between">
+            {prevPost && (
               <a
                 href={prevPost.path}
                 class="post-nav-link flex items-center gap-1.5 text-sm text-muted no-underline transition-colors hover:text-accent"
@@ -367,29 +376,32 @@ const linkPreloadOnLoad = "this.onload=null;this.rel='stylesheet'";
                 <IconChevronLeft class="h-4 w-4 shrink-0" />
                 <span>{prevPost.title}</span>
               </a>
-            )
-          }
-          {
-            nextPost && (
+            )}
+            {nextPost && (
               <a
                 href={nextPost.path}
-                class="post-nav-link flex items-center gap-1.5 text-sm text-muted no-underline transition-colors hover:text-accent sm:text-right sm:justify-end"
+                class="post-nav-link flex items-center gap-1.5 text-sm text-muted no-underline transition-colors hover:text-accent sm:justify-end sm:text-right"
               >
                 <span>{nextPost.title}</span>
                 <IconChevronRight class="h-4 w-4 shrink-0" />
               </a>
-            )
-          }
-        </div>
-      </nav>
-    )}
+            )}
+          </div>
+        </nav>
+      )
+    }
 
     <!-- 相关文章 -->
     {
       relatedPosts.length > 0 && (
         <section class="related-section w-full min-w-0" aria-label="相关文章">
-          <h3 class="m-0 mb-2 text-base font-medium text-foreground">相关文章</h3>
-          <ul class="related-list m-0 list-none divide-y divide-border/50 p-0" role="list">
+          <h3 class="m-0 mb-2 text-base font-medium text-foreground">
+            相关文章
+          </h3>
+          <ul
+            class="related-list m-0 list-none divide-y divide-border/50 p-0"
+            role="list"
+          >
             {relatedPosts.map(({ post: relatedPost, path }) => (
               <li>
                 <a

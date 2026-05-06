@@ -93,11 +93,11 @@ favicon: "cloudflare.svg"
 4. 给 Claude Code、Codex 和 Cursor 配置了系统提示词。该提示词用到了 [superpowers](https://github.com/obra/superpowers) 和 [karpathy-guidelines](https://github.com/forrestchang/andrej-karpathy-skills) 这两个技能。
 
 ```bash
-中文回复，言简意赅，巧用Emoji。
-减少Build，节省时间。
-按需使用Plan Mode或Subagent。
-若提交Git，要写中文Log包括：问题或需求描述 或 修复或实现思路 或 复现路径(可选)。
-若编码Coding，按需使用skill：superpower和karpathy-guidelines。
+中文回复，言简意赅。
+减少 compile 和 build。
+按需使用 Plan Mode 或 Subagent。
+若提交Git，要写中文Log，包括：问题或需求描述 或 修复或实现思路 或 复现路径(可选)。
+若编码，按需使用skill：agent-skill 和 karpathy-guidelines。
 ```
 
 5. ChatGPT 可以创建智能体，例如每日工作规划助手：可连接 Google Calendar、Gmail、GitHub、Slack、Teams、Notion 等，整理当日重点并输出可执行计划。可参考附录中的完整提示词，在小龙虾或 Hermes Agent 里做成技能。
