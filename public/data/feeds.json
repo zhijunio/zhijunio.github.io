@@ -1,6 +1,13 @@
 {
   "items": [
     {
+      "title": "2026-05-07日刊",
+      "link": "https://ai.hubtoday.app//2026-05/2026-05-07/",
+      "published": "2026-05-07 10:50:22",
+      "name": "@AI洞察日报 RSS Feed",
+      "favicon": "/feeds/justlovemaki_github_io_660978058ae7ef6c.ico"
+    },
+    {
       "title": "基于 Harness + SDD + 多仓管理模式的 AI 全栈开发实践｜得物技术",
       "link": "https://mp.weixin.qq.com/s?__biz=MzkxNTE3ODU0NA==&mid=2247544494&idx=1&sn=a0df4bcc0f9762cfe06b81041f147126",
       "published": "2026-05-06 10:30:00",
@@ -160,13 +167,6 @@
       "published": "2026-04-30 13:03:20",
       "name": "@Ben's Bites",
       "favicon": "/feeds/www_bensbites_com_96fe006ed5f7b38b.ico"
-    },
-    {
-      "title": "2026-04-30日刊",
-      "link": "https://ai.hubtoday.app//2026-04/2026-04-30/",
-      "published": "2026-04-30 11:08:53",
-      "name": "@AI洞察日报 RSS Feed",
-      "favicon": "/feeds/justlovemaki_github_io_660978058ae7ef6c.ico"
     },
     {
       "title": "Claude 嘴上说不要中国，背地里把中文做得飞起",
@@ -2682,5 +2682,5 @@
       "favicon": "/feeds/tech_youzan_com_9f45551d47de6b8c.ico"
     }
   ],
-  "updated": "2026-05-06 23:05:14"
+  "updated": "2026-05-07 04:02:52"
 }
