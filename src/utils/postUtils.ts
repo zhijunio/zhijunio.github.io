@@ -546,7 +546,7 @@ export function readContentPage(fileName: string): ContentPageData {
   const content = frontmatterMatch[2];
   const frontmatter: Record<string, string> = {};
 
-  frontmatterStr.split("\n").forEach(line => {
+  frontmatterStr.split("\n").forEach((line: string) => {
     const match = line.match(/^(\w+):\s*(.+)$/);
     if (!match) return;
 
