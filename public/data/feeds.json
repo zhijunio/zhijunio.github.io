@@ -57,11 +57,25 @@
       "favicon": "/feeds/wechat2rss_bestblogs_dev_2e86e246d8ff26a7.ico"
     },
     {
+      "title": "用Agent评测思路管理AI Coding —— 31万行代码AI重构的实践",
+      "link": "https://tech.meituan.com/2026/05/07/agent-ai-coding.html",
+      "published": "2026-05-07 00:00:00",
+      "name": "@美团技术团队",
+      "favicon": "/feeds/tech_meituan_com_c43bf0e0dd930bc7.ico"
+    },
+    {
       "title": "聊聊MacBook的几个秘密，看完省钱",
       "link": "https://mp.weixin.qq.com/s?__biz=MzI1MTUxNzgxMA==&mid=2247501978&idx=1&sn=8f3b209ae7ce305dbe94e32729f4d99e",
       "published": "2026-05-06 17:33:00",
       "name": "@刘小排r",
       "favicon": "/feeds/wechat2rss_bestblogs_dev_067bf24ee0a7ae95.ico"
+    },
+    {
+      "title": "Spring Boot 4.0.0 & Spring Security 7 (part 21) - One-Time-Token Custom Login & Extra Fields",
+      "link": "https://www.youtube.com/watch?v=ODjzqcb86iQ",
+      "published": "2026-05-06 13:00:00",
+      "name": "@Spring Boot TUTORIAL. - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_145825a0a71ec9ce.ico"
     },
     {
       "title": "接近 Gemini 3 Pro的全模态能力，1/5 的价格——豆包 Seed 2.0 lite 实测",
@@ -139,6 +153,13 @@
       "published": "2026-05-04 15:30:46",
       "name": "@ByteByteGo Newsletter",
       "favicon": "/feeds/blog_bytebytego_com_a9f456d1e25a66fe.ico"
+    },
+    {
+      "title": "Your Dev Workflow Is Broken — This AI Agent Fixes It Automatically",
+      "link": "https://www.youtube.com/watch?v=1C6ubdH7mfk",
+      "published": "2026-05-04 13:00:06",
+      "name": "@EmbarkX | Real Engineering | Faisal Memon - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_95563b7e43eb3b13.ico"
     },
     {
       "title": "2026-05-04日刊",
@@ -253,6 +274,13 @@
       "favicon": "/feeds/wechat2rss_bestblogs_dev_067bf24ee0a7ae95.ico"
     },
     {
+      "title": "Spring Boot 4.0.0 & Spring Security 7 (part 20) - One-Time-Token Custom Login",
+      "link": "https://www.youtube.com/watch?v=QmKMjquRRf4",
+      "published": "2026-04-29 13:00:00",
+      "name": "@Spring Boot TUTORIAL. - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_145825a0a71ec9ce.ico"
+    },
+    {
       "title": "DeepSeek多模态要来了，「识图模式」开启灰度",
       "link": "https://mp.weixin.qq.com/s?__biz=MzIwNzc2NTk0NQ==&mid=2247616634&idx=1&sn=79abceaf34760d154823f14bc418eb30",
       "published": "2026-04-29 12:30:00",
@@ -335,6 +363,13 @@
       "published": "2026-04-27 15:30:57",
       "name": "@ByteByteGo Newsletter",
       "favicon": "/feeds/blog_bytebytego_com_a9f456d1e25a66fe.ico"
+    },
+    {
+      "title": "Claude Code for Java & Spring Boot Developers – Build AI Agents & Real-World Apps",
+      "link": "https://www.youtube.com/watch?v=j9OYHB9hRFU",
+      "published": "2026-04-27 12:30:58",
+      "name": "@EmbarkX | Real Engineering | Faisal Memon - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_95563b7e43eb3b13.ico"
     },
     {
       "title": "创作者最易获得的一种金矿",
@@ -470,6 +505,13 @@
       "favicon": "/feeds/wechat2rss_bestblogs_dev_2e86e246d8ff26a7.ico"
     },
     {
+      "title": "Spring Boot 4.0.0 & Spring Security 7 (part 19) - One-Time-Token Login",
+      "link": "https://www.youtube.com/watch?v=v8gvPLmMrZw",
+      "published": "2026-04-22 13:00:00",
+      "name": "@Spring Boot TUTORIAL. - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_145825a0a71ec9ce.ico"
+    },
+    {
       "title": "AI驱动：从运营行为到自动化用例的智能化实践｜得物技术",
       "link": "https://mp.weixin.qq.com/s?__biz=MzkxNTE3ODU0NA==&mid=2247544174&idx=1&sn=b87982ec3a52d256511e71ac0691c490",
       "published": "2026-04-22 10:30:00",
@@ -524,6 +566,13 @@
       "published": "2026-04-21 01:02:00",
       "name": "@刘小排r",
       "favicon": "/feeds/wechat2rss_bestblogs_dev_067bf24ee0a7ae95.ico"
+    },
+    {
+      "title": "How to Become an AI Engineer FAST | Complete Roadmap for Developers",
+      "link": "https://www.youtube.com/watch?v=njlx6LozZeM",
+      "published": "2026-04-20 12:31:05",
+      "name": "@EmbarkX | Real Engineering | Faisal Memon - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_95563b7e43eb3b13.ico"
     },
     {
       "title": "刚刚，GPT-5.5 的风声突然传开了",
@@ -638,6 +687,13 @@
       "favicon": "/feeds/callistaenterprise_se_a0afdd5cc2c981a5.svg"
     },
     {
+      "title": "Spring Boot 4.0.0 & Spring Security 7 (part 18) - Custom Login Form with EXTRA Fields.",
+      "link": "https://www.youtube.com/watch?v=sZmvR5oxieY",
+      "published": "2026-04-15 13:00:00",
+      "name": "@Spring Boot TUTORIAL. - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_145825a0a71ec9ce.ico"
+    },
+    {
       "title": "生成式召回在得物的落地技术分享与思考",
       "link": "https://mp.weixin.qq.com/s?__biz=MzkxNTE3ODU0NA==&mid=2247544067&idx=1&sn=6dfd6e3f1948f4a36d30abf1e79ef6ef",
       "published": "2026-04-15 10:30:00",
@@ -671,6 +727,13 @@
       "published": "2026-04-14 13:10:46",
       "name": "@Ben's Bites",
       "favicon": "/feeds/www_bensbites_com_96fe006ed5f7b38b.ico"
+    },
+    {
+      "title": "Java Spring Boot Microservices eCommerce Project | Docker, PostgreSQL, DevOps Full Course",
+      "link": "https://www.youtube.com/watch?v=i_9z3tNrphE",
+      "published": "2026-04-13 12:31:05",
+      "name": "@EmbarkX | Real Engineering | Faisal Memon - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_95563b7e43eb3b13.ico"
     },
     {
       "title": "立正请站好：一个组件复用 Skill 的工程化实践｜得物技术",
@@ -811,6 +874,13 @@
       "published": "2026-04-08 22:00:00",
       "name": "@Zalando Engineering Blog",
       "favicon": "/feeds/engineering_zalando_com_b56e2c064f7378db.ico"
+    },
+    {
+      "title": "Spring Boot 4.0.0 & Spring Security 7 (part 17) - Thymeleaf and a Custom Login & Logout Form.",
+      "link": "https://www.youtube.com/watch?v=wl7mAHBrKHQ",
+      "published": "2026-04-08 13:00:00",
+      "name": "@Spring Boot TUTORIAL. - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_145825a0a71ec9ce.ico"
     },
     {
       "title": "财务数仓 Claude AI Coding 应用实战｜得物技术",
@@ -988,6 +1058,13 @@
       "favicon": "/feeds/tech_meituan_com_c43bf0e0dd930bc7.ico"
     },
     {
+      "title": "Spring Boot 4.0.0 & Spring Security 7 (part 16) - Thymeleaf and a Custom Login Form.",
+      "link": "https://www.youtube.com/watch?v=Ore5vfBwy9A",
+      "published": "2026-04-01 13:00:00",
+      "name": "@Spring Boot TUTORIAL. - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_145825a0a71ec9ce.ico"
+    },
+    {
       "title": "日志诊断 Skill：用 AI + MCP 一键解决BUG｜得物技术",
       "link": "https://mp.weixin.qq.com/s?__biz=MzkxNTE3ODU0NA==&mid=2247544017&idx=1&sn=eaceee1d1f4f672b2dd630a1b235eda3",
       "published": "2026-04-01 10:31:00",
@@ -1023,6 +1100,13 @@
       "favicon": "/feeds/www_danvega_dev_51896a27fecfe2ce.ico"
     },
     {
+      "title": "Build Full-Stack Apps with AI | InsForge Dev",
+      "link": "https://www.youtube.com/watch?v=7_nHrDUF6_k",
+      "published": "2026-03-31 02:21:50",
+      "name": "@webdecoded - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_2950669240493e69.ico"
+    },
+    {
       "title": "Blog 迁移到 mdorigin 了",
       "link": "https://jolestar.com/mdorigin-after-blog-migration/",
       "published": "2026-03-31 00:00:00",
@@ -1042,6 +1126,20 @@
       "published": "2026-03-30 10:30:00",
       "name": "@得物技术",
       "favicon": "/feeds/wechat2rss_bestblogs_dev_70cfbe4795db294d.ico"
+    },
+    {
+      "title": "Introducing Spring Test Profiler - Speed Up Your Spring Boot Tests with Context Caching",
+      "link": "https://www.youtube.com/watch?v=eHVEAKzrM_k",
+      "published": "2026-03-30 06:11:04",
+      "name": "@Philip Riecks - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_f283a53ccee879fd.ico"
+    },
+    {
+      "title": "Devops vs DevSecOps vs MLOps vs LLMOps vs AIOps | Explained Simply",
+      "link": "https://www.youtube.com/watch?v=6Brx6WQCfk4",
+      "published": "2026-03-30 00:30:02",
+      "name": "@EmbarkX | Real Engineering | Faisal Memon - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_95563b7e43eb3b13.ico"
     },
     {
       "title": "杀死那个手工程序员",
@@ -1156,6 +1254,20 @@
       "favicon": null
     },
     {
+      "title": "Projects that Can Get You Hired Today | We Ranked Them",
+      "link": "https://www.youtube.com/watch?v=qjW-5sY1dnw",
+      "published": "2026-03-25 15:30:30",
+      "name": "@EmbarkX | Real Engineering | Faisal Memon - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_95563b7e43eb3b13.ico"
+    },
+    {
+      "title": "Spring Boot 4.0.0 & Spring Security 7 (part 15) - HTMX",
+      "link": "https://www.youtube.com/watch?v=7ua6nKSqZPo",
+      "published": "2026-03-25 14:00:12",
+      "name": "@Spring Boot TUTORIAL. - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_145825a0a71ec9ce.ico"
+    },
+    {
       "title": "Claude在得物App数仓的深度集成与效能演进",
       "link": "https://mp.weixin.qq.com/s?__biz=MzkxNTE3ODU0NA==&mid=2247543910&idx=1&sn=a17a16f6fe78ff1a0940387ecf5137c8",
       "published": "2026-03-25 10:32:00",
@@ -1182,6 +1294,13 @@
       "published": "2026-03-24 08:08:15",
       "name": "@Piotr's TechBlog",
       "favicon": "/feeds/piotrminkowski_com_8c608688efa7cd8a.ico"
+    },
+    {
+      "title": "Full Stack AI DevOps Course + Real Projects 🚀 | Docker + Kubernetes + CI/CD + Terraform | Job Ready",
+      "link": "https://www.youtube.com/watch?v=Kb-sw00KJ10",
+      "published": "2026-03-23 12:30:33",
+      "name": "@EmbarkX | Real Engineering | Faisal Memon - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_95563b7e43eb3b13.ico"
     },
     {
       "title": "Claude Code + OpenSpec 正在加速 AICoding 落地：从模型博弈到工程化的范式转移｜得物技术",
@@ -1289,6 +1408,13 @@
       "favicon": "/feeds/piotrminkowski_com_8c608688efa7cd8a.ico"
     },
     {
+      "title": "Spring Boot 4.0.0 & Spring Security 7 (part 14) - Mustache",
+      "link": "https://www.youtube.com/watch?v=qFU6CFr1Lxc",
+      "published": "2026-03-18 14:01:28",
+      "name": "@Spring Boot TUTORIAL. - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_145825a0a71ec9ce.ico"
+    },
+    {
       "title": "Feeling Left Behind in Tech? This Is Your 90-Day Comeback Plan",
       "link": "https://www.sivalabs.in/feel-left-behind-in-tech-this-is-90-day-comeback-plan/",
       "published": "2026-03-17 23:29:17",
@@ -1308,6 +1434,13 @@
       "published": "2026-03-16 13:24:17",
       "name": "@Piotr's TechBlog",
       "favicon": "/feeds/piotrminkowski_com_8c608688efa7cd8a.ico"
+    },
+    {
+      "title": "Authentication Concepts for Developers | OAuth2 vs JWT vs Basic Auth | Every Dev should Master",
+      "link": "https://www.youtube.com/watch?v=az5Nppk-Hs0",
+      "published": "2026-03-16 12:30:04",
+      "name": "@EmbarkX | Real Engineering | Faisal Memon - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_95563b7e43eb3b13.ico"
     },
     {
       "title": "第260期 - 去太子湾",
@@ -1352,6 +1485,13 @@
       "favicon": "/feeds/www_danvega_dev_51896a27fecfe2ce.ico"
     },
     {
+      "title": "Will AI Take Developer Jobs? How Should You Find Jobs in 2026?",
+      "link": "https://www.youtube.com/watch?v=FYXH0uJwFEI",
+      "published": "2026-03-13 12:45:06",
+      "name": "@EmbarkX | Real Engineering | Faisal Memon - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_95563b7e43eb3b13.ico"
+    },
+    {
       "title": "BestBlogs 周刊第 86 期：基建",
       "link": "https://ginonotes.com/posts/bestblogs-weekly-issue-86",
       "published": "2026-03-13 00:00:00",
@@ -1392,6 +1532,20 @@
       "published": "2026-03-12 00:00:00",
       "name": "@Tw93 Blog",
       "favicon": "/feeds/tw93_fun_9843080d5e0c03ca.ico"
+    },
+    {
+      "title": "Spring Boot 4.0.0 & Spring Security 7 (part 13) - Apache Groovy",
+      "link": "https://www.youtube.com/watch?v=z-oJnsHccq0",
+      "published": "2026-03-11 14:01:37",
+      "name": "@Spring Boot TUTORIAL. - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_145825a0a71ec9ce.ico"
+    },
+    {
+      "title": "The Complete DevOps Workflow Explained (CI/CD, Deployments & Tracing)",
+      "link": "https://www.youtube.com/watch?v=eFZY7u1RMQI",
+      "published": "2026-03-11 12:45:06",
+      "name": "@EmbarkX | Real Engineering | Faisal Memon - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_95563b7e43eb3b13.ico"
     },
     {
       "title": "LongCat 为 OpenClaw 装上效率引擎：你的自动化任务还能再快 30%",
@@ -1441,6 +1595,13 @@
       "published": "2026-03-07 00:00:00",
       "name": "@Tw93 Blog",
       "favicon": "/feeds/tw93_fun_9843080d5e0c03ca.ico"
+    },
+    {
+      "title": "Spring Boot 4.0.0 & Spring Security 7 (part 12) - FreeMarker",
+      "link": "https://www.youtube.com/watch?v=eYoaQD-3CNg",
+      "published": "2026-03-04 14:00:57",
+      "name": "@Spring Boot TUTORIAL. - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_145825a0a71ec9ce.ico"
     },
     {
       "title": "那些影响我的咒语",
@@ -1695,6 +1856,13 @@
       "favicon": "/feeds/frostming_com_50393b8a2dc4f344.ico"
     },
     {
+      "title": "Building YouTube-style Playlist System with Spring Boot | Part 11",
+      "link": "https://www.youtube.com/watch?v=aq55FR0z0tA",
+      "published": "2026-02-06 14:58:20",
+      "name": "@Sudarshan Shah - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_2051ca78298ffe6e.ico"
+    },
+    {
       "title": "Spring AI with External MCP Servers",
       "link": "https://piotrminkowski.com/2026/02/06/spring-ai-with-external-mcp-servers/",
       "published": "2026-02-06 10:00:53",
@@ -1744,13 +1912,6 @@
       "favicon": "/feeds/tech_meituan_com_c43bf0e0dd930bc7.ico"
     },
     {
-      "title": "多维创新打造强泛化智能体模型，LongCat-Flash-Thinking-2601技术报告发布",
-      "link": "https://tech.meituan.com/2026/02/02/longcat-flash-thinking-2601-techreport.html",
-      "published": "2026-02-02 00:00:00",
-      "name": "@美团技术团队",
-      "favicon": "/feeds/tech_meituan_com_c43bf0e0dd930bc7.ico"
-    },
-    {
       "title": "草莓第一次写真",
       "link": "https://www.skyue.com/26020120.html",
       "published": "2026-02-01 12:49:00",
@@ -1763,6 +1924,13 @@
       "published": "2026-02-01 00:00:00",
       "name": "@Tw93 Blog",
       "favicon": "/feeds/tw93_fun_9843080d5e0c03ca.ico"
+    },
+    {
+      "title": "Building Subscription System with Spring Boot | Custom JPA methods & JPQL Queries | Part 10",
+      "link": "https://www.youtube.com/watch?v=IgAE_CUfuLE",
+      "published": "2026-01-31 11:52:37",
+      "name": "@Sudarshan Shah - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_2051ca78298ffe6e.ico"
     },
     {
       "title": "hexo-rs：玩 Vibe Coding",
@@ -1786,6 +1954,13 @@
       "favicon": "/feeds/rsshub_bestblogs_dev_42995d2a92336d07.ico"
     },
     {
+      "title": "Upload, Store and Stream Videos with Spring Boot & AWS S3 | Postman | Part 9",
+      "link": "https://www.youtube.com/watch?v=4-3EUuqQ7Cc",
+      "published": "2026-01-26 11:30:29",
+      "name": "@Sudarshan Shah - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_2051ca78298ffe6e.ico"
+    },
+    {
       "title": "为什么 flutter 的字体在 iOS 系统上更「细」？",
       "link": "https://tech.qimao.com/wei-shi-yao-flutter-de-zi-ti-zai-ios-xi-tong-shang-geng-xi/",
       "published": "2026-01-26 02:10:02",
@@ -1807,6 +1982,13 @@
       "favicon": "/feeds/tw93_fun_9843080d5e0c03ca.ico"
     },
     {
+      "title": "8. Video Entity, DTO and AWS S3 setup | Refresh Token implementation",
+      "link": "https://www.youtube.com/watch?v=MgQXG83tdwU",
+      "published": "2026-01-23 12:40:56",
+      "name": "@Sudarshan Shah - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_2051ca78298ffe6e.ico"
+    },
+    {
       "title": "Stepping into Crazy AI World",
       "link": "https://www.sivalabs.in/stepping-into-crazy-ai-world/",
       "published": "2026-01-21 23:29:17",
@@ -1819,6 +2001,13 @@
       "published": "2026-01-20 12:00:00",
       "name": "@三五环",
       "favicon": "/feeds/rsshub_bestblogs_dev_42995d2a92336d07.ico"
+    },
+    {
+      "title": "7. Building Controllers for Register, Verify User and Login | Testing APIs with Postman",
+      "link": "https://www.youtube.com/watch?v=_EcYAlSTjS8",
+      "published": "2026-01-19 15:39:31",
+      "name": "@Sudarshan Shah - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_2051ca78298ffe6e.ico"
     },
     {
       "title": "草莓熟了",
@@ -1849,6 +2038,13 @@
       "favicon": "/feeds/www_pseudoyu_com_57d6ecebab1bb0a5.ico"
     },
     {
+      "title": "Complete Registration and Login with JWT & Email Verification | Part 6",
+      "link": "https://www.youtube.com/watch?v=6Fjl43Yxa98",
+      "published": "2026-01-13 15:28:46",
+      "name": "@Sudarshan Shah - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_2051ca78298ffe6e.ico"
+    },
+    {
       "title": "我的2025：新阶段",
       "link": "https://www.skyue.com/26011121.html",
       "published": "2026-01-11 13:55:00",
@@ -1875,6 +2071,20 @@
       "published": "2026-01-10 08:30:26",
       "name": "@Huong Dan Java",
       "favicon": "/feeds/huongdanjava_com_80ebb4e293eb6645.ico"
+    },
+    {
+      "title": "5. Writing Configuration and Utility classes for S3, Email, JWT and Auth",
+      "link": "https://www.youtube.com/watch?v=Iobv4CEgLf0",
+      "published": "2026-01-09 11:38:47",
+      "name": "@Sudarshan Shah - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_2051ca78298ffe6e.ico"
+    },
+    {
+      "title": "4. Understanding JPA Entities and Repositories, DTO classes",
+      "link": "https://www.youtube.com/watch?v=3uarZyW431k",
+      "published": "2026-01-07 14:15:56",
+      "name": "@Sudarshan Shah - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_2051ca78298ffe6e.ico"
     },
     {
       "title": "2025 的号与外",
@@ -1905,6 +2115,13 @@
       "favicon": "/feeds/api_joshlong_com_181686d7964bc476.ico"
     },
     {
+      "title": "3. Setting up the Mega Project for learning backend",
+      "link": "https://www.youtube.com/watch?v=HXMFPaFMdBg",
+      "published": "2026-01-05 13:16:31",
+      "name": "@Sudarshan Shah - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_2051ca78298ffe6e.ico"
+    },
+    {
       "title": "The Power of Value Objects",
       "link": "https://www.sivalabs.in/blog/the-power-of-value-objects/",
       "published": "2026-01-03 23:29:17",
@@ -1917,6 +2134,13 @@
       "published": "2026-01-03 22:02:00",
       "name": "@Rss Feed - 苏洋博客",
       "favicon": "/feeds/soulteary_com_a5f60b76fca87b33.ico"
+    },
+    {
+      "title": "2. How Spring Boot works under the hood? | First Spring Boot App",
+      "link": "https://www.youtube.com/watch?v=lrYnC_wtgz8",
+      "published": "2026-01-03 11:30:57",
+      "name": "@Sudarshan Shah - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_2051ca78298ffe6e.ico"
     },
     {
       "title": "Introduction to Model Context Protocol",
@@ -2339,11 +2563,32 @@
       "favicon": "/feeds/vladmihalcea_com_16d1a0395c43a507.ico"
     },
     {
+      "title": "Junie - An AI Coding Agent by Jetbrains",
+      "link": "https://www.youtube.com/watch?v=V_6P9ie077Q",
+      "published": "2025-05-11 14:04:12",
+      "name": "@Programming Techie - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_95da95799f4dd4cd.ico"
+    },
+    {
       "title": "河南行拾遗",
       "link": "https://frostming.com/posts/2025/henan/",
       "published": "2025-05-11 00:00:00",
       "name": "@Frost's Blog",
       "favicon": "/feeds/frostming_com_50393b8a2dc4f344.ico"
+    },
+    {
+      "title": "OpenAI Function Calling - AI Agents SDK",
+      "link": "https://www.youtube.com/watch?v=NT_ApmD_JPo",
+      "published": "2025-04-30 23:08:53",
+      "name": "@webdecoded - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_2950669240493e69.ico"
+    },
+    {
+      "title": "Build AI Agents in 33 minutes - NEW OpenAI SDK",
+      "link": "https://www.youtube.com/watch?v=ho7ZliXuJLk",
+      "published": "2025-04-23 13:45:38",
+      "name": "@webdecoded - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_2950669240493e69.ico"
     },
     {
       "title": "只聊感情，不聊技术（三）",
@@ -2381,6 +2626,13 @@
       "favicon": "/feeds/api_joshlong_com_181686d7964bc476.ico"
     },
     {
+      "title": "Build & Deploy React Admin Dashboard - Role-based Authorization, TypeScript, Nextjs, TailwindCSS",
+      "link": "https://www.youtube.com/watch?v=2jgdkjnKCXs",
+      "published": "2025-04-02 02:35:29",
+      "name": "@webdecoded - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_2950669240493e69.ico"
+    },
+    {
       "title": "Sorcery with WebAssembly, GraalVM, and Java!",
       "link": "https://joshlong.com/jl/blogpost/my-first-java-script-script-with-graalvm-and-webassembly.html",
       "published": "2025-03-28 00:00:00",
@@ -2409,11 +2661,25 @@
       "favicon": "/feeds/soulteary_com_a5f60b76fca87b33.ico"
     },
     {
+      "title": "Spring Boot AI RAG ( Retrieval Augmented Generation) Tutorial",
+      "link": "https://www.youtube.com/watch?v=SmDZV9_nAdY",
+      "published": "2025-03-19 21:32:46",
+      "name": "@Programming Techie - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_95da95799f4dd4cd.ico"
+    },
+    {
       "title": "How to map the Oracle TIMESTAMP WITH TIME ZONE with JPA",
       "link": "https://vladmihalcea.com/oracle-timestamp-with-time-zone-jpa/",
       "published": "2025-03-18 16:21:37",
       "name": "@Vlad Mihalcea",
       "favicon": "/feeds/vladmihalcea_com_16d1a0395c43a507.ico"
+    },
+    {
+      "title": "Spring Boot Caching Tutorial using Redis",
+      "link": "https://www.youtube.com/watch?v=j65P_-yOX8g",
+      "published": "2025-03-11 17:58:01",
+      "name": "@Programming Techie - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_95da95799f4dd4cd.ico"
     },
     {
       "title": "再也别问 Singleton 了好吗？",
@@ -2449,6 +2715,13 @@
       "published": "2025-01-09 23:29:17",
       "name": "@Blogs on SivaLabs",
       "favicon": "/feeds/www_sivalabs_in_30f8ca319a651c2b.ico"
+    },
+    {
+      "title": "Build a Portfolio & Blog Website - NextJS Tutorial w/ React, Tailwind, Headless CMS, Deployment",
+      "link": "https://www.youtube.com/watch?v=K-hGb9W6wHc",
+      "published": "2025-01-08 23:32:24",
+      "name": "@webdecoded - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_2950669240493e69.ico"
     },
     {
       "title": "Spring Data JPA és a Blaze-Persistence",
@@ -2500,6 +2773,13 @@
       "favicon": "/feeds/rsshub_bestblogs_dev_cc99a81d98c464d2.ico"
     },
     {
+      "title": "Build & Deploy AI Language Translator App - Gemini AI, React, Neon DB, Nextjs, Tailwind",
+      "link": "https://www.youtube.com/watch?v=Rck5ZoqpuEU",
+      "published": "2024-12-13 06:02:37",
+      "name": "@webdecoded - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_2950669240493e69.ico"
+    },
+    {
       "title": "荐书：The Blind Watchmaker",
       "link": "https://1byte.io/articles/the-blind-watchmaker/",
       "published": "2024-11-19 00:00:00",
@@ -2512,6 +2792,34 @@
       "published": "2024-11-15 23:29:17",
       "name": "@Blogs on SivaLabs",
       "favicon": "/feeds/www_sivalabs_in_30f8ca319a651c2b.ico"
+    },
+    {
+      "title": "Spring Boot Websocket Chat Application with DragonflyDB",
+      "link": "https://www.youtube.com/watch?v=Cj7qqq9L1kU",
+      "published": "2024-11-12 13:00:27",
+      "name": "@Programming Techie - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_95da95799f4dd4cd.ico"
+    },
+    {
+      "title": "Build a Newsletter Application with NextJS, Cloudflare, Payload CMS, Resend",
+      "link": "https://www.youtube.com/watch?v=IpjNjAJrs0s",
+      "published": "2024-11-01 02:39:08",
+      "name": "@webdecoded - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_2950669240493e69.ico"
+    },
+    {
+      "title": "Build Cloudflare Queues - scaling out your app & deploying large batch processes",
+      "link": "https://www.youtube.com/watch?v=h7sXGgQDBHA",
+      "published": "2024-11-01 02:38:43",
+      "name": "@webdecoded - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_2950669240493e69.ico"
+    },
+    {
+      "title": "Cloudflare Workers Tutorial - Intro & Deployment",
+      "link": "https://www.youtube.com/watch?v=1gX0uavithA",
+      "published": "2024-10-29 04:38:19",
+      "name": "@webdecoded - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_2950669240493e69.ico"
     },
     {
       "title": "EP 62. Google Deepmind 与LLM研究员深度解读OpenAI o1 及LLM+强化学习新范式",
@@ -2542,6 +2850,34 @@
       "favicon": "/feeds/www_sivalabs_in_30f8ca319a651c2b.ico"
     },
     {
+      "title": "Distributed Tracing for Spring Boot applications using Lumigo",
+      "link": "https://www.youtube.com/watch?v=135r7xfjbDA",
+      "published": "2024-08-21 16:44:03",
+      "name": "@Programming Techie - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_95da95799f4dd4cd.ico"
+    },
+    {
+      "title": "Spring Boot 3 Microservices with Kubernetes and Angular Complete Course in 7 Hours",
+      "link": "https://www.youtube.com/watch?v=yn_stY3HCr8",
+      "published": "2024-08-05 06:07:23",
+      "name": "@Programming Techie - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_95da95799f4dd4cd.ico"
+    },
+    {
+      "title": "Spring Boot Microservices Kubernetes Tutorial Part 13 - Deploy to Kubernetes",
+      "link": "https://www.youtube.com/watch?v=Ob6n2AlDqEA",
+      "published": "2024-08-04 08:40:30",
+      "name": "@Programming Techie - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_95da95799f4dd4cd.ico"
+    },
+    {
+      "title": "Build a SaaS Application with NextJs, Stripe, Shadcn UI, TypeScript, Database Functions, Drizzle",
+      "link": "https://www.youtube.com/watch?v=wSHwm29QJzI",
+      "published": "2024-08-02 21:25:55",
+      "name": "@webdecoded - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_2950669240493e69.ico"
+    },
+    {
       "title": "Események a Spring Modulith-ban",
       "link": "https://www.jtechlog.hu/2024/07/24/spring-modulith-esemenyek.html",
       "published": "2024-07-24 08:00:00",
@@ -2554,6 +2890,13 @@
       "published": "2024-07-16 08:00:00",
       "name": "@JTechLog - Viczián István magyar nyelvű Java blogja",
       "favicon": "/feeds/feeds_feedburner_com_884a13546e12a02f.ico"
+    },
+    {
+      "title": "Spring Boot Microservices Tutorial Part 12 - Observability with Grafana Stack",
+      "link": "https://www.youtube.com/watch?v=ILOGEFkdfqU",
+      "published": "2024-07-07 10:17:11",
+      "name": "@Programming Techie - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_95da95799f4dd4cd.ico"
     },
     {
       "title": "OAuth 2.0 támogatás a Spring Boot 3.3-ban és a Pécs IT Meetup",
@@ -2577,11 +2920,25 @@
       "favicon": "/feeds/1byte_io_5ba80ae77c5bb6c1.ico"
     },
     {
+      "title": "Spring Boot Microservices Tutorial Part 11 - Integrating Kafka with Schema Registry",
+      "link": "https://www.youtube.com/watch?v=BObDQv_sCb4",
+      "published": "2024-06-23 12:01:00",
+      "name": "@Programming Techie - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_95da95799f4dd4cd.ico"
+    },
+    {
       "title": "浅谈 Apple Intelligence",
       "link": "https://1byte.io/articles/apple-intelligence/",
       "published": "2024-06-13 00:00:00",
       "name": "@0x01 byte",
       "favicon": "/feeds/1byte_io_5ba80ae77c5bb6c1.ico"
+    },
+    {
+      "title": "Spring Boot Microservices Tutorial Part 10 - Setup Angular App",
+      "link": "https://www.youtube.com/watch?v=6ar-_3ZuOr0",
+      "published": "2024-06-09 17:06:47",
+      "name": "@Programming Techie - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_95da95799f4dd4cd.ico"
     },
     {
       "title": "2024 年，我为什么开始为搜索付费",
@@ -2598,11 +2955,39 @@
       "favicon": "/feeds/1byte_io_5ba80ae77c5bb6c1.ico"
     },
     {
+      "title": "Mega Spring Boot Bundle Content Sale (Expires on 27th of February)",
+      "link": "https://www.youtube.com/watch?v=0SsmCZeGUI0",
+      "published": "2024-02-15 09:09:17",
+      "name": "@Philip Riecks - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_f283a53ccee879fd.ico"
+    },
+    {
       "title": "Hexagonal Architecture With Spring Boot",
       "link": "https://www.arhohuttunen.com/hexagonal-architecture-spring-boot/",
       "published": "2023-03-20 00:00:00",
       "name": "@Shouldn't Be Hard",
       "favicon": "/feeds/www_arhohuttunen_com_b3cc870244818c51.ico"
+    },
+    {
+      "title": "Announcement 📢 Testing Spring Boot Applications Masterclass Course 3.0 Revamp (30% Discount)",
+      "link": "https://www.youtube.com/watch?v=TFc8QVZFBnw",
+      "published": "2023-03-10 16:10:05",
+      "name": "@Philip Riecks - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_f283a53ccee879fd.ico"
+    },
+    {
+      "title": "Spring Boot Testing Masterclass Preview Lesson: Course Application Architecture",
+      "link": "https://www.youtube.com/watch?v=5Q7BWcCdOcc",
+      "published": "2023-03-10 08:47:47",
+      "name": "@Philip Riecks - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_f283a53ccee879fd.ico"
+    },
+    {
+      "title": "Spring Boot Testing Masterclass Preview Lesson: Short Application Walkthrough",
+      "link": "https://www.youtube.com/watch?v=QlRTjfPtYic",
+      "published": "2023-03-10 08:42:33",
+      "name": "@Philip Riecks - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_f283a53ccee879fd.ico"
     },
     {
       "title": "Hexagonal Architecture Explained",
@@ -2647,6 +3032,13 @@
       "favicon": "/feeds/tech_youzan_com_9f45551d47de6b8c.ico"
     },
     {
+      "title": "Automatic Large Scale Java Code Refactoring with OpenRewrite",
+      "link": "https://www.youtube.com/watch?v=pD7R58VpS5Q",
+      "published": "2022-03-29 07:30:12",
+      "name": "@Philip Riecks - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_f283a53ccee879fd.ico"
+    },
+    {
       "title": "特性团队中的 DoD 右移实践",
       "link": "https://tech.youzan.com/dod-practise/",
       "published": "2022-03-23 03:18:52",
@@ -2680,7 +3072,35 @@
       "published": "2022-02-09 07:16:32",
       "name": "@有赞技术团队",
       "favicon": "/feeds/tech_youzan_com_9f45551d47de6b8c.ico"
+    },
+    {
+      "title": "More Productive Java Testing With IntelliJ Live Templates",
+      "link": "https://www.youtube.com/watch?v=gDJZNwY4Z7o",
+      "published": "2021-11-28 10:12:16",
+      "name": "@Philip Riecks - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_f283a53ccee879fd.ico"
+    },
+    {
+      "title": "Testing Email Sending for Spring Boot Applications With GreenMail (Sandbox Email Server)",
+      "link": "https://www.youtube.com/watch?v=MOODnDflO-M",
+      "published": "2021-10-30 08:19:38",
+      "name": "@Philip Riecks - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_f283a53ccee879fd.ico"
+    },
+    {
+      "title": "Stratospheric 1.0 Release Party | From Zero to Production with Spring Boot and AWS",
+      "link": "https://www.youtube.com/watch?v=oaWEKvVXucU",
+      "published": "2021-08-03 15:40:14",
+      "name": "@Philip Riecks - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_f283a53ccee879fd.ico"
+    },
+    {
+      "title": "Bootstrap a New Maven Project With Basic Testing Libraries In Less Than One Minute",
+      "link": "https://www.youtube.com/watch?v=FsBdgJVkteY",
+      "published": "2021-07-31 09:14:51",
+      "name": "@Philip Riecks - YouTube",
+      "favicon": "/feeds/rsshub_zhijun_io_f283a53ccee879fd.ico"
     }
   ],
-  "updated": "2026-05-08 06:07:30"
+  "updated": "2026-05-08 07:57:23"
 }
