@@ -48,7 +48,11 @@
   "pnpm": {
     "overrides": {
       "@minify-html/node": "0.18.1"
-    }
+    },
+    "ignoredBuiltDependencies": [
+      "esbuild",
+      "sharp"
+    ]
   },
   "devDependencies": {
     "@astrojs/check": "0.9.9",
