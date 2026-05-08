@@ -1,0 +1,8 @@
+# pnpm v11：依赖构建策略与 overrides 放在此文件（不再使用 package.json 的 pnpm 字段）
+# CI 使用 pnpm 11；须显式声明 allowBuilds，否则 ignored 脚本会触发 ERR_PNPM_IGNORED_BUILDS
+overrides:
+  "@minify-html/node": "0.18.1"
+
+allowBuilds:
+  esbuild: false
+  sharp: false

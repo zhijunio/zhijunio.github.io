@@ -45,15 +45,6 @@
     "strnum": "^2.2.0",
     "tailwindcss": "^4.1.8"
   },
-  "pnpm": {
-    "overrides": {
-      "@minify-html/node": "0.18.1"
-    },
-    "ignoredBuiltDependencies": [
-      "esbuild",
-      "sharp"
-    ]
-  },
   "devDependencies": {
     "@astrojs/check": "0.9.9",
     "@critters-rs/astro": "^1.2.0",
