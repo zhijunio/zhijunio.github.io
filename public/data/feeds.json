@@ -1,6 +1,13 @@
 {
   "items": [
     {
+      "title": "Aggregates in Domain-Driven Design",
+      "link": "https://www.arhohuttunen.com/domain-driven-design-aggregates/",
+      "published": "2026-05-09 00:00:00",
+      "name": "@Shouldn't Be Hard",
+      "favicon": "/feeds/www_arhohuttunen_com_b3cc870244818c51.ico"
+    },
+    {
       "title": "Become an AI Engineer | Enrollment Ends Soon",
       "link": "https://blog.bytebytego.com/p/enrollment-ends-soon-become-an-ai",
       "published": "2026-05-08 15:31:40",
@@ -2486,13 +2493,6 @@
       "favicon": "/feeds/www_arhohuttunen_com_b3cc870244818c51.ico"
     },
     {
-      "title": "Hexagonal Architecture Explained",
-      "link": "https://www.arhohuttunen.com/hexagonal-architecture/",
-      "published": "2023-01-17 00:00:00",
-      "name": "@Shouldn't Be Hard",
-      "favicon": "/feeds/www_arhohuttunen_com_b3cc870244818c51.ico"
-    },
-    {
       "title": "知识库检索匹配的服务化实践",
       "link": "https://tech.youzan.com/xiang-liang-hua-wen-ben-pi-pei-jian-suo-de-fu-wu-hua-shi-jian/",
       "published": "2022-10-28 07:02:54",
@@ -2563,5 +2563,5 @@
       "favicon": "/feeds/tech_youzan_com_9f45551d47de6b8c.ico"
     }
   ],
-  "updated": "2026-05-09 03:53:38"
+  "updated": "2026-05-09 06:26:27"
 }
