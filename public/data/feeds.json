@@ -1,6 +1,20 @@
 {
   "items": [
     {
+      "title": "Ben's Builds #3 - an email app",
+      "link": "https://www.bensbites.com/p/bens-builds-3-an-email-app",
+      "published": "2026-05-09 09:25:10",
+      "name": "@Ben's Bites",
+      "favicon": "/feeds/www_bensbites_com_96fe006ed5f7b38b.ico"
+    },
+    {
+      "title": "蒸馏 Google 工程基因：把高级工程师的判断力编码给 AI Agent",
+      "link": "https://atbug.com/distilling-google-engineering-dna-agent-skills/",
+      "published": "2026-05-09 08:05:15",
+      "name": "@乱世浮生",
+      "favicon": "/feeds/atbug_com_32618c21a3351a20.ico"
+    },
+    {
       "title": "Aggregates in Domain-Driven Design",
       "link": "https://www.arhohuttunen.com/domain-driven-design-aggregates/",
       "published": "2026-05-09 00:00:00",
@@ -806,13 +820,6 @@
       "favicon": "/feeds/houjoe_me_2edbd1b0b3a9f2d3.ico"
     },
     {
-      "title": "No Claude for Claws",
-      "link": "https://www.bensbites.com/p/no-claude-for-claws",
-      "published": "2026-04-07 13:15:47",
-      "name": "@Ben's Bites",
-      "favicon": "/feeds/www_bensbites_com_96fe006ed5f7b38b.ico"
-    },
-    {
       "title": "How to build an autonomous AI agent like OpenClaw (from scratch)",
       "link": "https://blog.algomaster.io/p/how-to-build-an-autonomous-ai-agent-like-openclaw",
       "published": "2026-04-07 04:20:00",
@@ -1105,13 +1112,6 @@
       "published": "2026-03-26 16:00:00",
       "name": "@Joe 的折腾日记",
       "favicon": "/feeds/houjoe_me_2edbd1b0b3a9f2d3.ico"
-    },
-    {
-      "title": "命令行四件套：fd/rg/fzf/bat",
-      "link": "https://atbug.com/cli-essentials-fd-rg-fzf-bat/",
-      "published": "2026-03-26 03:00:10",
-      "name": "@乱世浮生",
-      "favicon": "/feeds/atbug_com_32618c21a3351a20.ico"
     },
     {
       "title": "Claude在得物App数仓的深度集成与效能演进",
@@ -2563,5 +2563,5 @@
       "favicon": "/feeds/tech_youzan_com_9f45551d47de6b8c.ico"
     }
   ],
-  "updated": "2026-05-09 06:26:27"
+  "updated": "2026-05-09 09:42:46"
 }
