@@ -1,5 +1,5 @@
 {
-  "statistics_time": "2026-05-11 17:01:26",
+  "statistics_time": "2026-05-11 20:40:33",
   "stats": {
     "yesterday": {
       "totalActivities": 1,
@@ -8795,7 +8795,7 @@
       "maxHeartRate": 0,
       "calorie": 0,
       "elevationGain": 0.0,
-      "region": "湖北省武汉市江夏区",
+      "region": "未知路线",
       "weatherInfo": "",
       "dataType": "户外跑步",
       "name": "夜晚户外跑步",
@@ -8807,24 +8807,7 @@
       "vDOT": null,
       "trainingLoadScore": 26,
       "heartRateZone": 0,
-      "segments": [
-        {
-          "km": 1,
-          "averagePace": 501,
-          "averageSpeed": 7.19,
-          "averageHeartRate": 0,
-          "heartRateZone": 0,
-          "stepFrequency": 0
-        },
-        {
-          "km": 2,
-          "averagePace": 550,
-          "averageSpeed": 6.55,
-          "averageHeartRate": 0,
-          "heartRateZone": 0,
-          "stepFrequency": 0
-        }
-      ]
+      "segments": []
     },
     {
       "startTime": "2024-04-14 11:51:14",
