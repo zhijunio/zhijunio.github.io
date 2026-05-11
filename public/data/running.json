@@ -1,17 +1,17 @@
 {
-  "statistics_time": "2026-05-11 20:40:33",
+  "statistics_time": "2026-05-12 00:30:33",
   "stats": {
     "yesterday": {
-      "totalActivities": 1,
-      "totalDistance": 4.01,
-      "totalDuration": 0.49,
-      "averagePace": 442,
-      "averageHeartRate": 114,
-      "averageVdot": 23.7,
-      "bestVdot": 23.7,
-      "longestDistance": 4.01,
-      "totalTrainingLoadScore": 13,
-      "totalCalorie": 245
+      "totalActivities": 0,
+      "totalDistance": 0,
+      "totalDuration": 0,
+      "averagePace": 0,
+      "averageHeartRate": null,
+      "averageVdot": null,
+      "bestVdot": null,
+      "longestDistance": 0,
+      "totalTrainingLoadScore": 0,
+      "totalCalorie": 0
     },
     "today": {
       "totalActivities": 0,
@@ -8795,7 +8795,7 @@
       "maxHeartRate": 0,
       "calorie": 0,
       "elevationGain": 0.0,
-      "region": "未知路线",
+      "region": "湖北省武汉市江夏区",
       "weatherInfo": "",
       "dataType": "户外跑步",
       "name": "夜晚户外跑步",
@@ -8807,7 +8807,24 @@
       "vDOT": null,
       "trainingLoadScore": 26,
       "heartRateZone": 0,
-      "segments": []
+      "segments": [
+        {
+          "km": 1,
+          "averagePace": 501,
+          "averageSpeed": 7.19,
+          "averageHeartRate": 0,
+          "heartRateZone": 0,
+          "stepFrequency": 0
+        },
+        {
+          "km": 2,
+          "averagePace": 550,
+          "averageSpeed": 6.55,
+          "averageHeartRate": 0,
+          "heartRateZone": 0,
+          "stepFrequency": 0
+        }
+      ]
     },
     {
       "startTime": "2024-04-14 11:51:14",
