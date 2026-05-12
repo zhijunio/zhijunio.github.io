@@ -8,7 +8,7 @@ description: "Cloudflare Worker AI 接入尝试、addyosmani agent-skills、Clau
 favicon: "cloudflare.svg"
 ---
 
-本篇记录最近一周（2026-04-19 ～ 2026-04-26）的**输入、输出与思考。
+本篇记录最近一周（2026-04-19 ～ 2026-04-26）的输入、输出与思考。
 
 ## 本周摘要
 
