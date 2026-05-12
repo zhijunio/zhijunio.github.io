@@ -1,11 +1,39 @@
 {
   "items": [
     {
+      "title": "How Figma Upgraded Data Pipeline from Multi-Day Latency to Real-Time",
+      "link": "https://blog.bytebytego.com/p/how-figma-upgraded-data-pipeline",
+      "published": "2026-05-12 15:31:03",
+      "name": "@ByteByteGo Newsletter",
+      "favicon": "/feeds/blog_bytebytego_com_a9f456d1e25a66fe.ico"
+    },
+    {
+      "title": "Learn the system",
+      "link": "https://www.bensbites.com/p/learn-the-system",
+      "published": "2026-05-12 13:07:50",
+      "name": "@Ben's Bites",
+      "favicon": "/feeds/www_bensbites_com_96fe006ed5f7b38b.ico"
+    },
+    {
+      "title": "开源的透明度曾是护城河，AI 正在让它变成负担",
+      "link": "https://atbug.com/ai-era-opensource-vulnerability-disclosure-breaking-down/",
+      "published": "2026-05-12 12:55:25",
+      "name": "@乱世浮生",
+      "favicon": "/feeds/atbug_com_32618c21a3351a20.ico"
+    },
+    {
       "title": "2026-05-12日刊",
       "link": "https://hex2077.dev/docs/2026-05/2026-05-12/",
       "published": "2026-05-12 10:13:20",
       "name": "@AI资讯日报 RSS Feed",
       "favicon": "/feeds/justlovemaki_github_io_660978058ae7ef6c.ico"
+    },
+    {
+      "title": "Monolith vs Microservices vs Modular Monoliths",
+      "link": "https://blog.algomaster.io/p/monolith-vs-microservices-vs-modular-monoliths",
+      "published": "2026-05-12 04:10:14",
+      "name": "@AlgoMaster Newsletter",
+      "favicon": "/feeds/blog_algomaster_io_364e34913eb43f5f.ico"
     },
     {
       "title": "How Pinterest Built a Production MCP Ecosystem",
@@ -428,13 +456,6 @@
       "favicon": "/feeds/blog_einverne_info_2dfa8eb3ee62994c.ico"
     },
     {
-      "title": "How Stripe Detects Fraudulent Transactions Within 100 ms",
-      "link": "https://blog.bytebytego.com/p/how-stripe-detects-fraudulent-transactions",
-      "published": "2026-04-28 03:03:50",
-      "name": "@ByteByteGo Newsletter",
-      "favicon": "/feeds/blog_bytebytego_com_a9f456d1e25a66fe.ico"
-    },
-    {
       "title": "AI Coding 时代，好的编程习惯仍然重要",
       "link": "https://jolestar.com/ai-coding-good-programming-habits/",
       "published": "2026-04-27 21:32:11",
@@ -834,13 +855,6 @@
       "favicon": "/feeds/feeds_feedburner_com_50579811ddcd4b8c.ico"
     },
     {
-      "title": "Anthropic built a model too risky to release",
-      "link": "https://www.bensbites.com/p/anthropic-built-a-model-too-risky",
-      "published": "2026-04-09 13:05:10",
-      "name": "@Ben's Bites",
-      "favicon": "/feeds/www_bensbites_com_96fe006ed5f7b38b.ico"
-    },
-    {
       "title": "Claude Managed Agents 是什么，如何使用",
       "link": "https://blog.einverne.info/post/2026/04/claude-managed-agents.html",
       "published": "2026-04-09 05:00:00",
@@ -1126,13 +1140,6 @@
       "published": "2026-03-29 00:00:00",
       "name": "@Yiran's Blog",
       "favicon": "/feeds/blog_zhouyiran_link_05b9ef69660ad7c1.ico"
-    },
-    {
-      "title": "超越 Copilot Chat：用 SDK 打造专属 AI Agent（实战四场景）",
-      "link": "https://atbug.com/github-copilot-sdk-demo-four-scenarios/",
-      "published": "2026-03-28 23:48:59",
-      "name": "@乱世浮生",
-      "favicon": "/feeds/atbug_com_32618c21a3351a20.ico"
     },
     {
       "title": "Codex 的上下文压缩与连续性",
@@ -1672,13 +1679,6 @@
       "published": "2026-02-04 08:07:47",
       "name": "@七猫技术团队",
       "favicon": "/feeds/tech_qimao_com_48d71c819e6c5e56.ico"
-    },
-    {
-      "title": "7 Graph Algorithms You Should Know for Coding Interviews in 2026",
-      "link": "https://blog.algomaster.io/p/7-graph-algorithms-you-should-know",
-      "published": "2026-02-04 04:03:02",
-      "name": "@AlgoMaster Newsletter",
-      "favicon": "/feeds/blog_algomaster_io_364e34913eb43f5f.ico"
     },
     {
       "title": "No.217 请回答 2025：在世界的褶皱里，寻找内心的安宁",
@@ -2612,5 +2612,5 @@
       "favicon": "/feeds/tech_youzan_com_9f45551d47de6b8c.ico"
     }
   ],
-  "updated": "2026-05-12 04:03:31"
+  "updated": "2026-05-12 23:17:55"
 }
