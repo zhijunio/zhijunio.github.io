@@ -97,12 +97,12 @@ export const SITE = {
    *
    * - **enabled**：为 false 时不输出 og:image、twitter:image 及 JSON-LD 中的文章 image
    * - **dynamic**：为 true 时在构建阶段用 Satori 生成 `/og/` 下各路由 PNG，且未传 `ogImage` 时默认图按当前页 URL 指向 `/og/...`；为 false 时不生成 PNG，默认一律用 **defaultImage**
-   * - **defaultImage**：根相对路径（如 `/images/og.webp`，对应 `public/images/og.webp`）；Layout 会结合站点 origin 生成 og 绝对 URL，开发环境用当前 dev 域名
+   * - **defaultImage**：根相对路径（如 `/og.webp`，对应 `public/og.webp`）；Layout 会结合站点 origin 生成 og 绝对 URL，开发环境用当前 dev 域名
    */
   og: {
     enabled: true,
     dynamic: false,
-    defaultImage: "/images/og.webp",
+    defaultImage: "/og.webp",
   },
 
   /**

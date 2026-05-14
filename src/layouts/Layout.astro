@@ -83,7 +83,7 @@ const useDynamicOg = ogEnabled && SITE.og.dynamic;
 /** 默认 OG 静态图：支持根相对路径或绝对 URL（与 SITE.og.defaultImage 一致） */
 const normalizeStaticOgDefault = (p: string) => {
   const t = p.trim();
-  if (!t) return "/images/og.webp";
+  if (!t) return "/og.webp";
   if (/^https?:\/\//i.test(t)) return t;
   return t.startsWith("/") ? t : `/${t}`;
 };
@@ -109,7 +109,7 @@ const siteOrigin = import.meta.env.DEV
 const socialImageURLString = (() => {
   if (!ogEnabled) return "";
   const ref = ogImage.trim();
-  if (!ref) return publicImageAbsoluteUrl("/images/og.webp", siteOrigin);
+  if (!ref) return publicImageAbsoluteUrl("/og.webp", siteOrigin);
   if (/^https?:\/\//i.test(ref)) return ref;
   return publicImageAbsoluteUrl(ref, siteOrigin);
 })();
@@ -187,7 +187,7 @@ const structuredData = resolvedSchemaType === "BlogPosting"
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="canonical" href={canonicalURL} />
     <link rel="preconnect" href="https://cos.zhijun.io" crossorigin />
     <meta name="generator" content={Astro.generator} />
