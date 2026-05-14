@@ -99,6 +99,7 @@ favicon: "weekly.svg"
   - **规则 2 · Simplicity First**：只写当下需要的最少代码；不做投机功能；不为一次性逻辑提前抽象。
   - **规则 3 · Surgical Changes**：只动必经之处；不顺带「优化」无关代码与格式；没坏就不修；风格跟现有代码走。
   - **规则 4 · Goal-Driven Execution**：先定义「怎样算成功」，再迭代到验证通过；少说步骤清单，多给成功标准。
+- mattpocock 的 skills [中文翻译版本](https://github.com/ninehills/mattpocock-skills)。 他的 skill 都特别简短，适合模型能力的发挥，比如他的handoff 也就一行。   
 
 ## 分享
 
