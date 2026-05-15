@@ -324,12 +324,6 @@ img {
   display: block;
 }
 
-#main-content :is(.post-content, .page-content) img {
-  max-width: 80%;
-  margin-left: auto;
-  margin-right: auto;
-}
-
 figure {
   margin: 1.5rem 0;
 }

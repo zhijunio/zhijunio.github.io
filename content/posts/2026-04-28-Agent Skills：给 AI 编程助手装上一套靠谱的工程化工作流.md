@@ -6,7 +6,6 @@ categories: [ "tech" ]
 tags: [ "sdd","spec","agent-skill" ]
 draft: false
 description: "AI 会写代码不等于会做工程。本文介绍 agent-skills —— 一套给 AI 编程助手（Claude Code、Cursor、Gemini CLI）使用的工程化工作流，涵盖需求定义、任务拆分、TDD、代码审查、CI/CD 等完整开发流程，附安装指南和实战用法。"
-favicon: "agent.svg"
 ---
 
 AI 编程工具现在已经很普遍了。
@@ -329,6 +328,14 @@ PR review 和上线前做。
 - 装完不会自动变强——你得正确接入工具、选对技能、在关键时刻明确调用
 - 全量加载会很重——所有技能都常驻上下文会导致膨胀、响应变慢、注意力分散。按场景加载，不是一锅端
 - 如果用的是自己的 fork，仓库 URL 和安装说明已经是自己的，不需要额外替换
+
+## 延伸阅读
+
+如果你想继续看这条线，可以顺手读下面几篇：
+
+- [Superpowers：让 AI 编程不再每次都从头开始](/posts/superpowers-discipline-ai-coding/)
+- [GSD：让 AI 不再写到一半就忘了的项目管理框架](/posts/gsd-get-shit-done-project-framework/)
+- [mattpocock/skills：安装、使用与快速上手示例](/posts/mattpocock-skills-guide/)
 
 ## 最后
 
