@@ -1,5 +1,5 @@
 {
-  "statistics_time": "2026-05-17 06:41:22",
+  "statistics_time": "2026-05-17 09:58:18",
   "stats": {
     "yesterday": {
       "totalActivities": 1,
@@ -14,67 +14,127 @@
       "totalCalorie": 431
     },
     "today": {
-      "totalActivities": 0,
-      "totalDistance": 0,
-      "totalDuration": 0,
-      "averagePace": 0,
+      "totalActivities": 1,
+      "totalDistance": 4.05,
+      "totalDuration": 0.49,
+      "averagePace": 434,
       "averageHeartRate": null,
-      "averageVdot": null,
-      "bestVdot": null,
-      "longestDistance": 0,
-      "totalTrainingLoadScore": 0,
-      "totalCalorie": 0
+      "averageVdot": 24.2,
+      "bestVdot": 24.2,
+      "longestDistance": 4.05,
+      "totalTrainingLoadScore": 69,
+      "totalCalorie": 286
     },
     "week": {
-      "totalActivities": 3,
-      "totalDistance": 19.1,
-      "totalDuration": 2.23,
-      "averagePace": 420,
+      "totalActivities": 4,
+      "totalDistance": 23.15,
+      "totalDuration": 2.72,
+      "averagePace": 423,
       "averageHeartRate": 125,
-      "averageVdot": 26.1,
+      "averageVdot": 25.6,
       "bestVdot": 27.0,
       "longestDistance": 7.07,
-      "totalTrainingLoadScore": 131,
-      "totalCalorie": 1279
+      "totalTrainingLoadScore": 200,
+      "totalCalorie": 1565
     },
     "month": {
-      "totalActivities": 9,
-      "totalDistance": 53.31,
-      "totalDuration": 6.52,
-      "averagePace": 440,
+      "totalActivities": 10,
+      "totalDistance": 57.37,
+      "totalDuration": 7.0,
+      "averagePace": 439,
       "averageHeartRate": 133,
-      "averageVdot": 24.7,
+      "averageVdot": 24.6,
       "bestVdot": 27.0,
       "longestDistance": 14.02,
-      "totalTrainingLoadScore": 561,
-      "totalCalorie": 4201
+      "totalTrainingLoadScore": 630,
+      "totalCalorie": 4487
     },
     "year": {
-      "totalActivities": 109,
-      "totalDistance": 498.69,
-      "totalDuration": 63.05,
+      "totalActivities": 110,
+      "totalDistance": 502.74,
+      "totalDuration": 63.54,
       "averagePace": 455,
       "averageHeartRate": 140,
       "averageVdot": 24.1,
       "bestVdot": 31.3,
       "longestDistance": 14.02,
-      "totalTrainingLoadScore": 8247,
-      "totalCalorie": 42923
+      "totalTrainingLoadScore": 8316,
+      "totalCalorie": 43209
     },
     "total": {
-      "totalActivities": 274,
-      "totalDistance": 1087.02,
-      "totalDuration": 138.81,
+      "totalActivities": 275,
+      "totalDistance": 1091.07,
+      "totalDuration": 139.3,
       "averagePace": 460,
       "averageHeartRate": 139,
       "averageVdot": 23.9,
       "bestVdot": 74.8,
       "longestDistance": 15.23,
-      "totalTrainingLoadScore": 17836,
-      "totalCalorie": 45730
+      "totalTrainingLoadScore": 17905,
+      "totalCalorie": 46016
     }
   },
   "runs": [
+    {
+      "startTime": "2026-05-17 07:42:29",
+      "endTime": "2026-05-17 08:11:48",
+      "type": "running",
+      "distance": 4.05,
+      "distanceMeters": 4051.8,
+      "duration": 1759,
+      "averagePace": 434,
+      "averageSpeed": 8.2,
+      "averageHeartRate": 0,
+      "maxHeartRate": 0,
+      "calorie": 286,
+      "elevationGain": 12.7,
+      "region": "湖北省武汉市新洲区",
+      "weatherInfo": "25°C 61%",
+      "dataType": "户外跑步",
+      "name": "夜晚户外跑步",
+      "stepFrequency": 168,
+      "totalSteps": 4931,
+      "strideLength": 0.0,
+      "averagePower": 171,
+      "maxPower": 171,
+      "vDOT": 24.2,
+      "trainingLoadScore": 69,
+      "heartRateZone": 0,
+      "segments": [
+        {
+          "km": 1,
+          "averagePace": 427,
+          "averageSpeed": 8.43,
+          "averageHeartRate": 0,
+          "heartRateZone": 0,
+          "stepFrequency": 170
+        },
+        {
+          "km": 2,
+          "averagePace": 426,
+          "averageSpeed": 8.45,
+          "averageHeartRate": 0,
+          "heartRateZone": 0,
+          "stepFrequency": 170
+        },
+        {
+          "km": 3,
+          "averagePace": 455,
+          "averageSpeed": 7.91,
+          "averageHeartRate": 0,
+          "heartRateZone": 0,
+          "stepFrequency": 165
+        },
+        {
+          "km": 4,
+          "averagePace": 426,
+          "averageSpeed": 8.45,
+          "averageHeartRate": 0,
+          "heartRateZone": 0,
+          "stepFrequency": 165
+        }
+      ]
+    },
     {
       "startTime": "2026-05-16 06:56:53",
       "endTime": "2026-05-16 07:30:27",
