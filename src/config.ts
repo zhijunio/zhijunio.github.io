@@ -130,16 +130,4 @@ export const SITE = {
 
   lazyListJsUrl: `${CDN_ORIGIN}/dist/lazy-list.js`,
 
-  /**
-   * 聚合 / Feeds 页（友联博客最新文章聚合，非本站 RSS 订阅地址）。
-   * 构建时读取 `public/data/feeds.json`，列表一次性输出全部条目。
-   */
-  feeds: {
-    enabled: true,
-    navLabel: "聚合",
-    /** 聚合 JSON 路径（CI 写入；页面构建时读取） */
-    dataSourceUrl: "/data/feeds.json",
-    /** 无头像时使用的默认图（根相对，对应 `public/favicons/rss.svg`） */
-    fallbackAvatarUrl: "/favicons/rss.svg",
-  },
 } as const;

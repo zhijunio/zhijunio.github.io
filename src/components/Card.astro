@@ -1,9 +1,7 @@
 ---
 import type { BlogLikeEntry } from "@/utils/contentCollections";
 import { ArticleTime } from "@/utils/articleTime";
-import { formatFeedDate, PostUtils } from "@/utils/postUtils";
-import { SITE } from "@/config";
-import { siteImageHref } from "@/utils/blogImages";
+import { PostUtils } from "@/utils/postUtils";
 
 /**
  * 组件属性接口
@@ -14,10 +12,9 @@ import { siteImageHref } from "@/utils/blogImages";
  * @property itemClass - 额外的 CSS 类名
  * @property hidden - 是否隐藏此卡片
  * @property dateFormat - 日期显示格式：relative（相对时间）或 absolute（绝对时间 YYYY-MM-DD）
- * @property listKind - article：第二行为时间；weekly：第二行为摘要（.pcard-desc）；聚合用 mode="feed"
+ * @property listKind - article：第二行为时间；weekly：第二行为摘要（.pcard-desc）
  */
-type BlogCardProps = BlogLikeEntry & {
-  mode?: "post";
+export type Props = BlogLikeEntry & {
   openInNewTab?: boolean;
   listKind?: "article" | "weekly";
   itemClass?: string;
@@ -25,174 +22,86 @@ type BlogCardProps = BlogLikeEntry & {
   dateFormat?: "relative" | "absolute";
 };
 
-interface FeedCardProps {
-  mode: "feed";
-  title: string;
-  link: string;
-  published: string;
-  blogName?: string;
-  favicon?: string;
-}
+const props = Astro.props as Props;
 
-export type Props = BlogCardProps | FeedCardProps;
+const openInNewTab = props.openInNewTab ?? true;
+const listKind = props.listKind ?? "article";
+const itemClass = props.itemClass;
+const hidden = props.hidden ?? false;
+const dateFormat = props.dateFormat ?? "relative";
+const { data, id, filePath, collection } = props;
 
-const rawProps = Astro.props as Props;
-const isFeedCard = rawProps.mode === "feed";
-
-const blogProps = rawProps as BlogCardProps;
-const feedProps = rawProps as FeedCardProps;
-
-const openInNewTab = !isFeedCard ? (blogProps.openInNewTab ?? true) : false;
-const listKind = !isFeedCard ? (blogProps.listKind ?? "article") : "feed";
-const itemClass = !isFeedCard ? blogProps.itemClass : undefined;
-const hidden = !isFeedCard ? (blogProps.hidden ?? false) : false;
-const dateFormat = !isFeedCard
-  ? (blogProps.dateFormat ?? "relative")
-  : "relative";
-const data = !isFeedCard ? blogProps.data : undefined;
-const id = !isFeedCard ? blogProps.id : undefined;
-const filePath = !isFeedCard ? blogProps.filePath : undefined;
-const collection = !isFeedCard ? blogProps.collection : undefined;
-
-const title = isFeedCard ? feedProps.title : data!.title;
-const date = !isFeedCard ? data!.date : undefined;
-const updated = !isFeedCard ? data!.updated : undefined;
-const timezone = !isFeedCard ? data!.timezone : undefined;
-const listFaviconSrc = isFeedCard
-  ? undefined
-  : PostUtils.resolveArticleListFaviconImgSrc(data!.favicon, data!.categories);
+const title = data.title;
+const date = data.date;
+const updated = data.updated;
+const timezone = data.timezone;
+const listFaviconSrc = PostUtils.resolveArticleListFaviconImgSrc(
+  data.favicon,
+  data.categories
+);
 
 const weeklyDescription =
-  !isFeedCard && listKind === "weekly"
+  listKind === "weekly"
     ? (
-        data!.description?.trim() ||
-        PostUtils.getDescription(blogProps.body ?? "")
+        data.description?.trim() || PostUtils.getDescription(props.body ?? "")
       ).trim()
     : "";
 
-const feedDate = isFeedCard ? formatFeedDate(feedProps.published) : "";
-const feedBlogName = isFeedCard ? (feedProps.blogName?.trim() ?? "") : "";
-
 const articleListTime =
-  !isFeedCard && listKind !== "weekly"
-    ? ArticleTime.getDisplay(date!, updated, timezone, dateFormat)
+  listKind !== "weekly"
+    ? ArticleTime.getDisplay(date, updated, timezone, dateFormat)
     : null;
-
-let avatarSrc = "";
-if (isFeedCard) {
-  avatarSrc = feedProps.favicon?.trim() || SITE.feeds.fallbackAvatarUrl || "";
-  if (
-    avatarSrc &&
-    !/^https?:\/\//.test(avatarSrc) &&
-    !avatarSrc.startsWith("//")
-  ) {
-    if (
-      !avatarSrc.startsWith("/images/") &&
-      !avatarSrc.startsWith("/feeds/") &&
-      !avatarSrc.startsWith("/favicons/")
-    ) {
-      const name = avatarSrc.replace(/^\//, "");
-      avatarSrc = `/feeds/${name}`;
-    }
-    avatarSrc = siteImageHref(avatarSrc);
-  }
-}
 ---
 
 <li class:list={["pcard", itemClass, { hidden }]}>
   <div class="pcard-inner">
     {
-      isFeedCard
-        ? avatarSrc && (
-            <img
-              src={avatarSrc}
-              alt=""
-              width={40}
-              height={40}
-              loading="lazy"
-              decoding="async"
-            />
-          )
-        : listFaviconSrc && (
-            <img
-              src={listFaviconSrc}
-              alt={title}
-              width={40}
-              height={40}
-              loading="lazy"
-              decoding="async"
-            />
-          )
+      listFaviconSrc && (
+        <img
+          src={listFaviconSrc}
+          alt={title}
+          width={40}
+          height={40}
+          loading="lazy"
+          decoding="async"
+        />
+      )
     }
     <div class="pcard-body">
+      <p class="pcard-title">
+        <a
+          href={PostUtils.getPath(
+            id,
+            filePath,
+            true,
+            date,
+            timezone,
+            data.slug,
+            collection
+          )}
+          target={openInNewTab ? "_blank" : undefined}
+          rel={openInNewTab ? "noopener noreferrer" : undefined}
+        >
+          {title}
+        </a>
+      </p>
       {
-        isFeedCard ? (
-          <p class="pcard-title">
-            {feedProps.link && feedProps.link !== "#" ? (
-              <a
-                href={feedProps.link}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {title || "无标题"}
-              </a>
-            ) : (
-              <span>{title || "无标题"}</span>
-            )}
-          </p>
-        ) : (
-          <p class="pcard-title">
-            <a
-              href={PostUtils.getPath(
-                id!,
-                filePath!,
-                true,
-                date!,
-                timezone,
-                data?.slug,
-                collection!
-              )}
-              target={openInNewTab ? "_blank" : undefined}
-              rel={openInNewTab ? "noopener noreferrer" : undefined}
+        listKind !== "weekly" && articleListTime && (
+          <div class="pcard-meta">
+            <time
+              class="pcard-meta__time"
+              datetime={articleListTime.iso}
+              title={articleListTime.titleAttr}
+              data-date-format={dateFormat}
             >
-              {title}
-            </a>
-          </p>
+              {articleListTime.display}
+            </time>
+          </div>
         )
       }
       {
-        isFeedCard ? (
-          <div class="pcard-meta">
-            <span data-feed-published={feedProps.published}>{feedDate}</span>
-            {feedBlogName && (
-              <>
-                <span aria-hidden="true">·</span>
-                <span>{feedBlogName}</span>
-              </>
-            )}
-          </div>
-        ) : (
-          <>
-            {listKind !== "weekly" && articleListTime && (
-              <div class="pcard-meta">
-                <time
-                  class="pcard-meta__time"
-                  datetime={articleListTime.iso}
-                  title={articleListTime.titleAttr}
-                  data-date-format={dateFormat}
-                >
-                  {articleListTime.display}
-                </time>
-              </div>
-            )}
-            {listKind === "weekly" && (
-              <>
-                {weeklyDescription && (
-                  <p class="pcard-desc">{weeklyDescription}</p>
-                )}
-              </>
-            )}
-          </>
+        listKind === "weekly" && weeklyDescription && (
+          <p class="pcard-desc">{weeklyDescription}</p>
         )
       }
     </div>
@@ -211,7 +120,7 @@ if (isFeedCard) {
     --pcard-title-line-height: 1.36;
     --pcard-title-lines: 2;
     --pcard-title-gap: 0.05rem;
-    /* 第二行：日期 / 聚合元信息 / 周报摘要 — 共用字号与行高 */
+    /* 第二行：日期 / 周报摘要 — 共用字号与行高 */
     --pcard-meta-size: 0.72rem;
     --pcard-meta-line-height: 1.36;
     /*

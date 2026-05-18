@@ -478,49 +478,11 @@ export function generateLlmsTxt(posts: BlogLikeEntry[]): string {
     "",
     "## Notes For LLMs",
     "- Canonical article URLs use top-level prefixes: /posts/, /briefs/, /wiki/ (match content type).",
-    "- These pages are the primary source of truth; tag, archive, feed, and search pages are navigational.",
+    "- These pages are the primary source of truth; tag, archive, and search pages are navigational.",
     "- Use /tags/ for topical browsing; there is no separate category taxonomy.",
   ];
 
   return `${lines.join("\n")}\n`;
-}
-
-// --- 聚合条目日期（Card mode=feed 与 formatFeedDate；构建时相对「当前」时间）---
-
-function formatDateYYYYMMDD(d: Date): string {
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, "0");
-  const day = String(d.getDate()).padStart(2, "0");
-  return `${y}-${m}-${day}`;
-}
-
-/** 今年内返回相对时间（中文），否则返回 YYYY-MM-DD */
-export function formatFeedDate(
-  value: string | number | null | undefined
-): string {
-  if (value == null || value === "") return "日期未知";
-  const d = new Date(value);
-  if (Number.isNaN(d.getTime()))
-    return typeof value === "string" ? value : "日期未知";
-  const now = new Date();
-  if (d.getFullYear() !== now.getFullYear()) return formatDateYYYYMMDD(d);
-  const diffMs = now.getTime() - d.getTime();
-  if (diffMs < 0) return formatDateYYYYMMDD(d);
-  if (diffMs < 60 * 1000) return "刚刚";
-  if (diffMs < 60 * 60 * 1000)
-    return `${Math.floor(diffMs / (60 * 1000))} 分钟前`;
-  if (diffMs < 24 * 60 * 60 * 1000)
-    return `${Math.floor(diffMs / (60 * 60 * 1000))} 小时前`;
-  const yesterday = new Date(now);
-  yesterday.setDate(yesterday.getDate() - 1);
-  if (
-    d.getFullYear() === yesterday.getFullYear() &&
-    d.getMonth() === yesterday.getMonth() &&
-    d.getDate() === yesterday.getDate()
-  ) {
-    return "昨天";
-  }
-  return `${Math.floor(diffMs / (24 * 60 * 60 * 1000))} 天前`;
 }
 
 // --- content/pages（about 等静态 Markdown 页）---
