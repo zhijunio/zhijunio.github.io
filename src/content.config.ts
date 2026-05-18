@@ -1,7 +1,7 @@
 /**
  * Astro 内容集合配置文件
  *
- * @fileoverview 三类内容：`posts`（技术/生活等）、`briefs`（周报）、`wiki`（知识库）；共享同一 Zod schema。
+ * @fileoverview 三类内容：`posts`（技术/生活等）、`briefs`（周报）；共享同一 Zod schema。
  *
  * @see https://docs.astro.build/en/guides/content-collections/
  */
@@ -16,9 +16,6 @@ export const POSTS_CONTENT_PATH = "content/posts";
 
 /** 周报 */
 export const BRIEFS_CONTENT_PATH = "content/briefs";
-
-/** 知识库*/
-export const WIKI_CONTENT_PATH = "content/wiki";
 
 /** @deprecated 使用 {@link POSTS_CONTENT_PATH} */
 export const BLOG_PATH = POSTS_CONTENT_PATH;
@@ -70,12 +67,4 @@ const briefs = defineCollection({
   schema: articleSchema,
 });
 
-const wiki = defineCollection({
-  loader: glob({
-    pattern: "**/[^_]*.{md,mdx}",
-    base: `./${WIKI_CONTENT_PATH}`,
-  }),
-  schema: articleSchema,
-});
-
-export const collections = { posts, briefs, wiki };
+export const collections = { posts, briefs };

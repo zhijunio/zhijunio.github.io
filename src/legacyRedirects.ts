@@ -27,7 +27,6 @@ export function buildLegacyPostsRedirects(): Record<string, string> {
   };
   const roots: { dir: string; section: string }[] = [
     { dir: "content/briefs", section: "briefs" },
-    { dir: "content/wiki", section: "wiki" },
   ];
   for (const { dir, section } of roots) {
     const full = path.join(process.cwd(), dir);

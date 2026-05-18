@@ -25,10 +25,6 @@ favicon: "openclaw.svg"
   
   - 公众号贴图的封面图使用 [封面生成器 · Cover Maker](https://zhijunio.github.io/article-tools/cover.html) 工具制作，其源码在 [github](https://github.com/zhijunio/article-tools)。
   
-- Wiki：发布一篇 wiki。
-
-  - [Skills](/wiki/skills)：整理一些我觉得不错的 skill。
-
 - 小龙虾。将 OpenClaw 迁移到 Hermes。在 claude 中输入下面提示词完成 Hermes 安装和配置迁移。如果你在 OpenClaw 里面是有了多
   Agent，则还需要额外的操作。因为 Hermes 是使用 Profile 来实现多 Agent。具体说明，可以参考官方文档。
 

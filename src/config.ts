@@ -129,5 +129,4 @@ export const SITE = {
   },
 
   lazyListJsUrl: `${CDN_ORIGIN}/dist/lazy-list.js`,
-
 } as const;
