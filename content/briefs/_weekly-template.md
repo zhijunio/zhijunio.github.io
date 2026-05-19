@@ -105,7 +105,7 @@ favicon: "weekly.svg"
 
 ## 分享
 
-我使用 [Linkding](https://linkding.zhijun.io/) 保存书签；有意思的输入多数会同步到 Telegram「[ZhiJun Share](https://t.me/s/zhijun_share)」。这里再挑一部分，方便当周报 / newsletter 用；部分条目也可拆成 **X 图文** 或 **小红书单条**。
+有意思的输入多数会同步到 Telegram「[ZhiJun Share](https://t.me/s/zhijun_share)」。这里再挑一部分，方便当周报 / newsletter 用；部分条目也可拆成 **X 图文** 或 **小红书单条**。
 
 - [项目或文章名](https://example.com)：【一句话说明为什么值得收藏】
 

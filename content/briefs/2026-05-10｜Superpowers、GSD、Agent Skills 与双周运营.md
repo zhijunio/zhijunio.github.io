@@ -103,7 +103,7 @@ favicon: "weekly.svg"
 
 ## 分享
 
-我使用 [Linkding](https://linkding.zhijun.io/) 保存书签；有意思的输入多数会同步到 Telegram「[ZhiJun Share](https://t.me/s/zhijun_share)」。这里再挑一部分，方便当周报 / newsletter 用；部分条目也可拆成 **X 图文** 或 **小红书单条**。
+有意思的输入多数会同步到 Telegram「[ZhiJun Share](https://t.me/s/zhijun_share)」。这里再挑一部分，方便当周报 / newsletter 用；部分条目也可拆成 **X 图文** 或 **小红书单条**。
 
 - [Thysrael/Horizon](https://github.com/Thysrael/Horizon)：AI 驱动的个人新闻雷达，可生成中英每日简报，适合主题跟踪与资讯聚合。
 - [Air: Multitask with agents, stay in control](https://air.dev/)：JetBrains 的 Agentic 开发环境，多代理并行、上下文互不打架，控制权仍在开发者侧。
