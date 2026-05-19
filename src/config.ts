@@ -16,7 +16,7 @@ export const SITE = {
   author: "ZhiJun",
   description:
     "记录 Java、Spring、MicroServices、Architecture、Kubernetes、DevOps、AI 编码工具、架构与个人周报的博客",
-  title: "ZhiJun Blog",
+  title: "ZhiJun's Blog",
 
   googleSiteVerification: "702mzR8WJvXKVdS3ergTkQEIWAMuwniGMAIeE6wPRhc",
   bingSiteVerification: "5995FAD202DE5A364D652266E4C4E0E0",
