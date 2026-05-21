@@ -1,5 +1,5 @@
 ---
-title: "Spring Security 与 OAuth2 发展过程"
+title: "Spring Security 与 OAuth2 演进史：三个版本阶段详解"
 date: 2023-08-15 08:00:00+08:00
 slug: spring-security-oauth2-history
 categories: [ "tech" ]

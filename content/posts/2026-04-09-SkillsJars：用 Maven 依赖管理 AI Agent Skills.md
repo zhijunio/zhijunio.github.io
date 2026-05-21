@@ -1,5 +1,5 @@
 ---
-title: "SkillsJars：用 Maven 依赖管理 AI Agent Skills"
+title: "SkillsJars 入门：用 Maven 依赖管理 AI Agent Skills"
 date: 2026-04-09 17:30:00+08:00
 slug: skillsjars-quickstart
 categories: [ "tech" ]

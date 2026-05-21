@@ -1,5 +1,5 @@
 ---
-title: "linkding 合并 linkding-cn 代码"
+title: "linkding 合并 linkding-cn：功能迁移与 Docker 打包实战"
 date: 2026-03-06 21:40:00+08:00
 slug: merge-linkding-cn-to-linkding
 categories: [ "tech" ]

@@ -1,5 +1,5 @@
 ---
-title: "2026-04-26｜Cloudflare AI、agent-skills 与飞书任务"
+title: "Cloudflare Worker AI 接入 + Agent Skills 配置实战"
 date: 2026-04-27 10:00:00+08:00
 slug: "20260426-week-review"
 tags: [ "ai", "claude-code", "skills" ]

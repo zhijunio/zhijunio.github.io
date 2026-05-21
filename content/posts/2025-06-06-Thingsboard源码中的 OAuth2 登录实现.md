@@ -1,5 +1,5 @@
 ---
-title: "ThingsBoard 源码中的 OAuth2 登录实现"
+title: "ThingsBoard OAuth2 登录实现：配置与源码解析"
 date: 2025-06-06 08:00:00+08:00
 slug: oauth2-client-login-in-thingsboard
 categories: [ "tech" ]

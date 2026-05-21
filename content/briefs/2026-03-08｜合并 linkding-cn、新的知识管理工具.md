@@ -1,5 +1,5 @@
 ---
-title: "2026-03-08｜合并 linkding-cn、新的知识管理工具"
+title: "合并 linkding-cn 代码 + 探索极简知识管理工具"
 date: 2026-03-09 19:30:00+08:00
 slug: "20260308-week-review"
 tags: [ "vps" ]

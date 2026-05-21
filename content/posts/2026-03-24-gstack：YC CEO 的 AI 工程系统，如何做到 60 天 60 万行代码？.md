@@ -1,5 +1,5 @@
 ---
-title: "gstack：YC CEO 的 AI 工程系统，如何做到 60 天 60 万行代码？"
+title: "gstack 拆解：YC CEO 的 AI 工程系统与 60 天 60 万行代码"
 date: 2026-03-24 14:40:00+08:00
 slug: gstack-skill
 categories: [ "tech" ]

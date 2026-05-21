@@ -1,5 +1,5 @@
 ---
-title: "WebSocket 学习资料与入门阅读清单"
+title: "WebSocket 学习指南：协议规范、API 与实战资源清单"
 date: 2024-05-10 08:00:00+08:00
 slug: all-things-about-websocket
 categories: [ "tech" ]

@@ -1,5 +1,5 @@
 ---
-title: "关于"
+title: "关于我：Java 开发者 zhijun 的个人博客"
 description: 关于 ZhiJun：开发背景、正在使用的工具、联系方式，以及这个博客的更新记录。
 ---
 

@@ -1,5 +1,5 @@
 ---
-title: "GitLab 安装与部署指南：使用 Docker"
+title: "Docker 部署 GitLab：完整安装与配置指南"
 date: 2024-06-26 08:00:00+08:00
 slug: install-gitlab
 categories: [ "tech" ]

@@ -1,5 +1,5 @@
 ---
-title: "ThingsBoard HTTP Transport 实现方式"
+title: "ThingsBoard HTTP Transport 详解：设备接入与自动注册"
 date: 2025-07-02 08:00:00+08:00
 slug: thingsboard-http-transport
 categories: [ "tech" ]

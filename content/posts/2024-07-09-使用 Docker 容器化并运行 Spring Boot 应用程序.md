@@ -1,5 +1,5 @@
 ---
-title: "使用 Docker 容器化并运行 Spring Boot 应用程序"
+title: "Docker 容器化 Spring Boot 应用：从开发到部署"
 date: 2024-07-09 09:00:00+08:00
 slug: docker-for-spring-boot
 categories: [ "tech" ]

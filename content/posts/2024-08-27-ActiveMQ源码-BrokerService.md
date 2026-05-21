@@ -1,5 +1,5 @@
 ---
-title: "ActiveMQ 源码：BrokerService 与 PersistenceAdapter"
+title: "ActiveMQ 源码解析：BrokerService 与持久化机制"
 date: 2024-08-27 08:00:00+08:00
 slug: activemq-source-code-broker-service
 categories: [ "tech" ]

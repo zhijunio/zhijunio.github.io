@@ -1,5 +1,5 @@
 ---
-title: "Obsidian 的 CEO 是如何做知识管理的"
+title: "Obsidian CEO 的知识管理方法：文件优先、内链与分形日记"
 date: 2026-03-31 13:40:00+08:00
 slug: how-obsidian-ceo-does-knowledge-management
 categories: [ "tech" ]

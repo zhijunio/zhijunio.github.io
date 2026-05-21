@@ -1,5 +1,5 @@
 ---
-title: "ThingsBoard 源码中的 GitHub Actions"
+title: "ThingsBoard 源码解读：GitHub Actions 自动化流程"
 date: 2024-12-03 08:00:00+08:00
 slug: github-actions-in-thingsboard
 categories: [ "tech" ]

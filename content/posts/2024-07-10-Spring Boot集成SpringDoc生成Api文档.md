@@ -1,5 +1,5 @@
 ---
-title: "Spring Boot 集成 SpringDoc 生成 API 文档"
+title: "Spring Boot 集成 SpringDoc：自动生成 OpenAPI 文档"
 date: 2024-07-10 09:00:00+08:00
 slug: springdoc-with-spring-boot
 categories: [ "tech" ]

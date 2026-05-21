@@ -1,5 +1,5 @@
 ---
-title: "在 GitHub CodeSpace 中安装和使用 OpenClaw"
+title: "GitHub Codespaces 部署 OpenClaw：云端运行 AI 助手"
 date: 2026-03-12 14:50:00+08:00
 slug: install-openclaw-in-github-codespace
 categories: [ "tech" ]

@@ -1,5 +1,5 @@
 ---
-title: "Spring Modulith 学习资料与入门索引"
+title: "Spring Modulith 入门：模块化 Spring Boot 3 架构设计"
 date: 2024-05-09 08:00:00+08:00
 slug: all-things-about-spring-modulith
 categories: [ "tech" ]

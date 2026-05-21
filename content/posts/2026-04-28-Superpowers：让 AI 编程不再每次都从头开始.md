@@ -1,5 +1,5 @@
 ---
-title: "Superpowers：让 AI 编程不再每次都从头开始"
+title: "Superpowers 框架实战：用流程规范代替 Prompt 调优"
 date: 2026-04-28 09:55:00+08:00
 slug: superpowers-discipline-ai-coding
 categories: [ "tech" ]

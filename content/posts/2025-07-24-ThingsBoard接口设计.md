@@ -1,5 +1,5 @@
 ---
-title: "ThingsBoard 接口设计整理"
+title: "ThingsBoard 接口设计大全：REST、MQTT、HTTP 协议"
 date: 2025-07-24 09:00:00+08:00
 slug: thingsboard-api
 categories: [ "tech" ]

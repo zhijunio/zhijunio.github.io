@@ -1,5 +1,5 @@
 ---
-title: "Agent Skills：给 AI 编程助手装上一套靠谱的工程化工作流"
+title: "Agent Skills 实战：给 AI 编程助手装上工程化工作流"
 date: 2026-04-28 08:19:00+08:00
 slug: agent-skills-install-and-usage-guide
 categories: [ "tech" ]

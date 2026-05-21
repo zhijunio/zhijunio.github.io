@@ -1,5 +1,5 @@
 ---
-title: "macOS 使用 Chezmoi 管理 Dotfiles 实战"
+title: "macOS 用 Chezmoi 管理 Dotfiles：加密、同步与新机恢复"
 date: 2026-04-01 17:00:00+08:00
 slug: chezmoi-dotfiles-macos
 categories: [ "tech" ]

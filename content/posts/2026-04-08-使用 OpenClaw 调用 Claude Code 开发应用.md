@@ -1,5 +1,5 @@
 ---
-title: "使用 OpenClaw 调用 Claude Code 开发应用"
+title: "OpenClaw 调用 Claude Code 实战：用 AI Agent 开发 Todo List 应用"
 date: 2026-04-08 14:20:00+08:00
 slug: create-app-with-claude-code-in-openclaw
 categories: [ "tech" ]
