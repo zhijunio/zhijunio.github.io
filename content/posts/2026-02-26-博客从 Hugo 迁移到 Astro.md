@@ -1,5 +1,5 @@
 ---
-title: "博客从 Hugo 迁移到 Astro"
+title: "Hugo 迁移 Astro 实战：博客重构完整记录"
 date: 2026-02-26 06:00:00+08:00
 slug: from-hugo-to-astro-blog
 categories: [ "tech" ]

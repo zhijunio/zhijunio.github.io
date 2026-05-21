@@ -1,5 +1,5 @@
 ---
-title: "ThingsBoard 源码中的代码片段整理"
+title: "ThingsBoard 源码阅读笔记：关键代码片段整理"
 date: 2025-04-30 08:00:00+08:00
 slug: codes-in-thingsboard
 categories: [ "tech" ]

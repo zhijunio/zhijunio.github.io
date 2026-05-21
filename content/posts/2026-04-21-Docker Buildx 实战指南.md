@@ -1,5 +1,5 @@
 ---
-title: Docker Buildx 实战指南
+title: "Docker Buildx 实战：多架构构建、缓存优化与性能调优"
 date: 2026-04-21 13:30:00+08:00
 slug: docker-buildx-guide
 categories: ["tech"]

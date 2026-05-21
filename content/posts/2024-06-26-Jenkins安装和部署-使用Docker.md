@@ -1,5 +1,5 @@
 ---
-title: "Jenkins 安装与部署指南：使用 Docker"
+title: "Docker 安装 Jenkins：数据持久化与首次启动配置"
 date: 2024-06-26 09:00:00+08:00
 slug: install-jenkins
 categories: [ "tech" ]

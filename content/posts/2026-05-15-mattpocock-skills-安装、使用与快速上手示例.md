@@ -1,5 +1,5 @@
 ---
-title: "mattpocock/skills：安装、使用与快速上手示例"
+title: "mattpocock/skills 安装与使用：让 AI 助手会干活"
 date: 2026-05-15 16:50:00+08:00
 slug: mattpocock-skills-guide
 categories: [ "tech" ]

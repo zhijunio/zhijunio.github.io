@@ -1,5 +1,5 @@
 ---
-title: "Spring AI 对话记忆 + SSE 流式回复"
+title: "Spring AI SSE 流式回复：基于对话记忆的实时逐字输出"
 date: 2026-01-04 08:00:00+08:00
 slug: spring-ai-chat-memory-sse
 categories: [ "tech" ]

@@ -1,5 +1,5 @@
 ---
-title: "基于 Linkding 和 RSS 的个人知识管理系统"
+title: "RSS + Linkding 知识管理系统：输入、收藏到输出的完整链路"
 date: 2026-03-23 18:40:00+08:00
 slug: linkding-rss-personal-knowledge-management-system
 categories: [ "tech" ]

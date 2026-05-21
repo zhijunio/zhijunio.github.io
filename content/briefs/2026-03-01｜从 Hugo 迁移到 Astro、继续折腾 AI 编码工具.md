@@ -1,5 +1,5 @@
 ---
-title: "2026-03-01｜从 Hugo 迁移到 Astro、AI 编码工具"
+title: "博客从 Hugo 迁移到 Astro 实战 + AI 编码工具体验"
 date: 2026-03-05 21:00:00+08:00
 slug: "20260301-week-review"
 tags: [ "astro" ]

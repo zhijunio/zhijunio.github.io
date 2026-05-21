@@ -1,5 +1,5 @@
 ---
-title: "将 Maven 站点发布到 GitHub Pages"
+title: "Maven 站点发布到 GitHub Pages 完整教程"
 date: 2024-07-18 08:00:00+08:00
 slug: publishing-a-maven-site-to-github-pages
 categories: [ "tech" ]

@@ -1,5 +1,5 @@
 ---
-title: "MicroProfile 学习资料与入门索引"
+title: "MicroProfile 入门：Java 微服务规范体系与学习资源"
 date: 2023-12-14 08:00:00+08:00
 slug: all-things-about-microprofile
 categories: [ "tech" ]

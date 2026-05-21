@@ -1,5 +1,5 @@
 ---
-title: "2026-04-12｜OpenClaw 迁移到 Hermes"
+title: "OpenClaw 迁移到 Hermes Agent + 博客评论系统切换"
 date: 2026-04-14 10:40:00+08:00
 slug: "20260412-week-review"
 tags: [ "ai", "openclaw", "hermes" ]

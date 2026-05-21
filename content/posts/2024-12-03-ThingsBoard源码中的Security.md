@@ -1,5 +1,5 @@
 ---
-title: "ThingsBoard 源码中的安全配置与 Security 模块"
+title: "ThingsBoard 安全模块详解：配置与权限设计"
 date: 2024-12-03 09:00:00+08:00
 slug: security-in-thingsboard
 categories: [ "tech" ]

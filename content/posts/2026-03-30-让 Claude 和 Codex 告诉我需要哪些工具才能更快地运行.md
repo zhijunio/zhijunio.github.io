@@ -1,5 +1,5 @@
 ---
-title: "让Claude 和 Codex 告诉我需要哪些工具才能更快地运行"
+title: "Claude Code 与 Codex 自查开发环境：补齐 AI 协作工具链"
 date: 2026-03-30 12:50:00+08:00
 slug: what-tools-it-needs-for-claude-codex
 categories: [ "tech" ]

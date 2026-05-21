@@ -1,5 +1,5 @@
 ---
-title: "Spring AI ChatClient API 介绍"
+title: "Spring AI ChatClient API 详解：调用链、模板与结构化输出"
 date: 2025-09-19 08:00:00+08:00
 slug: spring-ai-chat-client-api
 categories: [ "tech" ]

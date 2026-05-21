@@ -1,5 +1,5 @@
 ---
-title: "解析 agentic-expense-manager：Agentic 开发的 Spring Boot 脚手架"
+title: "agentic-expense-manager：Spring Boot Agentic 开发脚手架"
 date: 2026-05-19 14:20:00+08:00
 slug: agentic-expense-manager-learning-guide
 categories: [ "tech" ]

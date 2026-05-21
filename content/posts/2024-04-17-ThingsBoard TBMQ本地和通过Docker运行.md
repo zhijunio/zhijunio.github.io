@@ -1,5 +1,5 @@
 ---
-title: "ThingsBoard TBMQ 本地与 Docker 运行实践"
+title: "ThingsBoard TBMQ 本地运行与 Docker 部署实践"
 date: 2024-04-17 08:00:00+08:00
 slug: thingsboard-tbmq-local-docker-run
 categories: [ "tech" ]

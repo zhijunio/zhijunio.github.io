@@ -1,5 +1,5 @@
 ---
-title: "Spec-Kit 在 Cursor 中的安装和使用指南"
+title: "Cursor 中安装 Spec-Kit：规范驱动开发入门"
 date: 2025-09-29 08:00:00+08:00
 slug: spec-kit-with-cursor
 categories: [ "tech" ]

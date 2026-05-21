@@ -1,5 +1,5 @@
 ---
-title: "GitLab Runner 安装与部署指南"
+title: "GitLab Runner 安装与配置：搭建 CI/CD 执行环境"
 date: 2024-07-19 08:00:00+08:00
 slug: gitlab-runner-install
 categories: [ "tech" ]

@@ -1,5 +1,5 @@
 ---
-title: "2026-05-10｜Superpowers、GSD、Agent Skills 与双周运营"
+title: "AI Agent 工程化实战：Superpowers、GSD 与 Agent Skills"
 date: 2026-05-13 07:40:00+08:00
 slug: "20260510-weekly"
 tags: [ "ai", "skills", "cursor" ]

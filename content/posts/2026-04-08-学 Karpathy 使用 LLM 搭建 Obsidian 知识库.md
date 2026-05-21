@@ -1,5 +1,5 @@
 ---
-title: "学 Karpathy 使用 LLM 搭建 Obsidian 知识库"
+title: "用 LLM 搭建 Obsidian 知识库：学 Karpathy 的知识管理方法"
 date: 2026-04-08 22:50:00+08:00
 slug: build-llm-wiki-with-karpathy
 categories: [ "tech" ]

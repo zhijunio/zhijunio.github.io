@@ -1,5 +1,5 @@
 ---
-title: "基于 Spring AI 构建智能餐厅推荐系统：RAG 技术实战"
+title: "Spring AI + RAG 实战：基于真实数据的智能推荐"
 date: 2025-09-26 08:00:00+08:00
 slug: spring-ai-restaurant-showcase-rag
 categories: [ "tech" ]

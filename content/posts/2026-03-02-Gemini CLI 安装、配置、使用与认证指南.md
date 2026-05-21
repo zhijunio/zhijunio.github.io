@@ -1,5 +1,5 @@
 ---
-title: "Gemini CLI 安装、配置、使用与认证指南"
+title: "Gemini CLI 完全指南：安装、配置、认证与使用"
 date: 2026-03-02 15:00:00+08:00
 slug: gemini-cli-guide
 categories: [ "tech" ]

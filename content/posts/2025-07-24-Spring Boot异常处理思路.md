@@ -1,5 +1,5 @@
 ---
-title: "Spring Boot异常处理思路"
+title: "Spring Boot 统一异常处理：分类、响应格式与国际化"
 date: 2025-07-24 08:00:00+08:00
 slug: spring-exception
 categories: [ "tech" ]

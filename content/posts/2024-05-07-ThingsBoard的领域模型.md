@@ -1,5 +1,5 @@
 ---
-title: "ThingsBoard 领域模型解析"
+title: "ThingsBoard 领域模型详解：租户、设备、资产与数据关系"
 date: 2024-05-07 08:00:00+08:00
 slug: thingsboard-domain
 categories: [ "tech" ]

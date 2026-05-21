@@ -1,5 +1,5 @@
 ---
-title: "在 Kubernetes 中安装 Cert Manager 并生成证书"
+title: "Kubernetes 安装 Cert Manager：自动签发与续订 TLS 证书"
 date: 2024-05-10 08:00:00+08:00
 slug: install-cert-manager
 tags: [ "kubernetes" ]

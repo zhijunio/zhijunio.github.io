@@ -1,5 +1,5 @@
 ---
-title: "Claude Code 安装、配置、使用与认证指南"
+title: "Claude Code 完全指南：安装、配置、认证与 OpenRouter 接入"
 date: 2026-03-05 20:30:00+08:00
 slug: claude-code-guide
 draft: false

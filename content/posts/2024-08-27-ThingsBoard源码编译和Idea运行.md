@@ -1,5 +1,5 @@
 ---
-title: "ThingsBoard 源码编译与 IDEA 运行"
+title: "ThingsBoard 源码编译与 IDEA 调试环境搭建"
 date: 2024-08-27 09:00:00+08:00
 slug: thingsboard-code-source-compile
 categories: [ "tech" ]

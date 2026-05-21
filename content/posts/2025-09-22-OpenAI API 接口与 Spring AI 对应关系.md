@@ -1,5 +1,5 @@
 ---
-title: "OpenAI API 接口与 Spring AI 对应关系"
+title: "OpenAI API 与 Spring AI 对照表：接口映射关系"
 date: 2025-09-22 08:00:00+08:00
 slug: openai-api-with-spring-ai
 categories: [ "tech" ]

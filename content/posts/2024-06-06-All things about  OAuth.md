@@ -1,5 +1,5 @@
 ---
-title: "OAuth 学习资料与入门索引"
+title: "OAuth 2.0 入门指南：授权协议核心概念与实践资源"
 date: 2024-06-06 08:00:00+08:00
 slug: all-things-about-oauth
 categories: [ "tech" ]
