@@ -8,7 +8,7 @@ draft: false
 description: "介绍 mattpocock/skills 的安装方式、常用技能和一个可直接照着做的快速上手示例，帮助你把 AI 编程助手从“会聊天”变成“会干活”。"
 ---
 
-![mattpocock-skills](01.png)
+![mattpocock-skills](01.webp)
 
 如果你已经在用 Claude Code、Codex 或其他支持 Skills 的 AI 编程助手，`mattpocock/skills` 是一个很值得试的仓库。
 
@@ -203,7 +203,7 @@ npx skills@latest add mattpocock/skills/diagnose
 
 在确认了这些问题之后，agent 就开始写代码了。写完代码之后，安装依赖、构建并启动应用。接着，使用 playwright 打开浏览器做测试。
 
-![ todo 页面.png](02.png)
+![ todo 页面](02.webp)
 
 测试成功之后，你可以选择：
 
@@ -211,7 +211,7 @@ npx skills@latest add mattpocock/skills/diagnose
 - 2. 再做一轮 UI 收紧
 - 3. 加基础测试
 
-![测试成功.png](03.png)
+![测试成功](03.webp)
 
 
 ### 第三步：用 TDD 开发第一条功能
@@ -222,7 +222,7 @@ npx skills@latest add mattpocock/skills/diagnose
 /tdd
 ```
 
-![开写测试.png](04.png)
+![开写测试](04.webp)
 
 然后让它先做“新增任务”这一条最小链路。
 
