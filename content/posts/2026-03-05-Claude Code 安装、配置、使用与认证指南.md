@@ -3,9 +3,7 @@ title: "Claude Code 完全指南：安装、配置、认证与 OpenRouter 接入
 date: 2026-03-05 20:30:00+08:00
 slug: claude-code-guide
 draft: false
-categories: [ "tech" ]
 tags: [ "ai", "claude" ]
-favicon: "claude.svg"
 description: "全面介绍 Claude Code 的安装、配置、使用与认证方式，并补充订阅方案和通过 OpenRouter 接入的实践路径。"
 ---
 

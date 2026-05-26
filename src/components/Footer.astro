@@ -1,28 +1,21 @@
 ---
 /**
- * 页脚组件
- *
- * @fileoverview 参考 zdyxry.github.io Footer：社交图标区 + 版权/备案/自定义链接
- * @see https://github.com/zdyxry/zdyxry.github.io/blob/astro/src/components/Footer.astro
+ * 页脚组件（极简）
  */
-
 import { SITE } from "@/config";
 import SocialIcon from "@/components/SocialIcon.astro";
 
 export interface Props {
-  /** 是否移除顶部外边距 */
-  noMarginTop?: boolean;
-  /** 是否显示社交链接区 */
+  /** 是否显示社交链接 */
   showSocial?: boolean;
 }
 
 const currentYear = new Date().getFullYear();
-const { noMarginTop = false, showSocial = true } = Astro.props;
+const { showSocial = true } = Astro.props;
 
 const socialLinks = SITE.socialLinks ?? [];
 const hasSocial = showSocial && socialLinks.length > 0;
 
-/** 规范化链接：若为邮箱地址则补全 mailto:，避免被当作相对路径 */
 function normalizeSocialHref(url: string): string {
   if (url.startsWith("mailto:") || url.startsWith("http")) return url;
   if (url.includes("@")) return `mailto:${url}`;
@@ -30,48 +23,43 @@ function normalizeSocialHref(url: string): string {
 }
 ---
 
-<footer class="footer" class:list={[{ "footer--no-margin-top": noMarginTop }]}>
+<footer class="footer">
   <div class="footer-content">
     <hr class="footer-hr" aria-hidden="true" />
-    {
-      hasSocial && (
-        <div class="social-links">
-          {socialLinks.map(link => {
-            const href = normalizeSocialHref(link.url);
-            const isExternal = href.startsWith("http");
-            return (
-              <a
-                href={href}
-                target={isExternal ? "_blank" : undefined}
-                rel={isExternal ? "noopener noreferrer" : undefined}
-                aria-label={link.name}
-              >
-                <SocialIcon name={link.icon} width={20} height={20} />
-              </a>
-            );
-          })}
-        </div>
-      )
-    }
-    <div class="footer-bottom">
-      <span class="copyright">
-        &#169; {currentYear}
-        {SITE.author}. All rights reserved.
-      </span>
-      {
-        SITE.icp && (
-          <>
-            <span class="separator" aria-hidden="true">
-              |
-            </span>
+    <div class="footer-row">
+      <div class="footer-start">
+        <span class="copyright">© {currentYear} {SITE.author}</span>
+        {
+          SITE.icp && (
             <a
+              class="footer-icp"
               href="https://beian.miit.gov.cn/"
               target="_blank"
               rel="noopener noreferrer"
             >
-              备案号 {SITE.icp}
+              {SITE.icp}
             </a>
-          </>
+          )
+        }
+      </div>
+      {
+        hasSocial && (
+          <div class="social-links">
+            {socialLinks.map(link => {
+              const href = normalizeSocialHref(link.url);
+              const isExternal = href.startsWith("http");
+              return (
+                <a
+                  href={href}
+                  target={isExternal ? "_blank" : undefined}
+                  rel={isExternal ? "noopener noreferrer" : undefined}
+                  aria-label={link.name}
+                >
+                  <SocialIcon name={link.icon} width={16} height={16} />
+                </a>
+              );
+            })}
+          </div>
         )
       }
     </div>
@@ -80,9 +68,15 @@ function normalizeSocialHref(url: string): string {
 
 <style is:global>
   .footer-content {
-    max-width: 1060px;
+    max-width: var(--site-chrome-width);
     margin: 0 auto;
-    padding: 0 1.5rem;
+    padding: 1.25rem 1.5rem 1.25rem;
+  }
+
+  .footer-hr {
+    margin: 0 0 0.85rem;
+    border: 0;
+    border-top: 1px solid var(--border);
   }
 
   @media (max-width: 768px) {
@@ -92,35 +86,62 @@ function normalizeSocialHref(url: string): string {
     }
   }
 
-  .footer-hr {
-    margin: 0 0 1rem;
+  .footer-row {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 1.5rem;
+  }
+
+  .footer-start {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 0.65rem;
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  .copyright {
+    flex: 0 0 auto;
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+    white-space: nowrap;
+  }
+
+  .footer-icp {
+    flex: 0 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+  }
+
+  .footer-icp:hover {
+    color: var(--accent);
   }
 
   .social-links {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    justify-content: center;
-    margin-bottom: 1rem;
+    flex: 0 0 auto;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-left: auto;
   }
 
   .social-links a {
     color: var(--text-secondary);
     display: inline-flex;
+    flex-shrink: 0;
   }
 
   .social-links a:hover {
     color: var(--accent);
-  }
-
-  .footer-bottom {
-    text-align: center;
-    font-size: 0.875rem;
-    color: var(--text-secondary);
-  }
-
-  .footer-bottom .separator {
-    margin: 0 0.5rem;
-    color: var(--border);
   }
 </style>

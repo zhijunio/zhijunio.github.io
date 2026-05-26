@@ -2,7 +2,6 @@
 title: "ThingsBoard 源码阅读笔记：关键代码片段整理"
 date: 2025-04-30 08:00:00+08:00
 slug: codes-in-thingsboard
-categories: [ "tech" ]
 tags: [ "thingsboard" ]
 description: "记录 ThingsBoard 源码阅读过程中遇到的一些关键代码片段与实现细节，作为后续分析和查阅的笔记整理。"
 ---

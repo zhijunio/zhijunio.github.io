@@ -2,10 +2,8 @@
 title: "RSS + Linkding 知识管理系统：输入、收藏到输出的完整链路"
 date: 2026-03-23 18:40:00+08:00
 slug: linkding-rss-personal-knowledge-management-system
-categories: [ "tech" ]
 tags: [ "linkding", "openclaw" ]
 description: "分享一套基于 Linkding 和 RSS 的个人知识管理方法：用 RSS 做持续输入，用 Linkding 做长期收藏，再通过笔记和输出系统完成沉淀与复用。"
-favicon: "linkding.svg"
 ---
 
 这篇文章分享我基于 `RSS + Linkding` 搭建个人知识管理系统的思路：用 RSS 做持续输入，用 `Linkding` 做长期收藏，用笔记系统沉淀理解，用输出系统形成成果。核心不是囤积信息，而是建立一条轻量、稳定、可持续的流转链路。

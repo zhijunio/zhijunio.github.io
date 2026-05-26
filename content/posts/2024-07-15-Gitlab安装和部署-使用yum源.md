@@ -2,7 +2,6 @@
 title: "CentOS 7 用 yum 安装 GitLab Server 完整指南"
 date: 2024-07-15 08:00:00+08:00
 slug: install-gitlab-using-yum
-categories: [ "tech" ]
 tags: [ "gitlab" ]
 description: "记录通过 yum 源安装和部署 GitLab Server 的过程，包括环境准备、基础配置和服务启动步骤。"
 ---

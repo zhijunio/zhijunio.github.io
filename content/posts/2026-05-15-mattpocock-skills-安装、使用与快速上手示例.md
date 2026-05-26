@@ -2,7 +2,6 @@
 title: "mattpocock/skills 安装与使用：让 AI 助手会干活"
 date: 2026-05-15 16:50:00+08:00
 slug: mattpocock-skills-guide
-categories: [ "tech" ]
 tags: [ "ai", "agent-skill" ]
 draft: false
 description: "介绍 mattpocock/skills 的安装方式、常用技能和一个可直接照着做的快速上手示例，帮助你把 AI 编程助手从“会聊天”变成“会干活”。"

@@ -2,7 +2,6 @@
 title: "Docker 容器化 Spring Boot 应用：从开发到部署"
 date: 2024-07-09 09:00:00+08:00
 slug: docker-for-spring-boot
-categories: [ "tech" ]
 tags: [ "docker", "spring-boot" ]
 description: "基于 Docker 官方 Java 指南，介绍如何将 Spring Boot 应用容器化运行，并逐步搭建本地开发、测试与部署流程。"
 ---

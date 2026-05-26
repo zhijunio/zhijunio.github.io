@@ -2,7 +2,6 @@
 title: "Superpowers 框架实战：用流程规范代替 Prompt 调优"
 date: 2026-04-28 09:55:00+08:00
 slug: superpowers-discipline-ai-coding
-categories: [ "tech" ]
 tags: [ "sdd","agent-skill","superpowers"]
 draft: false
 description: "Superpowers 是一个 Agentic Skills 框架，核心理念是 Process over Prompt —— 用流程规范代替 prompt 调优。本文介绍其核心概念、安装方法、工作流，以及与 agent-skills、GSD 的区别和选型建议。"

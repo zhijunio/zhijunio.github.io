@@ -2,9 +2,7 @@
 title: "SkillsJars 入门：用 Maven 依赖管理 AI Agent Skills"
 date: 2026-04-09 17:30:00+08:00
 slug: skillsjars-quickstart
-categories: [ "tech" ]
 tags: [ "ai", "spring-ai", "skillsjars" ]
-favicon: "ai.svg"
 description: "介绍 SkillsJars 是什么、如何使用（AI 代码助手和 Spring AI）以及如何创建和发布 SkillsJars。"
 ---
 

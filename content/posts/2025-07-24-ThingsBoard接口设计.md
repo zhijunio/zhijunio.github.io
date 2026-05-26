@@ -2,7 +2,6 @@
 title: "ThingsBoard 接口设计大全：REST、MQTT、HTTP 协议"
 date: 2025-07-24 09:00:00+08:00
 slug: thingsboard-api
-categories: [ "tech" ]
 tags: ["docker","thingsboard"]
 description: "系统整理 ThingsBoard 平台的 REST、MQTT、HTTP 等协议接口设计，适合作为 IoT 平台开发与对接时的参考资料。"
 ---

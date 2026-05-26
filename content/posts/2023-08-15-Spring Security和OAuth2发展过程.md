@@ -2,7 +2,6 @@
 title: "Spring Security 与 OAuth2 演进史：三个版本阶段详解"
 date: 2023-08-15 08:00:00+08:00
 slug: spring-security-oauth2-history
-categories: [ "tech" ]
 tags: [ "spring-boot", "oauth2" ]
 description: "梳理 Spring Security 与 OAuth2 在 Spring 生态中的演进过程，帮助理解相关安全体系的历史脉络与版本变化。"
 ---

@@ -13,12 +13,8 @@ import type {
 } from "@/utils/contentCollections";
 
 import { SITE } from "@/config";
-import { siteImageHref } from "@/utils/blogImages";
 
 // --- 描述提取（Markdown → 纯文本摘要）---
-
-/** 列表 favicon 无分类或回退（`public/favicons/blank.svg`） */
-const FAVICON_BLANK_PATH = "/favicons/blank.svg";
 
 /** 匹配 `<!-- more -->` 之前的内容，捕获组 $1 为摘要 */
 const tagMoreRegex = /^(.*?)<!--\s*more\s*-->/s;
@@ -51,21 +47,7 @@ export function trimUrlSegment(str: string): string {
   return String(str).trim();
 }
 
-const trimAll = (arr: string[]) => arr.map(s => trimUrlSegment(s));
-
 // --- PostUtils ---
-
-export interface Tag {
-  tag: string;
-  tagName: string;
-  count: number;
-}
-
-type GroupKey = string | number | symbol;
-
-interface GroupFunction<T> {
-  (item: T, index?: number): GroupKey;
-}
 
 export class PostUtils {
   /** `http://` 或 `https://` 开头 */
@@ -103,65 +85,6 @@ export class PostUtils {
     );
   }
 
-  static getUniqueTags(posts: BlogLikeEntry[]): Tag[] {
-    const tagCountMap = new Map<string, Tag>();
-
-    this.getPublishedPosts(posts)
-      .flatMap(post => post.data.tags)
-      .forEach(tag => {
-        const tagKey = trimUrlSegment(tag).toLowerCase();
-
-        // 跳过空字符串标签
-        if (!tagKey) {
-          return;
-        }
-
-        if (tagCountMap.has(tagKey)) {
-          const existingTag = tagCountMap.get(tagKey)!;
-          existingTag.count += 1;
-        } else {
-          tagCountMap.set(tagKey, {
-            tag: tagKey,
-            tagName: tag,
-            count: 1,
-          });
-        }
-      });
-
-    return Array.from(tagCountMap.values()).sort((tagA, tagB) =>
-      tagA.tag.localeCompare(tagB.tag)
-    );
-  }
-
-  static getPostsByTag(posts: BlogLikeEntry[], tag: string): BlogLikeEntry[] {
-    const tagLower = tag.toLowerCase();
-    return this.sort(
-      posts.filter(post =>
-        trimAll(post.data.tags).some(t => t.toLowerCase() === tagLower)
-      )
-    );
-  }
-
-  static groupBy(
-    posts: BlogLikeEntry[],
-    groupFunction: GroupFunction<BlogLikeEntry>
-  ): Record<GroupKey, BlogLikeEntry[]> {
-    const result: Record<GroupKey, BlogLikeEntry[]> = {};
-
-    for (let i = 0; i < posts.length; i++) {
-      const item = posts[i];
-      const groupKey = groupFunction(item, i);
-
-      if (!result[groupKey]) {
-        result[groupKey] = [];
-      }
-
-      result[groupKey].push(item);
-    }
-
-    return result;
-  }
-
   static getLocalDateString(
     date: Date,
     timeZone: string = SITE.timezone
@@ -180,7 +103,7 @@ export class PostUtils {
   }
 
   /**
-   * 文章 URL：`/{collection}/{slug}`（如 `/posts/...`、`/briefs/...`）。frontmatter `slug` 按元数据原样使用（仅 trim）；未指定时由文件名去掉 `YYYY-MM-DD-` 前缀，整段再 trim（不作 kebab-case）。
+   * 文章 URL：`/{collection}/{slug}`（如 `/posts/...`）。frontmatter `slug` 按元数据原样使用（仅 trim）；未指定时由文件名去掉 `YYYY-MM-DD-` 前缀，整段再 trim（不作 kebab-case）。
    *
    * @param explicitSlug - frontmatter `slug`
    * @param _date - 保留参数（排序/展示仍用）；不再参与 URL，避免破坏既有调用签名
@@ -260,98 +183,6 @@ export class PostUtils {
     }
     const dir = imageDirName.trim() || "post";
     return `/images/${dir}/${rel}`;
-  }
-
-  /**
-   * 列表卡片用站点/分类图标：`public/favicons/`。
-   *
-   * - `http(s)://...`：原样
-   * - 以 `/` 开头：根相对原样
-   * - 否则视为 `favicons` 内文件名（可含子路径段），解析为 `/favicons/{ref}`
-   */
-  static resolveFaviconRef(raw: string | undefined | null): string | undefined {
-    const t = typeof raw === "string" ? raw.trim() : "";
-    if (!t) return undefined;
-    if (PostUtils.isHttpUrl(t)) return t;
-    if (t.startsWith("/")) {
-      return t;
-    }
-    const rel = t.replace(/\\/g, "/").replace(/^(\.\/)+/, "");
-    if (!rel || rel.split("/").some(s => s === ".." || s === "")) {
-      return undefined;
-    }
-    return `/favicons/${rel}`;
-  }
-
-  /**
-   * 根相对路径（如 `/favicons/x.svg`）是否在仓库 `public/` 下存在对应文件（构建时 `fs` 校验）。
-   */
-  static publicRootFileExists(rootRelative: string): boolean {
-    const t = rootRelative.trim();
-    if (!t.startsWith("/")) return false;
-    const rel = t.replace(/^\/+/, "");
-    if (!rel || rel.split("/").some(s => s === ".." || s === "")) {
-      return false;
-    }
-    const abs = path.join(process.cwd(), "public", rel);
-    try {
-      return fs.existsSync(abs) && fs.statSync(abs).isFile();
-    } catch {
-      return false;
-    }
-  }
-
-  /**
-   * 文章列表/详情：`favicon` 优先（外链或站内且 `public/` 存在）；否则首个有效 `categories` 对应 `/favicons/{slug}.svg`；
-   * **未设置分类或全部为空** → `/favicons/blank.svg`；分类 svg 不存在则回退 `blank.svg`。
-   */
-  static resolveArticleListFaviconPath(
-    favicon: string | undefined | null,
-    categories: string[] | undefined | null
-  ): string {
-    const raw = typeof favicon === "string" ? favicon.trim() : "";
-    if (raw) {
-      const resolved = PostUtils.resolveFaviconRef(raw);
-      if (resolved) {
-        if (PostUtils.isHttpUrl(resolved)) {
-          return resolved;
-        }
-        if (
-          resolved.startsWith("/") &&
-          PostUtils.publicRootFileExists(resolved)
-        ) {
-          return resolved;
-        }
-      }
-    }
-
-    let slug: string | null = null;
-    for (const c of categories ?? []) {
-      const s = trimUrlSegment(c);
-      if (s) {
-        slug = s;
-        break;
-      }
-    }
-    if (!slug) {
-      return FAVICON_BLANK_PATH;
-    }
-
-    const candidate = `/favicons/${slug}.svg`;
-    return PostUtils.publicRootFileExists(candidate)
-      ? candidate
-      : FAVICON_BLANK_PATH;
-  }
-
-  /**
-   * 列表 Card `<img src>`：外链原样，站内根相对经 {@link siteImageHref}。
-   */
-  static resolveArticleListFaviconImgSrc(
-    favicon: string | undefined | null,
-    categories: string[] | undefined | null
-  ): string {
-    const p = PostUtils.resolveArticleListFaviconPath(favicon, categories);
-    return PostUtils.isHttpUrl(p) ? p : siteImageHref(p);
   }
 
   static getDescription(markdownContent: string): string {
@@ -463,9 +294,7 @@ export function generateLlmsTxt(posts: BlogLikeEntry[]): string {
     "## Site",
     formatLinkLine("Home", "/", "Main entry point"),
     formatLinkLine("About", "/about", "Author profile and site background"),
-    formatLinkLine("博客", "/posts", "博客目录长文时间线（content/posts）"),
-    formatLinkLine("周报", "/briefs", "Weekly notes listing"),
-    formatLinkLine("Tags", "/tags", "Tag index"),
+    formatLinkLine("博客", "/posts", "博客和周报时间线（content/posts）"),
     "",
     "## All entries",
     ...allPosts.map(formatPostLine),
@@ -476,9 +305,8 @@ export function generateLlmsTxt(posts: BlogLikeEntry[]): string {
     formatLinkLine("Robots", "/robots.txt"),
     "",
     "## Notes For LLMs",
-    "- Canonical article URLs use top-level prefixes: /posts/, /briefs/ (match content type).",
-    "- These pages are the primary source of truth; tag, archive, and search pages are navigational.",
-    "- Use /tags/ for topical browsing; there is no separate category taxonomy.",
+    "- Canonical article URLs use the /posts/ prefix. Weekly notes are posts stored under content/posts/briefs/.",
+    "- These pages are the primary source of truth; search is available at /search.",
   ];
 
   return `${lines.join("\n")}\n`;

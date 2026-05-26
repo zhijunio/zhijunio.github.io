@@ -2,7 +2,6 @@
 title: "OAuth 2.0 入门指南：授权协议核心概念与实践资源"
 date: 2024-06-06 08:00:00+08:00
 slug: all-things-about-oauth
-categories: [ "tech" ]
 tags: [ "oauth2" ]
 description: "整理 OAuth 与 OAuth 2.0 的基础概念、入门文章和实践资料，帮助快速建立对授权协议的整体认识。"
 ---

@@ -1,34 +1,76 @@
 ---
 /**
- * 博客列表（content/posts 长文）
+ * 博客列表（content/posts 长文，不含 briefs/）
  */
 import { getCollection } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import ListLayout from "@/layouts/ListLayout.astro";
-import Card from "@/components/Card.astro";
 import { SITE } from "@/config";
 import { PostUtils } from "@/utils/postUtils";
+import { ArticleTime } from "@/utils/articleTime";
 
 export const pageSlug = "posts";
 export const pageTitle = `博客 | ${SITE.title}`;
 
-const sorted = PostUtils.sort(await getCollection("posts"));
+function isBriefPost(entry: { id: string; filePath?: string }): boolean {
+  return (
+    entry.id.startsWith("briefs/") ||
+    entry.filePath?.replace(/\\/g, "/").includes("/posts/briefs/") === true
+  );
+}
+
+const sorted = PostUtils.sort(await getCollection("posts")).filter(
+  entry => !isBriefPost(entry)
+);
 ---
 
 <Layout
   title={pageTitle}
   description="技术、生活等发布在博客目录下的长文，按最近更新排序。"
 >
-  <ListLayout
-    title="博客"
-    description="技术、生活等发布在博客目录下的长文，按最近更新排序。"
-  >
-    <ul class="post-cards-list m-0 list-none p-0" aria-label="博客列表">
-      {
-        sorted.map(post => (
-          <Card openInNewTab={false} dateFormat="absolute" {...post} />
-        ))
-      }
-    </ul>
+  <ListLayout title="博客">
+    <section class="home-feed" aria-label="博客列表">
+      <ol class="home-feed-list">
+        {
+          sorted.map(entry => {
+            const date = ArticleTime.getDisplay(
+              entry.data.date,
+              entry.data.updated,
+              entry.data.timezone,
+              "absolute"
+            );
+            const description = (
+              entry.data.description?.trim() ||
+              PostUtils.getDescription(entry.body ?? "")
+            ).trim();
+            const href = PostUtils.getPath(
+              entry.id,
+              entry.filePath,
+              false,
+              entry.data.date,
+              entry.data.timezone,
+              entry.data.slug,
+              entry.collection
+            );
+
+            return (
+              <li class="home-feed-item">
+                <article class="home-feed-card">
+                  <div class="home-feed-meta">
+                    <time datetime={date.iso} title={date.titleAttr}>
+                      {date.display}
+                    </time>
+                  </div>
+                  <h2>
+                    <a href={href}>{entry.data.title}</a>
+                  </h2>
+                  {description && <p>{description}</p>}
+                </article>
+              </li>
+            );
+          })
+        }
+      </ol>
+    </section>
   </ListLayout>
 </Layout>

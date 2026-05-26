@@ -3,14 +3,18 @@ import { SITE } from "@/config";
 import YearProgress from "./YearProgress.astro";
 
 const navLinks = [
-  { href: "/posts", text: "博客" },
-  { href: "/briefs", text: "周报" },
-  { href: "/tags", text: "标签" },
+  { href: "/", text: "首页" },
   { href: "/about", text: "关于" },
 ];
 
 // 获取当前路径，用于判断激活状态
 const { pathname } = Astro.url;
+
+function isActiveNavLink(href: string): boolean {
+  return href === "/"
+    ? pathname === "/"
+    : pathname === href || pathname.startsWith(href + "/");
+}
 ---
 
 <header class="site-header">
@@ -23,11 +27,7 @@ const { pathname } = Astro.url;
             <li>
               <a
                 href={link.href}
-                class={
-                  pathname === link.href || pathname.startsWith(link.href + "/")
-                    ? "active"
-                    : ""
-                }
+                class={isActiveNavLink(link.href) ? "active" : ""}
               >
                 {link.text}
               </a>
@@ -103,23 +103,24 @@ const { pathname } = Astro.url;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1060px;
+    max-width: var(--site-chrome-width);
     margin: 0 auto;
-    padding: 0.15rem 1.5rem;
+    padding: 0.35rem 1.5rem 0;
     gap: 1rem;
-    flex-wrap: wrap;
   }
 
   @media (max-width: 768px) {
     .site-nav {
       padding-left: 1rem;
       padding-right: 1rem;
+      gap: 0.75rem;
     }
   }
 
   .logo {
     font-weight: 700;
-    font-size: 1.125rem;
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
+    line-height: 1.25;
     color: var(--text-primary);
     text-decoration: none;
   }
@@ -134,13 +135,14 @@ const { pathname } = Astro.url;
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    min-width: 0;
   }
 
   .nav-links {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     align-items: center;
-    gap: 0.25rem 0.75rem;
+    gap: 0.1rem 0.7rem;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -148,8 +150,9 @@ const { pathname } = Astro.url;
 
   .nav-links a {
     color: var(--text-secondary);
-    font-size: 0.9375rem;
+    font-size: 0.9rem;
     text-decoration: none;
+    white-space: nowrap;
   }
 
   .nav-links a:hover,
@@ -159,6 +162,28 @@ const { pathname } = Astro.url;
 
   .nav-links a.active {
     font-weight: 600;
+  }
+
+  @media (max-width: 640px) {
+    .site-nav {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .nav-right {
+      width: 100%;
+    }
+
+    .nav-links {
+      flex: 1;
+      gap: 0.65rem;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .nav-links::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   .search-link {

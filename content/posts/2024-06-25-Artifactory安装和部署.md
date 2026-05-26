@@ -2,7 +2,6 @@
 title: "搭建本地 Maven 仓库：Artifactory 开源版安装部署"
 date: 2024-06-25 08:00:00+08:00
 slug: install-artifactory-oss
-categories: [ "tech" ]
 tags: [ "maven" ]
 description: "介绍 Artifactory 开源版的安装与部署方式，适合作为搭建本地 Maven 仓库和制品管理服务的入门参考。"
 ---

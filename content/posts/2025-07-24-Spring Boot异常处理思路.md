@@ -2,7 +2,6 @@
 title: "Spring Boot 统一异常处理：分类、响应格式与国际化"
 date: 2025-07-24 08:00:00+08:00
 slug: spring-exception
-categories: [ "tech" ]
 tags: [ "spring-boot" ]
 description: "本文档描述了基于 Spring Boot 的异常处理设计思路，旨在构建一个统一、可扩展、支持国际化的异常处理体系。通过合理的异常分类、统一的响应格式和完善的国际化支持，为前端提供友好的错误信息，同时便于后端进行问题定位和监控。"
 ---

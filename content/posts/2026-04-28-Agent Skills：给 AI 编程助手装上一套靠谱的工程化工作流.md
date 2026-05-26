@@ -2,7 +2,6 @@
 title: "Agent Skills 实战：给 AI 编程助手装上工程化工作流"
 date: 2026-04-28 08:19:00+08:00
 slug: agent-skills-install-and-usage-guide
-categories: [ "tech" ]
 tags: [ "sdd","spec","agent-skill" ]
 draft: false
 description: "AI 会写代码不等于会做工程。本文介绍 agent-skills —— 一套给 AI 编程助手（Claude Code、Cursor、Gemini CLI）使用的工程化工作流，涵盖需求定义、任务拆分、TDD、代码审查、CI/CD 等完整开发流程，附安装指南和实战用法。"

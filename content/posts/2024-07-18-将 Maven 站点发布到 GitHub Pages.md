@@ -2,7 +2,6 @@
 title: "Maven 站点发布到 GitHub Pages 完整教程"
 date: 2024-07-18 08:00:00+08:00
 slug: publishing-a-maven-site-to-github-pages
-categories: [ "tech" ]
 tags: [ "maven", "github" ]
 description: "记录如何将 Maven 生成的站点发布到 GitHub Pages，包括项目创建、站点生成和发布流程配置。"
 ---

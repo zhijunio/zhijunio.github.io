@@ -6,12 +6,17 @@
 [data-theme="light"] {
   --accent: #2563eb;
   --accent-dark: #1e40af;
-  --accent-surface: #f3f8ff;
-  --background: #fcfdff;
-  --background-secondary: #f4f8fc;
+  --accent-surface: #edf5ff;
+  --background: #f7f9fc;
+  --background-secondary: #eef3f8;
+  --card-background: #ffffff;
+  --card-background-hover: #f3f7fd;
   --text-primary: #0f172a;
   --text-secondary: #5f6f85;
   --border: #dbe4f0;
+
+  /* 顶栏、年度进度条、页脚的内容宽度 */
+  --site-chrome-width: 840px;
 
   /* 圆角：全站统一；特小/胶囊在局部写死 2px / 9999px */
   --radius: 8px;
@@ -26,9 +31,11 @@
 [data-theme="dark"] {
   --accent: #60a5fa;
   --accent-dark: #3b82f6;
-  --accent-surface: #0f172a;
+  --accent-surface: #172236;
   --background: #0b1220;
   --background-secondary: #111c2e;
+  --card-background: #111827;
+  --card-background-hover: #162033;
   --text-primary: #e5edf8;
   --text-secondary: #9cb0c9;
   --border: #243246;
@@ -435,20 +442,18 @@ body > header {
 
 footer {
   background: var(--background);
-  padding: 1rem 0 1.5rem;
+  padding: 0.5rem 0 0;
   width: 100%;
-}
-
-footer:not(.footer--no-margin-top) {
   margin-top: auto;
 }
 
-main {
+main,
+#main-content {
   flex: 1;
   width: 100%;
-  max-width: 1060px;
+  max-width: var(--site-chrome-width);
   margin: 0 auto;
-  padding: 0 1.5rem 2rem;
+  padding: 1rem 1.5rem 2rem;
 }
 
 .post {
@@ -456,19 +461,12 @@ main {
   min-width: 0;
 }
 
-.post > .post-header {
-  width: 100%;
-}
-
-.post-header__main {
-  margin-bottom: 1.5rem;
-}
-
 .post-title {
-  margin: 0 0 0.75rem;
-  font-size: clamp(1.375rem, 3.25vw, 1.75rem);
-  line-height: 1.15;
+  margin: 0;
+  font-size: clamp(1.2rem, 2.6vw, 1.5rem);
+  line-height: 1.35;
   text-align: center;
+  text-wrap: balance;
 }
 
 /* ================================
@@ -517,6 +515,109 @@ mark {
     transparent;
 }
 
+/* 首页 / 博客列表 feed */
+.home-feed {
+  width: min(100%, var(--site-chrome-width));
+  margin: 0 auto;
+}
+
+.home-feed-list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.home-feed-item {
+  min-width: 0;
+}
+
+.home-feed-card {
+  display: flex;
+  min-height: 100%;
+  min-width: 0;
+  flex-direction: column;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card-background);
+  transition:
+    border-color 0.18s ease,
+    background-color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.home-feed-card:hover {
+  border-color: color-mix(in srgb, var(--accent) 34%, var(--border));
+  background: var(--card-background-hover);
+  transform: translateY(-1px);
+}
+
+.home-feed-meta {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 0.55rem;
+  color: var(--text-secondary);
+  font-size: 0.76rem;
+  line-height: 1.35;
+}
+
+.home-feed-meta time {
+  flex: 0 0 auto;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.home-feed-kind {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  padding: 0.08rem 0.45rem;
+  background: var(--accent-surface);
+  color: var(--accent);
+  font-size: 0.72rem;
+  line-height: 1.45;
+  font-weight: 600;
+}
+
+.home-feed-kind--brief {
+  background: color-mix(in srgb, var(--text-secondary) 10%, transparent);
+  color: var(--text-secondary);
+}
+
+.home-feed-card h2 {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.42;
+  letter-spacing: 0;
+}
+
+.home-feed-card h2 a {
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.home-feed-card h2 a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.home-feed-card p {
+  display: -webkit-box;
+  margin-top: 0.45rem;
+  overflow: hidden;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.62;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
 /* ================================
    响应式
    ================================ */
@@ -538,8 +639,21 @@ mark {
     font-size: 1.0625rem;
   }
 
-  main {
-    padding: 1.5rem 1rem;
+  main,
+  #main-content {
+    padding: 1rem 1rem 2rem;
+  }
+
+  .home-feed-list {
+    gap: 0.75rem;
+  }
+
+  .home-feed-card {
+    padding: 0.85rem 0.9rem;
+  }
+
+  .home-feed-meta {
+    margin-bottom: 0.5rem;
   }
 }
 

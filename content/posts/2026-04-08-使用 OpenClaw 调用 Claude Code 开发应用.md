@@ -2,11 +2,9 @@
 title: "OpenClaw 调用 Claude Code 实战：用 AI Agent 开发 Todo List 应用"
 date: 2026-04-08 14:20:00+08:00
 slug: create-app-with-claude-code-in-openclaw
-categories: [ "tech" ]
 tags: [ "openclaw","claude" ]
 draft: false
 description: "本文介绍在 Codespaces 中从安装到正常使用的完整步骤。"
-favicon: "openclaw.svg"
 ---
 
 ## 使用内置的 coding-agent 技能

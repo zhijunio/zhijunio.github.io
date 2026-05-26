@@ -2,7 +2,6 @@
 title: "ThingsBoard 源码编译与 IDEA 调试环境搭建"
 date: 2024-08-27 09:00:00+08:00
 slug: thingsboard-code-source-compile
-categories: [ "tech" ]
 tags: [ "thingsboard" ]
 description: "记录 ThingsBoard 源码的编译过程，以及如何在 IDEA 中导入、启动和调试项目，适合作为本地源码环境搭建参考。"
 ---

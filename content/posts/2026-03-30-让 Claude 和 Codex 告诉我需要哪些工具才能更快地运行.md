@@ -2,11 +2,9 @@
 title: "Claude Code 与 Codex 自查开发环境：补齐 AI 协作工具链"
 date: 2026-03-30 12:50:00+08:00
 slug: what-tools-it-needs-for-claude-codex
-categories: [ "tech" ]
 tags: [ "ai", "tools" ]
 draft: false
 description: "让 Claude Code 与 Codex 自查本机开发环境：对比二者给出的缺失工具清单，并补齐 ripgrep、fd、fzf 等与 AI 协作相关的 CLI 工具链。"
-favicon: "claude.svg"
 ---
 
 最近看到一篇文章《[Claude Code told me what tools it needs to work faster. Oh boy I was missing so many things.](https://sderosiaux.substack.com/p/claude-code-told-me-what-tools-it)》。作者通过一次让 **Claude Code** 自查环境的实验，整理出 **ripgrep、fd、fzf、DuckDB、git-delta、xh、watchexec、just、semgrep** 等能显著提升 AI 编码助手效率的工具，并指出：**提升效果不只靠改 prompt，还要把 AI 当成需要「趁手 CLI」的协作者。**

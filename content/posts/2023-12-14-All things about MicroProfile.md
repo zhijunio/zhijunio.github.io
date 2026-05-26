@@ -2,7 +2,6 @@
 title: "MicroProfile 入门：Java 微服务规范体系与学习资源"
 date: 2023-12-14 08:00:00+08:00
 slug: all-things-about-microprofile
-categories: [ "tech" ]
 tags: [ "microservices" ]
 description: "整理 MicroProfile 的基础概念、目标与相关学习资料，适合作为 Java 微服务规范体系的入门索引。"
 ---

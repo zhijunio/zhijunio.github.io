@@ -6,13 +6,10 @@
  */
 import { render } from "astro:content";
 import type { BlogLikeEntry } from "@/utils/contentCollections";
-import { ArticleTime } from "@/utils/articleTime";
 import Layout from "@/layouts/Layout.astro";
-import Tag from "@/components/Tag.astro";
-import ShareButtons from "@/components/ShareButtons.astro";
 import Photosuite from "@/components/Photosuite.astro";
 import ArticleToc from "@/components/ArticleToc.astro";
-import { PostUtils, trimUrlSegment } from "@/utils/postUtils";
+import { PostUtils } from "@/utils/postUtils";
 import IconChevronLeft from "@/assets/icons/IconChevronLeft.svg";
 import IconChevronRight from "@/assets/icons/IconChevronRight.svg";
 import { CDN_KATEX_STYLESHEET, SITE } from "@/config";
@@ -48,11 +45,6 @@ const imageDirName = PostUtils.getPostImageDirName(
   post.collection
 );
 const bannerPath = PostUtils.resolveBlogImageRef(bannerRaw, imageDirName);
-const faviconPath = PostUtils.resolveArticleListFaviconPath(
-  post.data.favicon,
-  post.data.categories
-);
-const hasBanner = Boolean(bannerRaw?.trim());
 
 /** 解析 banner：`astro dev` 根相对；生产 `/images/...` 走 CDN（与 Photosuite） */
 const bannerSrc = bannerPath
@@ -61,16 +53,14 @@ const bannerSrc = bannerPath
     : siteImageHref(bannerPath.startsWith("/") ? bannerPath : `/${bannerPath}`)
   : undefined;
 
-/** OG / JSON-LD：优先横幅图；否则若 `favicon` 为文章配图类 `/images/...`（非列表小图标路径）则用其作分享图 */
+/** OG / JSON-LD：有 banner 时用横幅图 */
 let articleOgImage: string | undefined;
 if (bannerPath) {
   articleOgImage = bannerSrc;
-} else if (faviconPath && /^\/images\//.test(faviconPath)) {
-  articleOgImage = siteImageHref(faviconPath);
 }
 let ogImageAltForLayout: string | undefined;
 if (articleOgImage) {
-  ogImageAltForLayout = hasBanner ? `${title} — 横幅` : `${title} — 列表图标`;
+  ogImageAltForLayout = `${title} — 横幅`;
 }
 
 const bannerAltText = `${title} — 横幅`;
@@ -82,38 +72,6 @@ const hasInlineImages = /!\[[\s\S]*?\]\([^)]+\)|<img\s/i.test(post.body ?? "");
 /** 文章描述：优先 frontmatter description，否则从正文提取（与 RSS 摘要逻辑一致，不含 banner） */
 const fullDescription =
   postDescription?.trim() || PostUtils.getDescription(post.body ?? "");
-const plainText = (post.body ?? "")
-  .replace(/```[\s\S]*?```/g, " ")
-  .replace(/`[^`]*`/g, " ")
-  .replace(/!\[[^\]]*]\([^)]+\)/g, " ")
-  .replace(/\[[^\]]*]\([^)]+\)/g, " ")
-  .replace(/<[^>]+>/g, " ")
-  .replace(/[#>*_\-\n\r]/g, " ")
-  .replace(/\s+/g, " ")
-  .trim();
-const latinWordCount = (
-  plainText.match(/[A-Za-z0-9]+(?:['' -][A-Za-z0-9]+)*/g) || []
-).length;
-const cjkCharCount = (plainText.match(/[\u3400-\u9FFF]/g) || []).length;
-const estimatedWordCount = latinWordCount + cjkCharCount;
-const readingMinutes = Math.max(1, Math.ceil(estimatedWordCount / 300));
-
-/** 标题区发布/更新时间（与列表卡片同一套语义，详情页固定绝对日期） */
-const headerTime = ArticleTime.forDetailHeader(
-  date,
-  updated,
-  post.data.timezone
-);
-
-const breadcrumbItems = [
-  { name: "首页", item: SITE.website },
-  { name: "博客", item: new URL("/posts", SITE.website).toString() },
-  { name: title, item: canonicalHrefPlaceholder() },
-];
-
-function canonicalHrefPlaceholder() {
-  return "";
-}
 
 const layoutProps = {
   title,
@@ -153,61 +111,6 @@ const currentPostPath = PostUtils.getPath(
   post.collection
 );
 
-const canonicalHref =
-  canonicalURL != null
-    ? String(canonicalURL)
-    : new URL(currentPostPath, SITE.website).toString();
-breadcrumbItems[breadcrumbItems.length - 1].item = canonicalHref;
-const breadcrumbStructuredData = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: breadcrumbItems.map((item, index) => ({
-    "@type": "ListItem",
-    position: index + 1,
-    name: item.name,
-    item: item.item,
-  })),
-};
-
-const relatedPostLimit = 6;
-const scoredRelatedPosts = posts
-  .filter(candidate => candidate.id !== post.id)
-  .map(candidate => {
-    const sharedTags = candidate.data.tags.filter(tag =>
-      tags.includes(tag)
-    ).length;
-    const score = sharedTags * 2;
-
-    return {
-      post: candidate,
-      score,
-      path: PostUtils.getPath(
-        candidate.id,
-        candidate.filePath,
-        true,
-        candidate.data.date,
-        candidate.data.timezone,
-        candidate.data.slug,
-        candidate.collection
-      ),
-    };
-  })
-  .sort((a, b) => {
-    if (b.score !== a.score) return b.score - a.score;
-
-    return (
-      new Date(b.post.data.updated ?? b.post.data.date).getTime() -
-      new Date(a.post.data.updated ?? a.post.data.date).getTime()
-    );
-  });
-
-const relatedPosts = [
-  ...scoredRelatedPosts.filter(item => item.score > 0),
-  ...scoredRelatedPosts.filter(item => item.score === 0),
-].slice(0, relatedPostLimit);
-
-const shareText = `${title} | ${SITE.title}`;
-
 const currentPostIndex = allPosts.findIndex(a => a.path === currentPostPath);
 
 const prevPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : null;
@@ -218,6 +121,9 @@ const nextPost =
 
 /** 预加载样式转正样式用，避免 TS 把 onload 属性内容当代码解析 */
 const linkPreloadOnLoad = "this.onload=null;this.rel='stylesheet'";
+
+const giscusThemeLight = "https://giscus.app/themes/light.css";
+const giscusThemeDark = "https://giscus.app/themes/dark.css";
 ---
 
 <Layout {...layoutProps}>
@@ -238,12 +144,6 @@ const linkPreloadOnLoad = "this.onload=null;this.rel='stylesheet'";
       <meta slot="head" property="article:tag" content={tag} />
     ))
   }
-  <script
-    slot="head"
-    type="application/ld+json"
-    is:inline
-    set:html={JSON.stringify(breadcrumbStructuredData)}
-  />
   <!-- KaTeX 数学公式样式（仅文章详情且启用公式时加载） -->
   {
     math && (
@@ -273,49 +173,16 @@ const linkPreloadOnLoad = "this.onload=null;this.rel='stylesheet'";
 
   <article id="article" class="post w-full min-w-0" data-pagefind-body>
     <header class="w-full">
-      <div
-        class="mb-4 text-sm text-muted [&_a]:text-muted [&_a:hover]:text-accent"
-        aria-label="面包屑导航"
-      >
-        <a href="/">首页</a>
-        <span class="mx-1.5 opacity-60" aria-hidden="true">/</span>
-        <a href="/posts">博客</a>
-      </div>
-
-      <section class="mb-6">
-        <h1
-          class="mt-0 mb-3 text-center text-[clamp(1.375rem,3.25vw,1.75rem)] leading-tight font-semibold text-foreground"
-        >
-          {title}
-        </h1>
-        <div
-          class="post-meta flex flex-wrap items-center justify-center gap-x-2 gap-y-2 text-center text-sm text-muted"
-        >
-          <span class="whitespace-nowrap tabular-nums"
-            >{readingMinutes} 分钟阅读</span
-          >
-          <span class="opacity-50" aria-hidden="true">·</span>
-          <div
-            class="inline-flex min-w-0 items-baseline gap-0.5"
-            title={headerTime.titleAttr}
-          >
-            <time
-              class="text-sm font-normal tracking-wide text-muted tabular-nums"
-              datetime={headerTime.iso}
-              data-date-format="absolute"
-            >
-              {headerTime.display}
-            </time>
-          </div>
-        </div>
-      </section>
+      <h1 class="post-title mt-0 font-semibold text-foreground">
+        {title}
+      </h1>
     </header>
 
     {
       bannerSrc && (
         <img
           id="post-banner"
-          class="mx-auto my-6 block h-auto w-full max-w-[min(100%,56rem)] rounded-lg"
+          class="post-banner mx-auto block h-auto w-full"
           src={bannerSrc}
           alt={bannerAltText}
           fetchpriority="high"
@@ -325,140 +192,122 @@ const linkPreloadOnLoad = "this.onload=null;this.rel='stylesheet'";
       )
     }
 
-    <div
-      class="post-layout flex min-w-0 flex-col gap-5 lg:flex-row lg:items-start"
-    >
-      <div class="post-content min-w-0 flex-1 pb-4">
-        <Content />
-      </div>
-      <ArticleToc />
+    <div class="post-content min-w-0 pb-4">
+      <Content />
     </div>
   </article>
 
-  <!-- 正文以下：共用一条顶部分割线，子块之间只用间距，避免多条「横线」叠在一起 -->
-  <div
-    class="post-footer-stack clear-both w-full min-w-0 space-y-5 border-t border-border/80 pt-6 max-sm:space-y-5 max-sm:pt-5"
-  >
-    <!-- 标签 + 分享 -->
-    <div
-      class="flex w-full min-w-0 flex-col items-center gap-3 sm:flex-row sm:items-center sm:justify-between"
-    >
-      {
-        tags.length > 0 && (
-          <ul
-            class="m-0 flex list-none flex-wrap justify-center gap-2 p-0"
-            role="list"
-          >
-            {tags.map((tag: string) => (
-              <Tag tag={trimUrlSegment(tag)} tagName={tag} />
-            ))}
-          </ul>
-        )
-      }
-      <ShareButtons
-        url={canonicalHref}
-        title={shareText}
-        description={fullDescription}
-      />
-    </div>
+  <ArticleToc />
 
-    <!-- 文章导航 -->
-    {
-      (prevPost || nextPost) && (
-        <nav class="post-nav w-full min-w-0" aria-label="文章导航">
-          <div class="flex flex-col gap-2 sm:flex-row sm:justify-between">
-            {prevPost && (
-              <a
-                href={prevPost.path}
-                class="post-nav-link flex items-center gap-1.5 text-sm text-muted no-underline transition-colors hover:text-accent"
-              >
-                <IconChevronLeft class="h-4 w-4 shrink-0" />
-                <span>{prevPost.title}</span>
-              </a>
-            )}
-            {nextPost && (
-              <a
-                href={nextPost.path}
-                class="post-nav-link flex items-center gap-1.5 text-sm text-muted no-underline transition-colors hover:text-accent sm:justify-end sm:text-right"
-              >
-                <span>{nextPost.title}</span>
-                <IconChevronRight class="h-4 w-4 shrink-0" />
-              </a>
-            )}
-          </div>
-        </nav>
-      )
-    }
+  {
+    tags.length > 0 && (
+      <ul class="post-tags" role="list" aria-label="文章标签">
+        {tags.map((tag: string) => (
+          <li>
+            <a href={`/search?q=${encodeURIComponent(tag)}`}>{tag}</a>
+          </li>
+        ))}
+      </ul>
+    )
+  }
 
-    <!-- 相关文章 -->
-    {
-      relatedPosts.length > 0 && (
-        <section class="related-section w-full min-w-0" aria-label="相关文章">
-          <h3 class="m-0 mb-2 text-base font-medium text-foreground">
-            相关文章
-          </h3>
-          <ul
-            class="related-list m-0 list-none divide-y divide-border/50 p-0"
-            role="list"
-          >
-            {relatedPosts.map(({ post: relatedPost, path }) => (
-              <li>
-                <a
-                  href={path}
-                  class="related-link block py-1.5 text-sm text-muted no-underline transition-colors hover:text-accent"
-                >
-                  {relatedPost.data.title}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )
-    }
-  </div>
+  {
+    (prevPost || nextPost) && (
+      <nav
+        class="post-nav clear-both mt-8 w-full min-w-0 border-t border-border/60 pt-5"
+        aria-label="文章导航"
+      >
+        <div class="flex flex-col gap-2 sm:flex-row sm:justify-between">
+          {prevPost && (
+            <a
+              href={prevPost.path}
+              class="post-nav-link flex items-center gap-1.5 text-sm text-muted no-underline transition-colors hover:text-accent"
+            >
+              <IconChevronLeft class="h-4 w-4 shrink-0" />
+              <span>{prevPost.title}</span>
+            </a>
+          )}
+          {nextPost && (
+            <a
+              href={nextPost.path}
+              class="post-nav-link flex items-center gap-1.5 text-sm text-muted no-underline transition-colors hover:text-accent sm:justify-end sm:text-right"
+            >
+              <span>{nextPost.title}</span>
+              <IconChevronRight class="h-4 w-4 shrink-0" />
+            </a>
+          )}
+        </div>
+      </nav>
+    )
+  }
 
-  <!-- 评论容器：与主栏同宽（不用 reading-wrap 窄栏） -->
   {
     comments && SITE.giscus.enabled && (
-      <script
-        is:inline
-        src="https://giscus.app/client.js"
-        data-repo="zhijunio/zhijunio.github.io"
-        data-repo-id="R_kgDOIwiKuA"
-        data-category="Announcements"
-        data-category-id="DIC_kwDOIwiKuM4C6yVl"
-        data-mapping="title"
-        data-strict="0"
-        data-reactions-enabled="1"
-        data-emit-metadata="0"
-        data-input-position="bottom"
-        data-theme="preferred_color_scheme"
-        data-lang="zh-CN"
-        data-loading="lazy"
-        crossorigin="anonymous"
-        async
-      />
+      <section class="post-comments" aria-label="评论">
+        <script
+          is:inline
+          src="https://giscus.app/client.js"
+          data-repo="zhijunio/zhijunio.github.io"
+          data-repo-id="R_kgDOIwiKuA"
+          data-category="Announcements"
+          data-category-id="DIC_kwDOIwiKuM4C6yVl"
+          data-mapping="title"
+          data-strict="0"
+          data-reactions-enabled="1"
+          data-emit-metadata="0"
+          data-input-position="bottom"
+          data-theme={giscusThemeLight}
+          data-lang="zh-CN"
+          data-loading="lazy"
+          crossorigin="anonymous"
+          async
+        />
+        <meta name="giscus-theme-light" content={giscusThemeLight} />
+        <meta name="giscus-theme-dark" content={giscusThemeDark} />
+        <script is:inline src="/giscus-theme.js" data-astro-rerun />
+      </section>
     )
   }
   <style is:global>
+    #article > header {
+      margin-bottom: 0.25rem;
+    }
+
+    #article .post-title {
+      margin-bottom: 2.25rem;
+    }
+
+    #article .post-banner {
+      margin-top: 0.25rem;
+      margin-bottom: 2.25rem;
+    }
+
+    #article .post-content {
+      padding-top: 0.15rem;
+    }
+
+    #article .post-content > :first-child {
+      margin-top: 0;
+    }
+
     /**
-     * 正文 + 目录（≥lg）：TOC fixed 定位到页面右侧空白区。
-     * 移动端隐藏 TOC。
+     * 目录固定在主栏右侧空白区，不占用正文宽度；视口不足时隐藏。
      */
     #article-toc {
       display: none;
     }
 
-    @media (min-width: 1024px) {
+    @media (min-width: 1280px) {
       #article-toc {
         display: block;
         position: fixed;
-        right: 2rem;
-        top: 6rem;
-        width: 15rem;
-        max-height: calc(100vh - 10rem);
+        top: var(--site-header-sticky-offset);
+        left: calc(50% + var(--site-chrome-width) / 2 + 1.25rem);
+        width: 13.5rem;
+        max-height: calc(100vh - var(--site-header-sticky-offset) - 1.5rem);
         overflow-y: auto;
         margin: 0;
+        z-index: 10;
       }
     }
 
@@ -470,8 +319,70 @@ const linkPreloadOnLoad = "this.onload=null;this.rel='stylesheet'";
       line-height: 1.8;
     }
 
-    #main-content .post-content img {
-      border-radius: 8px;
+    .post-banner,
+    #main-content .post-content :is(img, picture, video) {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      margin: 1.25rem auto;
+      border: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
+      border-radius: var(--radius);
+      background: var(--card-background);
+    }
+
+    #main-content .post-content figure {
+      margin: 1.5rem 0;
+    }
+
+    #main-content .post-content figure :is(img, picture) {
+      margin: 0 auto;
+    }
+
+    #main-content .post-content figcaption {
+      margin-top: 0.5rem;
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    .post-comments {
+      margin-top: 2rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid color-mix(in srgb, var(--border) 65%, transparent);
+    }
+
+    .post-comments .giscus,
+    .post-comments iframe.giscus-frame {
+      width: 100%;
+    }
+
+    .post-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      gap: 0.35rem 0.65rem;
+      margin: 2rem 0 0;
+      padding: 0;
+      list-style: none;
+      font-size: 0.8125rem;
+      line-height: 1.5;
+    }
+
+    .post-tags li {
+      margin: 0;
+    }
+
+    .post-tags a {
+      color: var(--text-secondary);
+      text-decoration: none;
+    }
+
+    .post-tags a:hover {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 0.12em;
     }
 
     /** 文章导航：无边框简约样式 */

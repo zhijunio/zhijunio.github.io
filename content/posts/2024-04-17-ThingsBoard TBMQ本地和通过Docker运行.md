@@ -2,7 +2,6 @@
 title: "ThingsBoard TBMQ 本地运行与 Docker 部署实践"
 date: 2024-04-17 08:00:00+08:00
 slug: thingsboard-tbmq-local-docker-run
-categories: [ "tech" ]
 tags: [ "thingsboard" ]
 description: "记录 ThingsBoard TBMQ 在本地和 Docker 环境中的运行方式，包括源码下载、docker-compose 启动和基础验证步骤。"
 ---

@@ -1,5 +1,4 @@
 import { SITE } from "./src/config";
-import { buildLegacyPostsRedirects } from "./src/legacyRedirects";
 import {
   getImagesAssetBase,
   rehypeArticleContentImages,
@@ -43,7 +42,6 @@ const expressiveCodeOption: AstroExpressiveCodeOptions = {
 // https://astro.build/config
 export default defineConfig({
   site: SITE.website,
-  redirects: buildLegacyPostsRedirects(),
   integrations: [
     mermaid({
       theme: "base",

@@ -2,11 +2,9 @@
 title: "agentic-expense-manager：Spring Boot Agentic 开发脚手架"
 date: 2026-05-19 14:20:00+08:00
 slug: agentic-expense-manager-learning-guide
-categories: [ "tech" ]
 tags: [ "java", "spring-boot", "spring-modulith","sdd" ]
 draft: false
 description: "sivaprasadreddy/agentic-expense-manager 不是成品记账 App，而是 Spring Boot 4 + Modulith + 29 条 UC 需求清单的 Agent 试验场。本文按目录拆解每个文件能学什么，并归纳八类学习维度。"
-favicon: "java.svg"
 ---
 
 最近在 GitHub 上看到 [sivaprasadreddy/agentic-expense-manager](https://github.com/sivaprasadreddy/agentic-expense-manager)。README 写得很直白：这是一个 **Expense Manager 脚手架**，用来对比 [OpenSpec](https://github.com/Fission-AI/OpenSpec)、[BMAD](https://docs.bmad-method.org/)、[sdd-skills](https://github.com/sivaprasadreddy/sdd-skills)、[AI Unified Process](https://unifiedprocess.ai/)、[mattpocock/skills](https://github.com/mattpocock/skills) 等 **Agentic / SDD** 工作流——而不是一个功能齐全的记账产品。

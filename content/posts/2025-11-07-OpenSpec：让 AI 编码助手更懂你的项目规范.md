@@ -3,9 +3,7 @@ title: "OpenSpec 实战：让 AI 编码助手遵循项目规范"
 description: "本文深入介绍 OpenSpec 规范驱动开发工具，展示如何让 AI 编码助手（如 Cursor、Claude、Copilot）按照项目规范生成高质量代码"
 date: 2025-11-07 08:00:00+08:00
 slug: openspec
-categories: [ "tech" ]
 tags: [ "cursor" ]
-favicon: "openai.svg"
 ---
 
 本文深入介绍 OpenSpec 规范驱动开发工具，展示如何让 AI 编码助手（如 Cursor、Claude、Copilot）按照项目规范生成高质量代码。通过完整的双因素认证实战案例，详细演示从提案创建、规范编写到代码实现的全流程，帮助开发者和团队提升代码一致性、开发效率和文档质量。

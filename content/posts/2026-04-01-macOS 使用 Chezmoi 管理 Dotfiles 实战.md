@@ -2,11 +2,9 @@
 title: "macOS 用 Chezmoi 管理 Dotfiles：加密、同步与新机恢复"
 date: 2026-04-01 17:00:00+08:00
 slug: chezmoi-dotfiles-macos
-categories: [ "tech" ]
 tags: [ "dotfiles", "macos" ]
 draft: false
 description: "在 macOS 上用 chezmoi 管理 dotfiles：Git 版本控制、GPG/age 双加密支持、多机器同步，以及新机器恢复完整流程。"
-favicon: "chezmoi.svg"
 ---
 
 > 基于 macOS 14+ (ARM64) 环境，chezmoi v2.70.0+

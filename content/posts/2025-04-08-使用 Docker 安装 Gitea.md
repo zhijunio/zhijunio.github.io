@@ -3,7 +3,6 @@ title: "Docker 安装 Gitea 一行命令搭建私有代码托管"
 date: 2025-04-08 08:00:00+08:00
 slug: install-gitea-using-docker
 tags: [ "docker" ]
-categories: [ "tech" ]
 description: "记录如何使用 Docker 安装和运行 Gitea，包括目录准备、权限设置和基础部署步骤。"
 ---
 

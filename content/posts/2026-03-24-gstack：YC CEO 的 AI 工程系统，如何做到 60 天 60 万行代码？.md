@@ -2,11 +2,9 @@
 title: "gstack 拆解：YC CEO 的 AI 工程系统与 60 天 60 万行代码"
 date: 2026-03-24 14:40:00+08:00
 slug: gstack-skill
-categories: [ "tech" ]
 tags: [ "ai" ]
 draft: false
 description: "gstack：Garry Tan（Y Combinator CEO）为 Claude Code 开源的技能系统，用 Slash Command 串联 office-hours、review、qa、ship 等全流程。本文拆解两层架构与 Sprint 工作流、安装与使用要点，便于评估是否适合你的 AI 工程习惯。"
-favicon: "claude.svg"
 ---
 
 > "I don"t think I"ve typed like a line of code probably since December, basically." — Andrej Karpathy，2026 年 3 月

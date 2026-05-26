@@ -2,7 +2,6 @@
 title: "ThingsBoard 源码解读：GitHub Actions 自动化流程"
 date: 2024-12-03 08:00:00+08:00
 slug: github-actions-in-thingsboard
-categories: [ "tech" ]
 tags: [ "thingsboard", "github" ]
 description: "梳理 ThingsBoard 仓库中 GitHub Actions 的工作流文件，了解其配置校验、许可证处理等自动化流程。"
 ---

@@ -2,11 +2,9 @@
 title: "用 LLM 搭建 Obsidian 知识库：学 Karpathy 的知识管理方法"
 date: 2026-04-08 22:50:00+08:00
 slug: build-llm-wiki-with-karpathy
-categories: [ "tech" ]
 tags: [  "llm", "obsidian", "rag" ]
 draft: false
 description: "去年开始折腾知识库，踩过不少坑。直到看到 Karpathy 分享的 LLM Wiki 模式，才算找到了可持续的路子。"
-favicon: "obsidian.svg"
 ---
 
 去年开始用 Obsidian 做知识管理时，我走过一段弯路。

@@ -2,7 +2,6 @@
 title: "ThingsBoard HTTP Transport 详解：设备接入与自动注册"
 date: 2025-07-02 08:00:00+08:00
 slug: thingsboard-http-transport
-categories: [ "tech" ]
 tags: [ "thingsboard" ]
 mermaid: true
 description: "系统梳理 ThingsBoard 平台 HTTP 设备接入的实现方式，重点分析 HTTP 自动注册机制、调用链与消息流转过程。"

@@ -2,7 +2,6 @@
 title: "Docker 部署 GitLab：完整安装与配置指南"
 date: 2024-06-26 08:00:00+08:00
 slug: install-gitlab
-categories: [ "tech" ]
 tags: [ "docker", "gitlab" ]
 description: "记录使用 Docker 部署 GitLab 的基本流程，包括镜像选择、external_url 配置和基础运行方式。"
 ---

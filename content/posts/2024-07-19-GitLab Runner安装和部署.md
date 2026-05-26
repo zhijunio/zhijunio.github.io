@@ -2,7 +2,6 @@
 title: "GitLab Runner 安装与配置：搭建 CI/CD 执行环境"
 date: 2024-07-19 08:00:00+08:00
 slug: gitlab-runner-install
-categories: [ "tech" ]
 tags: [ "gitlab" ]
 description: "介绍 GitLab Runner 的基本概念、核心作用以及安装部署方式，帮助搭建可执行 GitLab CI/CD 作业的运行环境。"
 ---

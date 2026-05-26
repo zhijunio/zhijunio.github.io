@@ -3,7 +3,6 @@ title: "Kubernetes 安装 Cert Manager：自动签发与续订 TLS 证书"
 date: 2024-05-10 08:00:00+08:00
 slug: install-cert-manager
 tags: [ "kubernetes" ]
-categories: [ "tech" ]
 description: "介绍如何在 Kubernetes 中安装 Cert Manager，并通过它为集群中的服务和 Ingress 自动签发与续订 TLS 证书。"
 ---
 

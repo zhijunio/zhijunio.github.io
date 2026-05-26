@@ -1,15 +1,13 @@
 ---
-title: "关于我：Java 开发者 zhijun 的个人博客"
+title: "关于我"
 description: 关于 ZhiJun：开发背景、正在使用的工具、联系方式，以及这个博客的更新记录。
 ---
 
 ##  👋 自我介绍
 
+> 🚀 软件工程师 | 🧠 系统设计爱好者 | ✍️ 技术内容创作者
+
 你好，我是 zhijun，一个来自中国武汉的 Java 开发者，曾就职于阿里，目前就职于武汉多点，从事新零售、物联网相关的开发工作。
-
-🚀 软件工程师 | 🧠 系统设计爱好者 | ✍️ 技术内容创作者
-
-## 👨‍💻 找到我
 
 - 💻 自2009 年起从事软件开发
 - 🧩 专注于软件架构、模块化系统和可维护性
@@ -18,11 +16,7 @@ description: 关于 ZhiJun：开发背景、正在使用的工具、联系方式
 
 ## 🔗 联系我
 
-- WeChat: [@zhijunio](https://blog.zhijun.io/images/wechat.webp)
-- Twitter：[@zhijunio](https://twitter.com/zhijunio)
-- YouTube：[@zhijunio](https://www.youtube.com/zhijunio)
-- Telegram: [@zhijunio](https://t.me/zhijunio)
-- Telegram Channel: [zhijun_share](https://t.me/zhijun_share)
+WeChat: [@zhijunio](https://blog.zhijun.io/images/wechat.webp) ｜ Twitter：[@zhijunio](https://twitter.com/zhijunio) ｜ YouTube：[@zhijunio](https://www.youtube.com/zhijunio) ｜ Telegram: [@zhijunio](https://t.me/zhijunio) ｜ Telegram Channel: [zhijun_share](https://t.me/zhijun_share)
 
 ## 我的收藏
 
@@ -64,28 +58,6 @@ description: 关于 ZhiJun：开发背景、正在使用的工具、联系方式
 - [Emoji](https://emoji.muan.co/) - Emoji 图标，可以直接复制
 - [theSVG](https://www.thesvg.org/) - 一个面向开发者的 SVG 图标库与分发平台
 - [Simple Icons](https://simpleicons.org/) - 流行品牌的 3420 SVG 图标
-
-### 使用工具
-
-| 分类        | 软件                               | 备注             |
-|-----------|----------------------------------| ---------------- |
-| **输入法**   | 微信输入法                            |                  |
-| **资讯类**   | Folo                             |                  |
-| **知识管理**  | Apple Notes                      |                  |
-| **IM 类**  | WeChat、Feishu、Telegram           |                  |
-| **邮件**    | Gmail                            |                  |
-| **浏览器**   | Chrome                           |                  |
-| **密码**    | 1Password                        |                  |
-| **运动**    | Keep、欢太健康                        |                  |
-| **VPN**   | Hiddify、Clash Verge              |                  |
-| **书签**    | Linkding                         | 自建 docker 服务 |
-| **云存储**   | 阿里云盘、百度云盘、iCloud Drive、GitHub    |                  |
-| **代码编辑器** | IntelliJ IDEA、Cursor、Claude Code |                  |
-| **容器**    | OrbStack                         |                  |
-| **数据库工具** | TablePlus                        |                  |
-| **测试**    | Insomnia                         |                  |
-| **终端**    | Ghostty + StarShip + Fish        |                  |
-| **知识管理**  | Obsidian                         |                  |
 
 ## 更新日志
 

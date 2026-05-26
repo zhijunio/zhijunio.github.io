@@ -2,7 +2,7 @@
 /**
  * 全站基础布局
  *
- * @fileoverview 提供 HTML 骨架、meta/OG/JSON-LD、主题脚本、Header、Footer、BackToTop、BackButton；子页通过 props 传入 title、description、canonicalURL 等页面元信息。
+ * @fileoverview 提供 HTML 骨架、meta/OG/JSON-LD、主题脚本、Header、Footer、BackToTop；子页通过 props 传入 title、description、canonicalURL 等页面元信息。
  */
 import { SITE } from "@/config";
 import {
@@ -65,8 +65,7 @@ const hasAfterMain = Astro.slots.has("after-main");
 const canonicalHref = String(canonicalURL);
 const isArticlePage = Boolean(pubDatetime);
 const isHomePage = pathname === "/";
-const isCollectionPage =
-  /^\/(posts|briefs|archives|tags)(\/|$)/.test(pathname);
+const isCollectionPage = /^\/posts(\/|$)/.test(pathname);
 const ogType = isArticlePage ? "article" : "website";
 const defaultSchemaType = isArticlePage
   ? "BlogPosting"
@@ -113,7 +112,7 @@ const socialImageURLString = (() => {
   if (/^https?:\/\//i.test(ref)) return ref;
   return publicImageAbsoluteUrl(ref, siteOrigin);
 })();
-/** OG 图尺寸（与 utils/og-image.ts 生成一致） */
+/** OG 图尺寸（推荐 1200×630） */
 const OG_IMAGE_WIDTH = 1200;
 const OG_IMAGE_HEIGHT = 630;
 

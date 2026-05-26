@@ -2,7 +2,6 @@
 title: "GitHub Action 自动发布 Jar 到 Maven 中央仓库"
 date: 2024-08-01 08:00:00+08:00
 slug: publishing-a-jar-to-maven-repository-with-github-action
-categories: [ "tech" ]
 tags: ["github","maven"]
 description: "介绍如何通过 GitHub Action 自动发布 Jar 包到 Maven 中央仓库，减少手工发布流程并提升发布效率。"
 ---

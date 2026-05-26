@@ -1,7 +1,7 @@
 /**
  * Astro 内容集合配置文件
  *
- * @fileoverview 三类内容：`posts`（技术/生活等）、`briefs`（周报）；共享同一 Zod schema。
+ * @fileoverview 内容集合：`posts`（普通文章和 posts/briefs 下的周报）；共享同一 Zod schema。
  *
  * @see https://docs.astro.build/en/guides/content-collections/
  */
@@ -13,9 +13,6 @@ import { SITE } from "@/config";
 
 /** 普通长文 */
 export const POSTS_CONTENT_PATH = "content/posts";
-
-/** 周报 */
-export const BRIEFS_CONTENT_PATH = "content/briefs";
 
 /** @deprecated 使用 {@link POSTS_CONTENT_PATH} */
 export const BLOG_PATH = POSTS_CONTENT_PATH;
@@ -40,13 +37,11 @@ const articleSchema = () =>
       }),
     timezone: z.string().optional(),
     tags: z.array(z.string()).default(["Others"]),
-    categories: z.array(z.string()).default([]),
     draft: z.boolean().optional(),
     comments: z.boolean().default(true),
     math: z.boolean().default(false),
     mermaid: z.boolean().default(false),
     canonicalURL: z.string().optional(),
-    favicon: z.string().optional(),
     banner: z.string().optional(),
     slug: z.string().trim().min(1, "slug 不能为空"),
   });
@@ -59,12 +54,4 @@ const posts = defineCollection({
   schema: articleSchema,
 });
 
-const briefs = defineCollection({
-  loader: glob({
-    pattern: "**/[^_]*.{md,mdx}",
-    base: `./${BRIEFS_CONTENT_PATH}`,
-  }),
-  schema: articleSchema,
-});
-
-export const collections = { posts, briefs };
+export const collections = { posts };

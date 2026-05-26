@@ -2,7 +2,6 @@
 title: "ThingsBoard 安全模块详解：配置与权限设计"
 date: 2024-12-03 09:00:00+08:00
 slug: security-in-thingsboard
-categories: [ "tech" ]
 tags: [ "security", "thingsboard" ]
 description: "结合 ThingsBoard 源码与后台界面，整理平台中的安全相关配置、菜单项和核心 Security 模块，帮助理解其安全设计。"
 ---

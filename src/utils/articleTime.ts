@@ -13,7 +13,7 @@ dayjs.locale("zh-cn");
 
 const SITE_TZ = SITE.timezone || "Asia/Shanghai";
 
-/** 列表 `<time>` 与详情标题区共用：展示文案、机器可读 ISO、悬浮提示（发布时刻） */
+/** 列表 `<time>`：展示文案、机器可读 ISO、悬浮提示（发布时刻） */
 export interface ArticleTimeFields {
   display: string;
   iso: string;
@@ -29,7 +29,7 @@ function effectiveTimezone(timezoneProp: string | undefined): string {
 }
 
 /**
- * 文章发布/更新时间在列表卡片与详情标题区的展示（最新时间 + 时区；`titleAttr` 为发布时间）。
+ * 文章发布/更新时间在列表卡片中的展示（最新时间 + 时区；`titleAttr` 为发布时间）。
  */
 export class ArticleTime {
   static getDisplay(
@@ -51,19 +51,5 @@ export class ArticleTime {
         ? latestInTz.format("YYYY-MM-DD")
         : latest.fromNow();
     return { display, iso, titleAttr };
-  }
-
-  /** 详情页标题区：固定 `YYYY-MM-DD`，与列表「绝对日期」一致 */
-  static forDetailHeader(
-    pubDatetime: Date | string,
-    modDatetime: Date | string | null | undefined,
-    timezoneProp: string | undefined
-  ): ArticleTimeFields {
-    return ArticleTime.getDisplay(
-      pubDatetime,
-      modDatetime,
-      timezoneProp,
-      "absolute"
-    );
   }
 }

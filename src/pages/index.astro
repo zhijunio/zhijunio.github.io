@@ -2,65 +2,91 @@
 /**
  * 首页
  *
- * @fileoverview 两栏：最近博客、最近周报（取自对应集合）。
+ * @fileoverview 最近博客、周报混排卡片列表。
  */
 import { getCollection } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
-import Card from "@/components/Card.astro";
 import { PostUtils } from "@/utils/postUtils";
 import { SITE } from "@/config";
+import { ArticleTime } from "@/utils/articleTime";
 
 /** 与 /og/index.png 一致 */
 export const pageSlug = "index";
 export const pageTitle = SITE.title;
 export const pageDescription = SITE.description;
 
-const n = SITE.postPerIndex;
+const limit = SITE.postPerIndex * 2;
 
-const latestPosts = PostUtils.sort(await getCollection("posts")).slice(0, n);
-const latestBriefs = PostUtils.sort(await getCollection("briefs")).slice(0, n);
+function isBriefPost(entry: { id: string; filePath?: string }): boolean {
+  return (
+    entry.id.startsWith("briefs/") ||
+    entry.filePath?.replace(/\\/g, "/").includes("/posts/briefs/") === true
+  );
+}
+
+const feedItems = PostUtils.sort(await getCollection("posts"))
+  .map(entry => ({
+    entry,
+    kind: isBriefPost(entry) ? "周报" : "博客",
+    kindClass: isBriefPost(entry)
+      ? "home-feed-kind--brief"
+      : "home-feed-kind--post",
+  }))
+  .sort(
+    (a, b) =>
+      Math.floor(
+        new Date(b.entry.data.updated ?? b.entry.data.date).getTime() / 1000
+      ) -
+      Math.floor(
+        new Date(a.entry.data.updated ?? a.entry.data.date).getTime() / 1000
+      )
+  )
+  .slice(0, limit);
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
-  <section
-    class="home-index home-index--grid grid w-full min-w-0 grid-cols-1 gap-7 md:grid-cols-2 md:gap-x-8 md:gap-y-7 lg:gap-x-10 lg:gap-y-1"
-  >
-    <section class="min-w-0" aria-labelledby="home-latest-posts-heading">
-      <header class="mb-1.5">
-        <h3 id="home-latest-posts-heading" class="mt-0 mb-0.5 text-base">
-          最近博客
-        </h3>
-        <p class="mt-0.5 mb-0 text-sm leading-snug text-pretty text-muted">
-          仅包含发布在博客目录下的长文（技术、生活等）。
-          <a href="/posts" class="text-accent no-underline hover:underline">
-            全部博客
-          </a>
-        </p>
-      </header>
-      <ul class="post-cards-list m-0 list-none p-0" aria-label="博客列表">
-        {latestPosts.map(post => <Card openInNewTab={false} {...post} />)}
-      </ul>
-    </section>
+  <section class="home-feed" aria-label="最近记录">
+    <ol class="home-feed-list" aria-label="最近记录列表">
+      {
+        feedItems.map(({ entry, kind, kindClass }) => {
+          const date = ArticleTime.getDisplay(
+            entry.data.date,
+            entry.data.updated,
+            entry.data.timezone,
+            "absolute"
+          );
+          const description = (
+            entry.data.description?.trim() ||
+            PostUtils.getDescription(entry.body ?? "")
+          ).trim();
+          const href = PostUtils.getPath(
+            entry.id,
+            entry.filePath,
+            true,
+            entry.data.date,
+            entry.data.timezone,
+            entry.data.slug,
+            entry.collection
+          );
 
-    <section class="min-w-0" aria-labelledby="home-latest-briefs-heading">
-      <header class="mb-1.5">
-        <h3 id="home-latest-briefs-heading" class="mt-0 mb-0.5 text-base">
-          最近周报
-        </h3>
-        <p class="mt-0.5 mb-0 text-sm leading-snug text-pretty text-muted">
-          记录每周开发进展、工具尝试和一些阶段性想法。
-          <a href="/briefs" class="text-accent no-underline hover:underline">
-            全部周报
-          </a>
-        </p>
-      </header>
-      <ul class="post-cards-list m-0 list-none p-0" aria-label="周报列表">
-        {
-          latestBriefs.map(post => (
-            <Card openInNewTab={false} listKind="weekly" {...post} />
-          ))
-        }
-      </ul>
-    </section>
+          return (
+            <li class="home-feed-item">
+              <article class="home-feed-card">
+                <div class="home-feed-meta">
+                  <time datetime={date.iso} title={date.titleAttr}>
+                    {date.display}
+                  </time>
+                  <span class:list={["home-feed-kind", kindClass]}>{kind}</span>
+                </div>
+                <h2>
+                  <a href={href}>{entry.data.title}</a>
+                </h2>
+                {description && <p>{description}</p>}
+              </article>
+            </li>
+          );
+        })
+      }
+    </ol>
   </section>
 </Layout>

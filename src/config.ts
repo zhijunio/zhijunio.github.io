@@ -1,6 +1,6 @@
 /**
  * 对象存储自定义域名（R2 / COS，无末尾斜杠）。
- * - **dist**：KaTeX、lazy-list 等 CSS/JS
+ * - **dist**：KaTeX 等 CSS/JS
  * - **图片**：dev/prod 与 CDN 开关见 `src/utils/blogImages/`（`shouldUseCdnForPublicImagePaths`、`siteImageHref` 等）
  */
 export const CDN_ORIGIN = "https://cos.zhijun.io";
@@ -25,7 +25,7 @@ export const SITE = {
   lightAndDarkMode: true,
 
   /**
-   * 首页各栏（博客 / 周报 ）展示的最近条目数
+   * 首页展示的最近条目数基数
    */
   postPerIndex: 12,
 
@@ -127,6 +127,4 @@ export const SITE = {
     websiteId: "2311be4b-ebe4-4a94-9c69-b2e841584d0d",
     scriptUrl: "https://umami.zhijun.io/random-string.js",
   },
-
-  lazyListJsUrl: `${CDN_ORIGIN}/dist/lazy-list.js`,
 } as const;

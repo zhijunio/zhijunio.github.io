@@ -5,3 +5,7 @@
 # /posts/年/月/日/slug → /posts/slug（Cloudflare :placeholder，非正则）
 /posts/:year/:month/:day/:slug  /posts/:slug  301
 /posts/:year/:month/:day/:slug/  /posts/:slug  301
+
+/briefs  /posts  301
+/briefs/:slug  /posts/:slug  301
+/briefs/:slug/  /posts/:slug  301

@@ -19,8 +19,6 @@ function formatLastmod(value: string): string {
 export const GET: APIRoute = async () => {
   const posts = PostUtils.getPublishedPosts(await getAllBlogLike());
   const sortedPosts = PostUtils.sort(posts);
-  const tags = PostUtils.getUniqueTags(posts);
-
   const latestPostUpdatedAt = sortedPosts[0]
     ? new Date(
         sortedPosts[0].data.updated ?? sortedPosts[0].data.date
@@ -31,27 +29,10 @@ export const GET: APIRoute = async () => {
     { path: "/", lastmod: latestPostUpdatedAt, priority: "1.00" },
     { path: "/about", lastmod: latestPostUpdatedAt, priority: "0.80" },
     { path: "/posts", lastmod: latestPostUpdatedAt, priority: "0.80" },
-    { path: "/briefs", lastmod: latestPostUpdatedAt, priority: "0.80" },
-    { path: "/tags", lastmod: latestPostUpdatedAt, priority: "0.80" },
     { path: "/search", lastmod: latestPostUpdatedAt, priority: "0.64" },
     { path: "/rss.xml", lastmod: latestPostUpdatedAt, priority: "0.48" },
     { path: "/llms.txt", lastmod: latestPostUpdatedAt, priority: "0.48" },
   ];
-
-  const tagPages = tags.map(tagItem => {
-    const tagPosts = PostUtils.getPostsByTag(posts, tagItem.tag);
-    const lastmod = tagPosts[0]
-      ? new Date(
-          tagPosts[0].data.updated ?? tagPosts[0].data.date
-        ).toISOString()
-      : latestPostUpdatedAt;
-
-    return {
-      path: `/tags/${tagItem.tag}`,
-      lastmod,
-      priority: "0.64",
-    };
-  });
 
   const postPages = sortedPosts.map(post => ({
     path: PostUtils.getPath(
@@ -67,7 +48,7 @@ export const GET: APIRoute = async () => {
     priority: "0.64",
   }));
 
-  const urls = [...staticPages, ...tagPages, ...postPages];
+  const urls = [...staticPages, ...postPages];
   const body = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset
       xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"

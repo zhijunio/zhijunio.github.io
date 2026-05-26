@@ -2,9 +2,7 @@
 title: "Spring AI RAG 实战：向量存储与检索增强生成"
 date: 2026-02-01 08:00:00+08:00
 slug: spring-ai-rag-vector-store
-categories: [ "tech" ]
 tags: ["spring-ai", "rag", "redis"]
-favicon: "storage.svg"
 description: "介绍如何在 Spring AI 中结合 RAG 与向量存储构建 Spring Boot 应用，让模型能够基于外部知识做更准确的回答。"
 ---
 
