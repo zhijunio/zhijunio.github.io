@@ -4,8 +4,7 @@
  * @fileoverview 生成 RSS 2.0：条目按 frontmatter `date` 发布时间降序（非 `updated`）；最近 10 篇；摘要见 <!-- more --> / PostUtils.getDescription。
  */
 import rss from "@astrojs/rss";
-import { getAllBlogLike } from "@/utils/contentCollections";
-import { PostUtils } from "@/utils/postUtils";
+import { getAllBlogLike, PostUtils } from "@/utils/postUtils";
 import { SITE } from "@/config";
 
 export async function GET() {

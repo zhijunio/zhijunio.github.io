@@ -1,6 +1,5 @@
 import type { APIRoute } from "astro";
-import { getAllBlogLike } from "@/utils/contentCollections";
-import { generateLlmsTxt, PostUtils } from "@/utils/postUtils";
+import { generateLlmsTxt, getAllBlogLike, PostUtils } from "@/utils/postUtils";
 
 export const GET: APIRoute = async () => {
   const posts = PostUtils.getPublishedPosts(await getAllBlogLike());

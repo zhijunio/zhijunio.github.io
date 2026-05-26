@@ -1,5 +1,5 @@
 /**
- * 图片 CDN 开关与 URL 解析（Layout、PostDetails、Card、feeds、Photosuite、rehype）。
+ * 图片 CDN 开关与 URL 解析（Layout、PostDetails、Photosuite、rehype）。
  */
 
 import { CDN_IMAGES_BASE, CDN_ORIGIN } from "../../config";
@@ -56,7 +56,7 @@ export function devLocalImageRef(href: string): string {
   return t;
 }
 
-/** `<img src>` 等：外链原样；`/images/`、`/favicons/`、`/feeds/` 在生产改为 CDN 绝对 URL */
+/** `<img src>` 等：外链原样；`/images/` 在生产改为 CDN 绝对 URL */
 export function siteImageHref(pathOrUrl: string): string {
   const t = (pathOrUrl ?? "").trim();
   if (!t) return t;
@@ -65,11 +65,7 @@ export function siteImageHref(pathOrUrl: string): string {
   if (!shouldUseCdnForPublicImagePaths()) {
     return path;
   }
-  if (
-    path.startsWith("/images/") ||
-    path.startsWith("/favicons/") ||
-    path.startsWith("/feeds/")
-  ) {
+  if (path.startsWith("/images/")) {
     return `${normalizeCdnOrigin()}${path}`;
   }
   return path;
@@ -84,11 +80,7 @@ export function publicImageAbsoluteUrl(
   if (!t) return "";
   if (/^https?:\/\//i.test(t)) return t;
   const path = t.startsWith("/") ? t : `/${t}`;
-  if (
-    path.startsWith("/images/") ||
-    path.startsWith("/favicons/") ||
-    path.startsWith("/feeds/")
-  ) {
+  if (path.startsWith("/images/")) {
     if (!shouldUseCdnForPublicImagePaths()) {
       return new URL(path, siteOrigin).href;
     }

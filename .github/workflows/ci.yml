@@ -52,3 +52,83 @@ jobs:
 
       - name: "🚀 Build the project"
         run: pnpm run build
+
+  publish-cdn:
+    name: WebP + R2 sync
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && !contains(github.event.head_commit.message, '[skip ci]')) }}
+    permissions:
+      contents: write
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Detect CDN-related changes
+        id: changes
+        if: github.event_name == 'push'
+        run: |
+          if git diff --name-only HEAD^ HEAD | grep -qE '^(public/images/|public/favicon\.ico|public/og\.webp|scripts/convert-to-webp\.mjs|\.github/workflows/ci\.yml)'; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Install pnpm
+        if: github.event_name == 'workflow_dispatch' || steps.changes.outputs.run == 'true'
+        uses: pnpm/action-setup@v6
+        with:
+          version: 11.3.0
+
+      - name: Setup Node.js
+        if: github.event_name == 'workflow_dispatch' || steps.changes.outputs.run == 'true'
+        uses: actions/setup-node@v6
+        with:
+          node-version: 25
+          cache: pnpm
+
+      - name: Install dependencies
+        if: github.event_name == 'workflow_dispatch' || steps.changes.outputs.run == 'true'
+        run: pnpm install --frozen-lockfile
+
+      - name: Convert images to WebP
+        if: github.event_name == 'workflow_dispatch' || steps.changes.outputs.run == 'true'
+        run: pnpm run convert-to-webp
+
+      - name: Commit WebP changes
+        if: github.event_name == 'workflow_dispatch' || steps.changes.outputs.run == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/images
+          if git diff --cached --quiet; then
+            echo "No image changes to commit."
+          else
+            git commit -m "chore(图片): 自动转换 webp [skip ci]"
+            git push
+          fi
+
+      - name: Install rclone
+        if: github.event_name == 'workflow_dispatch' || steps.changes.outputs.run == 'true'
+        run: curl -fsSL https://rclone.org/install.sh | sudo bash
+
+      - name: Configure rclone
+        if: github.event_name == 'workflow_dispatch' || steps.changes.outputs.run == 'true'
+        env:
+          RCLONE_CONFIG: ${{ secrets.RCLONE_CONFIG }}
+        run: |
+          if [[ -z "${RCLONE_CONFIG}" ]]; then
+            echo "::error::缺少仓库 Secret：RCLONE_CONFIG（本地 rclone config file 中 [r2] 段及 remote 配置）"
+            exit 1
+          fi
+          mkdir -p ~/.config/rclone
+          printf '%s\n' "${RCLONE_CONFIG}" > ~/.config/rclone/rclone.conf
+          chmod 600 ~/.config/rclone/rclone.conf
+
+      - name: Sync to R2
+        if: github.event_name == 'workflow_dispatch' || steps.changes.outputs.run == 'true'
+        run: pnpm run images:sync

@@ -5,11 +5,10 @@
  * @fileoverview 渲染单篇文章：标题、元数据、正文（Content）、前后篇导航、标签列表，以及按 frontmatter 控制的评论/数学公式等功能。canonical 等元信息由本布局传给 Layout。
  */
 import { render } from "astro:content";
-import type { BlogLikeEntry } from "@/utils/contentCollections";
 import Layout from "@/layouts/Layout.astro";
 import Photosuite from "@/components/Photosuite.astro";
 import ArticleToc from "@/components/ArticleToc.astro";
-import { PostUtils } from "@/utils/postUtils";
+import { PostUtils, type BlogLikeEntry } from "@/utils/postUtils";
 import IconChevronLeft from "@/assets/icons/IconChevronLeft.svg";
 import IconChevronRight from "@/assets/icons/IconChevronRight.svg";
 import { CDN_KATEX_STYLESHEET, SITE } from "@/config";
@@ -187,7 +186,7 @@ const giscusThemeDark = "https://giscus.app/themes/dark.css";
           alt={bannerAltText}
           fetchpriority="high"
           decoding="async"
-          sizes="(max-width: 768px) 100vw, min(100%, 56rem)"
+          sizes="(max-width: 768px) 100vw, min(100%, 60rem)"
         />
       )
     }
@@ -264,7 +263,31 @@ const giscusThemeDark = "https://giscus.app/themes/dark.css";
         />
         <meta name="giscus-theme-light" content={giscusThemeLight} />
         <meta name="giscus-theme-dark" content={giscusThemeDark} />
-        <script is:inline src="/giscus-theme.js" data-astro-rerun />
+        <script is:inline data-astro-rerun>
+          function getGiscusThemeUrl() {
+            const isDark =
+              document.documentElement.getAttribute("data-theme") === "dark";
+            const meta = document.querySelector(
+              isDark
+                ? 'meta[name="giscus-theme-dark"]'
+                : 'meta[name="giscus-theme-light"]'
+            );
+            return meta?.getAttribute("content") ?? "";
+          }
+
+          function updateGiscusTheme() {
+            const iframe = document.querySelector("iframe.giscus-frame");
+            if (!iframe?.contentWindow) return;
+            iframe.contentWindow.postMessage(
+              { giscus: { setConfig: { theme: getGiscusThemeUrl() } } },
+              "https://giscus.app"
+            );
+          }
+
+          window.addEventListener("load", updateGiscusTheme);
+          document.addEventListener("themechange", updateGiscusTheme);
+          document.addEventListener("astro:page-load", updateGiscusTheme);
+        </script>
       </section>
     )
   }

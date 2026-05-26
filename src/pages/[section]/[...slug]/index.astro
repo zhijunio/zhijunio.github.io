@@ -4,11 +4,10 @@
  */
 import type { GetStaticPaths } from "astro";
 import PostDetails from "@/layouts/PostDetails.astro";
-import { PostUtils } from "@/utils/postUtils";
-import { getAllBlogLike } from "@/utils/contentCollections";
+import { getAllBlogLike, PostUtils } from "@/utils/postUtils";
 
 export interface Props {
-  post: import("@/utils/contentCollections").BlogLikeEntry;
+  post: import("@/utils/postUtils").BlogLikeEntry;
 }
 
 export const getStaticPaths = (async () => {

@@ -6,9 +6,8 @@
  */
 import { getCollection } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
-import { PostUtils } from "@/utils/postUtils";
 import { SITE } from "@/config";
-import { ArticleTime } from "@/utils/articleTime";
+import { ArticleTime, PostUtils, isWeeklyPost } from "@/utils/postUtils";
 
 /** 与 /og/index.png 一致 */
 export const pageSlug = "index";
@@ -17,19 +16,12 @@ export const pageDescription = SITE.description;
 
 const limit = SITE.postPerIndex * 2;
 
-function isBriefPost(entry: { id: string; filePath?: string }): boolean {
-  return (
-    entry.id.startsWith("briefs/") ||
-    entry.filePath?.replace(/\\/g, "/").includes("/posts/briefs/") === true
-  );
-}
-
 const feedItems = PostUtils.sort(await getCollection("posts"))
   .map(entry => ({
     entry,
-    kind: isBriefPost(entry) ? "周报" : "博客",
-    kindClass: isBriefPost(entry)
-      ? "home-feed-kind--brief"
+    kind: isWeeklyPost(entry) ? "周报" : "博客",
+    kindClass: isWeeklyPost(entry)
+      ? "home-feed-kind--weekly"
       : "home-feed-kind--post",
   }))
   .sort(

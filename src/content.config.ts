@@ -1,7 +1,7 @@
 /**
  * Astro 内容集合配置文件
  *
- * @fileoverview 内容集合：`posts`（普通文章和 posts/briefs 下的周报）；共享同一 Zod schema。
+ * @fileoverview 内容集合 `posts`：`content/tech` 长文与 `content/weekly` 周报；共享同一 Zod schema。
  *
  * @see https://docs.astro.build/en/guides/content-collections/
  */
@@ -11,11 +11,8 @@ import { z } from "astro/zod";
 import { glob } from "astro/loaders";
 import { SITE } from "@/config";
 
-/** 普通长文 */
-export const POSTS_CONTENT_PATH = "content/posts";
-
-/** @deprecated 使用 {@link POSTS_CONTENT_PATH} */
-export const BLOG_PATH = POSTS_CONTENT_PATH;
+/** 文章 Markdown 根目录（含 tech/、weekly/；不含 about.md） */
+export const POSTS_CONTENT_PATH = "content";
 
 const articleSchema = () =>
   z.object({
@@ -48,7 +45,7 @@ const articleSchema = () =>
 
 const posts = defineCollection({
   loader: glob({
-    pattern: "**/[^_]*.{md,mdx}",
+    pattern: "{tech,weekly}/**/[^_]*.{md,mdx}",
     base: `./${POSTS_CONTENT_PATH}`,
   }),
   schema: articleSchema,

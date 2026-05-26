@@ -17,9 +17,31 @@
     "format": "pnpm exec prettier --write .",
     "lint": "eslint .",
     "convert-to-webp": "node scripts/convert-to-webp.mjs",
-    "spell": "pnpm dlx cspell --config cspell.yaml .",
-    "md:check": "pnpm dlx markdownlint-cli2 \"./content/**/*.md\"",
-    "md:fix": "pnpm dlx markdownlint-cli2 --fix \"./content/**/*.md\""
+    "images:sync": "rclone sync public/favicon.ico r2:cos/favicon.ico -P && rclone sync public/og.webp r2:cos/og.webp -P && rclone sync public/images r2:cos/images -P",
+    "images:publish": "node scripts/convert-to-webp.mjs && pnpm run images:sync",
+    "md:check": "pnpm dlx markdownlint-cli2 \"./content/tech/**/*.md\" \"./content/weekly/**/*.md\" \"./content/about.md\" --config package.json --configPointer /markdownlint-cli2/config",
+    "md:fix": "pnpm dlx markdownlint-cli2 --fix \"./content/tech/**/*.md\" \"./content/weekly/**/*.md\" \"./content/about.md\" --config package.json --configPointer /markdownlint-cli2/config"
+  },
+  "markdownlint-cli2": {
+    "config": {
+      "default": true,
+      "MD003": {
+        "style": "atx"
+      },
+      "MD013": false,
+      "MD024": {
+        "siblings_only": true
+      },
+      "MD025": {
+        "front_matter_title": ""
+      },
+      "MD033": false,
+      "MD036": false,
+      "MD040": false,
+      "MD041": false,
+      "MD045": false,
+      "MD060": false
+    }
   },
   "dependencies": {
     "@astrojs/mdx": "5.0.6",

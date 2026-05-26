@@ -1,26 +1,17 @@
 ---
 /**
- * 博客列表（content/posts 长文，不含 briefs/）
+ * 博客列表（content/tech 长文，不含 weekly/）
  */
 import { getCollection } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
-import ListLayout from "@/layouts/ListLayout.astro";
 import { SITE } from "@/config";
-import { PostUtils } from "@/utils/postUtils";
-import { ArticleTime } from "@/utils/articleTime";
+import { ArticleTime, PostUtils, isWeeklyPost } from "@/utils/postUtils";
 
 export const pageSlug = "posts";
 export const pageTitle = `博客 | ${SITE.title}`;
 
-function isBriefPost(entry: { id: string; filePath?: string }): boolean {
-  return (
-    entry.id.startsWith("briefs/") ||
-    entry.filePath?.replace(/\\/g, "/").includes("/posts/briefs/") === true
-  );
-}
-
 const sorted = PostUtils.sort(await getCollection("posts")).filter(
-  entry => !isBriefPost(entry)
+  entry => !isWeeklyPost(entry)
 );
 ---
 
@@ -28,7 +19,8 @@ const sorted = PostUtils.sort(await getCollection("posts")).filter(
   title={pageTitle}
   description="技术、生活等发布在博客目录下的长文，按最近更新排序。"
 >
-  <ListLayout title="博客">
+  <section class="posts-page" aria-labelledby="posts-page-heading">
+    <h1 id="posts-page-heading" class="posts-page__title">博客</h1>
     <section class="home-feed" aria-label="博客列表">
       <ol class="home-feed-list">
         {
@@ -46,7 +38,7 @@ const sorted = PostUtils.sort(await getCollection("posts")).filter(
             const href = PostUtils.getPath(
               entry.id,
               entry.filePath,
-              false,
+              true,
               entry.data.date,
               entry.data.timezone,
               entry.data.slug,
@@ -72,5 +64,14 @@ const sorted = PostUtils.sort(await getCollection("posts")).filter(
         }
       </ol>
     </section>
-  </ListLayout>
+  </section>
 </Layout>
+
+<style>
+  .posts-page__title {
+    margin: 0 0 0.5rem;
+    font-size: 1.875rem;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
+</style>

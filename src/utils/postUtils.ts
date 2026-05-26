@@ -1,18 +1,49 @@
 /**
- * 博客与文章集合相关工具（原多文件合并：摘要正则、slug、分类元数据、PostUtils、llms.txt 生成）
+ * 博客与文章集合相关工具
  *
- * @fileoverview 文章过滤/排序/路径、标签、描述提取、LLMs 站点地图文案；订阅卡片日期、content/pages 极简 frontmatter 读取
+ * @fileoverview 文章过滤/排序/路径、描述提取、列表时间展示、LLMs 站点地图；content/about 等静态页 frontmatter
  */
 
 import fs from "node:fs";
 import path from "node:path";
 
-import type {
-  BlogLikeCollection,
-  BlogLikeEntry,
-} from "@/utils/contentCollections";
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import dayjs from "dayjs";
+import type { Dayjs } from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezonePlugin from "dayjs/plugin/timezone";
+import relativeTime from "dayjs/plugin/relativeTime";
+import "dayjs/locale/zh-cn";
 
 import { SITE } from "@/config";
+
+dayjs.extend(utc);
+dayjs.extend(timezonePlugin);
+dayjs.extend(relativeTime);
+dayjs.locale("zh-cn");
+
+const SITE_TZ = SITE.timezone || "Asia/Shanghai";
+
+/** 与 `src/content.config.ts` 集合名一致 */
+export type BlogLikeCollection = "posts";
+
+export type BlogLikeEntry = CollectionEntry<BlogLikeCollection>;
+
+export async function getAllBlogLike(): Promise<BlogLikeEntry[]> {
+  return getCollection("posts");
+}
+
+/** 是否 `content/weekly/` 下的周报条目 */
+export function isWeeklyPost(entry: {
+  id: string;
+  filePath?: string;
+}): boolean {
+  return (
+    entry.id.startsWith("weekly/") ||
+    entry.filePath?.replace(/\\/g, "/").includes("/weekly/") === true
+  );
+}
 
 // --- 描述提取（Markdown → 纯文本摘要）---
 
@@ -37,15 +68,6 @@ const regexReplacers: Record<string, [RegExp, string]> = {
   link2: [/\[(.*?)\]\[(.*?)\]/g, "$1 "],
   linkRef: [/\[(.*?)\]: (.*?)/g, ""],
 };
-
-// --- Slug（URL 路径）---
-
-/**
- * 标签/分类 URL 段、索引用键等：与 frontmatter 字面一致，仅 `trim`（不做 kebab-case 等变换）。
- */
-export function trimUrlSegment(str: string): string {
-  return String(str).trim();
-}
 
 // --- PostUtils ---
 
@@ -294,7 +316,11 @@ export function generateLlmsTxt(posts: BlogLikeEntry[]): string {
     "## Site",
     formatLinkLine("Home", "/", "Main entry point"),
     formatLinkLine("About", "/about", "Author profile and site background"),
-    formatLinkLine("博客", "/posts", "博客和周报时间线（content/posts）"),
+    formatLinkLine(
+      "博客",
+      "/posts",
+      "博客和周报时间线（content/tech、content/weekly）"
+    ),
     "",
     "## All entries",
     ...allPosts.map(formatPostLine),
@@ -305,14 +331,55 @@ export function generateLlmsTxt(posts: BlogLikeEntry[]): string {
     formatLinkLine("Robots", "/robots.txt"),
     "",
     "## Notes For LLMs",
-    "- Canonical article URLs use the /posts/ prefix. Weekly notes are posts stored under content/posts/briefs/.",
+    "- Canonical article URLs use the /posts/ prefix. Weekly notes live under content/weekly/.",
     "- These pages are the primary source of truth; search is available at /search.",
   ];
 
   return `${lines.join("\n")}\n`;
 }
 
-// --- content/pages（about 等静态 Markdown 页）---
+// --- 列表时间展示 ---
+
+/** 列表 `<time>`：展示文案、机器可读 ISO、悬浮提示（发布时刻） */
+export interface ArticleTimeFields {
+  display: string;
+  iso: string;
+  titleAttr: string;
+}
+
+function latestOf(pub: Dayjs, mod: Dayjs | null): Dayjs {
+  return mod && mod.isAfter(pub) ? mod : pub;
+}
+
+function effectiveTimezone(timezoneProp: string | undefined): string {
+  return timezoneProp || SITE_TZ;
+}
+
+/** 文章发布/更新时间在列表卡片中的展示（最新时间 + 时区；`titleAttr` 为发布时间） */
+export class ArticleTime {
+  static getDisplay(
+    pubDatetime: Date | string,
+    modDatetime: Date | string | null | undefined,
+    timezoneProp: string | undefined,
+    format: "relative" | "absolute"
+  ): ArticleTimeFields {
+    const pub = dayjs(pubDatetime);
+    const mod = modDatetime ? dayjs(modDatetime) : null;
+    const latest = latestOf(pub, mod);
+    const iso = latest.toISOString();
+    const tz = effectiveTimezone(timezoneProp);
+    const latestInTz = dayjs.utc(latest.toDate()).tz(tz);
+    const pubInTz = dayjs.utc(pub.toDate()).tz(tz);
+    const titleAttr = pubInTz.format("YYYY-MM-DD HH:mm:ss");
+    const display =
+      format === "absolute"
+        ? latestInTz.format("YYYY-MM-DD")
+        : latest.fromNow();
+    return { display, iso, titleAttr };
+  }
+}
+
+// --- content/ 下静态 Markdown 页（about 等）---
 
 export interface ContentPageData {
   frontmatter: Record<string, string>;

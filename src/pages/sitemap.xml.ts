@@ -1,7 +1,6 @@
 import type { APIRoute } from "astro";
-import { getAllBlogLike } from "@/utils/contentCollections";
 import { SITE } from "@/config";
-import { PostUtils } from "@/utils/postUtils";
+import { getAllBlogLike, PostUtils } from "@/utils/postUtils";
 
 function escapeXml(value: string): string {
   return value
