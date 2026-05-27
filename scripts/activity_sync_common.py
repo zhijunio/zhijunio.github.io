@@ -858,9 +858,7 @@ def heal_missing_ai(local_data: list[dict]) -> bool:
     info(f"补全 AI 分析 {len(missing)} 条（{label}）")
     filled = 0
     for n, (index, record) in enumerate(missing, start=1):
-        item(
-            n,
-            len(missing),
+        info(
             record.get("start_date_local", "") or record.get("run_id", "?"),
         )
         before = record.get("ai_comment")

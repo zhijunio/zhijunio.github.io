@@ -25,6 +25,7 @@ if _SCRIPT_DIR not in sys.path:
 
 from activity_sync_common import (  # noqa: E402
     SyncPaths,
+    apply_ai_to_record,
     assets_path,
     build_activity_record,
     cap_sync_batch,
@@ -37,6 +38,7 @@ from activity_sync_common import (  # noqa: E402
     known_run_ids,
     load_activities,
     log_sync_startup,
+    merge_records,
     parse_positive_int,
     parse_time,
     request_with_retries,
@@ -322,7 +324,7 @@ def sync_keep_records(
         safe_time = keep_time_to_local_str(stats.get("doneDate"))
         keep_id = extract_keep_id(stats.get("id") or "")
         fallback = f"keep_{keep_id}" if keep_id else "?"
-        item(n, total, f"{sport_type} {safe_time or fallback}")
+        info(f"{sport_type} {safe_time or fallback}")
         detail = fetch_keep_run_detail(session, headers, sport_type, stats.get("id") or "")
         record = format_keep_record(sport_type, stats, detail)
         if not record:

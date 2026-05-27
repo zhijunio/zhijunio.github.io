@@ -18,6 +18,7 @@ if _SCRIPT_DIR not in sys.path:
 
 from activity_sync_common import (  # noqa: E402
     SyncPaths,
+    apply_ai_to_record,
     assets_path,
     cap_sync_batch,
     create_sync_http_session,
@@ -30,6 +31,7 @@ from activity_sync_common import (  # noqa: E402
     known_run_ids,
     load_activities,
     log_sync_startup,
+    merge_records,
     parse_positive_int,
     parse_time,
     request_with_retries,
@@ -150,11 +152,7 @@ def process_and_merge(local_data: list[dict], raw_new: list[dict]):
     total = len(raw_new)
 
     for n, activity in enumerate(raw_new, start=1):
-        item(
-            n,
-            total,
-            activity.get("start_date_local") or str(activity.get("id", "?")),
-        )
+        info(activity.get("start_date_local") or str(activity.get("id", "?")))
         record = format_strava_activity(activity)
         if not record:
             continue
