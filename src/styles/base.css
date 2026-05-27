@@ -224,9 +224,10 @@ menu {
   font-size: 1.08rem;
 }
 
-/* 主容器下的导航/卡片列表默认不加缩进 */
+/* 主容器下的导航/卡片/搜索列表默认不加缩进 */
 main > ul,
-main > section > ul {
+main > section > ul,
+#search-results ul {
   list-style: none;
   margin: 0;
   padding-left: 0;
