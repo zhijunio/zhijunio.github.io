@@ -1,6 +1,6 @@
-# ZhiJun Blog
+# ZhiJun's Blog
 
-**ZhiJun Blog** 是一个基于 **Astro 6 + Tailwind CSS 4** 构建的个人技术博客，面向中文技术内容（Java、Spring、微服务、架构、Kubernetes、DevOps）。
+**ZhiJun's Blog** 是一个基于 **Astro 6 + Tailwind CSS 4** 构建的个人技术博客，面向中文技术内容（Java、Spring、微服务、架构、Kubernetes、DevOps）。
 
 ## 技术栈
 
