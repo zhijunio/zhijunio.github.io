@@ -5,10 +5,11 @@
  */
 ---
 
-<nav class="post-toc" id="article-toc" aria-label="本页目录" hidden></nav>
+<nav id="article-toc" aria-label="本页目录" hidden></nav>
 
 <style is:global>
-  .post-toc {
+  #article-toc {
+    display: none;
     margin: 0 0 1rem;
     padding: 0.55rem 0.8rem;
     border: 1px solid color-mix(in srgb, var(--border) 82%, transparent);
@@ -20,6 +21,37 @@
     );
   }
 
+  @media (min-width: 1280px) {
+    #article-toc {
+      display: block;
+      position: fixed;
+      top: var(--site-header-sticky-offset);
+      left: calc(50% + var(--site-chrome-width) / 2 + 1.25rem);
+      width: 13.5rem;
+      max-height: calc(100vh - var(--site-header-sticky-offset) - 1.5rem);
+      overflow-y: auto;
+      margin: 0;
+      z-index: 10;
+    }
+  }
+
+  #article-toc ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  #article-toc li {
+    margin: 0.2rem 0;
+    line-height: 1.35;
+  }
+
+  #article-toc li[data-level="3"] {
+    padding-left: 0.7rem;
+    border-left: 2px solid color-mix(in srgb, var(--border) 68%, transparent);
+    margin-left: 0.15rem;
+  }
+
   .article-toc__title {
     margin: 0 0 0.4rem;
     font-size: 0.72rem;
@@ -27,23 +59,6 @@
     letter-spacing: 0.04em;
     text-transform: uppercase;
     color: var(--text-secondary);
-  }
-
-  .post-toc ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  .post-toc li {
-    margin: 0.2rem 0;
-    line-height: 1.35;
-  }
-
-  .post-toc li.article-toc__sub {
-    padding-left: 0.7rem;
-    border-left: 2px solid color-mix(in srgb, var(--border) 68%, transparent);
-    margin-left: 0.15rem;
   }
 
   .article-toc__link {
@@ -66,7 +81,7 @@
     text-underline-offset: 0.12em;
   }
 
-  .article-toc__link.article-toc__link--active {
+  .article-toc__link[data-active="true"] {
     color: var(--text-primary);
     font-weight: 600;
     background: color-mix(in srgb, var(--accent-surface) 58%, transparent);
@@ -74,7 +89,7 @@
     text-decoration: none;
   }
 
-  .article-toc__link.article-toc__link--active:hover {
+  .article-toc__link[data-active="true"]:hover {
     text-decoration: none;
   }
 </style>
@@ -135,7 +150,7 @@
     const ul = document.createElement("ul");
     for (const h of headingEls) {
       const li = document.createElement("li");
-      if (h.tagName === "H3") li.classList.add("article-toc__sub");
+      if (h.tagName === "H3") li.dataset.level = "3";
       const a = document.createElement("a");
       a.className = "article-toc__link";
       a.setAttribute("href", `#${h.id}`);
@@ -150,7 +165,8 @@
     function applyActiveTocId(activeId: string) {
       for (const [id, a] of linkById) {
         const on = id === activeId;
-        a.classList.toggle("article-toc__link--active", on);
+        if (on) a.dataset.active = "true";
+        else delete a.dataset.active;
         if (on) a.setAttribute("aria-current", "location");
         else a.removeAttribute("aria-current");
       }

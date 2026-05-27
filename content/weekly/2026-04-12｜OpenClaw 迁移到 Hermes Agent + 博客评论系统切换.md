@@ -2,7 +2,7 @@
 title: "OpenClaw 迁移到 Hermes Agent + 博客评论系统切换"
 date: 2026-04-14 10:40:00+08:00
 slug: "20260412-week-review"
-tags: [ "ai", "openclaw", "hermes" ]
+tags: [ "weekly", "ai", "openclaw", "hermes" ]
 draft: false
 description: "本周记录：将 OpenClaw 迁移到 Hermes Agent、博客评论系统从 Artalk 切换到 Giscus、发表 5 篇技术博文与 10 篇公众号文章，以及 6 次户外跑 34.82 公里的运动总结。"
 ---

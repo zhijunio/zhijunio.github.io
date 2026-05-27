@@ -2,7 +2,7 @@
 title: "Cloudflare Worker AI 接入 + Agent Skills 配置实战"
 date: 2026-04-27 10:00:00+08:00
 slug: "20260426-week-review"
-tags: [ "ai", "claude-code", "skills" ]
+tags: [ "weekly", "ai", "claude-code", "skills" ]
 description: "Cloudflare Worker AI 接入尝试、addyosmani agent-skills、Claude/Cursor 系统提示词、飞书多维表「任务中心」搭建提示词、bookmark 本地书签技能与公众号 Markdown 排版器更新；户外跑 3 次约 15 km；附录含每日工作规划助手提示词与精选开发工具链接。"
 ---
 

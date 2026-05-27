@@ -1,10 +1,6 @@
 ---
 /**
  * 搜索页
- *
- * @fileoverview 客户端使用 Pagefind 搜索文章，输入关键词后请求 /pagefind/pagefind.js 进行检索，结果展示标题、摘要与链接（最多 10 条）。
- *
- * 依赖：构建阶段需生成 pagefind 索引（如 Astro 或 CI 中执行 pagefind）；若加载失败则显示错误提示。
  */
 import Layout from "@/layouts/Layout.astro";
 
@@ -14,24 +10,121 @@ export const pageDescription = "搜索所有文章";
 ---
 
 <Layout title={pageTitle} description={pageDescription} robots="noindex,follow">
-  <div class="w-full min-w-0 py-1">
+  <section aria-labelledby="search-page-heading">
+    <h1 id="search-page-heading">搜索</h1>
     <div id="search">
-      <div class="flex flex-col gap-2 sm:flex-row sm:items-stretch">
+      <div>
         <input
-          type="text"
+          type="search"
           id="search-input"
-          class="min-w-0 flex-1"
           placeholder="输入关键词搜索..."
           autocomplete="off"
         />
-        <button id="search-button" type="button" class="shrink-0 sm:w-auto">
-          搜索
-        </button>
+        <button id="search-button" type="button">搜索</button>
       </div>
-      <div id="search-results" class="mt-6"></div>
+      <div id="search-results"></div>
     </div>
-  </div>
+  </section>
 </Layout>
+
+<style>
+  #search-page-heading {
+    margin: 0 0 0.5rem;
+    font-size: 1.875rem;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
+
+  #search > div:first-of-type {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  #search-input {
+    width: 100%;
+    min-width: 0;
+  }
+
+  #search-results {
+    margin-top: 1.5rem;
+  }
+
+  #search-results > p {
+    margin: 0 0 0.75rem;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+  }
+
+  #search-results mark {
+    padding: 0 0.12em;
+    border-radius: 0.2em;
+    background: var(--accent-surface);
+    color: var(--accent);
+  }
+
+  @media (min-width: 640px) {
+    #search > div:first-of-type {
+      flex-direction: row;
+      align-items: stretch;
+    }
+
+    #search-input {
+      flex: 1;
+    }
+
+    #search-button {
+      flex-shrink: 0;
+    }
+  }
+</style>
+
+<style is:global>
+  #search-results ol {
+    display: grid;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  #search-results ol li > article {
+    display: flex;
+    flex-direction: column;
+    padding: 0.9rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--card-background);
+  }
+
+  #search-results ol li > article:hover {
+    border-color: color-mix(in srgb, var(--accent) 34%, var(--border));
+    background: var(--card-background-hover);
+  }
+
+  #search-results h2 {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.42;
+  }
+
+  #search-results h2 a {
+    color: var(--text-primary);
+    text-decoration: none;
+  }
+
+  #search-results h2 a:hover {
+    color: var(--accent);
+    text-decoration: underline;
+  }
+
+  #search-results ol li > article > p {
+    margin: 0.45rem 0 0;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    line-height: 1.625;
+  }
+</style>
 
 <script is:inline>
   async function initSearchPage() {
@@ -50,6 +143,18 @@ export const pageDescription = "搜索所有文章";
     let loadingPagefind = false;
     let pagefindReady = false;
 
+    function escapeHtml(text) {
+      return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function messageHtml(text) {
+      return `<p>${escapeHtml(text)}</p>`;
+    }
+
     async function ensurePagefind() {
       if (pagefindReady || loadingPagefind) return pagefindReady;
 
@@ -65,7 +170,7 @@ export const pageDescription = "搜索所有文章";
         return true;
       } catch {
         resultsContainer.innerHTML =
-          '<p class="text-sm text-muted">搜索功能加载失败，请刷新页面重试</p>';
+          messageHtml("搜索功能加载失败，请刷新页面重试");
         searchInput.placeholder = "搜索功能加载失败";
         return false;
       } finally {
@@ -83,56 +188,47 @@ export const pageDescription = "搜索所有文章";
       const ready = await ensurePagefind();
       if (!ready) return;
 
-      resultsContainer.innerHTML =
-        '<p class="text-sm text-muted">搜索中...</p>';
+      resultsContainer.innerHTML = messageHtml("搜索中...");
 
       try {
         const search = await pagefind.search(query);
 
         if (search.results.length === 0) {
-          resultsContainer.innerHTML =
-            '<p class="text-sm text-muted">未找到「' +
-            query +
-            "」的相关结果</p>";
+          resultsContainer.innerHTML = messageHtml(
+            "未找到「" + query + "」的相关结果"
+          );
           return;
         }
 
         let html =
-          '<p class="mb-3 text-sm text-muted">找到 ' +
-          search.results.length +
-          " 个结果</p>";
-        html +=
-          '<ul class="m-0 list-none space-y-4 border-t border-border p-0 pt-4">';
+          "<p>找到 " + search.results.length + " 个结果</p>";
+        html += "<ol>";
 
         for (const result of search.results.slice(0, 10)) {
           const data = await result.data();
-          html += '<li class="border-b border-border pb-4 last:border-b-0">';
+          html += "<li><article>";
           html +=
-            '<a href="' +
-            data.url +
-            '" class="text-base font-semibold text-accent no-underline hover:text-accent-strong hover:underline">' +
-            (data.meta.title || "无标题") +
-            "</a>";
-          html +=
-            '<p class="mt-1.5 mb-0 text-sm leading-relaxed text-muted">' +
-            data.excerpt +
-            "</p>";
-          html += "</li>";
+            '<h2><a href="' +
+            escapeHtml(data.url) +
+            '">' +
+            escapeHtml(data.meta.title || "无标题") +
+            "</a></h2>";
+          html += "<p>" + data.excerpt + "</p>";
+          html += "</article></li>";
         }
 
-        html += "</ul>";
+        html += "</ol>";
 
         if (search.results.length > 10) {
           html +=
-            '<p class="mt-4 text-sm text-muted">还有 ' +
+            "<p>还有 " +
             (search.results.length - 10) +
             " 个结果...</p>";
         }
 
         resultsContainer.innerHTML = html;
       } catch {
-        resultsContainer.innerHTML =
-          '<p class="text-sm text-muted">搜索出错，请重试</p>';
+        resultsContainer.innerHTML = messageHtml("搜索出错，请重试");
       }
     }
 

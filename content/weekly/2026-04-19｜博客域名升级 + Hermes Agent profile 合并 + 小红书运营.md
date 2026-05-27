@@ -2,7 +2,7 @@
 title: "博客域名升级 + Hermes Agent profile 合并 + 小红书运营"
 date: 2026-04-20 14:55:00+08:00
 slug: "20260419-week-review"
-tags: ["hermes"]
+tags: [ "weekly", "hermes" ]
 description: "本周记录：博客升级到 blog.zhijun.io 域名、重启小红书账号（单篇 842 浏览）、Hermes Agent profile 合并、公众号 8 篇文章 342 阅读。分享 15+ AI 与开发工具资源，户外跑 12km。"
 ---
 

@@ -366,12 +366,7 @@ const structuredData = resolvedSchemaType === "BlogPosting"
     <slot name="head" />
   </head>
   <body>
-    <a
-      href="#main-content"
-      class="absolute -top-full left-1/2 z-50 -translate-x-1/2 rounded-b-lg bg-accent px-6 py-3 font-medium text-white no-underline transition-[top] duration-200 ease-out focus-visible:top-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-    >
-      跳转到主要内容
-    </a>
+    <a id="skip-link" href="#main-content">跳转到主要内容</a>
     <Header />
     <main id="main-content">
       <slot />
@@ -407,5 +402,28 @@ const structuredData = resolvedSchemaType === "BlogPosting"
         </script>
       )
     }
+
+    <style is:global>
+      #skip-link {
+        position: absolute;
+        top: -100%;
+        left: 50%;
+        z-index: 50;
+        transform: translateX(-50%);
+        border-radius: 0 0 var(--radius) var(--radius);
+        background: var(--accent);
+        padding: 0.75rem 1.5rem;
+        font-weight: 500;
+        color: #fff;
+        text-decoration: none;
+        transition: top 0.2s ease-out;
+      }
+
+      #skip-link:focus-visible {
+        top: 0;
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+    </style>
   </body>
 </html>

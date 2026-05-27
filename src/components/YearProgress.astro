@@ -21,52 +21,35 @@
 
 <div
   id="year-progress"
-  class="year-progress"
   role="progressbar"
   aria-valuemin="0"
   aria-valuemax="100"
   aria-live="polite"
   aria-label="本年度已过时间比例"
 >
-  <div class="year-progress-meter">
-    <span id="year-progress-label" class="year-progress-label"></span>
-    <span id="year-progress-cover" class="year-progress-cover"></span>
-    <div
-      id="year-progress-track"
-      class="year-progress-track"
-      aria-hidden="true"
-    >
-      <div class="year-progress-bar-bg">
-        <div id="year-progress-fill" class="year-progress-bar-fill"></div>
+  <div>
+    <span id="year-progress-label"></span>
+    <span id="year-progress-cover"></span>
+    <div id="year-progress-track" aria-hidden="true">
+      <div>
+        <div id="year-progress-fill"></div>
       </div>
     </div>
   </div>
-  <div id="year-progress-popup" class="year-progress-popup"></div>
+  <div id="year-progress-popup"></div>
 </div>
 
-<style is:global>
-  .year-progress {
+<style>
+  #year-progress {
     position: relative;
     width: 100%;
     max-width: var(--site-chrome-width);
     margin: 0.2rem auto 0;
     padding: 0 1.5rem 0.3rem;
-    height: auto;
     pointer-events: none;
   }
 
-  @media (max-width: 768px) {
-    .year-progress {
-      padding-left: 1rem;
-      padding-right: 1rem;
-    }
-  }
-
-  .year-progress-meter {
-    position: relative;
-  }
-
-  .year-progress-track {
+  #year-progress-track {
     position: relative;
     display: flex;
     align-items: center;
@@ -75,7 +58,7 @@
     cursor: pointer;
   }
 
-  .year-progress-bar-bg {
+  #year-progress-track > div {
     height: 2px;
     width: 100%;
     border-radius: 999px;
@@ -83,7 +66,7 @@
     overflow: hidden;
   }
 
-  [data-theme="dark"] .year-progress-bar-bg {
+  :global([data-theme="dark"]) #year-progress-track > div {
     background: color-mix(
       in srgb,
       var(--border) 70%,
@@ -91,7 +74,7 @@
     );
   }
 
-  .year-progress-bar-fill {
+  #year-progress-fill {
     height: 100%;
     width: 0;
     border-radius: 999px;
@@ -99,8 +82,8 @@
     transition: width 0.1s linear;
   }
 
-  .year-progress-label,
-  .year-progress-cover {
+  #year-progress-label,
+  #year-progress-cover {
     position: absolute;
     top: 50%;
     left: 0;
@@ -111,20 +94,24 @@
     transition: opacity 0.2s ease;
   }
 
-  .year-progress-popup {
+  #year-progress-popup {
     position: absolute;
     top: calc(100% + 0.35rem);
     left: 0;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.2s ease;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8125rem;
+    color: var(--text-primary);
+    background: var(--background-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgb(0 0 0 / 0.08);
+    max-width: min(280px, 90vw);
   }
 
-  .year-progress-visible {
-    opacity: 1;
-  }
-
-  .year-progress-label {
+  #year-progress-label {
     font-size: 0.6875rem;
     font-weight: 600;
     line-height: 1;
@@ -135,20 +122,19 @@
     border-radius: 3px;
   }
 
-  .year-progress-cover {
+  #year-progress-cover {
     height: 0.875rem;
-    transform: translateY(-50%);
   }
 
-  .year-progress-popup {
-    padding: 0.5rem 0.75rem;
-    font-size: 0.8125rem;
-    color: var(--text-primary);
-    background: var(--background-secondary);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgb(0 0 0 / 0.08);
-    max-width: min(280px, 90vw);
+  :global(.year-progress-visible) {
+    opacity: 1;
+  }
+
+  @media (max-width: 768px) {
+    #year-progress {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
   }
 </style>
 

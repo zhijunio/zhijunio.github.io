@@ -2,7 +2,7 @@
 title: "OpenClaw 翻译技能实战 + 公众号 AI 创作流程"
 date: 2026-03-30 14:50:00+08:00
 slug: "20260329-week-review"
-tags: [ "astro" ]
+tags: [ "weekly", "astro" ]
 draft: false
 description: 重启公众号与四篇博文同步、OpenClaw 翻译技能与多篇译文；WakaTime 显示本周约 37h 偏内容与 AI 协作；重装 macOS 并更新 Mac 开发环境清单文；跑步约 23 公里与心率节奏调整。
 ---

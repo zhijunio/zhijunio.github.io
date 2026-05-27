@@ -4,6 +4,7 @@
 # Prettier 无法解析 Astro 内联脚本，跳过这些文件
 src/layouts/Layout.astro
 src/layouts/PostDetails.astro
+src/pages/index.astro
 
 # Except these files & folders
 !/src

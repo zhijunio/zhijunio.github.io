@@ -2,7 +2,7 @@
 title: "博客从 Hugo 迁移到 Astro 实战 + AI 编码工具体验"
 date: 2026-03-05 21:00:00+08:00
 slug: "20260301-week-review"
-tags: [ "astro" ]
+tags: [ "weekly", "astro" ]
 draft: false
 description: 这周主要在两条线上投入时间：把博客从 Hugo 迁移到 Astro，也继续试用了 Codex CLI、Gemini CLI、Claude Code 和 OpenClaw。
 ---

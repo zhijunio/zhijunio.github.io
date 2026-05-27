@@ -2,7 +2,7 @@
 title: "Obsidian + Git 搭建第二大脑：PARA 与书签管理"
 date: 2026-05-19 10:00:00+08:00
 slug: "20260517-weekly"
-tags: [ "obsidian", "hermes","ai" ]
+tags: [ "weekly", "obsidian", "hermes", "ai" ]
 draft: false
 description: "本周（5/11～5/17）：用 Obsidian + Git 搭建 second-brain 第二大脑，Telegram/Hermes Agent、PARA 目录与书签 Skill 替代 Linkding；9 路定时日推、Memos 同步与注意力治理；精简 GitHub 与 Wiki 囤积。"
 ---

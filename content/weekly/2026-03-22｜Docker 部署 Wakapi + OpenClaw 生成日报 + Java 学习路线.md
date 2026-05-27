@@ -2,7 +2,7 @@
 title: "Docker 部署 Wakapi + OpenClaw 生成日报 + Java 学习路线"
 date: 2026-03-23 10:50:00+08:00
 slug: "20260322-week-review"
-tags: [ "openclaw" ]
+tags: [ "weekly", "openclaw" ]
 draft: false
 description: 用 Docker 部署 Wakapi 替代 Wakatime，并开源 wakapi-skill；一周跑步约 28 公里与 AI 训练简评；精读「90 天技术逆袭计划」并梳理 Java / Spring AI 学习路线；用 OpenClaw 做日报生成，调整模型与技能配置。
 ---

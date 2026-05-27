@@ -170,18 +170,15 @@ const giscusThemeDark = "https://giscus.app/themes/dark.css";
     )
   }
 
-  <article id="article" class="post w-full min-w-0" data-pagefind-body>
-    <header class="w-full">
-      <h1 class="post-title mt-0 font-semibold text-foreground">
-        {title}
-      </h1>
+  <article id="article" data-pagefind-body>
+    <header>
+      <h1>{title}</h1>
     </header>
 
     {
       bannerSrc && (
         <img
           id="post-banner"
-          class="post-banner mx-auto block h-auto w-full"
           src={bannerSrc}
           alt={bannerAltText}
           fetchpriority="high"
@@ -191,7 +188,7 @@ const giscusThemeDark = "https://giscus.app/themes/dark.css";
       )
     }
 
-    <div class="post-content min-w-0 pb-4">
+    <div class="post-content">
       <Content />
     </div>
   </article>
@@ -200,7 +197,7 @@ const giscusThemeDark = "https://giscus.app/themes/dark.css";
 
   {
     tags.length > 0 && (
-      <ul class="post-tags" role="list" aria-label="文章标签">
+      <ul role="list" aria-label="文章标签">
         {tags.map((tag: string) => (
           <li>
             <a href={`/search?q=${encodeURIComponent(tag)}`}>{tag}</a>
@@ -212,37 +209,26 @@ const giscusThemeDark = "https://giscus.app/themes/dark.css";
 
   {
     (prevPost || nextPost) && (
-      <nav
-        class="post-nav clear-both mt-8 w-full min-w-0 border-t border-border/60 pt-5"
-        aria-label="文章导航"
-      >
-        <div class="flex flex-col gap-2 sm:flex-row sm:justify-between">
-          {prevPost && (
-            <a
-              href={prevPost.path}
-              class="post-nav-link flex items-center gap-1.5 text-sm text-muted no-underline transition-colors hover:text-accent"
-            >
-              <IconChevronLeft class="h-4 w-4 shrink-0" />
-              <span>{prevPost.title}</span>
-            </a>
-          )}
-          {nextPost && (
-            <a
-              href={nextPost.path}
-              class="post-nav-link flex items-center gap-1.5 text-sm text-muted no-underline transition-colors hover:text-accent sm:justify-end sm:text-right"
-            >
-              <span>{nextPost.title}</span>
-              <IconChevronRight class="h-4 w-4 shrink-0" />
-            </a>
-          )}
-        </div>
+      <nav aria-label="文章导航">
+        {prevPost && (
+          <a href={prevPost.path}>
+            <IconChevronLeft />
+            <span>{prevPost.title}</span>
+          </a>
+        )}
+        {nextPost && (
+          <a href={nextPost.path} data-dir="next">
+            <span>{nextPost.title}</span>
+            <IconChevronRight />
+          </a>
+        )}
       </nav>
     )
   }
 
   {
     comments && SITE.giscus.enabled && (
-      <section class="post-comments" aria-label="评论">
+      <section aria-label="评论">
         <script
           is:inline
           src="https://giscus.app/client.js"
@@ -291,100 +277,61 @@ const giscusThemeDark = "https://giscus.app/themes/dark.css";
       </section>
     )
   }
+
   <style is:global>
+    #article {
+      width: 100%;
+      min-width: 0;
+    }
+
     #article > header {
       margin-bottom: 0.25rem;
     }
 
-    #article .post-title {
-      margin-bottom: 2.25rem;
+    #article h1 {
+      margin: 0 0 2.25rem;
+      font-size: clamp(1.2rem, 2.6vw, 1.5rem);
+      line-height: 1.35;
+      font-weight: 600;
+      text-align: center;
+      text-wrap: balance;
     }
 
-    #article .post-banner {
-      margin-top: 0.25rem;
-      margin-bottom: 2.25rem;
+    #post-banner {
+      margin: 0.25rem auto 2.25rem;
+      border: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
+      border-radius: var(--radius);
+      background: var(--card-background);
     }
 
     #article .post-content {
-      padding-top: 0.15rem;
+      min-width: 0;
+      padding: 0.15rem 0 1rem;
+      line-height: 1.8;
     }
 
     #article .post-content > :first-child {
       margin-top: 0;
     }
 
-    /**
-     * 目录固定在主栏右侧空白区，不占用正文宽度；视口不足时隐藏。
-     */
-    #article-toc {
-      display: none;
-    }
-
-    @media (min-width: 1280px) {
-      #article-toc {
-        display: block;
-        position: fixed;
-        top: var(--site-header-sticky-offset);
-        left: calc(50% + var(--site-chrome-width) / 2 + 1.25rem);
-        width: 13.5rem;
-        max-height: calc(100vh - var(--site-header-sticky-offset) - 1.5rem);
-        overflow-y: auto;
-        margin: 0;
-        z-index: 10;
-      }
-    }
-
-    .post-content :where(h2, h3, h4) {
+    #main-content .post-content :where(h2, h3, h4) {
       scroll-margin-top: var(--site-header-sticky-offset);
     }
 
-    #main-content .post-content {
-      line-height: 1.8;
-    }
-
-    .post-banner,
     #main-content .post-content :is(img, picture, video) {
-      display: block;
-      width: 100%;
-      max-width: 100%;
-      height: auto;
-      margin: 1.25rem auto;
       border: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
       border-radius: var(--radius);
       background: var(--card-background);
     }
 
-    #main-content .post-content figure {
-      margin: 1.5rem 0;
-    }
-
-    #main-content .post-content figure :is(img, picture) {
-      margin: 0 auto;
-    }
-
     #main-content .post-content figcaption {
-      margin-top: 0.5rem;
       font-size: 0.8125rem;
-      color: var(--text-secondary);
-      text-align: center;
       line-height: 1.5;
     }
 
-    .post-comments {
-      margin-top: 2rem;
-      padding-top: 1.25rem;
-      border-top: 1px solid color-mix(in srgb, var(--border) 65%, transparent);
-    }
-
-    .post-comments .giscus,
-    .post-comments iframe.giscus-frame {
-      width: 100%;
-    }
-
-    .post-tags {
+    #main-content ul[aria-label="文章标签"] {
       display: flex;
       flex-wrap: wrap;
-      justify-content: flex-start;
       gap: 0.35rem 0.65rem;
       margin: 2rem 0 0;
       padding: 0;
@@ -393,27 +340,72 @@ const giscusThemeDark = "https://giscus.app/themes/dark.css";
       line-height: 1.5;
     }
 
-    .post-tags li {
-      margin: 0;
-    }
-
-    .post-tags a {
+    #main-content ul[aria-label="文章标签"] a {
       color: var(--text-secondary);
       text-decoration: none;
     }
 
-    .post-tags a:hover {
+    #main-content ul[aria-label="文章标签"] a:hover {
       color: var(--accent);
       text-decoration: underline;
       text-underline-offset: 0.12em;
     }
 
-    /** 文章导航：无边框简约样式 */
-    .post-nav-link {
+    #main-content nav[aria-label="文章导航"] {
+      clear: both;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 2rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+    }
+
+    @media (min-width: 640px) {
+      #main-content nav[aria-label="文章导航"] {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+
+      #main-content nav[aria-label="文章导航"] a[data-dir="next"] {
+        justify-content: flex-end;
+        text-align: right;
+      }
+    }
+
+    #main-content nav[aria-label="文章导航"] a {
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
       max-width: 100%;
       overflow: hidden;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      text-decoration: none;
       text-overflow: ellipsis;
       white-space: nowrap;
+    }
+
+    #main-content nav[aria-label="文章导航"] a:hover {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    #main-content nav[aria-label="文章导航"] svg {
+      width: 1rem;
+      height: 1rem;
+      flex-shrink: 0;
+    }
+
+    #main-content section[aria-label="评论"] {
+      margin-top: 2rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid color-mix(in srgb, var(--border) 65%, transparent);
+    }
+
+    #main-content section[aria-label="评论"] .giscus,
+    #main-content section[aria-label="评论"] iframe.giscus-frame {
+      width: 100%;
     }
   </style>
 

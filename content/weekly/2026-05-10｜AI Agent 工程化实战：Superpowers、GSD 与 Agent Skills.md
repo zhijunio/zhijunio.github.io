@@ -2,7 +2,7 @@
 title: "AI Agent 工程化实战：Superpowers、GSD 与 Agent Skills"
 date: 2026-05-13 07:40:00+08:00
 slug: "20260510-weekly"
-tags: [ "ai", "skills", "cursor" ]
+tags: [ "weekly", "ai", "skills", "cursor" ]
 draft: false
 description: "双周（4/27～5/10）：连发 Superpowers、GSD、Agent Skills 三篇 AI 工程化长文；站点与公众号、小红书运营快照；户外跑 9 次约 46 km；Karpathy Guidelines 精读与精选书签。"
 ---

@@ -23,70 +23,60 @@ function normalizeSocialHref(url: string): string {
 }
 ---
 
-<footer class="footer">
-  <div class="footer-content">
-    <hr class="footer-hr" aria-hidden="true" />
-    <div class="footer-row">
-      <div class="footer-start">
-        <span class="copyright">© {currentYear} {SITE.author}</span>
-        {
-          SITE.icp && (
-            <a
-              class="footer-icp"
-              href="https://beian.miit.gov.cn/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {SITE.icp}
-            </a>
-          )
-        }
-      </div>
+<footer>
+  <hr aria-hidden="true" />
+  <div>
+    <div>
+      <span>© {currentYear} {SITE.author}</span>
       {
-        hasSocial && (
-          <div class="social-links">
-            {socialLinks.map(link => {
-              const href = normalizeSocialHref(link.url);
-              const isExternal = href.startsWith("http");
-              return (
-                <a
-                  href={href}
-                  target={isExternal ? "_blank" : undefined}
-                  rel={isExternal ? "noopener noreferrer" : undefined}
-                  aria-label={link.name}
-                >
-                  <SocialIcon name={link.icon} width={16} height={16} />
-                </a>
-              );
-            })}
-          </div>
+        SITE.icp && (
+          <a
+            href="https://beian.miit.gov.cn/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {SITE.icp}
+          </a>
         )
       }
     </div>
+    {
+      hasSocial && (
+        <div>
+          {socialLinks.map(link => {
+            const href = normalizeSocialHref(link.url);
+            const isExternal = href.startsWith("http");
+            return (
+              <a
+                href={href}
+                target={isExternal ? "_blank" : undefined}
+                rel={isExternal ? "noopener noreferrer" : undefined}
+                aria-label={link.name}
+              >
+                <SocialIcon name={link.icon} width={16} height={16} />
+              </a>
+            );
+          })}
+        </div>
+      )
+    }
   </div>
 </footer>
 
-<style is:global>
-  .footer-content {
+<style>
+  footer {
     max-width: var(--site-chrome-width);
     margin: 0 auto;
-    padding: 1.25rem 1.5rem 1.25rem;
+    padding: 1.25rem 1.5rem;
   }
 
-  .footer-hr {
+  footer > hr {
     margin: 0 0 0.85rem;
     border: 0;
     border-top: 1px solid var(--border);
   }
 
-  @media (max-width: 768px) {
-    .footer-content {
-      padding-left: 1rem;
-      padding-right: 1rem;
-    }
-  }
-
-  .footer-row {
+  footer > div {
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
@@ -94,7 +84,7 @@ function normalizeSocialHref(url: string): string {
     min-height: 1.5rem;
   }
 
-  .footer-start {
+  footer > div > div:first-child {
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
@@ -103,14 +93,14 @@ function normalizeSocialHref(url: string): string {
     flex: 1 1 auto;
   }
 
-  .copyright {
+  footer > div > div:first-child > span {
     flex: 0 0 auto;
     font-size: 0.8125rem;
     color: var(--text-secondary);
     white-space: nowrap;
   }
 
-  .footer-icp {
+  footer > div > div:first-child > a {
     flex: 0 1 auto;
     min-width: 0;
     overflow: hidden;
@@ -121,27 +111,33 @@ function normalizeSocialHref(url: string): string {
     text-decoration: none;
   }
 
-  .footer-icp:hover {
+  footer > div > div:first-child > a:hover {
     color: var(--accent);
   }
 
-  .social-links {
+  footer > div > div + div {
     display: flex;
     flex: 0 0 auto;
-    flex-wrap: nowrap;
     align-items: center;
     justify-content: flex-end;
     gap: 0.5rem;
     margin-left: auto;
   }
 
-  .social-links a {
+  footer > div > div + div a {
     color: var(--text-secondary);
     display: inline-flex;
     flex-shrink: 0;
   }
 
-  .social-links a:hover {
+  footer > div > div + div a:hover {
     color: var(--accent);
+  }
+
+  @media (max-width: 768px) {
+    footer {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
   }
 </style>

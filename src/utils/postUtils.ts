@@ -34,17 +34,6 @@ export async function getAllBlogLike(): Promise<BlogLikeEntry[]> {
   return getCollection("posts");
 }
 
-/** 是否 `content/weekly/` 下的周报条目 */
-export function isWeeklyPost(entry: {
-  id: string;
-  filePath?: string;
-}): boolean {
-  return (
-    entry.id.startsWith("weekly/") ||
-    entry.filePath?.replace(/\\/g, "/").includes("/weekly/") === true
-  );
-}
-
 // --- 描述提取（Markdown → 纯文本摘要）---
 
 /** 匹配 `<!-- more -->` 之前的内容，捕获组 $1 为摘要 */
@@ -377,6 +366,74 @@ export class ArticleTime {
         : latest.fromNow();
     return { display, iso, titleAttr };
   }
+}
+
+// --- 首页 feed（博客 + 周报混排）---
+
+export const HOME_FEED_PAGE_SIZE = 10;
+
+export type HomeFeedItem = {
+  title: string;
+  href: string;
+  dateDisplay: string;
+  dateIso: string;
+  dateTitle: string;
+  description: string;
+};
+
+export function toHomeFeedItem(entry: BlogLikeEntry): HomeFeedItem {
+  const date = ArticleTime.getDisplay(
+    entry.data.date,
+    entry.data.updated,
+    entry.data.timezone,
+    "absolute"
+  );
+  return {
+    title: entry.data.title,
+    href: PostUtils.getPath(
+      entry.id,
+      entry.filePath,
+      true,
+      entry.data.date,
+      entry.data.timezone,
+      entry.data.slug,
+      entry.collection
+    ),
+    dateDisplay: date.display,
+    dateIso: date.iso,
+    dateTitle: date.titleAttr,
+    description: (
+      entry.data.description?.trim() ||
+      PostUtils.getDescription(entry.body ?? "")
+    ).trim(),
+  };
+}
+
+export async function getAllHomeFeedItems(): Promise<HomeFeedItem[]> {
+  return PostUtils.sort(await getAllBlogLike()).map(toHomeFeedItem);
+}
+
+export function paginateHomeFeedItems(
+  items: HomeFeedItem[],
+  page: number
+): {
+  items: HomeFeedItem[];
+  page: number;
+  totalPages: number;
+  nextPage: number | null;
+} {
+  const totalPages = Math.max(
+    1,
+    Math.ceil(items.length / HOME_FEED_PAGE_SIZE)
+  );
+  const safePage = Math.min(Math.max(page, 1), totalPages);
+  const start = (safePage - 1) * HOME_FEED_PAGE_SIZE;
+  return {
+    items: items.slice(start, start + HOME_FEED_PAGE_SIZE),
+    page: safePage,
+    totalPages,
+    nextPage: safePage < totalPages ? safePage + 1 : null,
+  };
 }
 
 // --- content/ 下静态 Markdown 页（about 等）---

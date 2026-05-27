@@ -2,83 +2,229 @@
 /**
  * 首页
  *
- * @fileoverview 最近博客、周报混排卡片列表。
+ * @fileoverview 博客与周报混排；默认 10 条，「看更多」fetch 下一页 HTML 追加条目。
  */
-import { getCollection } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import { SITE } from "@/config";
-import { ArticleTime, PostUtils, isWeeklyPost } from "@/utils/postUtils";
+import {
+  getAllHomeFeedItems,
+  paginateHomeFeedItems,
+} from "@/utils/postUtils";
 
 /** 与 /og/index.png 一致 */
 export const pageSlug = "index";
 export const pageTitle = SITE.title;
 export const pageDescription = SITE.description;
 
-const limit = SITE.postPerIndex * 2;
-
-const feedItems = PostUtils.sort(await getCollection("posts"))
-  .map(entry => ({
-    entry,
-    kind: isWeeklyPost(entry) ? "周报" : "博客",
-    kindClass: isWeeklyPost(entry)
-      ? "home-feed-kind--weekly"
-      : "home-feed-kind--post",
-  }))
-  .sort(
-    (a, b) =>
-      Math.floor(
-        new Date(b.entry.data.updated ?? b.entry.data.date).getTime() / 1000
-      ) -
-      Math.floor(
-        new Date(a.entry.data.updated ?? a.entry.data.date).getTime() / 1000
-      )
-  )
-  .slice(0, limit);
+const allFeedItems = await getAllHomeFeedItems();
+const { items: initialItems, nextPage } = paginateHomeFeedItems(
+  allFeedItems,
+  1
+);
+const showLoadMore = nextPage !== null;
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
-  <section class="home-feed" aria-label="最近记录">
-    <ol class="home-feed-list" aria-label="最近记录列表">
+  <section aria-label="最近记录">
+    <ol id="home-feed-list" aria-label="最近记录列表">
       {
-        feedItems.map(({ entry, kind, kindClass }) => {
-          const date = ArticleTime.getDisplay(
-            entry.data.date,
-            entry.data.updated,
-            entry.data.timezone,
-            "absolute"
-          );
-          const description = (
-            entry.data.description?.trim() ||
-            PostUtils.getDescription(entry.body ?? "")
-          ).trim();
-          const href = PostUtils.getPath(
-            entry.id,
-            entry.filePath,
-            true,
-            entry.data.date,
-            entry.data.timezone,
-            entry.data.slug,
-            entry.collection
-          );
-
-          return (
-            <li class="home-feed-item">
-              <article class="home-feed-card">
-                <div class="home-feed-meta">
-                  <time datetime={date.iso} title={date.titleAttr}>
-                    {date.display}
-                  </time>
-                  <span class:list={["home-feed-kind", kindClass]}>{kind}</span>
-                </div>
-                <h2>
-                  <a href={href}>{entry.data.title}</a>
-                </h2>
-                {description && <p>{description}</p>}
-              </article>
-            </li>
-          );
-        })
+        initialItems.map(item => (
+          <li>
+            <article>
+              <p>
+                <time datetime={item.dateIso} title={item.dateTitle}>
+                  {item.dateDisplay}
+                </time>
+              </p>
+              <h2>
+                <a href={item.href}>{item.title}</a>
+              </h2>
+              {item.description && <p>{item.description}</p>}
+            </article>
+          </li>
+        ))
       }
     </ol>
+    {
+      showLoadMore && (
+        <button
+          type="button"
+          id="home-feed-more"
+          data-next-url={`/page/${nextPage}`}
+        >
+          看更多 …
+        </button>
+      )
+    }
   </section>
+  {
+    showLoadMore && (
+      <script is:inline>
+        function initHomeFeedLoadMore() {
+          const listEl = document.getElementById("home-feed-list");
+          const btn = document.getElementById("home-feed-more");
+          if (!listEl || !btn) return;
+          if (btn.dataset.bound === "1") return;
+          btn.dataset.bound = "1";
+
+          const defaultLabel = btn.textContent?.trim() || "看更多 …";
+
+          btn.addEventListener("click", async () => {
+            const nextUrl = btn.dataset.nextUrl;
+            if (!nextUrl) return;
+
+            btn.textContent = "加载中…";
+            btn.disabled = true;
+            btn.style.opacity = "0.5";
+
+            try {
+              const res = await fetch(nextUrl);
+              if (!res.ok) throw new Error("fetch failed");
+              const html = await res.text();
+              const doc = new DOMParser().parseFromString(html, "text/html");
+              const newItems = doc.querySelectorAll("#home-feed-list > li");
+              newItems.forEach(item => listEl.appendChild(item));
+
+              const nextBtn = doc.getElementById("home-feed-more");
+              const next = nextBtn?.dataset.nextUrl;
+              if (next) {
+                btn.dataset.nextUrl = next;
+                btn.textContent = defaultLabel;
+                btn.disabled = false;
+                btn.style.opacity = "1";
+              } else {
+                btn.remove();
+              }
+            } catch {
+              btn.textContent = "加载失败，请重试";
+              btn.disabled = false;
+              btn.style.opacity = "1";
+            }
+          });
+        }
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", initHomeFeedLoadMore, {
+            once: true,
+          });
+        } else {
+          initHomeFeedLoadMore();
+        }
+        document.addEventListener("astro:page-load", initHomeFeedLoadMore);
+      </script>
+    )
+  }
 </Layout>
+
+<style is:global>
+  #home-feed-list {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  #home-feed-list li > article {
+    display: flex;
+    min-height: 100%;
+    min-width: 0;
+    flex-direction: column;
+    padding: 0.9rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--card-background);
+    transition:
+      border-color 0.18s ease,
+      background-color 0.18s ease,
+      transform 0.18s ease;
+  }
+
+  #home-feed-list li > article:hover {
+    border-color: color-mix(in srgb, var(--accent) 34%, var(--border));
+    background: var(--card-background-hover);
+    transform: translateY(-1px);
+  }
+
+  #home-feed-list li > article > p:first-of-type {
+    margin: 0 0 0.55rem;
+    color: var(--text-secondary);
+    font-size: 0.76rem;
+    line-height: 1.35;
+  }
+
+  #home-feed-list time {
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  #home-feed-list h2 {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.42;
+  }
+
+  #home-feed-list h2 a {
+    color: var(--text-primary);
+    text-decoration: none;
+  }
+
+  #home-feed-list h2 a:hover {
+    color: var(--accent);
+    text-decoration: underline;
+  }
+
+  #home-feed-list li > article > h2 + p {
+    display: -webkit-box;
+    margin: 0.45rem 0 0;
+    overflow: hidden;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.62;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+
+  #home-feed-more {
+    display: block;
+    margin: 1.25rem auto 0;
+    padding: 0.35rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--card-background);
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition:
+      border-color 0.18s ease,
+      color 0.18s ease,
+      background-color 0.18s ease,
+      opacity 0.18s ease;
+  }
+
+  #home-feed-more:hover:not(:disabled) {
+    border-color: color-mix(in srgb, var(--accent) 34%, var(--border));
+    color: var(--accent);
+    background: var(--card-background-hover);
+  }
+
+  #home-feed-more:disabled {
+    cursor: wait;
+  }
+
+  @media (max-width: 768px) {
+    #home-feed-list {
+      gap: 0.75rem;
+    }
+
+    #home-feed-list li > article {
+      padding: 0.85rem 0.9rem;
+    }
+
+    #home-feed-list li > article > p:first-of-type {
+      margin-bottom: 0.5rem;
+    }
+  }
+</style>

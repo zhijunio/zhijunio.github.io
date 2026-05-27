@@ -75,19 +75,17 @@ ls -la src/pages/posts 2>/dev/null || echo "No posts dir"
 #### 1. 文章存放位置
 
 - **上游**：文章在项目根目录 `posts/` 下，按子目录分类（如 `posts/life/`、`posts/technology/`）。
-- **当前**：改为 Astro Content Collections，文章放在 **`content/posts/`**，并在 `content.config.ts` 中将 `BLOG_PATH` 设为
-  `"content/posts"`。
+- **当前**：改为 Astro Content Collections，长文在 **`content/tech/`**，周报在 **`content/weekly/`**；`src/content.config.ts` 中 `POSTS_CONTENT_PATH` 为 `"content"`，集合仍命名为 `posts`。
 
 #### 2. 文章 URL 格式
 
 - **上游**：路径为 `/posts/分类/slug`（目录结构即 URL）。
-- **当前**：支持 **带日期的 URL**：`/posts/YYYY/MM/DD/slug`。`getPath.ts` 增加 `date` 参数，若传入日期则生成该格式；文章 slug
-  从文件名解析，不再对 slug 做 slugify（避免如 `langchain4j` 被改成 `langchain-4-j`）。
+- **当前**：统一为 **`/posts/{slug}`**（由 frontmatter `slug` 决定）。旧式 `/posts/YYYY/MM/DD/slug` 与 `/briefs/*` 经 `public/_redirects` 301 到 `/posts/{slug}`。
 
-#### 3. 分类逻辑
+#### 3. 分类与列表
 
-- **上游**：使用 `config.ts` 中的 `categoryOrder` 对分类排序。
-- **当前**：改为由 `postUtils.ts`（分类元数据 `CATEGORY_META`） 统一维护分类顺序、中文名称与分类卡片缩略图，分类页和归档页优先按该顺序显示。
+- **上游**：使用 `config.ts` 中的 `categoryOrder` 对分类排序，并有独立分类页。
+- **当前（2026 极简）**：已移除分类页与 Card 列表；首页混排博客/周报，`/posts` 仅长文；工具逻辑集中在 `src/utils/postUtils.ts`。
 
 #### 4. 已删除的页面与功能
 
@@ -96,7 +94,7 @@ ls -la src/pages/posts 2>/dev/null || echo "No posts dir"
   - `src/pages/guestbook.astro`（留言板）
   - `src/pages/about.md`、`src/pages/favorites.md`（原 Markdown 页面）
 - **新增/迁移**：
-  - **关于**：`src/pages/about.astro` 从 `content/pages/about.md` 读取并渲染。
+  - **关于**：`src/pages/about.astro` 读取 `content/about.md` 渲染。
 - **配置**：移除 `feedsPerIndex`、`feedsPerPage` 等 Feeds 相关配置。
 
 #### 5. 新增页面与资源
@@ -120,7 +118,7 @@ ls -la src/pages/posts 2>/dev/null || echo "No posts dir"
 - **postPerIndex**：10 → 8。
 - **genDescriptionMaxLines**：30 → 3。
 - **Stats 链接**：指向 `stats.zhijun.io/blog.zhijun.io`。
-- **imageConfig**：当前使用 `https://cos.zhijun.io` 作为图片 CDN；列表用 `favicon` 字段指向 `/favicons/`，与文章图同属 `/images/` 前缀、优先走站内同源路径。
+- **imageConfig**：当前使用 `CDN_ORIGIN`（`https://cos.zhijun.io`）作为图片 CDN；生产环境 `/images/` 走 CDN，开发环境同源。
 - **移除**：`displayOptions`（如评论数等）、Feeds 相关配置。
 
 #### 2. Astro 与集成（`astro.config.ts`）
@@ -136,9 +134,8 @@ ls -la src/pages/posts 2>/dev/null || echo "No posts dir"
 
 #### 3. 内容 Schema（`src/content.config.ts`）
 
-- **BLOG_PATH**：`"posts"` → `"content/posts"`。
-- **categories**：分类显示名、排序与分类卡片缩略图由 `postUtils.ts`（分类元数据 `CATEGORY_META`） 统一控制。
-- **新增 frontmatter**：`mermaid: z.boolean().default(false)`。
+- **路径**：`POSTS_CONTENT_PATH = "content"`，glob 匹配 `{tech,weekly}/**/*.{md,mdx}`。
+- **frontmatter**：含 `slug`（必填）、`mermaid`、`math` 等；URL 与 `public/images/{slug}/` 配图目录一致。
 
 #### 4. 依赖与脚本（`package.json`、`pnpm-lock.yaml`）
 
@@ -157,9 +154,8 @@ ls -la src/pages/posts 2>/dev/null || echo "No posts dir"
 
 #### 3. 组件
 
-- **Header.astro**：较大调整（约 354 行变更），与导航、leadingTitle、站点标题等逻辑相关。
-- **Card.astro**、**Footer.astro**、**Tag.astro**、**YearProgress.astro**、**Artalk.astro**
-  ：均有修改，以配合新路由、链接和样式。
+- **Header.astro**、**Footer.astro**、**YearProgress.astro**：导航、页脚与年度进度。
+- **已移除**：`Card.astro`、`Tag.astro`、Artalk；评论改为 **Giscus**（`PostDetails.astro`）。
 
 ### 四、样式
 
@@ -182,18 +178,13 @@ ls -la src/pages/posts 2>/dev/null || echo "No posts dir"
 #### 1. RSS（`src/pages/rss.xml.ts`）
 
 - **内容**：输出摘要（优先 `<!-- more -->` 前内容，否则正文提要），使用 `getDescription(body)`。
-- **实现**：移除 markdown-it、sanitize-html；`pubDate` 使用 `data.updated ?? data.date`；`link` 使用
-  `getPath(..., true, data.date)`。
-- **条数**：仅保留最近 20 篇；仅非草稿文章。
+- **实现**：使用 `@astrojs/rss` + `PostUtils`；`pubDate` 为 `data.date`；`link` 为 `/posts/{slug}`。
+- **条数**：最近 **10** 篇；排除 `draft` 与未到发布时间的内容。
 
 #### 2. 工具函数
 
-- **getPath.ts**：重写以支持 `date` 参数及 `/posts/YYYY/MM/DD/slug`；slug 从文件名解析并支持去掉日期前缀。
-- **getDescription.ts**：用于 RSS 摘要生成。
-- **分类相关工具**：当前由 `PostUtils.getUniqueCategories()` 与同文件内的 `CATEGORY_META` / `getCategoryMeta` 协同处理显示名与排序。
-- **getSortedPosts.ts**：有调整以配合新数据与路由。
-- **categoryImages.ts**：分类图片 URL 等有小幅修改。
-- **已删除**：`getBlogMetrics.ts`。
+- **`src/utils/postUtils.ts`**：文章过滤/排序、`getPath`、摘要、`getAllBlogLike`、`ArticleTime`、LLMs 文案等。
+- **`src/utils/blogImages/`**：配图目录注入、CDN URL、rehype 懒加载等。
 
 ### 六、删除的仓库级文件与内容
 
@@ -203,7 +194,7 @@ ls -la src/pages/posts 2>/dev/null || echo "No posts dir"
 - **.mcp.json**：删除。
 - **docs**：删除 `redirect.conf`、`reverse-proxy.conf`。
 - **posts/**：删除上游全部示例/原博客文章（约 120+ 篇，含 life、technology、outdoors、photo、book、startup、annual-reviews
-  等），当前博客内容改为使用 `content/posts/`（可为空或自建）。
+  等），当前博客内容在 **`content/tech/`** 与 **`content/weekly/`**。
 - **public**：删除 `feeds.js`、`dev.svg`、`astro-lhasa-lighthouse-score.svg`、`astro-lhasa-v1-thumbnail.svg`、
   `assets/forrest-gump-quote.webp`；修改 favicon、apple-touch-icon、`_redirects`、`lazy-list.js`、`tocbot`、`toggle-theme.js`
   等。
@@ -214,8 +205,9 @@ ls -la src/pages/posts 2>/dev/null || echo "No posts dir"
 
 - 删除订阅、留言、日志等页面；收藏页面改为链接页面
 - 修改 css 样式，以适应宽屏（web 端，主体部分 960px）；修改文章主题色为蓝色；代码库支持自动换行；调整了导航菜单
-- RSS 仅保留最近 20 篇非草稿文章；仅输出摘要，不输出全文 HTML
-- 文章链接改为 `/posts/YYYY/MM/DD/slug` 格式
+- RSS 保留最近 10 篇非草稿文章；仅输出摘要
+- 文章链接为 **`/posts/{slug}`** 格式（旧 dated URL 重定向保留）
+- 首页默认 10 条，客户端分页加载更多
 - 添加对 Mermaid 图表 的支持
 - 参考[zdyxry.github.io](https://github.com/zdyxry/zdyxry.github.io)
   ，添加[跑步](/running)页面（该页面样式同样做了一些调整）。跑步数据使用 [get_keep_data.py](https://github.com/zhijunio/zhijunio/blob/main/get_keep_data.py)
