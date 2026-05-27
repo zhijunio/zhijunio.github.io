@@ -360,6 +360,10 @@ hr {
     margin-top: 1.75rem;
   }
 
+  #main-content :is(.post-content, .page-content) h2 {
+    font-size: 1.28rem;
+  }
+
   #main-content :is(.post-content, .page-content) img {
     max-width: 100%;
   }
@@ -455,7 +459,7 @@ main,
   width: 100%;
   max-width: var(--site-chrome-width);
   margin: 0 auto;
-  padding: 1rem 1.5rem 2rem;
+  padding: 0.5rem 1.5rem 2rem;
 }
 
 /* ================================
@@ -510,11 +514,11 @@ mark {
 
 @media (max-width: 768px) {
   h1 {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
   }
 
   h2 {
-    font-size: 1.375rem;
+    font-size: 1.25rem;
   }
 
   h3 {

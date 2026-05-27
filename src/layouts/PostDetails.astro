@@ -294,6 +294,13 @@ const giscusThemeDark = "https://giscus.app/themes/dark.css";
       text-wrap: balance;
     }
 
+    @media (max-width: 768px) {
+      #article h1 {
+        margin-bottom: 1.75rem;
+        font-size: clamp(1.0625rem, 4vw, 1.25rem);
+      }
+    }
+
     #post-banner {
       margin: 0.25rem auto 2.25rem;
       border: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
