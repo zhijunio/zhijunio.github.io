@@ -1,6 +1,6 @@
 ---
 /**
- * 首页 feed 分页片段（供「看更多」fetch 追加）
+ * 首页 feed 分页片段（供「查看更多」fetch 追加）
  */
 import Layout from "@/layouts/Layout.astro";
 import { SITE } from "@/config";
@@ -62,7 +62,7 @@ const { items, nextPage } = Astro.props;
           id="home-feed-more"
           data-next-url={`/page/${nextPage}`}
         >
-          看更多 …
+          查看更多 …
         </button>
       )
     }

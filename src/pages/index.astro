@@ -2,7 +2,7 @@
 /**
  * 首页
  *
- * @fileoverview 博客与周报混排；默认 10 条，「看更多」fetch 下一页 HTML 追加条目。
+ * @fileoverview 博客与周报混排；默认 10 条，「查看更多」fetch 下一页 HTML 追加条目。
  */
 import Layout from "@/layouts/Layout.astro";
 import { SITE } from "@/config";
@@ -52,7 +52,7 @@ const showLoadMore = nextPage !== null;
           id="home-feed-more"
           data-next-url={`/page/${nextPage}`}
         >
-          看更多 …
+          查看更多 …
         </button>
       )
     }
@@ -67,7 +67,7 @@ const showLoadMore = nextPage !== null;
           if (btn.dataset.bound === "1") return;
           btn.dataset.bound = "1";
 
-          const defaultLabel = btn.textContent?.trim() || "看更多 …";
+          const defaultLabel = btn.textContent?.trim() || "查看更多 …";
 
           btn.addEventListener("click", async () => {
             const nextUrl = btn.dataset.nextUrl;
