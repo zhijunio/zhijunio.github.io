@@ -28,37 +28,21 @@ def set_log_scope(scope: str) -> None:
     _SCOPE = scope
 
 
-def _emit(icon: str, msg: str, *, file=None) -> None:
-    print(f"{icon} [{_SCOPE}] {msg}", file=file, flush=True)
-
-
-def section(title: str) -> None:
-    _emit("▸", title)
-
-
 def info(msg: str) -> None:
-    _emit("ℹ️", msg)
-
-
-def ok(msg: str) -> None:
-    _emit("✅", msg)
+    print(f"ℹ️ [{_SCOPE}] {msg}", flush=True)
 
 
 def warn(msg: str) -> None:
-    _emit("⚠️", msg)
+    print(f"⚠️ [{_SCOPE}] {msg}", flush=True)
 
 
 def err(msg: str) -> None:
-    _emit("❌", msg, file=sys.stderr)
+    print(f"❌ [{_SCOPE}] {msg}", file=sys.stderr, flush=True)
 
 
 def debug(msg: str) -> None:
     if VERBOSE:
-        _emit("·", msg)
-
-
-def item(index: int, total: int, msg: str) -> None:
-    info(msg if total <= 1 else f"({index}/{total}) {msg}")
+        print(f"· [{_SCOPE}] {msg}", flush=True)
 
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -220,7 +204,7 @@ def build_activity_record(
     summary_polyline: str = "",
     calories: float | int | None = None,
     average_cadence: float | int | None = None,
-    location_city: str | None = None,
+    location: str | None = None,
     source: str | None = None,
 ) -> dict:
     """统一活动 JSON 结构（Strava / Keep 共用）。"""
@@ -246,8 +230,8 @@ def build_activity_record(
         record["calories"] = calories
     if average_cadence is not None:
         record["average_cadence"] = average_cadence
-    if location_city:
-        record["location_city"] = location_city
+    if location:
+        record["location"] = location
     if source:
         record["source"] = source
     return record
@@ -271,7 +255,7 @@ def format_strava_activity(item: dict) -> dict:
         summary_polyline=item.get("map", {}).get("summary_polyline") or "",
         calories=item.get("calories") or None,
         average_cadence=item.get("average_cadence") or None,
-        location_city=item.get("location_city") or None,
+        location=item.get("location") or item.get("location_city") or None,
     )
 
 
@@ -336,6 +320,9 @@ def _save_json_file(file_path: str, data, *, atomic: bool = False) -> None:
 
 def load_activities(file_path: str) -> list[dict]:
     data = _load_json_file(file_path, []) or []
+    for item in data:
+        if item.get("location") is None and item.get("location_city"):
+            item["location"] = item.pop("location_city")
     _sort_activities_newest_first(data)
     return data
 
@@ -378,12 +365,12 @@ def finalize_sync(
         final_data = local_data
     else:
         save_activities(paths.activities, final_data)
-        ok(
+        info(
             f"已保存：处理 {fetched_count} 条，新增 {added_count} 条，共 {len(final_data)} 条"
         )
 
     if AI_ENABLED and final_data:
-        section("月度统计")
+        info("月度统计")
         update_stats(final_data, paths.stats)
     return final_data
 
@@ -675,7 +662,7 @@ def generate_ai_content(
         if comment:
             return comment, True
 
-    warn("LLM 未返回有效结果")
+    info("LLM 未返回有效结果")
     return None, True
 
 
@@ -723,7 +710,7 @@ def request_with_retries(
             last_exc = exc
             if attempt >= retries:
                 break
-            warn(f"请求失败 ({attempt}/{retries})，{delay:.0f}s 后重试…")
+            info(f"请求失败 ({attempt}/{retries})，{delay:.0f}s 后重试…")
             time.sleep(delay)
             delay = min(delay * 2, 8)
     assert last_exc is not None
@@ -742,15 +729,15 @@ def _get_ai_session() -> requests.Session:
 
 def _log_ai_request_error(provider: str, exc: Exception) -> None:
     if isinstance(exc, requests.exceptions.ProxyError):
-        warn(
+        info(
             f"{provider} 代理连接失败: {exc}。"
             "检查 HTTP_PROXY/HTTPS_PROXY、SYNC_HTTP(S)_PROXY 或 export SYNC_USE_PROXY=0"
         )
         return
     if isinstance(exc, requests.exceptions.SSLError):
-        warn(f"{provider} SSL 连接失败: {exc}。")
+        info(f"{provider} SSL 连接失败: {exc}。")
         return
-    warn(f"{provider} 异常: {exc}")
+    info(f"{provider} 异常: {exc}")
 
 
 def _parse_comment_payload(raw) -> dict | None:
@@ -767,7 +754,7 @@ def _call_cf(
     prompt: str, *, temperature: float = 0.9, max_tokens: int = 1000
 ) -> dict | None:
     if not (CF_ACCOUNT_ID and CF_AI_TOKEN):
-        warn("AI_PROVIDER=cf 但未配置 CF_ACCOUNT_ID / CF_AI_TOKEN")
+        info("AI_PROVIDER=cf 但未配置 CF_ACCOUNT_ID / CF_AI_TOKEN")
         return None
     url = (
         f"https://api.cloudflare.com/client/v4/accounts/{CF_ACCOUNT_ID}"
@@ -786,11 +773,11 @@ def _call_cf(
             parsed = _parse_comment_payload(data.get("result", {}).get("response"))
             if parsed:
                 return parsed
-            warn("CF AI 返回 200 但无法解析 comment")
+            info("CF AI 返回 200 但无法解析 comment")
         elif response.status_code == 429:
-            warn("CF AI 配额已用尽 (HTTP 429)，可改用 AI_PROVIDER=openai")
+            info("CF AI 配额已用尽 (HTTP 429)，可改用 AI_PROVIDER=openai")
         else:
-            warn(f"CF AI 失败 HTTP {response.status_code}: {response.text[:160]}")
+            info(f"CF AI 失败 HTTP {response.status_code}: {response.text[:160]}")
     except Exception as exc:
         _log_ai_request_error("CF AI", exc)
     return None
@@ -800,7 +787,7 @@ def _call_openai(
     prompt: str, *, temperature: float = 0.9, max_tokens: int = 1000
 ) -> dict | None:
     if not OPENAI_API_KEY:
-        warn("AI_PROVIDER=openai 但未配置 OPENAI_API_KEY")
+        info("AI_PROVIDER=openai 但未配置 OPENAI_API_KEY")
         return None
     url = f"{OPENAI_BASE_URL}/v1/chat/completions"
     headers = {"Authorization": f"Bearer {OPENAI_API_KEY}"}
@@ -819,9 +806,9 @@ def _call_openai(
             )
             if parsed:
                 return parsed
-            warn("OpenAI 返回 200 但无法解析 comment")
+            info("OpenAI 返回 200 但无法解析 comment")
         else:
-            warn(f"OpenAI 失败 HTTP {response.status_code}: {response.text[:200]}")
+            info(f"OpenAI 失败 HTTP {response.status_code}: {response.text[:200]}")
     except Exception as exc:
         _log_ai_request_error("OpenAI", exc)
     return None
@@ -850,7 +837,7 @@ def apply_ai_to_record(record: dict, history_newest_first: list[dict]) -> bool:
     if comment:
         record["ai_comment"] = comment
     else:
-        warn(
+        info(
             f"AI 分析未生成 {record.get('start_date_local', '') or record.get('run_id', '?')}"
         )
     return llm_used
@@ -884,9 +871,9 @@ def heal_missing_ai(local_data: list[dict]) -> bool:
             time.sleep(1)
 
     if filled:
-        ok(f"AI 分析已补全 {filled}/{len(missing)} 条")
+        info(f"AI 分析已补全 {filled}/{len(missing)} 条")
     else:
-        warn(f"AI 分析补全失败（0/{len(missing)}），请检查 CF/OpenAI 配置与配额")
+        info(f"AI 分析补全失败（0/{len(missing)}），请检查 CF/OpenAI 配置与配额")
     return filled > 0
 
 
@@ -1077,7 +1064,7 @@ def update_stats(local_data: list[dict], stats_path: str) -> None:
                 "ai_comment": comment,
             }
             _save_json_file(stats_path, insights)
-            ok(f"统计 {current_month_key} 已写入 {os.path.basename(stats_path)}")
+            info(f"统计 {current_month_key} 已写入 {os.path.basename(stats_path)}")
             time.sleep(2)
 
         prev_stats = current_stats

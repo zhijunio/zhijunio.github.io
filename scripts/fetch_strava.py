@@ -18,7 +18,6 @@ if _SCRIPT_DIR not in sys.path:
 
 from activity_sync_common import (  # noqa: E402
     SyncPaths,
-    apply_ai_to_record,
     assets_path,
     cap_sync_batch,
     create_sync_http_session,
@@ -28,17 +27,14 @@ from activity_sync_common import (  # noqa: E402
     finalize_sync,
     format_strava_activity,
     info,
-    item,
     known_run_ids,
     load_activities,
     log_sync_startup,
-    merge_records,
-    ok,
     parse_positive_int,
     parse_time,
     request_with_retries,
-    section,
     set_log_scope,
+    warn,
 )
 
 PATHS = SyncPaths(
@@ -113,7 +109,7 @@ def fetch_activities(
                 timeout=30,
             )
             if response.status_code != 200:
-                err(f"拉取失败 HTTP {response.status_code}")
+                info(f"拉取失败 HTTP {response.status_code}")
                 break
             data = response.json()
             if not data:
@@ -129,7 +125,7 @@ def fetch_activities(
                     break
             time.sleep(0.5)
         except Exception as exc:
-            err(f"拉取异常: {exc}")
+            info(f"拉取异常: {exc}")
             break
 
     info(f"API 返回 {len(all_activities)} 条（{page - 1} 页）")
@@ -179,7 +175,7 @@ def incremental_after_ts(local_data: list[dict]) -> int | None:
 
 def main() -> int:
     set_log_scope("Strava")
-    section("Strava 运动同步")
+    info("Strava 运动同步")
     try:
         _require_credentials()
         log_sync_startup(PATHS)
@@ -197,7 +193,7 @@ def main() -> int:
 
         session = create_sync_http_session("Strava")
         token = fetch_access_token(session)
-        ok("Token 就绪")
+        info("Token 就绪")
 
         raw = fetch_activities(
             session,
@@ -217,7 +213,7 @@ def main() -> int:
         )
         return 0
     except Exception as exc:
-        err(str(exc))
+        info(str(exc))
         return 1
 
 

@@ -25,7 +25,6 @@ if _SCRIPT_DIR not in sys.path:
 
 from activity_sync_common import (  # noqa: E402
     SyncPaths,
-    apply_ai_to_record,
     assets_path,
     build_activity_record,
     cap_sync_batch,
@@ -35,16 +34,12 @@ from activity_sync_common import (  # noqa: E402
     err,
     finalize_sync,
     info,
-    item,
     known_run_ids,
     load_activities,
     log_sync_startup,
-    merge_records,
-    ok,
     parse_positive_int,
     parse_time,
     request_with_retries,
-    section,
     set_log_scope,
     warn,
 )
@@ -164,7 +159,7 @@ def build_keep_session() -> tuple[requests.Session, dict[str, str]]:
         raise RuntimeError("登录响应无 token")
 
     headers["Authorization"] = f"Bearer {token}"
-    ok("登录成功")
+    info("登录成功")
     return session, headers
 
 
@@ -176,7 +171,7 @@ def get_keep_json(
     error_label: str,
     use_err: bool = False,
 ) -> dict | None:
-    log_fail = err if use_err else warn
+    log_fail = log
     try:
         response = request_with_retries(
             session,
@@ -275,7 +270,7 @@ def fetch_all_keep_summaries(
 
     for sport_type in KEEP_SYNC_TYPES:
         if sport_type not in VALID_SPORT_TYPES:
-            warn(f"忽略未知类型: {sport_type}")
+            info(f"忽略未知类型: {sport_type}")
             continue
         all_summaries.extend(
             fetch_keep_stats_pages(
@@ -446,18 +441,14 @@ def _keep_cadence(detail_data: dict, stats: dict) -> float | None:
 
 
 def _keep_location(detail_data: dict, stats: dict) -> str | None:
-    loc = (
-        detail_data.get("region")
-        or detail_data.get("location")
-        or detail_data.get("city")
-        or stats.get("region")
-        or stats.get("location")
-        or stats.get("city")
-    )
-    if isinstance(loc, str) and loc.strip():
-        return loc.strip()
-    if isinstance(loc, dict):
-        return loc.get("city") or loc.get("name") or loc.get("region") or None
+    region = detail_data.get("region") or stats.get("region")
+    if isinstance(region, dict):
+        province = (region.get("province") or "").strip()
+        city = (region.get("city") or "").strip()
+        district = (region.get("district") or "").strip()
+        location = f"{province}{city}{district}"
+        if location:
+            return location
     return None
 
 
@@ -487,6 +478,9 @@ def format_keep_record(
     avg_speed_ms = distance_m / duration_sec if duration_sec > 0 else 0
     coords = decode_geo_polyline(detail_data.get("geoPoints") or "")
     name = detail_data.get("name") or KEEP_TYPE_CN.get(data_type) or stats.get("statsName") or f"Keep {strava_type}"
+    location = _keep_location(detail_data, stats)
+    if location:
+        debug(f"Keep {keep_id} location={location}")
 
     return build_activity_record(
         run_id=f"keep_{keep_id}",
@@ -503,13 +497,13 @@ def format_keep_record(
         summary_polyline=encode_summary_polyline(coords),
         calories=_keep_calories(detail_data, stats),
         average_cadence=_keep_cadence(detail_data, stats),
-        location_city=_keep_location(detail_data, stats),
+        location=location,
     )
 
 
 def main() -> int:
     set_log_scope("Keep")
-    section("Keep 运动同步")
+    info("Keep 运动同步")
     try:
         log_sync_startup(PATHS)
         if not _HAS_CRYPTO or not _HAS_POLYLINE:
@@ -538,7 +532,7 @@ def main() -> int:
         )
         return 0
     except Exception as exc:
-        err(str(exc))
+        info(str(exc))
         return 1
 
 
