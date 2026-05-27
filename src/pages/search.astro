@@ -11,7 +11,6 @@ export const pageDescription = "搜索所有文章";
 
 <Layout title={pageTitle} description={pageDescription} robots="noindex,follow">
   <section aria-labelledby="search-page-heading">
-    <h1 id="search-page-heading">搜索</h1>
     <div id="search">
       <div>
         <input
@@ -33,6 +32,12 @@ export const pageDescription = "搜索所有文章";
     font-size: 1.875rem;
     font-weight: 600;
     letter-spacing: -0.025em;
+  }
+
+  @media (max-width: 768px) {
+    #search-page-heading {
+      font-size: 1.5rem;
+    }
   }
 
   #search > div:first-of-type {

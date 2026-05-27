@@ -16,7 +16,10 @@ export const SITE = {
   author: "ZhiJun",
   description:
     "记录 Java、Spring、MicroServices、Architecture、Kubernetes、DevOps、AI 编码工具、架构与个人周报的博客",
-  title: "ZhiJun's Blog",
+  title: "ZhiJun Blog",
+
+  /** 顶栏标题左侧标识图（根相对路径，如 `/images/avatar.webp`）；留空则不显示 */
+  logo: "/images/avatar.webp",
 
   googleSiteVerification: "702mzR8WJvXKVdS3ergTkQEIWAMuwniGMAIeE6wPRhc",
   bingSiteVerification: "5995FAD202DE5A364D652266E4C4E0E0",

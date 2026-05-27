@@ -1,11 +1,11 @@
 ---
 import { SITE } from "@/config";
 import YearProgress from "./YearProgress.astro";
+import { siteImageHref } from "@/utils/blogImages";
 
-const navLinks = [
-  { href: "/", text: "首页" },
-  { href: "/about", text: "关于" },
-];
+const logoSrc = SITE.logo?.trim() ? siteImageHref(SITE.logo.trim()) : "";
+
+const navLinks = [{ href: "/about", text: "关于" }];
 
 const { pathname } = Astro.url;
 
@@ -17,9 +17,24 @@ function isActiveNavLink(href: string): boolean {
 ---
 
 <header>
-  <nav>
-    <a href="/">{SITE.title}</a>
-    <ul>
+  <nav aria-label="站点导航">
+    <a href="/" class="site-brand">
+      {
+        logoSrc && (
+          <img
+            class="site-logo"
+            src={logoSrc}
+            alt=""
+            width="22"
+            height="22"
+            decoding="async"
+            fetchpriority="high"
+          />
+        )
+      }
+      <span class="site-title">{SITE.title}</span>
+    </a>
+    <ul class="nav-links">
       {
         navLinks.map(link => (
           <li>
@@ -35,64 +50,69 @@ function isActiveNavLink(href: string): boolean {
         ))
       }
     </ul>
-    <a href="/search" aria-label="搜索">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      >
-        <circle cx="11" cy="11" r="8"></circle>
-        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-      </svg>
-    </a>
-    {
-      SITE.lightAndDarkMode && (
-        <button id="theme-toggle" type="button" aria-label="切换主题">
-          <svg
-            class="sun-icon"
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <circle cx="12" cy="12" r="5" />
-            <line x1="12" y1="1" x2="12" y2="3" />
-            <line x1="12" y1="21" x2="12" y2="23" />
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-            <line x1="1" y1="12" x2="3" y2="12" />
-            <line x1="21" y1="12" x2="23" y2="12" />
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-          </svg>
-          <svg
-            class="moon-icon"
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-          </svg>
-        </button>
-      )
-    }
+    <div class="nav-actions">
+      <a href="/search" aria-label="搜索">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </a>
+      {
+        SITE.lightAndDarkMode && (
+          <button id="theme-toggle" type="button" aria-label="切换主题">
+            <svg
+              class="sun-icon"
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <circle cx="12" cy="12" r="5" />
+              <line x1="12" y1="1" x2="12" y2="3" />
+              <line x1="12" y1="21" x2="12" y2="23" />
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+              <line x1="1" y1="12" x2="3" y2="12" />
+              <line x1="21" y1="12" x2="23" y2="12" />
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+            </svg>
+            <svg
+              class="moon-icon"
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+            </svg>
+          </button>
+        )
+      }
+    </div>
   </nav>
   {SITE.showYearProgress && <YearProgress />}
 </header>
@@ -100,65 +120,97 @@ function isActiveNavLink(href: string): boolean {
 <style>
   nav {
     display: flex;
-    justify-content: space-between;
+    flex-wrap: nowrap;
     align-items: center;
     max-width: var(--site-chrome-width);
     margin: 0 auto;
     padding: 0.35rem 1.5rem 0;
-    gap: 1rem;
+    gap: 0.5rem 0.75rem;
   }
 
-  nav > a:first-of-type {
+  .site-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    min-width: 0;
+    flex: 1 1 auto;
     font-weight: 700;
-    font-size: clamp(0.9rem, 2.5vw, 1rem);
+    font-size: clamp(0.875rem, 2.5vw, 1rem);
     line-height: 1.25;
     color: var(--text-primary);
     text-decoration: none;
   }
 
-  nav > a:first-of-type:hover,
-  nav > a:first-of-type:focus-visible {
+  .site-logo {
+    width: 1.375rem;
+    height: 1.375rem;
+    flex-shrink: 0;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .site-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .site-brand:hover,
+  .site-brand:focus-visible {
     color: var(--accent);
     text-decoration: none;
   }
 
-  nav > ul {
+  .nav-links {
     display: flex;
-    flex-wrap: nowrap;
+    flex-shrink: 0;
     align-items: center;
-    gap: 0.1rem 0.7rem;
+    gap: 0.35rem 0.75rem;
     list-style: none;
     margin: 0 0 0 auto;
     padding: 0;
   }
 
-  nav > ul a {
+  .nav-links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.25rem;
+    padding: 0 0.15rem;
     color: var(--text-secondary);
     font-size: 0.9rem;
     text-decoration: none;
     white-space: nowrap;
   }
 
-  nav > ul a:hover,
-  nav > ul a[aria-current="page"] {
+  .nav-links a:hover,
+  .nav-links a[aria-current="page"] {
     color: var(--accent);
   }
 
-  nav > ul a[aria-current="page"] {
+  .nav-links a[aria-current="page"] {
     font-weight: 600;
   }
 
-  nav > a[href="/search"],
+  .nav-actions {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 0.15rem;
+  }
+
+  .nav-actions a[href="/search"],
   #theme-toggle {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    min-width: 2.25rem;
+    min-height: 2.25rem;
     padding: 0.35rem;
     color: var(--text-secondary);
     border-radius: 6px;
   }
 
-  nav > a[href="/search"]:hover,
+  .nav-actions a[href="/search"]:hover,
   #theme-toggle:hover {
     color: var(--accent);
     background: color-mix(in srgb, var(--accent) 8%, transparent);
@@ -167,6 +219,7 @@ function isActiveNavLink(href: string): boolean {
   #theme-toggle {
     border: none;
     background: transparent;
+    cursor: pointer;
   }
 
   :global([data-theme="light"]) .moon-icon,
@@ -174,30 +227,38 @@ function isActiveNavLink(href: string): boolean {
     display: none;
   }
 
+  @media (min-width: 641px) {
+    .site-brand {
+      flex: 0 1 auto;
+    }
+  }
+
   @media (max-width: 768px) {
     nav {
       padding-left: 1rem;
       padding-right: 1rem;
-      gap: 0.75rem;
     }
   }
 
   @media (max-width: 640px) {
     nav {
-      align-items: flex-start;
-      flex-direction: column;
+      gap: 0.35rem 0.5rem;
     }
 
-    nav > ul {
-      width: 100%;
-      margin-left: 0;
-      gap: 0.65rem;
-      overflow-x: auto;
-      scrollbar-width: none;
+    .nav-links {
+      gap: 0.35rem 0.65rem;
     }
 
-    nav > ul::-webkit-scrollbar {
-      display: none;
+    .nav-links a {
+      min-height: 2rem;
+      font-size: 0.85rem;
+    }
+
+    .nav-actions a[href="/search"],
+    #theme-toggle {
+      min-width: 2rem;
+      min-height: 2rem;
+      padding: 0.25rem;
     }
   }
 </style>
