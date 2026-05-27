@@ -7,7 +7,6 @@
 import { render } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import Photosuite from "@/components/Photosuite.astro";
-import ArticleToc from "@/components/ArticleToc.astro";
 import { PostUtils, type BlogLikeEntry } from "@/utils/postUtils";
 import IconChevronLeft from "@/assets/icons/IconChevronLeft.svg";
 import IconChevronRight from "@/assets/icons/IconChevronRight.svg";
@@ -192,8 +191,6 @@ const giscusThemeDark = "https://giscus.app/themes/dark.css";
       <Content />
     </div>
   </article>
-
-  <ArticleToc />
 
   {
     tags.length > 0 && (

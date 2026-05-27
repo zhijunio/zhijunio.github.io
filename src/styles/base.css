@@ -23,7 +23,7 @@
 
   /**
    * 与 body > header 吸顶后的可视高度对齐（导航 + 年度进度等）。
-   * 用于文章目录 sticky top、标题锚点 scroll-margin。
+   * 用于标题锚点 scroll-margin。
    */
   --site-header-sticky-offset: 5.25rem;
 }
