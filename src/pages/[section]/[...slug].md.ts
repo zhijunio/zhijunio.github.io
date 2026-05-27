@@ -1,6 +1,10 @@
 import type { GetStaticPaths, APIRoute } from "astro";
 import { SITE } from "@/config";
-import { getAllBlogLike, PostUtils, type BlogLikeEntry } from "@/utils/postUtils";
+import {
+  getAllBlogLike,
+  PostUtils,
+  type BlogLikeEntry,
+} from "@/utils/postUtils";
 
 interface Props {
   post: BlogLikeEntry;

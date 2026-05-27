@@ -144,7 +144,7 @@ pnpm images:publish   # 本地手动 webp + rclone
 ## CI/CD
 
 - `.github/workflows/ci.yml`：
-  - **build**：每次 push/PR 运行 `lint → format:check → build`
+  - **build**：每次 push/PR 运行 `lint → format:check → md:check → build`
   - **publish-cdn**：push 到 `main` 且 `public/images` 等变更时（或手动 `workflow_dispatch`）：
     1. `convert-to-webp` → 若有新 webp 则 bot commit（`[skip ci]`）
     2. `rclone sync` 到 R2 CDN

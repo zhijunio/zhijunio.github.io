@@ -50,13 +50,42 @@ jobs:
       - name: "📝 Checking code format"
         run: pnpm run format:check
 
+      - name: "📄 Markdown lint"
+        run: pnpm run md:check
+
       - name: "🚀 Build the project"
         run: pnpm run build
 
-  publish-cdn:
-    name: WebP + R2 sync
+  cdn-changes:
+    name: Detect CDN changes
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && !contains(github.event.head_commit.message, '[skip ci]')) }}
+    outputs:
+      run: ${{ steps.detect.outputs.run }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+
+      - name: Detect CDN-related changes
+        id: detect
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if git diff --name-only HEAD^ HEAD | grep -qE '^(public/images/|public/favicon\.ico|public/og\.webp|scripts/convert-to-webp\.mjs|\.github/workflows/ci\.yml)'; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  publish-cdn:
+    name: WebP + R2 sync
+    needs: cdn-changes
+    if: ${{ needs.cdn-changes.outputs.run == 'true' }}
+    runs-on: ubuntu-latest
     permissions:
       contents: write
     env:
@@ -68,39 +97,24 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Detect CDN-related changes
-        id: changes
-        if: github.event_name == 'push'
-        run: |
-          if git diff --name-only HEAD^ HEAD | grep -qE '^(public/images/|public/favicon\.ico|public/og\.webp|scripts/convert-to-webp\.mjs|\.github/workflows/ci\.yml)'; then
-            echo "run=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "run=false" >> "$GITHUB_OUTPUT"
-          fi
-
       - name: Install pnpm
-        if: github.event_name == 'workflow_dispatch' || steps.changes.outputs.run == 'true'
         uses: pnpm/action-setup@v6
         with:
           version: 11.3.0
 
       - name: Setup Node.js
-        if: github.event_name == 'workflow_dispatch' || steps.changes.outputs.run == 'true'
         uses: actions/setup-node@v6
         with:
           node-version: 25
           cache: pnpm
 
       - name: Install dependencies
-        if: github.event_name == 'workflow_dispatch' || steps.changes.outputs.run == 'true'
         run: pnpm install --frozen-lockfile
 
       - name: Convert images to WebP
-        if: github.event_name == 'workflow_dispatch' || steps.changes.outputs.run == 'true'
         run: pnpm run convert-to-webp
 
       - name: Commit WebP changes
-        if: github.event_name == 'workflow_dispatch' || steps.changes.outputs.run == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -113,11 +127,9 @@ jobs:
           fi
 
       - name: Install rclone
-        if: github.event_name == 'workflow_dispatch' || steps.changes.outputs.run == 'true'
         run: curl -fsSL https://rclone.org/install.sh | sudo bash
 
       - name: Configure rclone
-        if: github.event_name == 'workflow_dispatch' || steps.changes.outputs.run == 'true'
         env:
           RCLONE_CONFIG: ${{ secrets.RCLONE_CONFIG }}
         run: |
@@ -130,5 +142,4 @@ jobs:
           chmod 600 ~/.config/rclone/rclone.conf
 
       - name: Sync to R2
-        if: github.event_name == 'workflow_dispatch' || steps.changes.outputs.run == 'true'
         run: pnpm run images:sync
