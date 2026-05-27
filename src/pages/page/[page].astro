@@ -13,10 +13,7 @@ import {
 
 export async function getStaticPaths() {
   const all = await getAllHomeFeedItems();
-  const totalPages = Math.max(
-    1,
-    Math.ceil(all.length / HOME_FEED_PAGE_SIZE)
-  );
+  const totalPages = Math.max(1, Math.ceil(all.length / HOME_FEED_PAGE_SIZE));
   if (totalPages <= 1) return [];
 
   return Array.from({ length: totalPages - 1 }, (_, index) => {

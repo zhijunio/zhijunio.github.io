@@ -422,10 +422,7 @@ export function paginateHomeFeedItems(
   totalPages: number;
   nextPage: number | null;
 } {
-  const totalPages = Math.max(
-    1,
-    Math.ceil(items.length / HOME_FEED_PAGE_SIZE)
-  );
+  const totalPages = Math.max(1, Math.ceil(items.length / HOME_FEED_PAGE_SIZE));
   const safePage = Math.min(Math.max(page, 1), totalPages);
   const start = (safePage - 1) * HOME_FEED_PAGE_SIZE;
   return {

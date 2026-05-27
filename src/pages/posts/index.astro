@@ -12,10 +12,7 @@ export const pageTitle = `文章 | ${SITE.title}`;
 const sorted = PostUtils.sort(await getAllBlogLike());
 ---
 
-<Layout
-  title={pageTitle}
-  description="全部文章与周报，按最近更新排序。"
->
+<Layout title={pageTitle} description="全部文章与周报，按最近更新排序。">
   <section aria-labelledby="posts-page-heading">
     <section aria-label="文章列表">
       <ol id="posts-list">

@@ -205,8 +205,7 @@ export const pageDescription = "搜索所有文章";
           return;
         }
 
-        let html =
-          "<p>找到 " + search.results.length + " 个结果</p>";
+        let html = "<p>找到 " + search.results.length + " 个结果</p>";
         html += "<ol>";
 
         for (const result of search.results.slice(0, 10)) {
@@ -225,10 +224,7 @@ export const pageDescription = "搜索所有文章";
         html += "</ol>";
 
         if (search.results.length > 10) {
-          html +=
-            "<p>还有 " +
-            (search.results.length - 10) +
-            " 个结果...</p>";
+          html += "<p>还有 " + (search.results.length - 10) + " 个结果...</p>";
         }
 
         resultsContainer.innerHTML = html;
