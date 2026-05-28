@@ -12,7 +12,6 @@ import CodeCopyButton from "@/components/CodeCopyButton.astro";
 import { PostUtils, type BlogLikeEntry } from "@/utils/postUtils";
 import IconChevronLeft from "@/assets/icons/IconChevronLeft.svg";
 import IconChevronRight from "@/assets/icons/IconChevronRight.svg";
-import { SITE } from "@/config";
 import { siteImageHref } from "@/utils/blogImages";
 
 export interface Props {
@@ -30,7 +29,6 @@ const {
   date,
   updated,
   tags,
-  comments,
   description: postDescription,
   banner: bannerRaw,
   mermaid: useMermaid,
@@ -70,6 +68,7 @@ const { Content } = await render(post);
 const hasInlineImages = /!\[[\s\S]*?\]\([^)]+\)|<img\s/i.test(post.body ?? "");
 const needsMermaid =
   useMermaid || /```mermaid\b/i.test(post.body ?? "");
+const needsCodeCopy = /```[\s\S]*?```/.test(post.body ?? "");
 
 /** 文章描述：优先 frontmatter description，否则从正文提取（与 RSS 摘要逻辑一致，不含 banner） */
 const fullDescription =
@@ -121,24 +120,12 @@ const nextPost =
     ? allPosts[currentPostIndex + 1]
     : null;
 
-const giscusTheme = "https://giscus.app/themes/light.css";
 ---
 
 <Layout {...layoutProps}>
   {hasInlineImages && <Photosuite />}
   {needsMermaid && <MermaidLoader />}
-  <CodeCopyButton />
-  {
-    bannerSrc && (
-      <link
-        slot="head"
-        rel="preload"
-        as="image"
-        href={bannerSrc}
-        fetchpriority="high"
-      />
-    )
-  }
+  {needsCodeCopy && <CodeCopyButton />}
   {
     tags.map((tag: string) => (
       <meta slot="head" property="article:tag" content={tag} />
@@ -195,31 +182,6 @@ const giscusTheme = "https://giscus.app/themes/light.css";
           </a>
         )}
       </nav>
-    )
-  }
-
-  {
-    comments && SITE.giscus.enabled && (
-      <section aria-label="评论">
-        <script
-          is:inline
-          src="https://giscus.app/client.js"
-          data-repo="zhijunio/zhijunio.github.io"
-          data-repo-id="R_kgDOIwiKuA"
-          data-category="Announcements"
-          data-category-id="DIC_kwDOIwiKuM4C6yVl"
-          data-mapping="title"
-          data-strict="0"
-          data-reactions-enabled="1"
-          data-emit-metadata="0"
-          data-input-position="bottom"
-          data-theme={giscusTheme}
-          data-lang="zh-CN"
-          data-loading="lazy"
-          crossorigin="anonymous"
-          async
-        />
-      </section>
     )
   }
 
@@ -341,34 +303,5 @@ const giscusTheme = "https://giscus.app/themes/light.css";
       height: 1rem;
       flex-shrink: 0;
     }
-
-    #main-content section[aria-label="评论"] {
-      margin-top: 2rem;
-      padding-top: 1.25rem;
-      border-top: 1px solid color-mix(in srgb, var(--border) 65%, transparent);
-    }
-
-    #main-content section[aria-label="评论"] .giscus,
-    #main-content section[aria-label="评论"] iframe.giscus-frame {
-      width: 100%;
-    }
   </style>
-
-  <script is:inline data-astro-rerun>
-    function onPageReady() {
-      window.scrollTo({ left: 0, top: 0, behavior: "instant" });
-    }
-    if (window._postDetailsAfterSwapHandler) {
-      document.removeEventListener(
-        "astro:after-swap",
-        window._postDetailsAfterSwapHandler
-      );
-    }
-    window._postDetailsAfterSwapHandler = onPageReady;
-    document.addEventListener(
-      "astro:after-swap",
-      window._postDetailsAfterSwapHandler
-    );
-    onPageReady();
-  </script>
 </Layout>
