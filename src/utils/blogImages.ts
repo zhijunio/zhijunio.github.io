@@ -60,7 +60,9 @@ type VfileLike = {
 
 type MdastNode = { type?: string; url?: string; children?: unknown[] };
 
-function frontmatterFromFile(file: VfileLike): Record<string, unknown> | undefined {
+function frontmatterFromFile(
+  file: VfileLike
+): Record<string, unknown> | undefined {
   return (
     file.data?.astro?.frontmatter ??
     (file.data?.frontmatter as Record<string, unknown> | undefined)

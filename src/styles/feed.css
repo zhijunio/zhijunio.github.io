@@ -22,7 +22,6 @@
   border-bottom: 1px solid var(--border-subtle);
 }
 
-
 #home-feed-list li > article {
   display: flex;
   min-width: 0;

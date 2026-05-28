@@ -64,7 +64,9 @@ export function resolveBlogImageRef(
 }
 
 export function getEntryDescription(entry: PostEntry): string {
-  return entry.data.description?.trim() || excerptFromMarkdown(entry.body ?? "");
+  return (
+    entry.data.description?.trim() || excerptFromMarkdown(entry.body ?? "")
+  );
 }
 
 function excerptFromMarkdown(markdownContent: string): string {
@@ -88,7 +90,8 @@ export function sortPosts(
   const published = posts.filter(isPublished);
   if (by === "date") {
     return published.sort(
-      (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+      (a, b) =>
+        new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
     );
   }
   return published.sort(
@@ -154,8 +157,7 @@ export async function getPostStaticPaths() {
     props: {
       post,
       prev: index > 0 ? toPostNavLink(posts[index - 1]!) : null,
-      next:
-        index < posts.length - 1 ? toPostNavLink(posts[index + 1]!) : null,
+      next: index < posts.length - 1 ? toPostNavLink(posts[index + 1]!) : null,
     },
   }));
 }

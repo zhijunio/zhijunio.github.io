@@ -1,8 +1,5 @@
 import type { APIRoute } from "astro";
-import {
-  getFeedJsonStaticPaths,
-  type HomeFeedItem,
-} from "@/utils/postUtils";
+import { getFeedJsonStaticPaths, type HomeFeedItem } from "@/utils/postUtils";
 
 export const getStaticPaths = getFeedJsonStaticPaths;
 

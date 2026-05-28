@@ -1,7 +1,12 @@
 import type { APIRoute } from "astro";
 import { SITE } from "@/config";
 import { escapeXml } from "@/utils/escapeXml";
-import { getPosts, getPostUrl, postModifiedIso, sortPosts } from "@/utils/postUtils";
+import {
+  getPosts,
+  getPostUrl,
+  postModifiedIso,
+  sortPosts,
+} from "@/utils/postUtils";
 
 export const GET: APIRoute = async () => {
   const sortedPosts = sortPosts(await getPosts());
