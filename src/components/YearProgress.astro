@@ -27,7 +27,7 @@
   aria-live="polite"
   aria-label="本年度已过时间比例"
 >
-  <div>
+  <div class="year-progress-inner">
     <span id="year-progress-label"></span>
     <span id="year-progress-cover"></span>
     <div id="year-progress-track" aria-hidden="true">
@@ -49,6 +49,10 @@
     pointer-events: none;
   }
 
+  .year-progress-inner {
+    position: relative;
+  }
+
   #year-progress-track {
     position: relative;
     display: flex;
@@ -64,14 +68,6 @@
     border-radius: 999px;
     background: color-mix(in srgb, var(--border) 88%, var(--text-secondary));
     overflow: hidden;
-  }
-
-  :global([data-theme="dark"]) #year-progress-track > div {
-    background: color-mix(
-      in srgb,
-      var(--border) 70%,
-      var(--text-secondary) 30%
-    );
   }
 
   #year-progress-fill {
@@ -126,7 +122,10 @@
     height: 0.875rem;
   }
 
-  :global(.year-progress-visible) {
+  /* JS 添加的 class 无 scoped 属性，需 :global 且提高优先级才能盖过默认 opacity: 0 */
+  #year-progress-label:global(.year-progress-visible),
+  #year-progress-cover:global(.year-progress-visible),
+  #year-progress-popup:global(.year-progress-visible) {
     opacity: 1;
   }
 
