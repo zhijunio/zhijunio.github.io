@@ -33,11 +33,9 @@ const prevHref = page === 2 ? "/" : page ? `/page/${page - 1}` : null;
             <h2>
               <a href={item.href}>{item.title}</a>
             </h2>
-            {
-              item.description && (
-                <p class="home-feed-desc">{item.description}</p>
-              )
-            }
+            {item.description ? (
+              <p class="home-feed-desc">{item.description}</p>
+            ) : null}
           </article>
         </li>
       ))

@@ -5,15 +5,9 @@ import { siteImageHref } from "@/utils/blogImages";
 
 const logoSrc = SITE.logo?.trim() ? siteImageHref(SITE.logo.trim()) : "";
 
-const navLinks = [{ href: "/about", text: "关于" }];
-
 const { pathname } = Astro.url;
-
-function isActiveNavLink(href: string): boolean {
-  return href === "/"
-    ? pathname === "/"
-    : pathname === href || pathname.startsWith(href + "/");
-}
+const isAboutPage =
+  pathname === "/about" || pathname.startsWith("/about/");
 ---
 
 <header>
@@ -35,20 +29,14 @@ function isActiveNavLink(href: string): boolean {
       <span class="site-title">{SITE.title}</span>
     </a>
     <ul class="nav-links">
-      {
-        navLinks.map(link => (
-          <li>
-            <a
-              href={link.href}
-              {...(isActiveNavLink(link.href)
-                ? { "aria-current": "page" as const }
-                : {})}
-            >
-              {link.text}
-            </a>
-          </li>
-        ))
-      }
+      <li>
+        <a
+          href="/about"
+          {...isAboutPage ? { "aria-current": "page" as const } : {}}
+        >
+          关于
+        </a>
+      </li>
     </ul>
   </nav>
   <YearProgress />

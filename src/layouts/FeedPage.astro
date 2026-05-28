@@ -1,0 +1,19 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import HomeFeed from "@/components/HomeFeed.astro";
+import { SITE } from "@/config";
+import type { HomeFeedItem } from "@/utils/postUtils";
+
+interface Props {
+  items: HomeFeedItem[];
+  nextPage?: number | null;
+  page?: number;
+  robots?: string;
+}
+
+const { items, nextPage = null, page, robots } = Astro.props;
+---
+
+<Layout title={SITE.title} description={SITE.description} robots={robots}>
+  <HomeFeed items={items} nextPage={nextPage} page={page} />
+</Layout>

@@ -1,28 +1,9 @@
 ---
-/**
- * 首页
- *
- * @fileoverview 博客与周报混排；默认一页，更多条目链到 /page/2。
- */
-import Layout from "@/layouts/Layout.astro";
-import HomeFeed from "@/components/HomeFeed.astro";
-import { SITE } from "@/config";
-import {
-  getAllHomeFeedItems,
-  paginateHomeFeedItems,
-} from "@/utils/postUtils";
-
-export const pageSlug = "index";
-export const pageTitle = SITE.title;
-export const pageDescription = SITE.description;
+import FeedPage from "@/layouts/FeedPage.astro";
+import { getAllHomeFeedItems, paginateHomeFeedItems } from "@/utils/postUtils";
 
 const allFeedItems = await getAllHomeFeedItems();
-const { items: initialItems, nextPage } = paginateHomeFeedItems(
-  allFeedItems,
-  1
-);
+const { items, nextPage } = paginateHomeFeedItems(allFeedItems, 1);
 ---
 
-<Layout title={pageTitle} description={pageDescription}>
-  <HomeFeed items={initialItems} nextPage={nextPage} />
-</Layout>
+<FeedPage items={items} nextPage={nextPage} />

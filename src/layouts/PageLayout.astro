@@ -1,0 +1,16 @@
+---
+import Layout from "@/layouts/Layout.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<Layout title={title} description={description}>
+  <article id="article" class="post-content page-content">
+    <slot />
+  </article>
+</Layout>

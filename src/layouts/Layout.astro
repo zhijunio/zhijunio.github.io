@@ -37,22 +37,17 @@ const isHomePage =
   (Astro.url.pathname.replace(/\.html?$/, "") || "/") === "/";
 const ogType = isArticlePage ? "article" : "website";
 
-const ogImageRef = devLocalImageRef(
-  ogImageProp?.trim() ||
-    (SITE.defaultOgImage.startsWith("/")
-      ? SITE.defaultOgImage
-      : `/${SITE.defaultOgImage}`)
-);
+const defaultOgPath = SITE.defaultOgImage.startsWith("/")
+  ? SITE.defaultOgImage
+  : `/${SITE.defaultOgImage}`;
+const ogImageRef = devLocalImageRef(ogImageProp?.trim() || defaultOgPath);
 const useDefaultOgDimensions = !ogImageProp?.trim();
 const siteOrigin = import.meta.env.DEV
   ? Astro.url.origin
   : (Astro.site?.origin ?? Astro.url.origin);
-const socialImageURL = (() => {
-  const ref = ogImageRef.trim();
-  if (!ref) return publicImageAbsoluteUrl(SITE.defaultOgImage, siteOrigin);
-  if (/^https?:\/\//i.test(ref)) return ref;
-  return publicImageAbsoluteUrl(ref, siteOrigin);
-})();
+const socialImageURL = /^https?:\/\//i.test(ogImageRef)
+  ? ogImageRef
+  : publicImageAbsoluteUrl(ogImageRef || defaultOgPath, siteOrigin);
 
 const structuredData = isArticlePage
   ? {
@@ -164,7 +159,6 @@ const structuredData = isArticlePage
       )
     }
 
-    <slot name="head" />
   </head>
   <body>
     <a class="skip-link" href="#main-content">跳转到主要内容</a>

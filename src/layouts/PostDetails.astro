@@ -6,50 +6,36 @@ import MermaidLoader from "@/components/MermaidLoader.astro";
 import CodeCopyButton from "@/components/CodeCopyButton.astro";
 import {
   getEntryDescription,
-  getPostUrl,
-  isHttpUrl,
   resolveBlogImageRef,
-  type BlogLikeEntry,
+  type PostEntry,
+  type PostNavLink,
 } from "@/utils/postUtils";
 import { siteImageHref } from "@/utils/blogImages";
 
 export interface Props {
-  post: BlogLikeEntry;
-  posts: BlogLikeEntry[];
+  post: PostEntry;
+  prev: PostNavLink | null;
+  next: PostNavLink | null;
 }
 
-const { post, posts } = Astro.props;
-const { title, date, updated, description: postDescription, banner, slug } =
-  post.data;
+const { post, prev, next } = Astro.props;
+const { title, date, updated, banner, slug } = post.data;
 
-const bannerPath = resolveBlogImageRef(banner, slug);
-const bannerSrc = bannerPath
-  ? isHttpUrl(bannerPath)
-    ? bannerPath
-    : siteImageHref(bannerPath.startsWith("/") ? bannerPath : `/${bannerPath}`)
-  : undefined;
+const bannerSrc = (() => {
+  const path = resolveBlogImageRef(banner, slug);
+  return path ? siteImageHref(path) : undefined;
+})();
 
 const { Content } = await render(post);
 const body = post.body ?? "";
 const hasInlineImages = /!\[[\s\S]*?\]\([^)]+\)|<img\s/i.test(body);
 const needsMermaid = /```mermaid\b/i.test(body);
 const needsCodeCopy = /```[\s\S]*?```/.test(body);
-
-const fullDescription = getEntryDescription(post);
-
-const navPosts = posts.map(p => ({
-  path: getPostUrl(p.data.slug, p.collection),
-  title: p.data.title,
-}));
-const currentPath = getPostUrl(slug, post.collection);
-const idx = navPosts.findIndex(a => a.path === currentPath);
-const prevPost = idx > 0 ? navPosts[idx - 1] : null;
-const nextPost = idx >= 0 && idx < navPosts.length - 1 ? navPosts[idx + 1] : null;
 ---
 
 <Layout
   title={title}
-  description={fullDescription}
+  description={getEntryDescription(post)}
   pubDatetime={date}
   modDatetime={updated}
   {...bannerSrc ? { ogImage: bannerSrc } : {}}
@@ -78,17 +64,17 @@ const nextPost = idx >= 0 && idx < navPosts.length - 1 ? navPosts[idx + 1] : nul
   </article>
 
   {
-    (prevPost || nextPost) && (
+    (prev || next) && (
       <nav aria-label="文章导航">
-        {prevPost && (
-          <a href={prevPost.path}>
+        {prev && (
+          <a href={prev.path}>
             <span aria-hidden="true">←</span>
-            <span>{prevPost.title}</span>
+            <span>{prev.title}</span>
           </a>
         )}
-        {nextPost && (
-          <a href={nextPost.path} class="nav-next">
-            <span>{nextPost.title}</span>
+        {next && (
+          <a href={next.path} class="nav-next">
+            <span>{next.title}</span>
             <span aria-hidden="true">→</span>
           </a>
         )}

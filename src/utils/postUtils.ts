@@ -12,12 +12,11 @@ const SCHEDULED_POST_MARGIN_MS = 15 * 60 * 1000;
 const DESC_MAX_LINES = 3;
 const DESC_MAX_CHARS = 200;
 
-export type BlogLikeCollection = "posts";
-export type BlogLikeEntry = CollectionEntry<BlogLikeCollection>;
+export type PostEntry = CollectionEntry<"posts">;
 
-export async function getAllBlogLike(): Promise<BlogLikeEntry[]> {
-  return getCollection("posts");
-}
+export type PostNavLink = { path: string; title: string };
+
+export const HOME_FEED_PAGE_SIZE = SITE.postPerIndex;
 
 const tagMoreRegex = /^(.*?)<!--\s*more\s*-->/s;
 
@@ -29,32 +28,23 @@ const descriptionStrippers: [RegExp, string][] = [
   [/`([^`]+)`/g, "$1"],
 ];
 
+export async function getPosts(): Promise<PostEntry[]> {
+  return getCollection("posts");
+}
+
 export function isHttpUrl(url: string): boolean {
   return url.startsWith("http://") || url.startsWith("https://");
 }
 
-function isPublished(post: BlogLikeEntry): boolean {
+function isPublished(post: PostEntry): boolean {
   const { data } = post;
   const ok =
     Date.now() > new Date(data.date).getTime() - SCHEDULED_POST_MARGIN_MS;
   return !data.draft && (import.meta.env.DEV || ok);
 }
 
-export function getPublishedPosts(posts: BlogLikeEntry[]): BlogLikeEntry[] {
-  return posts.filter(isPublished);
-}
-
-/** 文章页 URL：`/{collection}/{slug}` */
-export function getPostUrl(
-  slug: string,
-  collection: BlogLikeCollection = "posts"
-): string {
-  return `/${collection}/${slug.trim()}`;
-}
-
-/** 动态路由 `[...slug]` 的 param（无 leading slash） */
-export function getPostSlugParam(slug: string): string {
-  return slug.trim();
+export function getPostUrl(slug: string): string {
+  return `/posts/${slug.trim()}`;
 }
 
 export function resolveBlogImageRef(
@@ -73,11 +63,11 @@ export function resolveBlogImageRef(
   return `/images/${dir}/${rel}`;
 }
 
-export function getEntryDescription(entry: BlogLikeEntry): string {
-  return entry.data.description?.trim() || getDescription(entry.body ?? "");
+export function getEntryDescription(entry: PostEntry): string {
+  return entry.data.description?.trim() || excerptFromMarkdown(entry.body ?? "");
 }
 
-export function getDescription(markdownContent: string): string {
+function excerptFromMarkdown(markdownContent: string): string {
   const lines = markdownContent.split(/\r?\n/).slice(0, DESC_MAX_LINES);
   const processedContent = lines.join("");
   const moreTagMatch = processedContent.match(tagMoreRegex);
@@ -90,17 +80,21 @@ export function getDescription(markdownContent: string): string {
   return short.replace(/\s+/g, " ").trim();
 }
 
-export function sortPosts(posts: BlogLikeEntry[]): BlogLikeEntry[] {
-  return getPublishedPosts(posts).sort(
+/** `updated`：首页/站点图；`date`：RSS 按发布时间 */
+export function sortPosts(
+  posts: PostEntry[],
+  by: "updated" | "date" = "updated"
+): PostEntry[] {
+  const published = posts.filter(isPublished);
+  if (by === "date") {
+    return published.sort(
+      (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+    );
+  }
+  return published.sort(
     (a, b) =>
       Math.floor(new Date(b.data.updated ?? b.data.date).getTime() / 1000) -
       Math.floor(new Date(a.data.updated ?? a.data.date).getTime() / 1000)
-  );
-}
-
-export function sortPostsByDate(posts: BlogLikeEntry[]): BlogLikeEntry[] {
-  return getPublishedPosts(posts).sort(
-    (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
   );
 }
 
@@ -130,8 +124,6 @@ export function formatFeedDate(
   };
 }
 
-export const HOME_FEED_PAGE_SIZE = SITE.postPerIndex;
-
 export type HomeFeedItem = {
   title: string;
   href: string;
@@ -140,11 +132,11 @@ export type HomeFeedItem = {
   description: string;
 };
 
-export function toHomeFeedItem(entry: BlogLikeEntry): HomeFeedItem {
+function toHomeFeedItem(entry: PostEntry): HomeFeedItem {
   const date = formatFeedDate(entry.data.date, entry.data.updated);
   return {
     title: entry.data.title,
-    href: getPostUrl(entry.data.slug, entry.collection),
+    href: getPostUrl(entry.data.slug),
     dateDisplay: date.display,
     dateIso: date.iso,
     description: getEntryDescription(entry),
@@ -152,25 +144,26 @@ export function toHomeFeedItem(entry: BlogLikeEntry): HomeFeedItem {
 }
 
 export async function getAllHomeFeedItems(): Promise<HomeFeedItem[]> {
-  return sortPosts(await getAllBlogLike()).map(toHomeFeedItem);
+  return sortPosts(await getPosts()).map(toHomeFeedItem);
+}
+
+export function getFeedTotalPages(itemCount: number): number {
+  return Math.max(1, Math.ceil(itemCount / HOME_FEED_PAGE_SIZE));
 }
 
 export function paginateHomeFeedItems(
   items: HomeFeedItem[],
   page: number
-): {
-  items: HomeFeedItem[];
-  page: number;
-  totalPages: number;
-  nextPage: number | null;
-} {
-  const totalPages = Math.max(1, Math.ceil(items.length / HOME_FEED_PAGE_SIZE));
+): { items: HomeFeedItem[]; nextPage: number | null } {
+  const totalPages = getFeedTotalPages(items.length);
   const safePage = Math.min(Math.max(page, 1), totalPages);
   const start = (safePage - 1) * HOME_FEED_PAGE_SIZE;
   return {
     items: items.slice(start, start + HOME_FEED_PAGE_SIZE),
-    page: safePage,
-    totalPages,
     nextPage: safePage < totalPages ? safePage + 1 : null,
   };
+}
+
+export function toPostNavLink(entry: PostEntry): PostNavLink {
+  return { path: getPostUrl(entry.data.slug), title: entry.data.title };
 }

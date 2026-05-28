@@ -1,6 +1,6 @@
 # ZhiJun Blog
 
-基于 **Astro 6** 的静态技术博客（中文），文章在 `content/posts/tech` 与 `content/posts/weekly`。
+基于 **Astro 6** 的静态技术博客（中文），文章在 `content/posts/`（`tech/`、`weekly/` 等子目录仅作分类，路由统一为 `/posts/{slug}`）。
 
 ## 技术栈
 
@@ -15,8 +15,10 @@
 ## 目录结构
 
 ```
-├── content/posts/tech|weekly/  # 文章
+├── content/posts/            # 文章（子目录可选，仅分类）
 ├── content/pages/about.md    # 关于页（`/about` 由 `[slug].astro` 生成）
+├── src/layouts/FeedPage.astro  # 首页与分页列表
+├── src/layouts/PageLayout.astro # content/pages 静态页
 ├── src/components|layouts|pages|utils/
 ├── public/images/         # 配图（生产走 CDN）
 ├── scripts/               # 构建辅助与校验

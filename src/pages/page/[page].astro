@@ -1,20 +1,15 @@
 ---
-/**
- * 首页 feed 分页（静态链式翻页）
- */
-import Layout from "@/layouts/Layout.astro";
-import HomeFeed from "@/components/HomeFeed.astro";
-import { SITE } from "@/config";
+import FeedPage from "@/layouts/FeedPage.astro";
 import {
   getAllHomeFeedItems,
+  getFeedTotalPages,
   paginateHomeFeedItems,
-  HOME_FEED_PAGE_SIZE,
   type HomeFeedItem,
 } from "@/utils/postUtils";
 
 export async function getStaticPaths() {
   const all = await getAllHomeFeedItems();
-  const totalPages = Math.max(1, Math.ceil(all.length / HOME_FEED_PAGE_SIZE));
+  const totalPages = getFeedTotalPages(all.length);
   if (totalPages <= 1) return [];
 
   return Array.from({ length: totalPages - 1 }, (_, index) => {
@@ -36,6 +31,4 @@ interface Props {
 const { items, nextPage, page } = Astro.props;
 ---
 
-<Layout title={SITE.title} description={SITE.description} robots="noindex">
-  <HomeFeed items={items} nextPage={nextPage} page={page} />
-</Layout>
+<FeedPage items={items} nextPage={nextPage} page={page} robots="noindex" />
