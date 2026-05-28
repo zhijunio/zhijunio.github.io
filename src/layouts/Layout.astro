@@ -2,7 +2,7 @@
 /**
  * 全站基础布局
  *
- * @fileoverview 提供 HTML 骨架、meta/OG/JSON-LD、主题脚本、Header、Footer、BackToTop；子页通过 props 传入 title、description、canonicalURL 等页面元信息。
+ * @fileoverview 提供 HTML 骨架、meta/OG/JSON-LD、Header、BackToTop；子页通过 props 传入 title、description、canonicalURL 等页面元信息。
  */
 import { SITE } from "@/config";
 import {
@@ -11,7 +11,6 @@ import {
 } from "@/utils/blogImages";
 import "@/styles/global.css";
 import Header from "@/components/Header.astro";
-import Footer from "@/components/Footer.astro";
 import BackToTop from "@/components/BackToTop.astro";
 /**
  * 组件属性接口
@@ -182,7 +181,7 @@ const structuredData = resolvedSchemaType === "BlogPosting"
 ---
 
 <!doctype html>
-<html lang={SITE.lang} data-theme={SITE.lightAndDarkMode ? undefined : "light"}>
+<html lang={SITE.lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -291,78 +290,6 @@ const structuredData = resolvedSchemaType === "BlogPosting"
       )
     }
 
-    <!-- Theme initialization script to prevent flash；切换禁用时固定浅色 -->
-    <script
-      is:inline
-      define:vars={{
-        lightAndDarkMode: SITE.lightAndDarkMode,
-        themeColorLight: "#fcfdff",
-        themeColorDark: "#0b1220",
-      }}
-    >
-      (function () {
-        const html = document.documentElement;
-
-        function syncThemeColor(theme) {
-          const meta = document.getElementById("meta-theme-color");
-          if (!meta) return;
-          const next = theme === "dark" ? themeColorDark : themeColorLight;
-          meta.setAttribute("content", next);
-        }
-
-        function readStoredTheme() {
-          try {
-            return localStorage.getItem("theme");
-          } catch {
-            return null;
-          }
-        }
-
-        function getTheme() {
-          if (!lightAndDarkMode) return "light";
-
-          const storedTheme = readStoredTheme();
-          if (storedTheme === "light" || storedTheme === "dark") {
-            return storedTheme;
-          }
-
-          if (
-            window.matchMedia &&
-            window.matchMedia("(prefers-color-scheme: dark)").matches
-          ) {
-            return "dark";
-          }
-
-          return "light";
-        }
-
-        function setTheme(theme) {
-          const nextTheme = theme === "dark" ? "dark" : "light";
-          html.setAttribute("data-theme", nextTheme);
-          syncThemeColor(nextTheme);
-          if (lightAndDarkMode) {
-            try {
-              localStorage.setItem("theme", nextTheme);
-            } catch {}
-          }
-          window.dispatchEvent(
-            new CustomEvent("themechange", { detail: { theme: nextTheme } })
-          );
-          return nextTheme;
-        }
-
-        const initialTheme = setTheme(getTheme());
-
-        window.__theme = {
-          getTheme,
-          setTheme,
-          toggleTheme() {
-            const currentTheme = html.getAttribute("data-theme") || initialTheme;
-            return setTheme(currentTheme === "light" ? "dark" : "light");
-          },
-        };
-      })();
-    </script>
     <slot name="head" />
   </head>
   <body>
@@ -373,8 +300,6 @@ const structuredData = resolvedSchemaType === "BlogPosting"
     </main>
     {hasAfterMain && <slot name="after-main" />}
     <BackToTop />
-    <Footer/>
-
 
     {
       import.meta.env.PROD &&

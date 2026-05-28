@@ -8,9 +8,6 @@ export const CDN_ORIGIN = "https://cos.zhijun.io";
 /** 桶内 `images/` 在 CDN 上的基址（与 Photosuite 生产环境 `imageBase` 一致） */
 export const CDN_IMAGES_BASE = `${CDN_ORIGIN}/images`;
 
-/** KaTeX 与 `public/dist/katex` 同步上传后的样式表 URL */
-export const CDN_KATEX_STYLESHEET = `${CDN_ORIGIN}/dist/katex/0.16.38/dist/katex.min.css`;
-
 export const SITE = {
   website: "https://blog.zhijun.io",
   author: "ZhiJun",
@@ -23,9 +20,6 @@ export const SITE = {
 
   googleSiteVerification: "702mzR8WJvXKVdS3ergTkQEIWAMuwniGMAIeE6wPRhc",
   bingSiteVerification: "5995FAD202DE5A364D652266E4C4E0E0",
-
-  /** 是否启用浅色/深色模式切换功能 */
-  lightAndDarkMode: true,
 
   /**
    * 首页展示的最近条目数基数
@@ -108,21 +102,8 @@ export const SITE = {
     defaultImage: "/og.webp",
   },
 
-  /**
-   * 页脚社交链接（图标 + 链接）
-   *
-   * icon 需与 SocialIcon 支持的 name 一致：github | rss | twitter | x | linkedin | facebook | mail | telegram | whatsapp | pinterest
-   */
-  socialLinks: [
-    { name: "GitHub", url: "https://github.com/zhijunio", icon: "github" },
-    { name: "Twitter", url: "https://twitter.com/zhijunio", icon: "twitter" },
-    { name: "Telegram", url: "https://t.me/zhijunio", icon: "telegram" },
-    { name: "Email", url: "mailto:zhijun.lab@gmail.com", icon: "mail" },
-    { name: "RSS", url: "/rss.xml", icon: "rss" },
-  ],
-
   giscus: {
-    enabled: true,
+    enabled: false,
   },
 
   umami: {
