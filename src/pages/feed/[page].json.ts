@@ -1,10 +1,10 @@
 import type { APIRoute } from "astro";
 import {
-  getFeedPaginationStaticPaths,
+  getFeedJsonStaticPaths,
   type HomeFeedItem,
 } from "@/utils/postUtils";
 
-export const getStaticPaths = getFeedPaginationStaticPaths;
+export const getStaticPaths = getFeedJsonStaticPaths;
 
 type Props = {
   items: HomeFeedItem[];

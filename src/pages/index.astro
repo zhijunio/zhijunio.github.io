@@ -2,12 +2,9 @@
 import HomeFeed from "@/components/HomeFeed.astro";
 import Layout from "@/layouts/Layout.astro";
 import { SITE } from "@/config";
-import { getAllHomeFeedItems, paginateHomeFeedItems } from "@/utils/postUtils";
+import { getHomeFeedPage } from "@/utils/postUtils";
 
-const { items, nextPage } = paginateHomeFeedItems(
-  await getAllHomeFeedItems(),
-  1
-);
+const { items, nextPage } = await getHomeFeedPage(1);
 ---
 
 <Layout description={SITE.description}>

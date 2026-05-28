@@ -8,12 +8,10 @@ import "@/styles/global.css";
 import "@/styles/chrome.css";
 import Header from "@/components/Header.astro";
 import BackToTop from "@/components/BackToTop.astro";
-import Umami from "@/components/Umami.astro";
 
 export interface Props {
   title?: string;
   description?: string;
-  ogImage?: string;
   canonicalURL?: string;
   robots?: string;
   pubDatetime?: Date;
@@ -25,7 +23,6 @@ const pathname = Astro.url.pathname.replace(/\.html?$/, "") || "/";
 const {
   title: titleProp,
   description: descriptionProp,
-  ogImage: ogImageProp,
   canonicalURL = new URL(pathname, Astro.url),
   robots,
   pubDatetime,
@@ -40,21 +37,24 @@ const documentTitle = isHomePage
   : formatDocumentTitle(rawTitle);
 const fullDescription = descriptionProp?.trim() || SITE.description;
 const robotsContent = robots?.trim() || "index,follow";
-const canonicalHref = String(canonicalURL);
+const pageUrl = String(canonicalURL);
 const isArticlePage = Boolean(pubDatetime);
 const ogType = isArticlePage ? "article" : "website";
+const ogLocale = SITE.lang.replace("-", "_");
 
-const defaultOgPath = SITE.defaultOgImage.startsWith("/")
-  ? SITE.defaultOgImage
-  : `/${SITE.defaultOgImage}`;
-const ogImageRef = devLocalImageRef(ogImageProp?.trim() || defaultOgPath);
-const useDefaultOgDimensions = !ogImageProp?.trim();
 const siteOrigin = import.meta.env.DEV
   ? Astro.url.origin
   : (Astro.site?.origin ?? Astro.url.origin);
+const ogImageRef = devLocalImageRef(SITE.defaultOgImage);
 const socialImageURL = /^https?:\/\//i.test(ogImageRef)
   ? ogImageRef
-  : publicImageAbsoluteUrl(ogImageRef || defaultOgPath, siteOrigin);
+  : publicImageAbsoluteUrl(SITE.defaultOgImage, siteOrigin);
+
+const umamiEnabled =
+  import.meta.env.PROD &&
+  SITE.umami.enabled &&
+  Boolean(SITE.umami.websiteId.trim()) &&
+  Boolean(SITE.umami.scriptUrl.trim());
 
 const structuredData = isArticlePage
   ? {
@@ -62,8 +62,8 @@ const structuredData = isArticlePage
       "@type": "BlogPosting",
       headline,
       description: fullDescription,
-      url: canonicalHref,
-      mainEntityOfPage: canonicalHref,
+      url: pageUrl,
+      mainEntityOfPage: pageUrl,
       image: socialImageURL,
       datePublished: pubDatetime?.toISOString(),
       ...(modDatetime && { dateModified: modDatetime.toISOString() }),
@@ -105,16 +105,10 @@ const structuredData = isArticlePage
     <meta property="og:description" content={fullDescription} />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:image" content={socialImageURL} />
-    <meta property="og:image:alt" content={headline} />
-    {
-      useDefaultOgDimensions && (
-        <>
-          <meta property="og:image:width" content="1200" />
-          <meta property="og:image:height" content="630" />
-        </>
-      )
-    }
-    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:image:alt" content={SITE.title} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content={ogLocale} />
     <meta property="og:site_name" content={SITE.title} />
     <meta property="og:type" content={ogType} />
 
@@ -174,6 +168,32 @@ const structuredData = isArticlePage
       <slot />
     </main>
     <BackToTop />
-    <Umami />
+    {
+      umamiEnabled && (
+        <script
+          is:inline
+          define:vars={{
+            websiteId: SITE.umami.websiteId,
+            scriptUrl: SITE.umami.scriptUrl,
+          }}
+        >
+          (function () {
+            let done = false;
+            function load() {
+              if (done) return;
+              done = true;
+              const s = document.createElement("script");
+              s.src = scriptUrl;
+              s.setAttribute("data-website-id", websiteId);
+              s.defer = true;
+              document.head.appendChild(s);
+            }
+            ["click", "keydown", "touchstart", "scroll"].forEach(ev =>
+              window.addEventListener(ev, load, { once: true, passive: true })
+            );
+          })();
+        </script>
+      )
+    }
   </body>
 </html>

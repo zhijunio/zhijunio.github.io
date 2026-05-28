@@ -23,7 +23,6 @@ const body = post.body ?? "";
   description={getEntryDescription(post)}
   pubDatetime={date}
   modDatetime={updated}
-  {...bannerSrc ? { ogImage: bannerSrc } : {}}
 >
   <ArticleExtras body={body} />
   <article id="article">

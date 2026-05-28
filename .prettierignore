@@ -5,7 +5,6 @@
 src/layouts/Layout.astro
 src/layouts/PostDetails.astro
 src/components/HomeFeed.astro
-src/components/Umami.astro
 src/components/CodeCopyButton.astro
 src/components/BackToTop.astro
 src/components/YearProgress.astro

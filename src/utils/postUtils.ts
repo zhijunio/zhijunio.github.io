@@ -14,6 +14,8 @@ const DESC_MAX_CHARS = 200;
 
 export type PostEntry = CollectionEntry<"posts">;
 
+export type PostNavLink = { path: string; title: string };
+
 const HOME_FEED_PAGE_SIZE = SITE.postPerIndex;
 
 const tagMoreRegex = /^(.*?)<!--\s*more\s*-->/s;
@@ -145,6 +147,23 @@ export async function getAllHomeFeedItems(): Promise<HomeFeedItem[]> {
   return sortPosts(await getPosts()).map(toHomeFeedItem);
 }
 
+export function toPostNavLink(post: PostEntry): PostNavLink {
+  return { path: getPostUrl(post.data.slug), title: post.data.title };
+}
+
+export async function getPostStaticPaths() {
+  const posts = sortPosts(await getPosts());
+  return posts.map((post, index) => ({
+    params: { slug: post.data.slug.trim() },
+    props: {
+      post,
+      prev: index > 0 ? toPostNavLink(posts[index - 1]!) : null,
+      next:
+        index < posts.length - 1 ? toPostNavLink(posts[index + 1]!) : null,
+    },
+  }));
+}
+
 function getFeedTotalPages(itemCount: number): number {
   return Math.max(1, Math.ceil(itemCount / HOME_FEED_PAGE_SIZE));
 }
@@ -162,11 +181,15 @@ export function paginateHomeFeedItems(
   };
 }
 
+export async function getHomeFeedPage(page = 1) {
+  return paginateHomeFeedItems(await getAllHomeFeedItems(), page);
+}
+
 export function postModifiedIso(entry: PostEntry): string {
   return new Date(entry.data.updated ?? entry.data.date).toISOString();
 }
 
-export async function getFeedPaginationStaticPaths() {
+export async function getFeedJsonStaticPaths() {
   const all = await getAllHomeFeedItems();
   const totalPages = getFeedTotalPages(all.length);
   if (totalPages <= 1) return [];

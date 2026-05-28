@@ -55,7 +55,6 @@ URL：`/{collection}/{slug}`（如 `/posts/my-slug`）。无全站 `/posts.html`
 pnpm dev
 pnpm build          # 构建并裁剪 dist/images
 pnpm ci             # lint + format + check + build（与 CI 一致）
-pnpm md:check       # 可选：Markdown 检查
 pnpm images:publish # 本地 webp + 同步 R2
 ```
 
