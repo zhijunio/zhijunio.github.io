@@ -1,10 +1,44 @@
 ---
+import type { GetStaticPaths } from "astro";
 import PostDetails from "@/layouts/PostDetails.astro";
-import { getPostStaticPaths } from "@/utils/postUtils";
+import {
+  getPosts,
+  getPostUrl,
+  sortPosts,
+  type PostEntry,
+  type PostNavLink,
+} from "@/utils/postUtils";
 
-export const getStaticPaths = getPostStaticPaths;
+export const getStaticPaths = (async () => {
+  const posts = sortPosts(await getPosts());
 
-const { post, prev, next } = Astro.props;
+  return posts.map((post, index) => ({
+    params: { slug: post.data.slug.trim() },
+    props: {
+      post,
+      prev:
+        index > 0
+          ? {
+              path: getPostUrl(posts[index - 1]!.data.slug),
+              title: posts[index - 1]!.data.title,
+            }
+          : null,
+      next:
+        index < posts.length - 1
+          ? {
+              path: getPostUrl(posts[index + 1]!.data.slug),
+              title: posts[index + 1]!.data.title,
+            }
+          : null,
+    },
+  }));
+}) satisfies GetStaticPaths;
+
+const { post, prev, next } = Astro.props as {
+  post: PostEntry;
+  prev: PostNavLink | null;
+  next: PostNavLink | null;
+};
 ---
 
 <PostDetails post={post} prev={prev} next={next} />

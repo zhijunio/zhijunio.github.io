@@ -164,17 +164,8 @@ export function paginateHomeFeedItems(
   };
 }
 
-export function toPostNavLink(entry: PostEntry): PostNavLink {
-  return { path: getPostUrl(entry.data.slug), title: entry.data.title };
-}
-
 export function postModifiedIso(entry: PostEntry): string {
   return new Date(entry.data.updated ?? entry.data.date).toISOString();
-}
-
-export async function getHomeFeedPage(page = 1) {
-  const all = await getAllHomeFeedItems();
-  return paginateHomeFeedItems(all, page);
 }
 
 export async function getFeedPaginationStaticPaths() {
@@ -190,18 +181,4 @@ export async function getFeedPaginationStaticPaths() {
       props: { items, nextPage, page },
     };
   });
-}
-
-export async function getPostStaticPaths() {
-  const posts = sortPosts(await getPosts());
-
-  return posts.map((post, index) => ({
-    params: { slug: post.data.slug.trim() },
-    props: {
-      post,
-      prev: index > 0 ? toPostNavLink(posts[index - 1]!) : null,
-      next:
-        index < posts.length - 1 ? toPostNavLink(posts[index + 1]!) : null,
-    },
-  }));
 }

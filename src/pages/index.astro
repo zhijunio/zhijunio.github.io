@@ -1,8 +1,11 @@
 ---
 import FeedPage from "@/layouts/FeedPage.astro";
-import { getHomeFeedPage } from "@/utils/postUtils";
+import { getAllHomeFeedItems, paginateHomeFeedItems } from "@/utils/postUtils";
 
-const { items, nextPage } = await getHomeFeedPage(1);
+const { items, nextPage } = paginateHomeFeedItems(
+  await getAllHomeFeedItems(),
+  1
+);
 ---
 
 <FeedPage items={items} nextPage={nextPage} />

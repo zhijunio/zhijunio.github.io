@@ -18,7 +18,6 @@
 ├── content/posts/            # 文章（子目录可选，仅分类）
 ├── content/pages/about.md    # 关于页（`/about` 由 `[slug].astro` 生成）
 ├── src/layouts/FeedPage.astro   # 首页与分页列表
-├── src/layouts/PageLayout.astro   # content/pages 静态页
 ├── src/styles/feed|post|chrome.css  # 列表/文章/顶栏样式（按需引入）
 ├── src/components|layouts|pages|utils/
 ├── public/images/         # 配图（生产走 CDN）
