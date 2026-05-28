@@ -9,31 +9,22 @@ export const pageSlug = "404";
 export const pageTitle = `404 Not Found | ${SITE.title}`;
 export const pageDescription = SITE.description;
 
-const notFoundStaticImage = "https://cos.lhasa.icu/StylePictures/404.webp";
-const notFoundAnimatedImage = "https://cos.lhasa.icu/StylePictures/404.gif";
+const notFoundImage = "https://cos.lhasa.icu/StylePictures/404.webp";
 const notFoundTitle = "404，您访问的页面不存在～";
 ---
 
 <Layout title={pageTitle} description={pageDescription} robots="noindex,follow">
   <section aria-labelledby="not-found-heading">
-    <div id="image-container">
-      <img
-        id="static-image"
-        src={notFoundStaticImage}
-        alt="404 Not Found"
-        loading="eager"
-        decoding="async"
-      />
-      <img
-        id="animated-image"
-        src={notFoundAnimatedImage}
-        alt=""
-        loading="lazy"
-        decoding="async"
-      />
-    </div>
+    <img
+      src={notFoundImage}
+      alt="404 Not Found"
+      width="448"
+      height="252"
+      loading="eager"
+      decoding="async"
+    />
     <p id="not-found-heading">{notFoundTitle}</p>
-    <a href="/">{"回到首页 >>"}</a>
+    <a href="/">回到首页</a>
   </section>
 </Layout>
 
@@ -47,29 +38,13 @@ const notFoundTitle = "404，您访问的页面不存在～";
     text-align: center;
   }
 
-  #image-container {
-    position: relative;
+  section[aria-labelledby="not-found-heading"] img {
     width: 100%;
     max-width: 28rem;
+    height: auto;
     margin: 0 auto 1.5rem;
-    overflow: hidden;
     border-radius: var(--radius);
     box-shadow: 0 1px 3px rgb(0 0 0 / 0.08);
-    cursor: pointer;
-  }
-
-  #static-image {
-    width: 100%;
-    height: auto;
-  }
-
-  #animated-image {
-    position: absolute;
-    inset: 0;
-    display: none;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
   }
 
   #not-found-heading {
@@ -83,35 +58,3 @@ const notFoundTitle = "404，您访问的页面不存在～";
     font-weight: 500;
   }
 </style>
-
-<script>
-  function initNotFoundImage() {
-    const container = document.getElementById("image-container");
-    const staticImage = document.getElementById("static-image");
-    const animatedImage = document.getElementById("animated-image");
-
-    if (!container || !staticImage || !animatedImage) return;
-    if (container.dataset.bound === "1") return;
-
-    container.dataset.bound = "1";
-
-    container.addEventListener("mouseenter", () => {
-      staticImage.style.display = "none";
-      animatedImage.style.display = "block";
-    });
-
-    container.addEventListener("mouseleave", () => {
-      staticImage.style.display = "block";
-      animatedImage.style.display = "none";
-    });
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initNotFoundImage, {
-      once: true,
-    });
-  } else {
-    initNotFoundImage();
-  }
-  document.addEventListener("astro:page-load", initNotFoundImage);
-</script>
