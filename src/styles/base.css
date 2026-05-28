@@ -3,16 +3,26 @@
    ================================ */
 
 :root {
-  --accent: #2563eb;
-  --accent-dark: #1e40af;
-  --accent-surface: #edf5ff;
-  --background: #f7f9fc;
-  --background-secondary: #eef3f8;
+  /* 明亮天蓝 */
+  --accent: #38bdf8;
+  --accent-dark: #0ea5e9;
+  --accent-surface: #f0f9ff;
+  --background: #ffffff;
+  --background-secondary: #f8fafc;
   --card-background: #ffffff;
-  --card-background-hover: #f3f7fd;
-  --text-primary: #0f172a;
-  --text-secondary: #5f6f85;
-  --border: #dbe4f0;
+  --card-background-hover: #f0f9ff;
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --border: #ececec;
+  --accent-muted: color-mix(in srgb, var(--accent) 45%, var(--text-secondary));
+  --accent-subtle: color-mix(in srgb, var(--accent) 10%, var(--background));
+  --border-subtle: color-mix(in srgb, var(--border) 65%, transparent);
+  --code-block-bg: color-mix(
+    in srgb,
+    var(--accent) 12%,
+    var(--background-secondary)
+  );
+  --code-inline-bg: color-mix(in srgb, var(--accent) 14%, var(--background));
 
   /* 顶栏、年度进度条、页脚的内容宽度 */
   --site-chrome-width: 960px;
@@ -313,7 +323,7 @@ td {
 }
 
 th {
-  background: color-mix(in srgb, var(--accent) 4%, var(--background-secondary));
+  background: var(--accent-subtle);
   font-weight: 600;
   color: var(--text-primary);
 }
@@ -344,20 +354,27 @@ code {
 }
 
 :not(pre) > code {
-  background: color-mix(in srgb, var(--accent) 10%, var(--background));
+  background: var(--code-inline-bg);
   padding: 0.2em 0.4em;
   border-radius: 4px;
 }
 
 /* Shiki 代码块 */
-#main-content :is(.post-content, .page-content) pre.astro-code {
+#main-content :is(.post-content, .page-content) pre.astro-code,
+#article .code-block-wrap > pre.astro-code {
   margin: 1.25rem 0;
   padding: 0.85rem 1rem;
-  border: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border) 70%, var(--accent) 18%);
   border-radius: var(--radius);
   overflow-x: auto;
   font-size: 0.875rem;
   line-height: 1.6;
+  background-color: var(--code-block-bg) !important;
+  color: var(--text-primary);
+}
+
+#article .code-block-wrap > pre.astro-code {
+  margin: 0;
 }
 
 #main-content :is(.post-content, .page-content) pre.astro-code code {
@@ -368,6 +385,11 @@ code {
   border-radius: 0;
 }
 
+#main-content :is(.post-content, .page-content) pre.astro-code :is(span, .line),
+#article .code-block-wrap > pre.astro-code :is(span, .line) {
+  background-color: transparent !important;
+}
+
 /* ================================
    引用
    ================================ */
@@ -375,11 +397,11 @@ code {
 blockquote {
   margin: 1.25rem 0;
   padding: 0.5rem 1rem 0.5rem 1.1rem;
-  border-left: 3px solid var(--accent);
+  border-left: 3px solid var(--accent-muted);
   color: color-mix(in srgb, var(--text-primary) 82%, var(--text-secondary));
   font-size: 0.98rem;
   line-height: 1.75;
-  background: color-mix(in srgb, var(--accent) 4%, var(--background));
+  background: var(--accent-subtle);
   border-radius: 0 var(--radius) var(--radius) 0;
 }
 
@@ -504,7 +526,7 @@ textarea:focus {
    ================================ */
 
 header {
-  background: var(--background);
+  background: var(--card-background);
 }
 
 /* 站点顶栏吸顶（文章页 <article> 内 <header> 不受影响） */
@@ -528,8 +550,8 @@ main,
    ================================ */
 
 ::selection {
-  background: var(--accent);
-  color: white;
+  background: color-mix(in srgb, var(--accent) 28%, var(--background));
+  color: var(--text-primary);
 }
 
 mark {

@@ -4,7 +4,7 @@
   display: block;
   max-width: 100%;
   margin: 0 auto 2rem;
-  border: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius);
 }
 
@@ -22,7 +22,7 @@
   gap: 0.5rem;
   margin-top: 2rem;
   padding-top: 1.25rem;
-  border-top: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+  border-top: 1px solid var(--border-subtle);
 }
 
 @media (min-width: 640px) {
