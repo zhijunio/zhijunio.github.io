@@ -1,8 +1,9 @@
 ---
 /**
- * 首页 feed 分页片段（供「查看更多」fetch 追加）
+ * 首页 feed 分页（静态链式翻页）
  */
 import Layout from "@/layouts/Layout.astro";
+import HomeFeed from "@/components/HomeFeed.astro";
 import { SITE } from "@/config";
 import {
   getAllHomeFeedItems,
@@ -21,7 +22,7 @@ export async function getStaticPaths() {
     const { items, nextPage } = paginateHomeFeedItems(all, page);
     return {
       params: { page: String(page) },
-      props: { items, nextPage },
+      props: { items, nextPage, page },
     };
   });
 }
@@ -29,140 +30,12 @@ export async function getStaticPaths() {
 interface Props {
   items: HomeFeedItem[];
   nextPage: number | null;
+  page: number;
 }
 
-const { items, nextPage } = Astro.props;
+const { items, nextPage, page } = Astro.props;
 ---
 
 <Layout title={SITE.title} description={SITE.description} robots="noindex">
-  <section aria-label="最近记录">
-    <ol id="home-feed-list" aria-label="最近记录列表">
-      {
-        items.map(item => (
-          <li>
-            <article>
-              <p>
-                <time datetime={item.dateIso} title={item.dateTitle}>
-                  {item.dateDisplay}
-                </time>
-              </p>
-              <h2>
-                <a href={item.href}>{item.title}</a>
-              </h2>
-              {item.description && <p>{item.description}</p>}
-            </article>
-          </li>
-        ))
-      }
-    </ol>
-    {
-      nextPage && (
-        <button
-          type="button"
-          id="home-feed-more"
-          data-next-url={`/page/${nextPage}`}
-        >
-          查看更多 …
-        </button>
-      )
-    }
-  </section>
+  <HomeFeed items={items} nextPage={nextPage} page={page} />
 </Layout>
-
-<style is:global>
-  #home-feed-list {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0.75rem;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  #home-feed-list li > article {
-    display: flex;
-    min-height: 100%;
-    min-width: 0;
-    flex-direction: column;
-    padding: 0.9rem 1rem;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    background: var(--card-background);
-    transition:
-      border-color 0.18s ease,
-      background-color 0.18s ease,
-      transform 0.18s ease;
-  }
-
-  #home-feed-list li > article:hover {
-    border-color: color-mix(in srgb, var(--accent) 34%, var(--border));
-    background: var(--card-background-hover);
-    transform: translateY(-1px);
-  }
-
-  #home-feed-list li > article > p:first-of-type {
-    margin: 0 0 0.55rem;
-    color: var(--text-secondary);
-    font-size: 0.76rem;
-    line-height: 1.35;
-  }
-
-  #home-feed-list time {
-    font-variant-numeric: tabular-nums;
-    white-space: nowrap;
-  }
-
-  #home-feed-list h2 {
-    margin: 0;
-    font-size: 1rem;
-    line-height: 1.42;
-  }
-
-  #home-feed-list h2 a {
-    color: var(--text-primary);
-    text-decoration: none;
-  }
-
-  #home-feed-list h2 a:hover {
-    color: var(--accent);
-    text-decoration: underline;
-  }
-
-  #home-feed-list li > article > h2 + p {
-    display: -webkit-box;
-    margin: 0.45rem 0 0;
-    overflow: hidden;
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-    line-height: 1.62;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
-  }
-
-  #home-feed-more {
-    display: block;
-    margin: 1.25rem auto 0;
-    padding: 0.35rem 1rem;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    background: var(--card-background);
-    color: var(--text-secondary);
-    font-size: 0.875rem;
-    cursor: pointer;
-  }
-
-  #home-feed-more:hover:not(:disabled) {
-    border-color: color-mix(in srgb, var(--accent) 34%, var(--border));
-    color: var(--accent);
-    background: var(--card-background-hover);
-  }
-
-  @media (max-width: 768px) {
-    #home-feed-list h2 {
-      font-size: 0.9375rem;
-      font-weight: 600;
-      line-height: 1.38;
-    }
-  }
-</style>
