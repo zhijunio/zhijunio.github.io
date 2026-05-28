@@ -53,6 +53,9 @@ jobs:
       - name: "📄 Markdown lint"
         run: pnpm run md:check
 
+      - name: "🔍 Astro check"
+        run: pnpm run check
+
       - name: "🚀 Build the project"
         run: pnpm run build
 
