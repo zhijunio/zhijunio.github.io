@@ -8,31 +8,8 @@ import { SITE } from "@/config";
   description={SITE.description}
   robots="noindex,follow"
 >
-  <section aria-labelledby="not-found-heading">
-    <p id="not-found-heading">404，您访问的页面不存在～</p>
+  <section class="page-empty" aria-labelledby="not-found-heading">
+    <h1 id="not-found-heading">404，您访问的页面不存在～</h1>
     <a href="/">回到首页</a>
   </section>
 </Layout>
-
-<style>
-  section[aria-labelledby="not-found-heading"] {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 40vh;
-    padding: 2.5rem 1rem;
-    text-align: center;
-  }
-
-  #not-found-heading {
-    margin: 0 0 1.5rem;
-    font-size: 1.125rem;
-    color: var(--text-secondary);
-  }
-
-  section[aria-labelledby="not-found-heading"] > a {
-    font-size: 1rem;
-    font-weight: 500;
-  }
-</style>

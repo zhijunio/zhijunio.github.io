@@ -235,6 +235,54 @@ menu {
   font-size: 1.08rem;
 }
 
+#main-content :is(.post-content, .page-content) :where(h5, h6) {
+  margin-top: 1.5rem;
+  margin-bottom: 0.65rem;
+  line-height: 1.35;
+}
+
+#main-content :is(.post-content, .page-content) h5 {
+  font-size: 0.98rem;
+}
+
+#main-content :is(.post-content, .page-content) h6 {
+  font-size: 0.9rem;
+  color: color-mix(in srgb, var(--text-primary) 88%, var(--text-secondary));
+}
+
+/* 文章 / 静态页页面标题（正文 h1 勿与页标题混用） */
+#article > h1 {
+  margin: 0 0 2rem;
+  font-size: clamp(1.625rem, 3.2vw, 2rem);
+  line-height: 1.3;
+  font-weight: 650;
+  text-align: center;
+  text-wrap: balance;
+}
+
+/* 空状态 / 404 */
+.page-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 40vh;
+  padding: 2.5rem 1rem;
+  text-align: center;
+}
+
+.page-empty > h1 {
+  margin: 0 0 1.5rem;
+  font-size: 1.125rem;
+  font-weight: 650;
+  color: var(--text-secondary);
+}
+
+.page-empty > a {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
 /* 主容器下的列表默认不加缩进 */
 main > ul,
 main > section > ul,
@@ -401,7 +449,7 @@ button {
   padding: 0.5rem 1rem;
   background: transparent;
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: var(--radius);
   color: var(--text-primary);
   cursor: pointer;
   transition:
@@ -436,7 +484,7 @@ textarea {
   padding: 0.5rem 0.75rem;
   background: var(--background);
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: var(--radius);
   color: var(--text-primary);
   transition: border-color 0.2s ease;
 }

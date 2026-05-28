@@ -1,14 +1,5 @@
 /* 文章详情 */
 
-#article h1 {
-  margin: 0 0 2rem;
-  font-size: clamp(1.2rem, 2.6vw, 1.5rem);
-  line-height: 1.35;
-  font-weight: 600;
-  text-align: center;
-  text-wrap: balance;
-}
-
 #post-banner {
   display: block;
   max-width: 100%;

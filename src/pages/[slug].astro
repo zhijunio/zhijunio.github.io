@@ -18,7 +18,10 @@ const { title, description } = page.data;
 ---
 
 <Layout title={title} description={description}>
-  <article id="article" class="post-content page-content">
-    <Content />
+  <article id="article">
+    <h1>{title}</h1>
+    <div class="page-content">
+      <Content />
+    </div>
   </article>
 </Layout>

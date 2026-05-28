@@ -30,9 +30,9 @@ const prevHref = page === 2 ? "/" : page ? `/page/${page - 1}` : null;
             <p>
               <time datetime={item.dateIso}>{item.dateDisplay}</time>
             </p>
-            <h2>
+            <p class="home-feed-title">
               <a href={item.href}>{item.title}</a>
-            </h2>
+            </p>
             {item.description ? (
               <p class="home-feed-desc">{item.description}</p>
             ) : null}
