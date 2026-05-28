@@ -133,7 +133,7 @@ export class PostUtils {
     const basePath = includeBase ? `/${collection}` : "";
     const blogId = id.split("/");
     const fileName = blogId.length > 0 ? blogId.slice(-1)[0] : id;
-    let slug = fileName.replace(/\.(md|mdx)$/, "").trim();
+    let slug = fileName.replace(/\.md$/, "").trim();
     const datePrefixMatch = slug.match(/^(\d{4}-\d{2}-\d{2})-(.+)$/);
     if (datePrefixMatch) {
       slug = datePrefixMatch[2].trim();
@@ -321,7 +321,7 @@ export function generateLlmsTxt(posts: BlogLikeEntry[]): string {
     "",
     "## Notes For LLMs",
     "- Canonical article URLs use the /posts/ prefix. Weekly notes live under content/weekly/.",
-    "- These pages are the primary source of truth; search is available at /search.",
+    "- These pages are the primary source of truth.",
   ];
 
   return `${lines.join("\n")}\n`;
