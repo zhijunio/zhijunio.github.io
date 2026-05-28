@@ -1,43 +1,30 @@
 /**
- * 博客图片：CDN / 根相对 URL、remark 注入与去重、rehype 正文 img 处理。
+ * 博客图片：CDN / 根相对 URL、remark 图片目录、rehype 正文 img 处理。
  */
 
 import { CDN_IMAGES_BASE, CDN_ORIGIN } from "../config";
 
-/** 生产构建：`/images/` 等资源使用 CDN；`astro dev` 为 false，走同源根相对 */
-export function shouldUseCdnForPublicImagePaths(): boolean {
-  return import.meta.env.PROD;
-}
+const isProd = import.meta.env.PROD;
+const cdnRoot = CDN_ORIGIN.replace(/\/$/, "");
 
-function normalizeCdnOrigin(): string {
-  return CDN_ORIGIN.replace(/\/$/, "");
+function normalizePath(ref: string): string {
+  const t = ref.trim();
+  if (!t || /^https?:\/\//i.test(t) || t.startsWith("//")) return t;
+  return t.startsWith("/") ? t : `/${t}`;
 }
-
-function imageCdnOrigin(): string {
-  try {
-    return new URL(CDN_ORIGIN).origin;
-  } catch {
-    return "";
-  }
-}
-
-export const LOCAL_IMAGES_PUBLIC_BASE = "/images";
 
 export function getImagesAssetBase(): string {
-  return shouldUseCdnForPublicImagePaths()
-    ? CDN_IMAGES_BASE
-    : LOCAL_IMAGES_PUBLIC_BASE;
+  return isProd ? CDN_IMAGES_BASE : "/images";
 }
 
 export function devLocalImageRef(href: string): string {
-  const t = typeof href === "string" ? href.trim() : "";
-  if (!t || shouldUseCdnForPublicImagePaths()) return t;
-  if (!/^https?:\/\//i.test(t)) return t;
-  const o = imageCdnOrigin();
-  if (!o) return t;
+  const t = href.trim();
+  if (!t || isProd || !/^https?:\/\//i.test(t)) return t;
   try {
     const u = new URL(t);
-    if (u.origin === o) return `${u.pathname}${u.search}${u.hash}`;
+    if (u.origin === new URL(CDN_ORIGIN).origin) {
+      return `${u.pathname}${u.search}${u.hash}`;
+    }
   } catch {
     /* ignore */
   }
@@ -45,16 +32,9 @@ export function devLocalImageRef(href: string): string {
 }
 
 export function siteImageHref(pathOrUrl: string): string {
-  const t = (pathOrUrl ?? "").trim();
-  if (!t) return t;
-  if (/^https?:\/\//i.test(t) || t.startsWith("//")) return t;
-  const path = t.startsWith("/") ? t : `/${t}`;
-  if (!shouldUseCdnForPublicImagePaths()) {
-    return path;
-  }
-  if (path.startsWith("/images/")) {
-    return `${normalizeCdnOrigin()}${path}`;
-  }
+  const path = normalizePath(pathOrUrl);
+  if (!path || /^https?:\/\//i.test(path)) return path;
+  if (isProd && path.startsWith("/images/")) return `${cdnRoot}${path}`;
   return path;
 }
 
@@ -62,15 +42,11 @@ export function publicImageAbsoluteUrl(
   ref: string,
   siteOrigin: string
 ): string {
-  const t = (ref ?? "").trim();
-  if (!t) return "";
-  if (/^https?:\/\//i.test(t)) return t;
-  const path = t.startsWith("/") ? t : `/${t}`;
+  const path = normalizePath(ref);
+  if (!path) return "";
+  if (/^https?:\/\//i.test(path)) return path;
   if (path.startsWith("/images/")) {
-    if (!shouldUseCdnForPublicImagePaths()) {
-      return new URL(path, siteOrigin).href;
-    }
-    return `${normalizeCdnOrigin()}${path}`;
+    return isProd ? `${cdnRoot}${path}` : new URL(path, siteOrigin).href;
   }
   return new URL(path, siteOrigin).href;
 }
@@ -82,29 +58,29 @@ type VfileLike = {
   };
 };
 
-export function remarkInjectImageDir() {
-  return (_tree: unknown, file: VfileLike) => {
-    const apply = (fm: Record<string, unknown> | undefined) => {
-      if (!fm || typeof fm !== "object") return;
-      const slug = typeof fm.slug === "string" ? fm.slug.trim() : "";
-      if (!slug) return;
-      fm.imageDir = slug;
-    };
-    apply(file.data?.astro?.frontmatter);
-    apply(file.data?.frontmatter as Record<string, unknown> | undefined);
-  };
-}
-
 type MdastNode = { type?: string; url?: string; children?: unknown[] };
 
+function frontmatterFromFile(file: VfileLike): Record<string, unknown> | undefined {
+  return (
+    file.data?.astro?.frontmatter ??
+    (file.data?.frontmatter as Record<string, unknown> | undefined)
+  );
+}
+
 function imageDirFromFile(file: VfileLike): string {
-  const fm =
-    file.data?.astro?.frontmatter ?? file.data?.frontmatter ?? undefined;
+  const fm = frontmatterFromFile(file);
   return typeof fm?.imageDir === "string" ? fm.imageDir.trim() : "";
 }
 
-export function remarkStripLeadImageDirDup() {
+/** 注入 `imageDir` 并去掉正文图片 URL 中与 slug 重复的前缀 */
+export function remarkBlogImages() {
   return (tree: unknown, file: VfileLike) => {
+    const fm = frontmatterFromFile(file);
+    if (fm && typeof fm === "object") {
+      const slug = typeof fm.slug === "string" ? fm.slug.trim() : "";
+      if (slug) fm.imageDir = slug;
+    }
+
     const dir = imageDirFromFile(file);
     if (!dir) return;
 

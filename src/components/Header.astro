@@ -4,13 +4,11 @@ import YearProgress from "./YearProgress.astro";
 import { siteImageHref } from "@/utils/blogImages";
 
 const logoSrc = SITE.logo?.trim() ? siteImageHref(SITE.logo.trim()) : "";
-
-const { pathname } = Astro.url;
-const isAboutPage =
-  pathname === "/about" || pathname.startsWith("/about/");
+const pathname = Astro.url.pathname.replace(/\.html?$/, "") || "/";
+const isAboutPage = pathname === "/about" || pathname.startsWith("/about/");
 ---
 
-<header>
+<header class="site-header">
   <nav aria-label="站点导航">
     <a href="/" class="site-brand">
       {
@@ -41,106 +39,3 @@ const isAboutPage =
   </nav>
   <YearProgress />
 </header>
-
-<style>
-  nav {
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: center;
-    max-width: var(--site-chrome-width);
-    margin: 0 auto;
-    padding: 0.35rem 1.5rem 0;
-    gap: 0.5rem 0.75rem;
-  }
-
-  .site-brand {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    min-width: 0;
-    flex: 1 1 auto;
-    font-weight: 700;
-    font-size: clamp(0.875rem, 2.5vw, 1rem);
-    line-height: 1.25;
-    color: var(--text-primary);
-    text-decoration: none;
-  }
-
-  .site-logo {
-    width: 1.375rem;
-    height: 1.375rem;
-    flex-shrink: 0;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-
-  .site-title {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .site-brand:hover,
-  .site-brand:focus-visible {
-    color: var(--accent);
-    text-decoration: none;
-  }
-
-  .nav-links {
-    display: flex;
-    flex-shrink: 0;
-    align-items: center;
-    gap: 0.35rem 0.75rem;
-    list-style: none;
-    margin: 0 0 0 auto;
-    padding: 0;
-  }
-
-  .nav-links a {
-    display: inline-flex;
-    align-items: center;
-    min-height: 2.25rem;
-    padding: 0 0.15rem;
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-    text-decoration: none;
-    white-space: nowrap;
-  }
-
-  .nav-links a:hover,
-  .nav-links a[aria-current="page"] {
-    color: var(--accent);
-  }
-
-  .nav-links a[aria-current="page"] {
-    font-weight: 600;
-  }
-
-  @media (min-width: 641px) {
-    .site-brand {
-      flex: 0 1 auto;
-    }
-  }
-
-  @media (max-width: 768px) {
-    nav {
-      padding-left: 1rem;
-      padding-right: 1rem;
-    }
-  }
-
-  @media (max-width: 640px) {
-    nav {
-      gap: 0.35rem 0.5rem;
-    }
-
-    .nav-links {
-      gap: 0.35rem 0.65rem;
-    }
-
-    .nav-links a {
-      min-height: 2rem;
-      font-size: 0.85rem;
-    }
-  }
-</style>

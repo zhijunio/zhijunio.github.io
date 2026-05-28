@@ -2,8 +2,7 @@ import { SITE } from "./src/config";
 import {
   getImagesAssetBase,
   rehypeArticleContentImages,
-  remarkInjectImageDir,
-  remarkStripLeadImageDirDup,
+  remarkBlogImages,
 } from "./src/utils/blogImages";
 import { remarkMermaid } from "./src/utils/remarkMermaid";
 import { remarkPlainShortCode } from "./src/utils/remarkPlainShortCode";
@@ -55,12 +54,7 @@ export default defineConfig({
     }),
   ],
   markdown: {
-    remarkPlugins: [
-      remarkMermaid,
-      remarkPlainShortCode,
-      remarkInjectImageDir,
-      remarkStripLeadImageDirDup,
-    ],
+    remarkPlugins: [remarkMermaid, remarkPlainShortCode, remarkBlogImages],
     rehypePlugins: [
       rehypeSlug,
       [rehypeExternalLinks, { target: "_blank", rel: "noopener noreferrer" }],

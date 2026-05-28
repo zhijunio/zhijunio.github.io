@@ -1,7 +1,3 @@
----
-/** 顶栏下年度进度：即时填充 + 悬停显示百分比 */
----
-
 <div
   id="year-progress"
   role="progressbar"
@@ -17,67 +13,6 @@
     <span id="year-progress-label"></span>
   </div>
 </div>
-
-<style>
-  #year-progress {
-    width: 100%;
-    max-width: var(--site-chrome-width);
-    margin: 0.2rem auto 0;
-    padding: 0 1.5rem 0.3rem;
-  }
-
-  #year-progress-track {
-    position: relative;
-    min-height: 14px;
-    display: flex;
-    align-items: center;
-    cursor: default;
-  }
-
-  .year-progress-rail {
-    height: 2px;
-    width: 100%;
-    border-radius: 999px;
-    background: color-mix(in srgb, var(--border) 88%, var(--text-secondary));
-    overflow: hidden;
-  }
-
-  #year-progress-fill {
-    height: 100%;
-    width: 0;
-    border-radius: 999px;
-    background: var(--accent);
-  }
-
-  #year-progress-label {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    transform: translateY(-50%);
-    opacity: 0;
-    pointer-events: none;
-    font-size: 0.6875rem;
-    font-weight: 600;
-    line-height: 1;
-    color: var(--accent);
-    white-space: nowrap;
-    padding: 0 0.15rem;
-    background: color-mix(in srgb, var(--background) 88%, transparent);
-    border-radius: 3px;
-    transition: opacity 0.15s ease;
-  }
-
-  #year-progress-label:global(.year-progress-visible) {
-    opacity: 1;
-  }
-
-  @media (max-width: 768px) {
-    #year-progress {
-      padding-left: 1rem;
-      padding-right: 1rem;
-    }
-  }
-</style>
 
 <script>
   function yearProgress(): number {

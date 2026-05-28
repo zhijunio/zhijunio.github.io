@@ -5,6 +5,7 @@ import {
   publicImageAbsoluteUrl,
 } from "@/utils/blogImages";
 import "@/styles/global.css";
+import "@/styles/chrome.css";
 import Header from "@/components/Header.astro";
 import BackToTop from "@/components/BackToTop.astro";
 
@@ -18,11 +19,13 @@ export interface Props {
   modDatetime?: Date | null;
 }
 
+const pathname = Astro.url.pathname.replace(/\.html?$/, "") || "/";
+
 const {
   title: titleProp,
   description: descriptionProp,
   ogImage: ogImageProp,
-  canonicalURL = new URL(Astro.url.pathname.replace(/\.html?$/, ""), Astro.url),
+  canonicalURL = new URL(pathname, Astro.url),
   robots,
   pubDatetime,
   modDatetime,
@@ -33,8 +36,7 @@ const fullDescription = descriptionProp?.trim() || SITE.description;
 const robotsContent = robots?.trim() || "index,follow";
 const canonicalHref = String(canonicalURL);
 const isArticlePage = Boolean(pubDatetime);
-const isHomePage =
-  (Astro.url.pathname.replace(/\.html?$/, "") || "/") === "/";
+const isHomePage = pathname === "/";
 const ogType = isArticlePage ? "article" : "website";
 
 const defaultOgPath = SITE.defaultOgImage.startsWith("/")

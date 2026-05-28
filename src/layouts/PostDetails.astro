@@ -3,19 +3,8 @@ import "@/styles/post.css";
 import { render } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import ArticleExtras from "@/components/ArticleExtras.astro";
-import {
-  getEntryDescription,
-  resolveBlogImageRef,
-  type PostEntry,
-  type PostNavLink,
-} from "@/utils/postUtils";
+import { getEntryDescription, resolveBlogImageRef } from "@/utils/postUtils";
 import { siteImageHref } from "@/utils/blogImages";
-
-export interface Props {
-  post: PostEntry;
-  prev: PostNavLink | null;
-  next: PostNavLink | null;
-}
 
 const { post, prev, next } = Astro.props;
 const { title, date, updated, banner, slug } = post.data;

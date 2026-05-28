@@ -1,0 +1,155 @@
+/* 顶栏 + 年进度（全站 Layout 引入） */
+
+.site-header nav {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  max-width: var(--site-chrome-width);
+  margin: 0 auto;
+  padding: 0.35rem 1.5rem 0;
+  gap: 0.5rem 0.75rem;
+}
+
+.site-header .site-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-width: 0;
+  flex: 1 1 auto;
+  font-weight: 700;
+  font-size: clamp(0.875rem, 2.5vw, 1rem);
+  line-height: 1.25;
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.site-header .site-logo {
+  width: 1.375rem;
+  height: 1.375rem;
+  flex-shrink: 0;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.site-header .site-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.site-header .site-brand:hover,
+.site-header .site-brand:focus-visible {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.site-header .nav-links {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.35rem 0.75rem;
+  list-style: none;
+  margin: 0 0 0 auto;
+  padding: 0;
+}
+
+.site-header .nav-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.25rem;
+  padding: 0 0.15rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.site-header .nav-links a:hover,
+.site-header .nav-links a[aria-current="page"] {
+  color: var(--accent);
+}
+
+.site-header .nav-links a[aria-current="page"] {
+  font-weight: 600;
+}
+
+#year-progress {
+  width: 100%;
+  max-width: var(--site-chrome-width);
+  margin: 0.2rem auto 0;
+  padding: 0 1.5rem 0.3rem;
+}
+
+#year-progress-track {
+  position: relative;
+  min-height: 14px;
+  display: flex;
+  align-items: center;
+  cursor: default;
+}
+
+.year-progress-rail {
+  height: 2px;
+  width: 100%;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--border) 88%, var(--text-secondary));
+  overflow: hidden;
+}
+
+#year-progress-fill {
+  height: 100%;
+  width: 0;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+#year-progress-label {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  opacity: 0;
+  pointer-events: none;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--accent);
+  white-space: nowrap;
+  padding: 0 0.15rem;
+  background: color-mix(in srgb, var(--background) 88%, transparent);
+  border-radius: 3px;
+  transition: opacity 0.15s ease;
+}
+
+#year-progress-label.year-progress-visible {
+  opacity: 1;
+}
+
+@media (min-width: 641px) {
+  .site-header .site-brand {
+    flex: 0 1 auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .site-header nav,
+  #year-progress {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .site-header nav {
+    gap: 0.35rem 0.5rem;
+  }
+
+  .site-header .nav-links {
+    gap: 0.35rem 0.65rem;
+  }
+
+  .site-header .nav-links a {
+    min-height: 2rem;
+    font-size: 0.85rem;
+  }
+}
