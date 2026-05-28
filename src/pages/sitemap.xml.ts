@@ -29,7 +29,6 @@ export const GET: APIRoute = async () => {
     { path: "/about", lastmod: latestPostUpdatedAt, priority: "0.80" },
     { path: "/posts", lastmod: latestPostUpdatedAt, priority: "0.80" },
     { path: "/rss.xml", lastmod: latestPostUpdatedAt, priority: "0.48" },
-    { path: "/llms.txt", lastmod: latestPostUpdatedAt, priority: "0.48" },
   ];
 
   const postPages = sortedPosts.map(post => ({

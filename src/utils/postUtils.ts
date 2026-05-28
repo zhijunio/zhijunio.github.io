@@ -4,24 +4,10 @@
  * @fileoverview 文章过滤/排序/路径、描述提取、列表时间展示、LLMs 站点地图；content/about 等静态页 frontmatter
  */
 
-import fs from "node:fs";
-import path from "node:path";
-
 import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
-import dayjs from "dayjs";
-import type { Dayjs } from "dayjs";
-import utc from "dayjs/plugin/utc";
-import timezonePlugin from "dayjs/plugin/timezone";
-import relativeTime from "dayjs/plugin/relativeTime";
-import "dayjs/locale/zh-cn";
 
 import { SITE } from "@/config";
-
-dayjs.extend(utc);
-dayjs.extend(timezonePlugin);
-dayjs.extend(relativeTime);
-dayjs.locale("zh-cn");
 
 const SITE_TZ = SITE.timezone || "Asia/Shanghai";
 
@@ -253,80 +239,6 @@ export class PostUtils {
   }
 }
 
-// --- llms.txt ---
-
-function toAbsoluteUrl(path: string): string {
-  return new URL(path, SITE.website).toString();
-}
-
-function getPostMarkdownUrl(post: BlogLikeEntry): string {
-  const slugPath = PostUtils.getPath(
-    post.id,
-    post.filePath,
-    false,
-    post.data.date,
-    post.data.timezone,
-    post.data.slug,
-    post.collection
-  );
-  return toAbsoluteUrl(`/${post.collection}/${slugPath}.md`);
-}
-
-function getPostDescription(post: BlogLikeEntry): string {
-  return (
-    post.data.description?.trim() ||
-    PostUtils.getDescription(post.body ?? "")
-      .replace(/\s+/g, " ")
-      .trim()
-  );
-}
-
-function formatPostLine(post: BlogLikeEntry): string {
-  return `- [${post.data.title}](${getPostMarkdownUrl(post)}): ${getPostDescription(post)}`;
-}
-
-function formatLinkLine(
-  label: string,
-  path: string,
-  description?: string
-): string {
-  const link = `[${label}](${toAbsoluteUrl(path)})`;
-  return description ? `- ${link}: ${description}` : `- ${link}`;
-}
-
-export function generateLlmsTxt(posts: BlogLikeEntry[]): string {
-  const allPosts = PostUtils.sort(posts);
-
-  const lines = [
-    `# ${SITE.title}`,
-    "",
-    `> ${SITE.description}. Personal blog by ${SITE.author}.`,
-    "",
-    "## Site",
-    formatLinkLine("Home", "/", "Main entry point"),
-    formatLinkLine("About", "/about", "Author profile and site background"),
-    formatLinkLine(
-      "博客",
-      "/posts",
-      "博客和周报时间线（content/tech、content/weekly）"
-    ),
-    "",
-    "## All entries",
-    ...allPosts.map(formatPostLine),
-    "",
-    "## Feeds",
-    formatLinkLine("RSS", "/rss.xml"),
-    formatLinkLine("Sitemap", "/sitemap.xml"),
-    formatLinkLine("Robots", "/robots.txt"),
-    "",
-    "## Notes For LLMs",
-    "- Canonical article URLs use the /posts/ prefix. Weekly notes live under content/weekly/.",
-    "- These pages are the primary source of truth.",
-  ];
-
-  return `${lines.join("\n")}\n`;
-}
-
 // --- 列表时间展示 ---
 
 /** 列表 `<time>`：展示文案、机器可读 ISO、悬浮提示（发布时刻） */
@@ -336,12 +248,56 @@ export interface ArticleTimeFields {
   titleAttr: string;
 }
 
-function latestOf(pub: Dayjs, mod: Dayjs | null): Dayjs {
-  return mod && mod.isAfter(pub) ? mod : pub;
+function parseInstant(value: Date | string): Date {
+  const date = value instanceof Date ? value : new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    throw new Error(`Invalid date: ${String(value)}`);
+  }
+  return date;
 }
 
 function effectiveTimezone(timezoneProp: string | undefined): string {
   return timezoneProp || SITE_TZ;
+}
+
+function formatDateInTz(date: Date, timeZone: string): string {
+  return new Intl.DateTimeFormat("sv-SE", {
+    timeZone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(date);
+}
+
+function formatDateTimeInTz(date: Date, timeZone: string): string {
+  return new Intl.DateTimeFormat("sv-SE", {
+    timeZone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  })
+    .format(date)
+    .replace(" ", " ");
+}
+
+function formatRelativeToNow(latest: Date, now = new Date()): string {
+  const diffSec = Math.round((latest.getTime() - now.getTime()) / 1000);
+  const rtf = new Intl.RelativeTimeFormat("zh-CN", { numeric: "auto" });
+  const absSec = Math.abs(diffSec);
+  if (absSec < 60) return rtf.format(diffSec, "second");
+  const diffMin = Math.round(diffSec / 60);
+  if (Math.abs(diffMin) < 60) return rtf.format(diffMin, "minute");
+  const diffHour = Math.round(diffSec / 3600);
+  if (Math.abs(diffHour) < 24) return rtf.format(diffHour, "hour");
+  const diffDay = Math.round(diffSec / 86400);
+  if (Math.abs(diffDay) < 30) return rtf.format(diffDay, "day");
+  const diffMonth = Math.round(diffDay / 30);
+  if (Math.abs(diffMonth) < 12) return rtf.format(diffMonth, "month");
+  return rtf.format(Math.round(diffDay / 365), "year");
 }
 
 /** 文章发布/更新时间在列表卡片中的展示（最新时间 + 时区；`titleAttr` 为发布时间） */
@@ -352,25 +308,23 @@ export class ArticleTime {
     timezoneProp: string | undefined,
     format: "relative" | "absolute"
   ): ArticleTimeFields {
-    const pub = dayjs(pubDatetime);
-    const mod = modDatetime ? dayjs(modDatetime) : null;
-    const latest = latestOf(pub, mod);
+    const pub = parseInstant(pubDatetime);
+    const mod = modDatetime != null ? parseInstant(modDatetime) : null;
+    const latest = mod && mod.getTime() > pub.getTime() ? mod : pub;
     const iso = latest.toISOString();
     const tz = effectiveTimezone(timezoneProp);
-    const latestInTz = dayjs.utc(latest.toDate()).tz(tz);
-    const pubInTz = dayjs.utc(pub.toDate()).tz(tz);
-    const titleAttr = pubInTz.format("YYYY-MM-DD HH:mm:ss");
+    const titleAttr = formatDateTimeInTz(pub, tz);
     const display =
       format === "absolute"
-        ? latestInTz.format("YYYY-MM-DD")
-        : latest.fromNow();
+        ? formatDateInTz(latest, tz)
+        : formatRelativeToNow(latest);
     return { display, iso, titleAttr };
   }
 }
 
 // --- 首页 feed（博客 + 周报混排）---
 
-export const HOME_FEED_PAGE_SIZE = 10;
+export const HOME_FEED_PAGE_SIZE = SITE.postPerIndex;
 
 export type HomeFeedItem = {
   title: string;
@@ -433,43 +387,3 @@ export function paginateHomeFeedItems(
   };
 }
 
-// --- content/ 下静态 Markdown 页（about 等）---
-
-export interface ContentPageData {
-  frontmatter: Record<string, string>;
-  content: string;
-}
-
-/** 读取 `content/{fileName}`，解析单行 `key: value` frontmatter（与 about 页约定一致） */
-export function readContentPage(fileName: string): ContentPageData {
-  const filePath = path.join(process.cwd(), "content", fileName);
-  const fileContent = fs.readFileSync(filePath, "utf-8");
-  const frontmatterMatch = fileContent.match(
-    /^---\n([\s\S]*?)\n---\n([\s\S]*)$/
-  );
-
-  if (!frontmatterMatch) {
-    throw new Error(`Invalid content page frontmatter: ${fileName}`);
-  }
-
-  const frontmatterStr = frontmatterMatch[1];
-  const content = frontmatterMatch[2];
-  const frontmatter: Record<string, string> = {};
-
-  frontmatterStr.split("\n").forEach((line: string) => {
-    const match = line.match(/^(\w+):\s*(.+)$/);
-    if (!match) return;
-
-    const key = match[1];
-    let value = match[2].trim();
-    if (
-      (value.startsWith('"') && value.endsWith('"')) ||
-      (value.startsWith("'") && value.endsWith("'"))
-    ) {
-      value = value.slice(1, -1);
-    }
-    frontmatter[key] = value;
-  });
-
-  return { frontmatter, content };
-}
