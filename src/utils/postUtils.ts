@@ -14,8 +14,6 @@ const DESC_MAX_CHARS = 200;
 
 export type PostEntry = CollectionEntry<"posts">;
 
-export type PostNavLink = { path: string; title: string };
-
 const HOME_FEED_PAGE_SIZE = SITE.postPerIndex;
 
 const tagMoreRegex = /^(.*?)<!--\s*more\s*-->/s;
@@ -146,19 +144,11 @@ function toHomeFeedItem(entry: PostEntry): HomeFeedItem {
   };
 }
 
-export function toPostNavLink(post: PostEntry): PostNavLink {
-  return { path: getPostUrl(post.data.slug), title: post.data.title };
-}
-
 export async function getPostStaticPaths() {
   const posts = sortPosts(await getPosts());
-  return posts.map((post, index) => ({
+  return posts.map(post => ({
     params: { slug: post.data.slug.trim() },
-    props: {
-      post,
-      prev: index > 0 ? toPostNavLink(posts[index - 1]!) : null,
-      next: index < posts.length - 1 ? toPostNavLink(posts[index + 1]!) : null,
-    },
+    props: { post },
   }));
 }
 

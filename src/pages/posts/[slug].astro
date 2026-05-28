@@ -1,18 +1,10 @@
 ---
 import PostDetails from "@/layouts/PostDetails.astro";
-import {
-  getPostStaticPaths,
-  type PostEntry,
-  type PostNavLink,
-} from "@/utils/postUtils";
+import { getPostStaticPaths, type PostEntry } from "@/utils/postUtils";
 
 export const getStaticPaths = getPostStaticPaths;
 
-const { post, prev, next } = Astro.props as {
-  post: PostEntry;
-  prev: PostNavLink | null;
-  next: PostNavLink | null;
-};
+const { post } = Astro.props as { post: PostEntry };
 ---
 
-<PostDetails post={post} prev={prev} next={next} />
+<PostDetails post={post} />

@@ -5,18 +5,13 @@ description: 关于 ZhiJun：开发背景、正在使用的工具、联系方式
 
 ## 👋 自我介绍
 
-> 🚀 软件工程师 | 🧠 系统设计爱好者 | ✍️ 技术内容创作者
+你好，我是 ZhiJun。
 
-你好，我是 zhijun，一个来自中国武汉的 Java 开发者，曾就职于阿里，目前就职于武汉多点，从事新零售、物联网相关的开发工作。
+我是一名软件工程师，关注 Java、MicroServices、Architecture、Kubernetes、AI 相关的工程实践。这篇博客记录了我在这些领域的一些实验、实用笔记和学习心得。
 
-- 💻 自2009 年起从事软件开发
-- 🧩 专注于软件架构、模块化系统和可维护性
-- ⚙️ 设计可扩展的后端系统
-- 🤖 探索人工智能驱动的开发者工具
+欢迎交流指正，也期待与同样热爱技术的你一起讨论。
 
-## 🔗 联系我
-
-WeChat: [@zhijunio](https://blog.zhijun.io/images/wechat.webp) ｜ Twitter：[@zhijunio](https://twitter.com/zhijunio) ｜ YouTube：[@zhijunio](https://www.youtube.com/zhijunio) ｜ Telegram: [@zhijunio](https://t.me/zhijunio) ｜ Telegram Channel: [zhijun_share](https://t.me/zhijun_share)
+[🐙 GitHub](https://github.com/zhijunio) ｜ [🐦 Twitter](https://twitter.com/zhijunio) ｜ [▶️ YouTube](https://www.youtube.com/zhijunio) ｜ [✈️ Telegram](https://t.me/zhijun_share)
 
 ## 我的收藏
 
@@ -31,6 +26,8 @@ WeChat: [@zhijunio](https://blog.zhijun.io/images/wechat.webp) ｜ Twitter：[@z
 - [Yiran's Blog](https://zdyxry.github.io/) - 每周阅读的文章、观看的影视作品、以及部分碎碎念
 - [Verne in GitHub](https://blog.einverne.info/)
 - [艾逗笔](https://idoubi.ai/) - 独立开发者、全栈工程师
+- [Flaneur2020](https://flaneur2020.github.io/zh/) 关注 Cloud Infra 与 AI/LLM
+- [空白](https://koobai.com/)
 
 ### 文章
 
