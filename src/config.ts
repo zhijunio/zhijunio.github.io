@@ -1,7 +1,6 @@
 /**
  * 对象存储自定义域名（R2 / COS，无末尾斜杠）。
- * - **dist**：KaTeX 等 CSS/JS
- * - **图片**：dev/prod 与 CDN 开关见 `src/utils/blogImages/`（`shouldUseCdnForPublicImagePaths`、`siteImageHref` 等）
+ * 图片 dev/prod 与 CDN 开关见 `src/utils/blogImages/`。
  */
 export const CDN_ORIGIN = "https://cos.zhijun.io";
 
@@ -24,7 +23,8 @@ export const SITE = {
   /**
    * 首页展示的最近条目数基数
    */
-  postPerIndex: 12,
+  /** 首页与 /page/N 每页条目数 */
+  postPerIndex: 10,
 
   /**
    * 定时文章发布的时间容差（毫秒）
@@ -51,8 +51,11 @@ export const SITE = {
    */
   genDescriptionCount: 200,
 
-  /** 是否在顶栏下方显示年度进度条 */
-  showYearProgress: true,
+  /**
+   * 是否在顶栏下方显示年度进度条（组件保留，仅开关显示）。
+   * 默认 `false` 以减少全站客户端脚本；需要时改为 `true` 即可启用。
+   */
+  showYearProgress: false,
 
   /**
    * HTML 页面的 lang 属性值
@@ -100,10 +103,6 @@ export const SITE = {
     enabled: true,
     dynamic: false,
     defaultImage: "/og.webp",
-  },
-
-  giscus: {
-    enabled: false,
   },
 
   umami: {
