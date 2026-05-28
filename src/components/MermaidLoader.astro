@@ -1,0 +1,39 @@
+---
+/** 文章页按需加载 mermaid（由 PostDetails 在需要时引入） */
+---
+
+<script>
+  async function renderMermaidDiagrams() {
+    const nodes = document.querySelectorAll<HTMLElement>(
+      "pre.mermaid:not([data-mermaid-processed])"
+    );
+    if (!nodes.length) return;
+
+    const { default: mermaid } = await import("mermaid");
+
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: "default",
+      securityLevel: "loose",
+    });
+
+    await mermaid.run({ nodes: Array.from(nodes) });
+    nodes.forEach(node => {
+      node.dataset.mermaidProcessed = "true";
+    });
+  }
+
+  function scheduleMermaid() {
+    void renderMermaidDiagrams();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", scheduleMermaid, {
+      once: true,
+    });
+  } else {
+    scheduleMermaid();
+  }
+
+  document.addEventListener("astro:page-load", scheduleMermaid);
+</script>

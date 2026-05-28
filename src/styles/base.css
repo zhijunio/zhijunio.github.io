@@ -2,8 +2,7 @@
    CSS 变量定义
    ================================ */
 
-:root,
-[data-theme="light"] {
+:root {
   --accent: #2563eb;
   --accent-dark: #1e40af;
   --accent-surface: #edf5ff;
@@ -26,19 +25,6 @@
    * 用于标题锚点 scroll-margin。
    */
   --site-header-sticky-offset: 5.25rem;
-}
-
-[data-theme="dark"] {
-  --accent: #60a5fa;
-  --accent-dark: #3b82f6;
-  --accent-surface: #172236;
-  --background: #0b1220;
-  --background-secondary: #111c2e;
-  --card-background: #111827;
-  --card-background-hover: #162033;
-  --text-primary: #e5edf8;
-  --text-secondary: #9cb0c9;
-  --border: #243246;
 }
 
 /* ================================
@@ -290,14 +276,24 @@ code {
   border-radius: 4px;
 }
 
-pre {
-  padding: 10px 20px;
-  background: #f6f6f6;
+/* Shiki 代码块（复制按钮外包层见 CodeCopyButton.astro） */
+#main-content :is(.post-content, .page-content) pre.astro-code {
+  margin: 1.25rem 0;
+  padding: 0.85rem 1rem;
+  padding-top: 2rem;
+  border: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
+  border-radius: var(--radius);
   overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.6;
 }
 
-[data-theme="dark"] pre {
-  background: var(--background-secondary);
+#main-content :is(.post-content, .page-content) pre.astro-code code {
+  font-family: inherit;
+  font-size: inherit;
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
 }
 
 /* ================================
@@ -444,13 +440,6 @@ body > header {
   position: sticky;
   top: 0;
   z-index: 100;
-}
-
-footer {
-  background: var(--background);
-  padding: 0.5rem 0 0;
-  width: 100%;
-  margin-top: auto;
 }
 
 main,

@@ -35,8 +35,7 @@ const articleSchema = () =>
     timezone: z.string().optional(),
     tags: z.array(z.string()).default(["Others"]),
     draft: z.boolean().optional(),
-    comments: z.boolean().default(true),
-    math: z.boolean().default(false),
+    comments: z.boolean().default(false),
     mermaid: z.boolean().default(false),
     canonicalURL: z.string().optional(),
     banner: z.string().optional(),
@@ -45,7 +44,7 @@ const articleSchema = () =>
 
 const posts = defineCollection({
   loader: glob({
-    pattern: "{tech,weekly}/**/[^_]*.{md,mdx}",
+    pattern: "{tech,weekly}/**/[^_]*.md",
     base: `./${POSTS_CONTENT_PATH}`,
   }),
   schema: articleSchema,
