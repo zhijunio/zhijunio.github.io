@@ -6,8 +6,6 @@ import {
   remarkStripLeadImageDirDup,
 } from "./src/utils/blogImages";
 import { defineConfig } from "astro/config";
-import tailwindcss from "@tailwindcss/vite";
-import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeSlug from "rehype-slug";
 import rehypeWrapAll from "rehype-wrap-all";
 import rehypeExternalLinks from "rehype-external-links";
@@ -16,6 +14,11 @@ import { remarkMermaid } from "./src/utils/remarkMermaid";
 
 export default defineConfig({
   site: SITE.website,
+  compressHTML: true,
+  /** 关闭 Dev Toolbar，减轻开发态客户端请求并避免 optimizeDeps 504 */
+  devToolbar: {
+    enabled: false,
+  },
   integrations: [
     photosuite({
       scope: "#article",
@@ -31,7 +34,6 @@ export default defineConfig({
     ],
     rehypePlugins: [
       rehypeSlug,
-      [rehypeAutolinkHeadings, { behavior: "append" }],
       [rehypeExternalLinks, { target: "_blank", rel: "noopener noreferrer" }],
       [
         rehypeWrapAll,
@@ -45,9 +47,25 @@ export default defineConfig({
       wrap: true,
     },
   },
-  vite: {
-    plugins: [tailwindcss()],
-    optimizeDeps: { exclude: ["photosuite/client"] },
-  },
+  prefetch: false,
+  trailingSlash: "ignore",
   build: { format: "file" },
+  vite: {
+    optimizeDeps: {
+      include: ["mermaid"],
+      /**
+       * photosuite/client 含相对路径动态 import，预构建后热更/重启易 hash 失步 → 504 Outdated Optimize Dep。
+       */
+      exclude: ["photosuite/client", "@resvg/resvg-js"],
+    },
+    server: {
+      warmup: {
+        ssrFiles: [
+          "./src/layouts/Layout.astro",
+          "./src/utils/postUtils.ts",
+          "./src/config.ts",
+        ],
+      },
+    },
+  },
 });
