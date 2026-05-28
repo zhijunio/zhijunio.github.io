@@ -1,5 +1,17 @@
 /* 首页文章列表 */
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 #home-feed-list {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -84,10 +96,6 @@
 }
 
 @media (max-width: 768px) {
-  #home-feed-list {
-    gap: 0.75rem;
-  }
-
   #home-feed-list li > article {
     padding: 0.85rem 0.9rem;
   }
@@ -99,5 +107,15 @@
   #home-feed-list .home-feed-title {
     font-size: 0.9375rem;
     line-height: 1.38;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #home-feed-list li > article {
+    transition: border-color 0.18s ease, background-color 0.18s ease;
+  }
+
+  #home-feed-list li > article:hover {
+    transform: none;
   }
 }

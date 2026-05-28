@@ -1,5 +1,6 @@
 ---
 import "@/styles/feed.css";
+import { SITE } from "@/config";
 import type { HomeFeedItem } from "@/utils/postUtils";
 
 interface Props {
@@ -9,6 +10,8 @@ interface Props {
 
 const { items, nextPage = null } = Astro.props;
 ---
+
+<h1 class="sr-only">{SITE.title}</h1>
 
 <section aria-label="文章列表">
   <ol id="home-feed-list">
@@ -31,6 +34,20 @@ const { items, nextPage = null } = Astro.props;
     }
   </ol>
 </section>
+
+<template id="home-feed-item-template">
+  <li>
+    <article>
+      <p>
+        <time datetime=""></time>
+      </p>
+      <p class="home-feed-title">
+        <a href=""></a>
+      </p>
+      <p class="home-feed-desc" hidden></p>
+    </article>
+  </li>
+</template>
 
 {
   nextPage !== null && (

@@ -143,10 +143,6 @@ function toHomeFeedItem(entry: PostEntry): HomeFeedItem {
   };
 }
 
-export async function getAllHomeFeedItems(): Promise<HomeFeedItem[]> {
-  return sortPosts(await getPosts()).map(toHomeFeedItem);
-}
-
 export function toPostNavLink(post: PostEntry): PostNavLink {
   return { path: getPostUrl(post.data.slug), title: post.data.title };
 }
@@ -168,21 +164,18 @@ function getFeedTotalPages(itemCount: number): number {
   return Math.max(1, Math.ceil(itemCount / HOME_FEED_PAGE_SIZE));
 }
 
-export function paginateHomeFeedItems(
-  items: HomeFeedItem[],
-  page: number
-): { items: HomeFeedItem[]; nextPage: number | null } {
-  const totalPages = getFeedTotalPages(items.length);
+function paginatePostsToFeed(posts: PostEntry[], page: number) {
+  const totalPages = getFeedTotalPages(posts.length);
   const safePage = Math.min(Math.max(page, 1), totalPages);
   const start = (safePage - 1) * HOME_FEED_PAGE_SIZE;
   return {
-    items: items.slice(start, start + HOME_FEED_PAGE_SIZE),
+    items: posts.slice(start, start + HOME_FEED_PAGE_SIZE).map(toHomeFeedItem),
     nextPage: safePage < totalPages ? safePage + 1 : null,
   };
 }
 
 export async function getHomeFeedPage(page = 1) {
-  return paginateHomeFeedItems(await getAllHomeFeedItems(), page);
+  return paginatePostsToFeed(sortPosts(await getPosts()), page);
 }
 
 export function postModifiedIso(entry: PostEntry): string {
@@ -190,13 +183,13 @@ export function postModifiedIso(entry: PostEntry): string {
 }
 
 export async function getFeedJsonStaticPaths() {
-  const all = await getAllHomeFeedItems();
-  const totalPages = getFeedTotalPages(all.length);
+  const posts = sortPosts(await getPosts());
+  const totalPages = getFeedTotalPages(posts.length);
   if (totalPages <= 1) return [];
 
   return Array.from({ length: totalPages - 1 }, (_, index) => {
     const page = index + 2;
-    const { items, nextPage } = paginateHomeFeedItems(all, page);
+    const { items, nextPage } = paginatePostsToFeed(posts, page);
     return {
       params: { page: String(page) },
       props: { items, nextPage },
