@@ -4,7 +4,11 @@
 # Prettier 无法解析 Astro 内联脚本，跳过这些文件
 src/layouts/Layout.astro
 src/layouts/PostDetails.astro
-src/pages/index.astro
+src/components/HomeFeed.astro
+src/components/Umami.astro
+src/components/CodeCopyButton.astro
+src/components/BackToTop.astro
+src/components/YearProgress.astro
 
 # Except these files & folders
 !/src

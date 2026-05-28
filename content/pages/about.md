@@ -59,5 +59,5 @@ WeChat: [@zhijunio](https://blog.zhijun.io/images/wechat.webp) ｜ Twitter：[@z
 
 ## 更新日志
 
-- 2026-05-28 » 移除标签、分类、搜索、评论、主题切换等；按需加载、Shiki/CDN/构建优化、排版与无限滚动、统一 title、恢复 Umami。详见 [博客站点更新日志（2026-05-28）](/posts/blog-changelog-2026-05-28)。
+- 2026-05-28 » 做减法：去掉页脚、目录、相关推荐、社交分享及标签/搜索/评论等，专注写作；并做性能、无限滚动与排版优化。详见 [博客站点更新日志（2026-05-28）](/posts/blog-changelog-2026-05-28)。
 - 2026-02-24 » 从 Hugo 迁移到 Astro，参考 [astro-lhasa](https://github.com/achuanya/astro-lhasa)、[Astro Theme Switcher](https://astro-theme-switcher.netlify.app/)、[Yiran's Blog](https://zdyxry.github.io/) 等主题。
