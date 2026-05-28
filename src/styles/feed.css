@@ -39,6 +39,7 @@
 #home-feed-list .home-feed-title a {
   color: var(--text);
   text-decoration: none;
+  overflow-wrap: anywhere;
 }
 
 #home-feed-list .home-feed-title a:hover {

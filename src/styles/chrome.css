@@ -1,5 +1,11 @@
 /* 顶栏 + 年进度（全站 Layout 引入） */
 
+.site-header {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+}
+
 .site-header nav {
   display: flex;
   flex-wrap: nowrap;
@@ -86,6 +92,7 @@
   display: flex;
   align-items: center;
   cursor: default;
+  overflow: hidden;
 }
 
 .year-progress-rail {
