@@ -1,4 +1,4 @@
-/* 首页文章列表 */
+/* 首页文章列表（无卡片，分隔线列表） */
 
 .sr-only {
   position: absolute;
@@ -13,37 +13,28 @@
 }
 
 #home-feed-list {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 0.75rem;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-#home-feed-list li > article {
-  display: flex;
-  min-height: 100%;
-  min-width: 0;
-  flex-direction: column;
-  padding: 0.9rem 1rem;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--card-background);
-  transition:
-    border-color 0.18s ease,
-    background-color 0.18s ease,
-    transform 0.18s ease;
+#home-feed-list > li {
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
 }
 
-#home-feed-list li > article:hover {
-  border-color: color-mix(in srgb, var(--accent) 34%, var(--border));
-  background: var(--card-background-hover);
-  transform: translateY(-1px);
+#home-feed-list > li:first-child {
+  border-top: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
+}
+
+#home-feed-list li > article {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  padding: 0.85rem 0;
 }
 
 #home-feed-list li > article > p:first-of-type {
-  margin: 0 0 0.55rem;
+  margin: 0 0 0.35rem;
   color: var(--text-secondary);
   font-size: 0.76rem;
   line-height: 1.35;
@@ -72,7 +63,7 @@
 }
 
 #home-feed-list .home-feed-desc {
-  margin: 0.45rem 0 0;
+  margin: 0.35rem 0 0;
   color: var(--text-secondary);
   font-size: 0.8125rem;
   line-height: 1.55;
@@ -97,25 +88,11 @@
 
 @media (max-width: 768px) {
   #home-feed-list li > article {
-    padding: 0.85rem 0.9rem;
-  }
-
-  #home-feed-list li > article > p:first-of-type {
-    margin-bottom: 0.5rem;
+    padding: 0.75rem 0;
   }
 
   #home-feed-list .home-feed-title {
     font-size: 0.9375rem;
     line-height: 1.38;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  #home-feed-list li > article {
-    transition: border-color 0.18s ease, background-color 0.18s ease;
-  }
-
-  #home-feed-list li > article:hover {
-    transform: none;
   }
 }
