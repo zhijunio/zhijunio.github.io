@@ -1,27 +1,26 @@
 ---
+import { getEntry, render } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
-import MarkdownIt from "markdown-it";
 import { SITE } from "@/config";
-import { readContentPage } from "@/utils/postUtils";
 
-const pageSlug = "about";
-const pageData = readContentPage(`${pageSlug}.md`);
-const pageTitle = pageData.frontmatter.title || SITE.title;
-const pageDescription = pageData.frontmatter.description || SITE.description;
+const page = await getEntry("pages", "about");
+if (!page) {
+  throw new Error("content/about.md not found");
+}
 
-export { pageDescription, pageSlug, pageTitle };
-
-// 使用 markdown-it 渲染 markdown（不启用 typographer，避免链接 URL 中的英文逗号被替换为中文逗号）
-const md = new MarkdownIt({
-  html: true, // 允许 HTML
-  linkify: true, // 自动转换 URL 为链接
-  typographer: false, // 关闭标点替换，保证链接里的英文逗号不变
-});
-const htmlContent = md.render(pageData.content);
+const { Content } = await render(page);
+const pageTitle = page.data.title || SITE.title;
+const pageDescription = page.data.description || SITE.description;
 ---
 
-<Layout title={pageTitle} description={pageDescription} schemaType="AboutPage">
-  <article>
-    <div class="post-content page-content" set:html={htmlContent} />
+<Layout
+  title={pageTitle}
+  description={pageDescription}
+  schemaType="AboutPage"
+>
+  <article id="article">
+    <div class="post-content page-content">
+      <Content />
+    </div>
   </article>
 </Layout>

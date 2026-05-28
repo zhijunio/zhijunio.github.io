@@ -1,7 +1,7 @@
 /**
  * Astro 内容集合配置文件
  *
- * @fileoverview 内容集合 `posts`：`content/tech` 长文与 `content/weekly` 周报；共享同一 Zod schema。
+ * @fileoverview 内容集合 `posts`：`content/tech` 长文与 `content/weekly` 周报；`pages` 为 about 等静态页。
  *
  * @see https://docs.astro.build/en/guides/content-collections/
  */
@@ -35,12 +35,16 @@ const articleSchema = () =>
     timezone: z.string().optional(),
     tags: z.array(z.string()).default(["Others"]),
     draft: z.boolean().optional(),
-    comments: z.boolean().default(false),
     mermaid: z.boolean().default(false),
     canonicalURL: z.string().optional(),
     banner: z.string().optional(),
     slug: z.string().trim().min(1, "slug 不能为空"),
   });
+
+const pageSchema = z.object({
+  title: z.string(),
+  description: z.string().optional(),
+});
 
 const posts = defineCollection({
   loader: glob({
@@ -50,4 +54,12 @@ const posts = defineCollection({
   schema: articleSchema,
 });
 
-export const collections = { posts };
+const pages = defineCollection({
+  loader: glob({
+    pattern: "about.md",
+    base: `./${POSTS_CONTENT_PATH}`,
+  }),
+  schema: pageSchema,
+});
+
+export const collections = { posts, pages };
