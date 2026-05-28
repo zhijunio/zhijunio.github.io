@@ -3,42 +3,10 @@
    ================================ */
 
 :root {
-  /* 博客常用：暖白底 + 经典蓝（PaperMod / 静态博客常见） */
-  --accent: #3b82f6;
-  --accent-dark: #2563eb;
-  --accent-surface: #eff6ff;
-  --background: #fafaf9;
-  --background-secondary: #f5f5f4;
-  --card-background: #ffffff;
-  --card-background-hover: #eff6ff;
-  --text-primary: #1c1917;
-  --text-secondary: #78716c;
-  --border: #e7e5e4;
-  --accent-muted: color-mix(in srgb, var(--accent) 35%, var(--text-secondary));
-  --accent-subtle: color-mix(in srgb, var(--accent) 10%, var(--background));
-  --border-subtle: color-mix(in srgb, var(--border) 65%, transparent);
-  --code-block-bg: color-mix(
-    in srgb,
-    var(--accent) 12%,
-    var(--background-secondary)
-  );
-  --code-inline-bg: color-mix(in srgb, var(--accent) 14%, var(--background));
-
-  /* 顶栏、年度进度条、页脚的内容宽度 */
-  --site-chrome-width: 960px;
-
-  /* 圆角：全站统一；特小/胶囊在局部写死 2px / 9999px */
-  --radius: 8px;
-
-  /**
-   * 吸顶顶栏高度，用于标题锚点 scroll-margin。
-   * 启用年进度条时由下方 :has 规则自动加大。
-   */
-  --site-header-sticky-offset: 3.25rem;
-}
-
-:root:has(#year-progress) {
-  --site-header-sticky-offset: 5.25rem;
+  --accent: #2563eb;
+  --bg: #fcfcfc;
+  --text: #1c1917;
+  --muted: #78716c;
 }
 
 /* ================================
@@ -57,8 +25,8 @@ html {
   font-family:
     "PingFang SC", "Hiragino Sans GB", "Source Han Sans CN", "Noto Sans CJK SC",
     "Microsoft YaHei", Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
-  background: var(--background);
-  color: var(--text-primary);
+  background: var(--bg);
+  color: var(--text);
   scroll-behavior: smooth;
 }
 
@@ -74,8 +42,8 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: var(--background);
-  color: var(--text-primary);
+  background: var(--bg);
+  color: var(--text);
   line-height: 1.65;
 }
 
@@ -85,7 +53,7 @@ body {
   left: 50%;
   z-index: 50;
   transform: translateX(-50%);
-  border-radius: 0 0 var(--radius) var(--radius);
+  border-radius: 0 0 8px 8px;
   background: var(--accent);
   padding: 0.75rem 1.5rem;
   font-weight: 500;
@@ -132,7 +100,7 @@ a:focus-visible {
 }
 
 :is(h1, h2, h3, h4, h5, h6) a:hover {
-  color: var(--accent-dark);
+  color: color-mix(in srgb, var(--accent) 75%, var(--text));
 }
 
 *:focus:not(:focus-visible) {
@@ -150,7 +118,7 @@ h4,
 h5,
 h6 {
   margin: 1rem 0 1rem 0;
-  color: var(--text-primary);
+  color: var(--text);
   font-weight: 650;
   line-height: 1.25;
   letter-spacing: -0.01em;
@@ -257,7 +225,7 @@ menu {
 
 #main-content :is(.post-content, .page-content) h6 {
   font-size: 0.9rem;
-  color: color-mix(in srgb, var(--text-primary) 88%, var(--text-secondary));
+  color: color-mix(in srgb, var(--text) 88%, var(--muted));
 }
 
 /* 文章 / 静态页页面标题（正文 h1 勿与页标题混用） */
@@ -285,7 +253,7 @@ menu {
   margin: 0 0 1.5rem;
   font-size: 1.125rem;
   font-weight: 650;
-  color: var(--text-secondary);
+  color: var(--muted);
 }
 
 .page-empty > a {
@@ -318,18 +286,18 @@ table {
 th,
 td {
   padding: 0.5rem;
-  border: 1px solid var(--border);
+  border: 1px solid color-mix(in srgb, var(--text) 14%, var(--bg));
   text-align: left;
 }
 
 th {
-  background: var(--accent-subtle);
+  background: color-mix(in srgb, var(--accent) 10%, var(--bg));
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text);
 }
 
 td {
-  color: var(--text-primary);
+  color: var(--text);
 }
 
 .responsive-table {
@@ -354,7 +322,7 @@ code {
 }
 
 :not(pre) > code {
-  background: var(--code-inline-bg);
+  background: color-mix(in srgb, var(--accent) 12%, var(--bg));
   padding: 0.2em 0.4em;
   border-radius: 4px;
 }
@@ -364,13 +332,13 @@ code {
 #article .code-block-wrap > pre.astro-code {
   margin: 1.25rem 0;
   padding: 0.85rem 1rem;
-  border: 1px solid color-mix(in srgb, var(--border) 70%, var(--accent) 18%);
-  border-radius: var(--radius);
+  border: 1px solid color-mix(in srgb, var(--text) 11%, var(--accent) 10%);
+  border-radius: 8px;
   overflow-x: auto;
   font-size: 0.875rem;
   line-height: 1.6;
-  background-color: var(--code-block-bg) !important;
-  color: var(--text-primary);
+  background-color: color-mix(in srgb, var(--accent) 10%, var(--bg)) !important;
+  color: var(--text);
 }
 
 #article .code-block-wrap > pre.astro-code {
@@ -397,12 +365,12 @@ code {
 blockquote {
   margin: 1.25rem 0;
   padding: 0.5rem 1rem 0.5rem 1.1rem;
-  border-left: 3px solid var(--accent-muted);
-  color: color-mix(in srgb, var(--text-primary) 82%, var(--text-secondary));
+  border-left: 3px solid var(--accent);
+  color: color-mix(in srgb, var(--text) 82%, var(--muted));
   font-size: 0.98rem;
   line-height: 1.75;
-  background: var(--accent-subtle);
-  border-radius: 0 var(--radius) var(--radius) 0;
+  background: color-mix(in srgb, var(--accent) 10%, var(--bg));
+  border-radius: 0 8px 8px 0;
 }
 
 blockquote > :first-child {
@@ -430,7 +398,7 @@ figure {
 figcaption {
   margin-top: 0.5rem;
   font-size: 0.875rem;
-  color: var(--text-secondary);
+  color: var(--muted);
   text-align: center;
   line-height: 1.6;
 }
@@ -442,7 +410,7 @@ figcaption {
 hr {
   margin: 1.5rem 0;
   border: 0;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid color-mix(in srgb, var(--text) 14%, var(--bg));
 }
 
 @media (max-width: 768px) {
@@ -470,9 +438,9 @@ button {
   margin: 0;
   padding: 0.5rem 1rem;
   background: transparent;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  color: var(--text-primary);
+  border: 1px solid color-mix(in srgb, var(--text) 14%, var(--bg));
+  border-radius: 8px;
+  color: var(--text);
   cursor: pointer;
   transition:
     border-color 0.2s ease,
@@ -504,10 +472,10 @@ textarea {
   line-height: inherit;
   margin: 0;
   padding: 0.5rem 0.75rem;
-  background: var(--background);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  color: var(--text-primary);
+  background: var(--bg);
+  border: 1px solid color-mix(in srgb, var(--text) 14%, var(--bg));
+  border-radius: 8px;
+  color: var(--text);
   transition: border-color 0.2s ease;
 }
 
@@ -526,7 +494,7 @@ textarea:focus {
    ================================ */
 
 header {
-  background: var(--card-background);
+  background: var(--bg);
 }
 
 /* 站点顶栏吸顶（文章页 <article> 内 <header> 不受影响） */
@@ -540,7 +508,7 @@ main,
 #main-content {
   flex: 1;
   width: 100%;
-  max-width: var(--site-chrome-width);
+  max-width: 960px;
   margin: 0 auto;
   padding: 0.5rem 1.5rem 2rem;
 }
@@ -550,8 +518,8 @@ main,
    ================================ */
 
 ::selection {
-  background: color-mix(in srgb, var(--accent) 28%, var(--background));
-  color: var(--text-primary);
+  background: color-mix(in srgb, var(--accent) 28%, var(--bg));
+  color: var(--text);
 }
 
 mark {
@@ -577,7 +545,7 @@ mark {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: color-mix(in srgb, var(--text-secondary) 50%, transparent);
+  background: color-mix(in srgb, var(--muted) 50%, transparent);
   border-radius: 4px;
 }
 
@@ -587,7 +555,7 @@ mark {
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: color-mix(in srgb, var(--text-secondary) 50%, transparent)
+  scrollbar-color: color-mix(in srgb, var(--muted) 50%, transparent)
     transparent;
 }
 

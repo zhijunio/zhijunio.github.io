@@ -1,17 +1,5 @@
 /* 首页文章列表（无卡片，分隔线列表） */
 
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
 #home-feed-list {
   margin: 0;
   padding: 0;
@@ -19,7 +7,7 @@
 }
 
 #home-feed-list > li {
-  border-bottom: 1px solid var(--border-subtle);
+  border-bottom: 1px solid color-mix(in srgb, var(--text) 9%, transparent);
 }
 
 #home-feed-list li > article {
@@ -31,7 +19,7 @@
 
 #home-feed-list li > article > p:first-of-type {
   margin: 0 0 0.4rem;
-  color: var(--text-secondary);
+  color: var(--muted);
   font-size: 0.8125rem;
   line-height: 1.4;
 }
@@ -49,7 +37,7 @@
 }
 
 #home-feed-list .home-feed-title a {
-  color: var(--text-primary);
+  color: var(--text);
   text-decoration: none;
 }
 
@@ -60,7 +48,7 @@
 
 #home-feed-list .home-feed-desc {
   margin: 0.4rem 0 0;
-  color: color-mix(in srgb, var(--text-secondary) 92%, var(--text-primary));
+  color: color-mix(in srgb, var(--muted) 92%, var(--text));
   font-size: 0.875rem;
   line-height: 1.5;
   overflow: hidden;
@@ -79,7 +67,7 @@
   margin: 1rem 0 0;
   text-align: center;
   font-size: 0.8125rem;
-  color: var(--text-secondary);
+  color: var(--muted);
 }
 
 @media (max-width: 768px) {

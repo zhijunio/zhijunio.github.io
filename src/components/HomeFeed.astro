@@ -11,8 +11,6 @@ interface Props {
 const { items, nextPage = null } = Astro.props;
 ---
 
-<h1 class="sr-only">{SITE.title}</h1>
-
 <section aria-label="文章列表">
   <ol id="home-feed-list">
     {

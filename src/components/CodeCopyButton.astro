@@ -104,10 +104,10 @@
     z-index: 2;
     margin: 0;
     padding: 0.2rem 0.55rem;
-    border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
-    border-radius: var(--radius);
-    background: color-mix(in srgb, var(--card-background) 92%, transparent);
-    color: var(--text-secondary);
+    border: 1px solid color-mix(in srgb, var(--text) 11%, transparent);
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--bg) 92%, transparent);
+    color: var(--muted);
     font-size: 0.75rem;
     line-height: 1.4;
     cursor: pointer;
@@ -123,17 +123,29 @@
   #article .code-copy-btn:focus-visible {
     opacity: 1;
     color: var(--accent);
-    border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
+    border-color: color-mix(
+      in srgb,
+      var(--accent) 35%,
+      color-mix(in srgb, var(--text) 14%, var(--bg))
+    );
   }
 
   #article .code-copy-btn.is-copied {
     color: var(--accent);
-    border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+    border-color: color-mix(
+      in srgb,
+      var(--accent) 45%,
+      color-mix(in srgb, var(--text) 14%, var(--bg))
+    );
   }
 
   #article .code-copy-btn.is-copy-failed {
     color: #b45309;
-    border-color: color-mix(in srgb, #b45309 40%, var(--border));
+    border-color: color-mix(
+      in srgb,
+      #b45309 40%,
+      color-mix(in srgb, var(--text) 14%, var(--bg))
+    );
   }
 
   @media (max-width: 640px) {

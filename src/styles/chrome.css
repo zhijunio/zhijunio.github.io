@@ -4,7 +4,7 @@
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
-  max-width: var(--site-chrome-width);
+  max-width: 960px;
   margin: 0 auto;
   padding: 0.35rem 1.5rem 0;
   gap: 0.5rem 0.75rem;
@@ -19,7 +19,7 @@
   font-weight: 700;
   font-size: clamp(0.875rem, 2.5vw, 1rem);
   line-height: 1.25;
-  color: var(--text-primary);
+  color: var(--text);
   text-decoration: none;
 }
 
@@ -58,7 +58,7 @@
   align-items: center;
   min-height: 2.25rem;
   padding: 0 0.15rem;
-  color: var(--text-secondary);
+  color: var(--muted);
   font-size: 0.9rem;
   text-decoration: none;
   white-space: nowrap;
@@ -75,7 +75,7 @@
 
 #year-progress {
   width: 100%;
-  max-width: var(--site-chrome-width);
+  max-width: 960px;
   margin: 0.2rem auto 0;
   padding: 0 1.5rem 0.3rem;
 }
@@ -92,7 +92,7 @@
   height: 2px;
   width: 100%;
   border-radius: 999px;
-  background: var(--border-subtle);
+  background: color-mix(in srgb, var(--text) 9%, transparent);
   overflow: hidden;
 }
 
@@ -100,7 +100,7 @@
   height: 100%;
   width: 0;
   border-radius: 999px;
-  background: var(--accent-muted);
+  background: var(--accent);
 }
 
 #year-progress-label {
@@ -113,10 +113,10 @@
   font-size: 0.75rem;
   font-weight: 500;
   line-height: 1;
-  color: var(--text-secondary);
+  color: var(--muted);
   white-space: nowrap;
   padding: 0 0.15rem;
-  background: color-mix(in srgb, var(--background) 92%, transparent);
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
   border-radius: 3px;
   transition: opacity 0.15s ease;
 }

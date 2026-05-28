@@ -4,8 +4,8 @@
   display: block;
   max-width: 100%;
   margin: 0 auto 2rem;
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius);
+  border: 1px solid color-mix(in srgb, var(--text) 9%, transparent);
+  border-radius: 8px;
 }
 
 #article .post-content {
@@ -13,7 +13,11 @@
 }
 
 #main-content .post-content :where(h2, h3, h4) {
-  scroll-margin-top: var(--site-header-sticky-offset);
+  scroll-margin-top: 3.25rem;
+}
+
+:root:has(#year-progress) #main-content .post-content :where(h2, h3, h4) {
+  scroll-margin-top: 5.25rem;
 }
 
 #main-content nav[aria-label="文章导航"] {
@@ -22,7 +26,7 @@
   gap: 0.5rem;
   margin-top: 2rem;
   padding-top: 1.25rem;
-  border-top: 1px solid var(--border-subtle);
+  border-top: 1px solid color-mix(in srgb, var(--text) 9%, transparent);
 }
 
 @media (min-width: 640px) {
@@ -44,7 +48,7 @@
   max-width: 100%;
   overflow: hidden;
   font-size: 0.875rem;
-  color: var(--text-secondary);
+  color: var(--muted);
   text-decoration: none;
   text-overflow: ellipsis;
   white-space: nowrap;
