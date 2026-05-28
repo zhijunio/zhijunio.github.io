@@ -3,11 +3,11 @@ title: "关于我"
 description: 关于 ZhiJun：开发背景、正在使用的工具、联系方式，以及这个博客的更新记录。
 ---
 
-## 👋 自我介绍
+## 自我介绍
 
 你好，我是 ZhiJun。
 
-我是一名软件工程师，关注 Java、MicroServices、Architecture、Kubernetes、AI 相关的工程实践。这篇博客记录了我在这些领域的一些实验、实用笔记和学习心得。
+我是一名软件工程师，关注 AI、Java、MicroServices、Architecture、Kubernetes 相关的工程实践。这篇博客记录了我在这些领域的一些实验、实用笔记和学习心得。
 
 欢迎交流指正，也期待与同样热爱技术的你一起讨论。
 

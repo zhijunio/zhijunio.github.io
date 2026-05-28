@@ -9,7 +9,7 @@ export const SITE = {
   website: "https://blog.zhijun.io",
   author: "ZhiJun",
   description:
-    "记录 Java、Spring、MicroServices、Architecture、Kubernetes、DevOps、AI 编码工具、架构与个人周报的博客",
+    "记录 AI、Java、MicroServices、Architecture、Kubernetes 的博客",
   title: "ZhiJun Blog",
 
   logo: "/images/avatar.webp",
