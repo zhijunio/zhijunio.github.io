@@ -1,4 +1,5 @@
 ---
+import "@/styles/feed.css";
 import type { HomeFeedItem } from "@/utils/postUtils";
 
 interface Props {
@@ -29,23 +30,21 @@ const { items, nextPage = null } = Astro.props;
       ))
     }
   </ol>
-  {
-    nextPage !== null && (
+</section>
+
+{
+  nextPage !== null && (
+    <>
       <div
         id="home-feed-sentinel"
         data-next-page={nextPage}
         aria-hidden="true"
       />
-    )
-  }
-  <p id="home-feed-status" class="home-feed-status" hidden />
-</section>
-
-{
-  nextPage !== null && (
-    <script>
-      import { initHomeFeedInfiniteScroll } from "@/utils/homeFeedScroll";
-      initHomeFeedInfiniteScroll();
-    </script>
+      <p id="home-feed-status" class="home-feed-status" hidden />
+      <script>
+        import { initHomeFeedInfiniteScroll } from "@/utils/homeFeedScroll";
+        initHomeFeedInfiniteScroll();
+      </script>
+    </>
   )
 }

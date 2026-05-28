@@ -176,7 +176,7 @@ export async function getFeedPaginationStaticPaths() {
     const { items, nextPage } = paginateHomeFeedItems(all, page);
     return {
       params: { page: String(page) },
-      props: { items, nextPage, page },
+      props: { items, nextPage },
     };
   });
 }

@@ -17,7 +17,7 @@
 ```
 ├── content/posts/            # 文章（子目录可选，仅分类）
 ├── content/pages/about.md    # 关于页（`/about` 由 `[slug].astro` 生成）
-├── src/layouts/FeedPage.astro   # 首页列表（滚动加载更多）
+├── src/components/HomeFeed.astro # 首页列表（滚动加载更多）
 ├── src/pages/feed/[page].json.ts # 首页分页 JSON（构建期静态）
 ├── src/styles/feed|post|chrome.css  # 列表/文章/顶栏样式（按需引入）
 ├── src/components|layouts|pages|utils/

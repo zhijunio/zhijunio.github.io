@@ -1,5 +1,7 @@
 ---
-import FeedPage from "@/layouts/FeedPage.astro";
+import HomeFeed from "@/components/HomeFeed.astro";
+import Layout from "@/layouts/Layout.astro";
+import { SITE } from "@/config";
 import { getAllHomeFeedItems, paginateHomeFeedItems } from "@/utils/postUtils";
 
 const { items, nextPage } = paginateHomeFeedItems(
@@ -8,4 +10,6 @@ const { items, nextPage } = paginateHomeFeedItems(
 );
 ---
 
-<FeedPage items={items} nextPage={nextPage} />
+<Layout description={SITE.description}>
+  <HomeFeed items={items} nextPage={nextPage} />
+</Layout>

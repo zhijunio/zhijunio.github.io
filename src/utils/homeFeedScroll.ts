@@ -1,10 +1,45 @@
 import type { HomeFeedItem } from "@/utils/postUtils";
-import { appendHomeFeedItems } from "@/utils/feedDom";
 
 type FeedPageJson = {
   items: HomeFeedItem[];
   nextPage: number | null;
 };
+
+function appendHomeFeedItems(
+  list: HTMLOListElement,
+  items: HomeFeedItem[]
+): void {
+  const frag = document.createDocumentFragment();
+  for (const item of items) {
+    const li = document.createElement("li");
+    const article = document.createElement("article");
+
+    const dateP = document.createElement("p");
+    const time = document.createElement("time");
+    time.dateTime = item.dateIso;
+    time.textContent = item.dateDisplay;
+    dateP.append(time);
+
+    const titleP = document.createElement("p");
+    titleP.className = "home-feed-title";
+    const link = document.createElement("a");
+    link.href = item.href;
+    link.textContent = item.title;
+    titleP.append(link);
+
+    article.append(dateP, titleP);
+    if (item.description) {
+      const desc = document.createElement("p");
+      desc.className = "home-feed-desc";
+      desc.textContent = item.description;
+      article.append(desc);
+    }
+
+    li.append(article);
+    frag.append(li);
+  }
+  list.appendChild(frag);
+}
 
 export function initHomeFeedInfiniteScroll(): void {
   const list = document.getElementById("home-feed-list");
@@ -32,10 +67,7 @@ export function initHomeFeedInfiniteScroll(): void {
       if (!res.ok) throw new Error(String(res.status));
       const data = (await res.json()) as FeedPageJson;
       appendHomeFeedItems(list, data.items);
-      nextPage =
-        data.nextPage != null && data.nextPage > 0
-          ? String(data.nextPage)
-          : "";
+      nextPage = data.nextPage ? String(data.nextPage) : "";
       sentinel.dataset.nextPage = nextPage;
       if (!nextPage) {
         observer.disconnect();
