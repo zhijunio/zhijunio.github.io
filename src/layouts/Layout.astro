@@ -4,6 +4,7 @@ import {
   devLocalImageRef,
   publicImageAbsoluteUrl,
 } from "@/utils/blogImages";
+import { formatDocumentTitle } from "@/utils/documentTitle";
 import "@/styles/global.css";
 import "@/styles/chrome.css";
 import Header from "@/components/Header.astro";
@@ -31,12 +32,16 @@ const {
   modDatetime,
 } = Astro.props;
 
-const title = titleProp?.trim() || SITE.title;
+const rawTitle = titleProp?.trim() ?? "";
+const isHomePage = pathname === "/";
+const headline = rawTitle || SITE.title;
+const documentTitle = isHomePage
+  ? SITE.title
+  : formatDocumentTitle(rawTitle);
 const fullDescription = descriptionProp?.trim() || SITE.description;
 const robotsContent = robots?.trim() || "index,follow";
 const canonicalHref = String(canonicalURL);
 const isArticlePage = Boolean(pubDatetime);
-const isHomePage = pathname === "/";
 const ogType = isArticlePage ? "article" : "website";
 
 const defaultOgPath = SITE.defaultOgImage.startsWith("/")
@@ -55,7 +60,7 @@ const structuredData = isArticlePage
   ? {
       "@context": "https://schema.org",
       "@type": "BlogPosting",
-      headline: title,
+      headline,
       description: fullDescription,
       url: canonicalHref,
       mainEntityOfPage: canonicalHref,
@@ -90,17 +95,17 @@ const structuredData = isArticlePage
     <link rel="canonical" href={canonicalURL} />
     <link rel="preconnect" href={CDN_ORIGIN} crossorigin />
 
-    <title>{title}</title>
+    <title>{documentTitle}</title>
     <meta name="description" content={fullDescription} />
     <meta name="author" content={SITE.author} />
     <meta name="robots" content={robotsContent} />
     <meta name="theme-color" content="#fcfdff" />
 
-    <meta property="og:title" content={title} />
+    <meta property="og:title" content={headline} />
     <meta property="og:description" content={fullDescription} />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:image" content={socialImageURL} />
-    <meta property="og:image:alt" content={title} />
+    <meta property="og:image:alt" content={headline} />
     {
       useDefaultOgDimensions && (
         <>
