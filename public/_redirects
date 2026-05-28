@@ -6,7 +6,7 @@
 /posts/:year/:month/:day/:slug  /posts/:slug  301
 /posts/:year/:month/:day/:slug/  /posts/:slug  301
 
-# 周报旧路径 /briefs → 统一 posts（content/weekly）
-/briefs  /posts  301
+# 周报旧路径 /briefs（无 /posts 列表页，根路径回首页）
+/briefs  /  301
 /briefs/:slug  /posts/:slug  301
 /briefs/:slug/  /posts/:slug  301

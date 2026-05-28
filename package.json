@@ -10,7 +10,8 @@
   "scripts": {
     "dev": "astro dev --host",
     "dev:clean": "rm -rf node_modules/.vite node_modules/.astro && astro dev --host",
-    "build": "astro build && node scripts/prune-dist-images.mjs",
+    "build": "astro build && node scripts/prune-dist-images.mjs && node scripts/assert-list-pages-lean.mjs",
+    "test:assert-lean": "node --test scripts/assert-list-pages-lean.test.mjs",
     "check": "astro check",
     "sync": "astro sync",
     "astro": "astro",

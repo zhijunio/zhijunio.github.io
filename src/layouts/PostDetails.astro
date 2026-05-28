@@ -10,8 +10,6 @@ import Photosuite from "@/components/Photosuite.astro";
 import MermaidLoader from "@/components/MermaidLoader.astro";
 import CodeCopyButton from "@/components/CodeCopyButton.astro";
 import { PostUtils, type BlogLikeEntry } from "@/utils/postUtils";
-import IconChevronLeft from "@/assets/icons/IconChevronLeft.svg";
-import IconChevronRight from "@/assets/icons/IconChevronRight.svg";
 import { siteImageHref } from "@/utils/blogImages";
 
 export interface Props {
@@ -126,11 +124,6 @@ const nextPost =
   {hasInlineImages && <Photosuite />}
   {needsMermaid && <MermaidLoader />}
   {needsCodeCopy && <CodeCopyButton />}
-  {
-    tags.map((tag: string) => (
-      <meta slot="head" property="article:tag" content={tag} />
-    ))
-  }
   <article id="article">
     <header>
       <h1>{title}</h1>
@@ -155,30 +148,18 @@ const nextPost =
   </article>
 
   {
-    tags.length > 0 && (
-      <ul role="list" aria-label="文章标签">
-        {tags.map((tag: string) => (
-          <li>
-            <span>{tag}</span>
-          </li>
-        ))}
-      </ul>
-    )
-  }
-
-  {
     (prevPost || nextPost) && (
       <nav aria-label="文章导航">
         {prevPost && (
           <a href={prevPost.path}>
-            <IconChevronLeft />
+            <span class="nav-dir" aria-hidden="true">←</span>
             <span>{prevPost.title}</span>
           </a>
         )}
         {nextPost && (
           <a href={nextPost.path} data-dir="next">
             <span>{nextPost.title}</span>
-            <IconChevronRight />
+            <span class="nav-dir" aria-hidden="true">→</span>
           </a>
         )}
       </nav>
@@ -243,21 +224,6 @@ const nextPost =
       line-height: 1.5;
     }
 
-    #main-content ul[aria-label="文章标签"] {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.35rem 0.65rem;
-      margin: 2rem 0 0;
-      padding: 0;
-      list-style: none;
-      font-size: 0.8125rem;
-      line-height: 1.5;
-    }
-
-    #main-content ul[aria-label="文章标签"] span {
-      color: var(--text-secondary);
-    }
-
     #main-content nav[aria-label="文章导航"] {
       clear: both;
       display: flex;
@@ -298,10 +264,10 @@ const nextPost =
       text-decoration: none;
     }
 
-    #main-content nav[aria-label="文章导航"] svg {
-      width: 1rem;
-      height: 1rem;
+    #main-content nav[aria-label="文章导航"] .nav-dir {
       flex-shrink: 0;
+      font-size: 1rem;
+      line-height: 1;
     }
   </style>
 </Layout>

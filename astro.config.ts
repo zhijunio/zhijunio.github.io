@@ -11,6 +11,39 @@ import rehypeWrapAll from "rehype-wrap-all";
 import rehypeExternalLinks from "rehype-external-links";
 import photosuite from "photosuite";
 import { remarkMermaid } from "./src/utils/remarkMermaid";
+import { remarkPlainShortCode } from "./src/utils/remarkPlainShortCode";
+
+/** 正文围栏代码实际用到的 Shiki 语言（扫描 content/ 统计，不含 mermaid） */
+const SHIKI_LANGS = [
+  "bash",
+  "shell",
+  "java",
+  "xml",
+  "yaml",
+  "yml",
+  "json",
+  "markdown",
+  "sql",
+  "text",
+  "properties",
+  "dockerfile",
+  "toml",
+  "nginx",
+  "txt",
+  "python",
+  "groovy",
+  "javascript",
+  "powershell",
+  "ini",
+  "diff",
+  "go",
+  "http",
+  "html",
+  "console",
+  "php",
+  "jsx",
+  "lua",
+];
 
 export default defineConfig({
   site: SITE.website,
@@ -29,6 +62,7 @@ export default defineConfig({
   markdown: {
     remarkPlugins: [
       remarkMermaid,
+      remarkPlainShortCode,
       remarkInjectImageDir,
       remarkStripLeadImageDirDup,
     ],
@@ -45,6 +79,8 @@ export default defineConfig({
     shikiConfig: {
       theme: "github-light",
       wrap: true,
+      // @ts-expect-error — bundled 语言 id 列表，见 SHIKI_LANGS
+      langs: SHIKI_LANGS,
     },
   },
   prefetch: false,
@@ -52,20 +88,8 @@ export default defineConfig({
   build: { format: "file" },
   vite: {
     optimizeDeps: {
-      include: ["mermaid"],
-      /**
-       * photosuite/client 含相对路径动态 import，预构建后热更/重启易 hash 失步 → 504 Outdated Optimize Dep。
-       */
+      /** photosuite/client 预构建易在热更后 504 Outdated Optimize Dep */
       exclude: ["photosuite/client", "@resvg/resvg-js"],
-    },
-    server: {
-      warmup: {
-        ssrFiles: [
-          "./src/layouts/Layout.astro",
-          "./src/utils/postUtils.ts",
-          "./src/config.ts",
-        ],
-      },
     },
   },
 });

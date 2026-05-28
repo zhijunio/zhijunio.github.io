@@ -76,26 +76,18 @@ const defaultSchemaType = isArticlePage
 const resolvedSchemaType = schemaType?.trim() || defaultSchemaType;
 
 const ogEnabled = SITE.og.enabled;
-const useDynamicOg = ogEnabled && SITE.og.dynamic;
 
-/** 默认 OG 静态图：支持根相对路径或绝对 URL（与 SITE.og.defaultImage 一致） */
-const normalizeStaticOgDefault = (p: string) => {
+/** 默认 OG 静态图：根相对路径或绝对 URL */
+const normalizeOgImageRef = (p: string) => {
   const t = p.trim();
   if (!t) return "/og.webp";
   if (/^https?:\/\//i.test(t)) return t;
   return t.startsWith("/") ? t : `/${t}`;
 };
 
-const staticDefaultOgRef = normalizeStaticOgDefault(SITE.og.defaultImage);
-
-const pathForOg = pathname.replace(/^\/+/, "").replace(/\/+$/, "");
-const defaultOgFromUrl =
-  pathname === "/" || pathForOg === ""
-    ? "/og/index.png"
-    : `/og/${pathForOg}.png`;
-
-const defaultOgImage = useDynamicOg ? defaultOgFromUrl : staticDefaultOgRef;
-const ogImage = devLocalImageRef(ogImageProp ?? defaultOgImage);
+const ogImage = devLocalImageRef(
+  ogImageProp ?? normalizeOgImageRef(SITE.og.defaultImage)
+);
 const ogImageAlt = ogImageAltProp?.trim() || title;
 /** 自定义文章配图时尺寸多非 1200×630，不输出误导性的 og:image 宽高 */
 const useOgImageDimensions = !ogImageProp?.trim();
@@ -228,22 +220,6 @@ const structuredData = resolvedSchemaType === "BlogPosting"
     <meta property="og:site_name" content={SITE.title} />
     <meta property="og:type" content={ogType} />
 
-    <!-- Twitter Card -->
-    <meta property="twitter:card" content={ogEnabled ? "summary_large_image" : "summary"} />
-    <meta property="twitter:site" content="@zhijunio" />
-    <meta property="twitter:creator" content="@zhijunio" />
-    <meta property="twitter:url" content={canonicalURL} />
-    <meta property="twitter:title" content={title} />
-    <meta property="twitter:description" content={fullDescription} />
-    {
-      ogEnabled && (
-        <>
-          <meta property="twitter:image" content={socialImageURLString} />
-          <meta property="twitter:image:alt" content={ogImageAlt} />
-        </>
-      )
-    }
-
     <!-- Article Published/Modified time -->
     {
       pubDatetime && (
@@ -300,33 +276,6 @@ const structuredData = resolvedSchemaType === "BlogPosting"
     </main>
     {hasAfterMain && <slot name="after-main" />}
     <BackToTop />
-
-    {
-      import.meta.env.PROD &&
-      SITE.umami.enabled &&
-      SITE.umami?.websiteId &&
-      SITE.umami?.scriptUrl && (
-        <script is:inline define:vars={{ websiteId: SITE.umami.websiteId, scriptUrl: SITE.umami.scriptUrl }}>
-          (function () {
-            if (!websiteId || !scriptUrl) return;
-            let done = false;
-            function load() {
-              if (done) return;
-              done = true;
-              const s = document.createElement("script");
-              s.src = scriptUrl;
-              s.setAttribute("data-website-id", websiteId);
-              s.defer = true;
-              document.head.appendChild(s);
-            }
-
-            ["click", "keydown", "touchstart"].forEach((ev) =>
-              window.addEventListener(ev, load, { once: true, passive: true })
-            );
-          })();
-        </script>
-      )
-    }
 
     <style is:global>
       #skip-link {

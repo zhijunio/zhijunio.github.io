@@ -9,20 +9,11 @@ export const pageSlug = "404";
 export const pageTitle = `404 Not Found | ${SITE.title}`;
 export const pageDescription = SITE.description;
 
-const notFoundImage = "https://cos.lhasa.icu/StylePictures/404.webp";
 const notFoundTitle = "404，您访问的页面不存在～";
 ---
 
 <Layout title={pageTitle} description={pageDescription} robots="noindex,follow">
   <section aria-labelledby="not-found-heading">
-    <img
-      src={notFoundImage}
-      alt="404 Not Found"
-      width="448"
-      height="252"
-      loading="eager"
-      decoding="async"
-    />
     <p id="not-found-heading">{notFoundTitle}</p>
     <a href="/">回到首页</a>
   </section>
@@ -34,17 +25,9 @@ const notFoundTitle = "404，您访问的页面不存在～";
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    min-height: 40vh;
     padding: 2.5rem 1rem;
     text-align: center;
-  }
-
-  section[aria-labelledby="not-found-heading"] img {
-    width: 100%;
-    max-width: 28rem;
-    height: auto;
-    margin: 0 auto 1.5rem;
-    border-radius: var(--radius);
-    box-shadow: 0 1px 3px rgb(0 0 0 / 0.08);
   }
 
   #not-found-heading {

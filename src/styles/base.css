@@ -280,11 +280,10 @@ code {
   border-radius: 4px;
 }
 
-/* Shiki 代码块（复制按钮外包层见 CodeCopyButton.astro） */
+/* Shiki 代码块 */
 #main-content :is(.post-content, .page-content) pre.astro-code {
   margin: 1.25rem 0;
   padding: 0.85rem 1rem;
-  padding-top: 2rem;
   border: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
   border-radius: var(--radius);
   overflow-x: auto;

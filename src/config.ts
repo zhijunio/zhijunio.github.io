@@ -20,94 +20,27 @@ export const SITE = {
   googleSiteVerification: "702mzR8WJvXKVdS3ergTkQEIWAMuwniGMAIeE6wPRhc",
   bingSiteVerification: "5995FAD202DE5A364D652266E4C4E0E0",
 
-  /**
-   * 首页展示的最近条目数基数
-   */
   /** 首页与 /page/N 每页条目数 */
   postPerIndex: 10,
 
-  /**
-   * 定时文章发布的时间容差（毫秒）
-   *
-   * 作用：判断一篇文章是否"即将发布"
-   * - 如果当前时间 + 容差 > 文章发布时间，则显示该文章
-   * - 默认 15 分钟，避免因服务器时间差异导致文章提前显示
-   */
-  scheduledPostMargin: 15 * 60 * 1000, // 15 minutes
+  /** 定时文章发布的时间容差（毫秒） */
+  scheduledPostMargin: 15 * 60 * 1000,
 
-  /**
-   * 自动生成描述时处理的最大行数
-   *
-   * 用于从文章内容提取摘要：
-   * - 优先查找 <!--more--> 标记
-   * - 若未找到，则处理前 N 行内容
-   */
+  /** 自动生成描述：优先 <!--more-->，否则取前 N 行 */
   genDescriptionMaxLines: 3,
-
-  /**
-   * 当未找到 more 标记时，提取的字符数量
-   *
-   * 作为自动生成描述的备选方案
-   */
   genDescriptionCount: 200,
 
-  /**
-   * 是否在顶栏下方显示年度进度条（组件保留，仅开关显示）。
-   * 默认 `false` 以减少全站客户端脚本；需要时改为 `true` 即可启用。
-   */
-  showYearProgress: false,
+  /** 顶栏下方年度进度条 */
+  showYearProgress: true,
 
-  /**
-   * HTML 页面的 lang 属性值
-   *
-   * 影响：
-   * - 浏览器的翻译功能
-   * - 屏幕阅读器的语言选择
-   * - 搜索引擎的语言识别
-   */
   lang: "zh-CN",
-
-  /**
-   * Open Graph 的 locale 标签
-   *
-   * 格式：language_TERRITORY（如 zh_CN、en_US）
-   * 用于社交媒体分享时显示正确的语言环境
-   * @see https://ogp.me/#optional
-   */
   langOg: "zh_CN",
-
-  /**
-   * 全局默认时区
-   *
-   * 格式：IANA 时区标识符（如 Asia/Shanghai、Asia/Taipei）
-   * 用于统一所有日期时间的显示格式
-   * @see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-   */
   timezone: "Asia/Shanghai",
-
-  /**
-   * 中国大陆 ICP 备案号
-   *
-   * 根据中国法律，托管在大陆的网站必须显示备案号
-   */
   icp: "",
 
-  /**
-   * Open Graph / Twitter 分享图
-   *
-   * - **enabled**：为 false 时不输出 og:image、twitter:image 及 JSON-LD 中的文章 image
-   * - **dynamic**：为 true 时在构建阶段用 Satori 生成 `/og/` 下各路由 PNG，且未传 `ogImage` 时默认图按当前页 URL 指向 `/og/...`；为 false 时不生成 PNG，默认一律用 **defaultImage**
-   * - **defaultImage**：根相对路径（如 `/og.webp`，对应 `public/og.webp`）；Layout 会结合站点 origin 生成 og 绝对 URL，开发环境用当前 dev 域名
-   */
+  /** Open Graph 分享图（静态 defaultImage，无构建期按路由生成） */
   og: {
     enabled: true,
-    dynamic: false,
     defaultImage: "/og.webp",
-  },
-
-  umami: {
-    enabled: true,
-    websiteId: "2311be4b-ebe4-4a94-9c69-b2e841584d0d",
-    scriptUrl: "https://umami.zhijun.io/random-string.js",
   },
 } as const;
