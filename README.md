@@ -32,7 +32,7 @@
 - **Mermaid**：正文含 ` ```mermaid ` 时按需加载
 - **Photosuite**：正文含内联图时按需加载
 - **代码复制**：正文含围栏代码时按需加载
-- **全站**：年进度条、回到顶部、RSS、sitemap、robots、OG/JSON-LD
+- **全站**：年进度条、回到顶部、Umami 统计、RSS、sitemap、robots、OG/JSON-LD
 
 列表页（`/`、`/about`）不加载 Mermaid / 复制 / Photosuite；首页向下滚动时请求 `/feed/N.json` 追加列表。
 

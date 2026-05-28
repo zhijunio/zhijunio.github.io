@@ -1,0 +1,39 @@
+---
+import { SITE } from "@/config";
+
+const { umami } = SITE;
+const enabled =
+  import.meta.env.PROD &&
+  umami.enabled &&
+  Boolean(umami.websiteId?.trim()) &&
+  Boolean(umami.scriptUrl?.trim());
+---
+
+{
+  enabled && (
+    <script
+      is:inline
+      define:vars={{
+        websiteId: umami.websiteId,
+        scriptUrl: umami.scriptUrl,
+      }}
+    >
+      (function () {
+        if (!websiteId || !scriptUrl) return;
+        let done = false;
+        function load() {
+          if (done) return;
+          done = true;
+          const s = document.createElement("script");
+          s.src = scriptUrl;
+          s.setAttribute("data-website-id", websiteId);
+          s.defer = true;
+          document.head.appendChild(s);
+        }
+        ["click", "keydown", "touchstart", "scroll"].forEach(ev =>
+          window.addEventListener(ev, load, { once: true, passive: true })
+        );
+      })();
+    </script>
+  )
+}

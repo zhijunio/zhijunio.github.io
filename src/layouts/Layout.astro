@@ -8,6 +8,7 @@ import "@/styles/global.css";
 import "@/styles/chrome.css";
 import Header from "@/components/Header.astro";
 import BackToTop from "@/components/BackToTop.astro";
+import Umami from "@/components/Umami.astro";
 
 export interface Props {
   title?: string;
@@ -173,5 +174,6 @@ const structuredData = isArticlePage
       <slot />
     </main>
     <BackToTop />
+    <Umami />
   </body>
 </html>

@@ -23,6 +23,13 @@ export const SITE = {
   timezone: "Asia/Shanghai",
 
   defaultOgImage: "/og.webp",
+
+  /** 自托管 Umami；scriptUrl 为反广告拦截自定义脚本名 */
+  umami: {
+    enabled: true,
+    websiteId: "2311be4b-ebe4-4a94-9c69-b2e841584d0d",
+    scriptUrl: "https://umami.zhijun.io/random-string.js",
+  },
 } as const;
 
 /** 浏览器标签页 `<title>`：首页仅站点名，其余为「页面标题 | 站点名」。 */

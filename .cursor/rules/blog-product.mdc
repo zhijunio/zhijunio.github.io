@@ -11,4 +11,4 @@ alwaysApply: true
 - **文章列表页**：不要 `/posts.html`；发现靠首页分页、RSS、单篇 URL（`/{collection}/{slug}`）。
 - **首页列表**：首屏 SSR + 向下滚动经 `/feed/{n}.json` 追加；无「最近记录」标题、无 `/page/N` HTML 页（旧链 301 至 `/`）。
 - **列表页资源边界**：`index`、`about` 仅用 `Layout` + 列表组件，不加载 Mermaid / 复制 / Photosuite（首页仅多一小段滚动加载脚本）。
-- **全站 UI**：年进度条、回到顶部；已移除 Umami、Pagefind、Giscus、主题切换。
+- **全站 UI**：年进度条、回到顶部、Umami（生产环境延迟加载）；已移除 Pagefind、Giscus、主题切换。
