@@ -3,18 +3,18 @@
    ================================ */
 
 :root {
-  /* 明亮天蓝 */
-  --accent: #38bdf8;
-  --accent-dark: #0ea5e9;
-  --accent-surface: #f0f9ff;
-  --background: #ffffff;
-  --background-secondary: #f8fafc;
+  /* 博客常用：暖白底 + 经典蓝（PaperMod / 静态博客常见） */
+  --accent: #3b82f6;
+  --accent-dark: #2563eb;
+  --accent-surface: #eff6ff;
+  --background: #fafaf9;
+  --background-secondary: #f5f5f4;
   --card-background: #ffffff;
-  --card-background-hover: #f0f9ff;
-  --text-primary: #1f2937;
-  --text-secondary: #6b7280;
-  --border: #ececec;
-  --accent-muted: color-mix(in srgb, var(--accent) 45%, var(--text-secondary));
+  --card-background-hover: #eff6ff;
+  --text-primary: #1c1917;
+  --text-secondary: #78716c;
+  --border: #e7e5e4;
+  --accent-muted: color-mix(in srgb, var(--accent) 35%, var(--text-secondary));
   --accent-subtle: color-mix(in srgb, var(--accent) 10%, var(--background));
   --border-subtle: color-mix(in srgb, var(--border) 65%, transparent);
   --code-block-bg: color-mix(
