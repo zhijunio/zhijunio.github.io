@@ -28,14 +28,11 @@ const prevHref = page === 2 ? "/" : page ? `/page/${page - 1}` : null;
         <li>
           <article>
             <p>
-              <time datetime={item.dateIso} title={item.dateTitle}>
-                {item.dateDisplay}
-              </time>
+              <time datetime={item.dateIso}>{item.dateDisplay}</time>
             </p>
             <h2>
               <a href={item.href}>{item.title}</a>
             </h2>
-            {item.description && <p>{item.description}</p>}
           </article>
         </li>
       ))
@@ -117,18 +114,6 @@ const prevHref = page === 2 ? "/" : page ? `/page/${page - 1}` : null;
   #home-feed-list h2 a:hover {
     color: var(--accent);
     text-decoration: underline;
-  }
-
-  #home-feed-list li > article > h2 + p {
-    display: -webkit-box;
-    margin: 0.45rem 0 0;
-    overflow: hidden;
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-    line-height: 1.62;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
   }
 
   .home-feed-more-wrap {

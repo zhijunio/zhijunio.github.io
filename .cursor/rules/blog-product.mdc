@@ -5,9 +5,9 @@ alwaysApply: true
 
 # 博客产品约定
 
-- **Mermaid**：正文含 ` ```mermaid ` 或 frontmatter `mermaid: true` 时启用（`remarkMermaid` + `MermaidLoader`）；列表页不加载。
-- **Photosuite**：保留；有正文内联图的文章按需加载。
+- **Mermaid**：正文含 ` ```mermaid ` 时启用（`remarkMermaid` + `MermaidLoader`）；列表页不加载。
+- **Photosuite**：有正文内联图的文章按需加载。
 - **代码复制**：文章含围栏代码块时加载 `CodeCopyButton`（仅 `PostDetails`）；列表页不加载。
-- **文章列表页**：不要 `/posts.html` 全站归档页；发现文章靠首页分页、RSS、单篇 URL（`/{collection}/{slug}`）。
-- **列表页资源边界**：`index`、`page/[page]`、`about` 仅使用 `Layout` + 列表内容组件，不得引用 `PostDetails` 或 Mermaid / Photosuite 客户端；`pnpm build` 末尾 `assert-list-pages-lean` 会校验 `dist` 中对应 HTML。
-- **全站 UI**：保留顶栏年进度条（`showYearProgress`）与回到顶部；已移除 Umami。文章页按需 Mermaid / Photosuite / 代码复制（见上）。
+- **文章列表页**：不要 `/posts.html`；发现靠首页分页、RSS、单篇 URL（`/{collection}/{slug}`）。
+- **列表页资源边界**：`index`、`page/[page]`、`about` 仅用 `Layout` + 列表组件；`pnpm build` 跑 `assert-list-pages-lean`。
+- **全站 UI**：年进度条、回到顶部；已移除 Umami、Pagefind、Giscus、主题切换。

@@ -1,16 +1,14 @@
-/**
- * RSS 订阅端点
- *
- * @fileoverview 生成 RSS 2.0：条目按 frontmatter `date` 发布时间降序（非 `updated`）；最近 10 篇；摘要见 <!-- more --> / PostUtils.getDescription。
- */
 import rss from "@astrojs/rss";
-import { getAllBlogLike, PostUtils } from "@/utils/postUtils";
+import {
+  getAllBlogLike,
+  getDescription,
+  getPostUrl,
+  sortPostsByDate,
+} from "@/utils/postUtils";
 import { SITE } from "@/config";
 
 export async function GET() {
-  const sortedPosts = PostUtils.sortByPublishedDate(
-    await getAllBlogLike()
-  ).slice(0, 10);
+  const sortedPosts = sortPostsByDate(await getAllBlogLike()).slice(0, 10);
 
   const iconUrl = `${SITE.website.replace(/\/$/, "")}/favicon.ico`;
   const titleEscaped = SITE.title
@@ -25,21 +23,12 @@ export async function GET() {
     trailingSlash: false,
     customData: `<language>zh-CN</language><image><url>${iconUrl}</url><title>${titleEscaped}</title><link>${SITE.website}</link></image>`,
     items: sortedPosts.map(post => {
-      const { data, id, body, filePath } = post;
-      const description = PostUtils.getDescription(body ?? "");
+      const { data, body } = post;
       return {
-        link: PostUtils.getPath(
-          id,
-          filePath,
-          true,
-          data.date,
-          data.timezone,
-          data.slug,
-          post.collection
-        ),
+        link: getPostUrl(data.slug, post.collection),
         title: data.title,
-        description,
-        categories: data.tags,
+        description: getDescription(body ?? ""),
+        ...(data.tags.length > 0 ? { categories: data.tags } : {}),
         pubDate: new Date(data.date),
       };
     }),

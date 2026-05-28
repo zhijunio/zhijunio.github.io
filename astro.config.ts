@@ -20,7 +20,6 @@ const SHIKI_LANGS = [
   "java",
   "xml",
   "yaml",
-  "yml",
   "json",
   "markdown",
   "sql",

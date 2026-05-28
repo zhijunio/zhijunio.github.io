@@ -1,37 +1,32 @@
 ---
-/**
- * 文章详情：四类内容共用路由，URL 为 `/{section}/{slug}`。
- */
 import type { GetStaticPaths } from "astro";
 import PostDetails from "@/layouts/PostDetails.astro";
-import { getAllBlogLike, PostUtils } from "@/utils/postUtils";
+import {
+  getAllBlogLike,
+  getPostSlugParam,
+  sortPosts,
+  type BlogLikeEntry,
+} from "@/utils/postUtils";
 
 export interface Props {
-  post: import("@/utils/postUtils").BlogLikeEntry;
+  post: BlogLikeEntry;
+  posts: BlogLikeEntry[];
 }
 
 export const getStaticPaths = (async () => {
-  const posts = PostUtils.getPublishedPosts(await getAllBlogLike());
+  const all = await getAllBlogLike();
+  const posts = sortPosts(all);
 
   return posts.map(post => ({
     params: {
       section: post.collection,
-      slug: PostUtils.getPath(
-        post.id,
-        post.filePath,
-        false,
-        post.data.date,
-        post.data.timezone,
-        post.data.slug,
-        post.collection
-      ),
+      slug: getPostSlugParam(post.data.slug),
     },
-    props: { post },
+    props: { post, posts },
   }));
 }) satisfies GetStaticPaths;
 
-const { post } = Astro.props;
-const allSorted = PostUtils.sort(await getAllBlogLike());
+const { post, posts } = Astro.props;
 ---
 
-<PostDetails post={post} posts={allSorted} />
+<PostDetails post={post} posts={posts} />

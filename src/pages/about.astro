@@ -11,13 +11,28 @@ if (!page) {
 const { Content } = await render(page);
 const pageTitle = page.data.title || SITE.title;
 const pageDescription = page.data.description || SITE.description;
+const aboutLd = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  name: pageTitle,
+  url: new URL("/about", SITE.website).href,
+  description: pageDescription,
+  isPartOf: {
+    "@type": "WebSite",
+    name: SITE.title,
+    url: SITE.website,
+  },
+  inLanguage: SITE.lang,
+};
 ---
 
-<Layout
-  title={pageTitle}
-  description={pageDescription}
-  schemaType="AboutPage"
->
+<Layout title={pageTitle} description={pageDescription}>
+  <script
+    slot="head"
+    type="application/ld+json"
+    is:inline
+    set:html={JSON.stringify(aboutLd)}
+  />
   <article id="article">
     <div class="post-content page-content">
       <Content />

@@ -12,6 +12,8 @@ export function remarkPlainShortCode() {
   return (tree: Root) => {
     visit(tree, "code", (node, _index, parent: Parent | undefined) => {
       if (!parent || node.lang === "mermaid") return;
+      if (node.lang === "md") node.lang = "markdown";
+      if (node.lang === "just") node.lang = "text";
       const source = node.value ?? "";
       const lineCount = source === "" ? 0 : source.split("\n").length;
       if (lineCount > MAX_LINES || source.length > MAX_CHARS) return;

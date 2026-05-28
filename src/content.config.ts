@@ -9,14 +9,11 @@
 import { defineCollection } from "astro:content";
 import { z } from "astro/zod";
 import { glob } from "astro/loaders";
-import { SITE } from "@/config";
-
 /** 文章 Markdown 根目录（含 tech/、weekly/；不含 about.md） */
 export const POSTS_CONTENT_PATH = "content";
 
 const articleSchema = () =>
   z.object({
-    author: z.string().default(SITE.author),
     title: z.string(),
     description: z.string().optional(),
     date: z
@@ -32,11 +29,8 @@ const articleSchema = () =>
         if (v == null) return v;
         return v instanceof Date ? v : new Date(String(v).replace(" ", "T"));
       }),
-    timezone: z.string().optional(),
-    tags: z.array(z.string()).default(["Others"]),
+    tags: z.array(z.string()).default([]),
     draft: z.boolean().optional(),
-    mermaid: z.boolean().default(false),
-    canonicalURL: z.string().optional(),
     banner: z.string().optional(),
     slug: z.string().trim().min(1, "slug 不能为空"),
   });

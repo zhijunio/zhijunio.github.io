@@ -1,22 +1,5 @@
 ---
-/**
- * 年度进度条组件
- *
- * @fileoverview 显示当前年度已过时间的百分比进度条
- *
- * 核心逻辑：
- * 1. 计算当前时间在全年中的百分比
- * 2. 动画效果：仅首次访问/刷新时执行，页面切换时直接显示
- * 3. 交互功能：
- *    - 悬停显示百分比标签
- *    - 点击显示剩余天数提示
- * 4. 自动隐藏：动画结束后 2 秒隐藏标签
- *
- * 依赖关系：
- * - 被 Header.astro 导入，在导航栏下方显示
- * - 无整宽灰色底轨（暗色下易被看成 header 底边的 hr）；仅渲染蓝色进度段，易点区域略加高
- * - 交互仅绑定在 year-progress-track；外层 pointer-events-none
- */
+/** 顶栏下年度进度：即时填充 + 悬停显示百分比 */
 ---
 
 <div
@@ -27,42 +10,31 @@
   aria-live="polite"
   aria-label="本年度已过时间比例"
 >
-  <div class="year-progress-inner">
-    <span id="year-progress-label"></span>
-    <span id="year-progress-cover"></span>
-    <div id="year-progress-track" aria-hidden="true">
-      <div>
-        <div id="year-progress-fill"></div>
-      </div>
+  <div id="year-progress-track">
+    <div class="year-progress-rail">
+      <div id="year-progress-fill"></div>
     </div>
+    <span id="year-progress-label"></span>
   </div>
-  <div id="year-progress-popup"></div>
 </div>
 
 <style>
   #year-progress {
-    position: relative;
     width: 100%;
     max-width: var(--site-chrome-width);
     margin: 0.2rem auto 0;
     padding: 0 1.5rem 0.3rem;
-    pointer-events: none;
-  }
-
-  .year-progress-inner {
-    position: relative;
   }
 
   #year-progress-track {
     position: relative;
+    min-height: 14px;
     display: flex;
     align-items: center;
-    min-height: 14px;
-    pointer-events: auto;
-    cursor: pointer;
+    cursor: default;
   }
 
-  #year-progress-track > div {
+  .year-progress-rail {
     height: 2px;
     width: 100%;
     border-radius: 999px;
@@ -75,39 +47,15 @@
     width: 0;
     border-radius: 999px;
     background: var(--accent);
-    transition: width 0.1s linear;
-  }
-
-  #year-progress-label,
-  #year-progress-cover {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    z-index: 1;
-    transform: translateY(-50%);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s ease;
-  }
-
-  #year-progress-popup {
-    position: absolute;
-    top: calc(100% + 0.35rem);
-    left: 0;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s ease;
-    padding: 0.5rem 0.75rem;
-    font-size: 0.8125rem;
-    color: var(--text-primary);
-    background: var(--background-secondary);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgb(0 0 0 / 0.08);
-    max-width: min(280px, 90vw);
   }
 
   #year-progress-label {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    opacity: 0;
+    pointer-events: none;
     font-size: 0.6875rem;
     font-weight: 600;
     line-height: 1;
@@ -116,16 +64,10 @@
     padding: 0 0.15rem;
     background: color-mix(in srgb, var(--background) 88%, transparent);
     border-radius: 3px;
+    transition: opacity 0.15s ease;
   }
 
-  #year-progress-cover {
-    height: 0.875rem;
-  }
-
-  /* JS 添加的 class 无 scoped 属性，需 :global 且提高优先级才能盖过默认 opacity: 0 */
-  #year-progress-label:global(.year-progress-visible),
-  #year-progress-cover:global(.year-progress-visible),
-  #year-progress-popup:global(.year-progress-visible) {
+  #year-progress-label:global(.year-progress-visible) {
     opacity: 1;
   }
 
@@ -138,24 +80,7 @@
 </style>
 
 <script>
-  /**
-   * 年度进度条：计算全年进度、动画、悬停/点击交互
-   */
-
-  const ANIMATION_DURATION = 1200;
-  const LABEL_HIDE_DELAY = 2000;
-  const HOVER_HIDE_DELAY = 1000;
-
-  type YearProgressEls = {
-    container: HTMLElement;
-    track: HTMLElement;
-    fill: HTMLElement;
-    label: HTMLElement;
-    cover: HTMLElement;
-    popup: HTMLElement;
-  };
-
-  function calcProgress(): number {
+  function yearProgress(): number {
     const now = new Date();
     const start = new Date(now.getFullYear(), 0, 1);
     const end = new Date(now.getFullYear() + 1, 0, 1);
@@ -168,168 +93,37 @@
     );
   }
 
-  function getElements(): {
-    container: HTMLElement | null;
-    track: HTMLElement | null;
-    fill: HTMLElement | null;
-    label: HTMLElement | null;
-    cover: HTMLElement | null;
-    popup: HTMLElement | null;
-  } {
-    return {
-      container: document.getElementById("year-progress"),
-      track: document.getElementById("year-progress-track"),
-      fill: document.getElementById("year-progress-fill"),
-      label: document.getElementById("year-progress-label"),
-      cover: document.getElementById("year-progress-cover"),
-      popup: document.getElementById("year-progress-popup"),
+  function initYearProgress(): void {
+    const root = document.getElementById("year-progress");
+    const track = document.getElementById("year-progress-track");
+    const fill = document.getElementById("year-progress-fill");
+    const label = document.getElementById("year-progress-label");
+    if (!root || !track || !fill || !label || track.dataset.bound) return;
+
+    const pct = yearProgress();
+    const text = (pct * 100).toFixed(1) + "%";
+    fill.style.width = text;
+    label.textContent = text;
+    root.setAttribute("title", text);
+    root.setAttribute("aria-valuenow", String(Math.round(pct * 100)));
+
+    const placeLabel = () => {
+      const cw = track.offsetWidth;
+      const lw = label.offsetWidth || 0;
+      label.style.left = Math.min(cw * pct + 3, Math.max(0, cw - lw)) + "px";
     };
-  }
+    placeLabel();
 
-  function show(el: HTMLElement | null): void {
-    if (!el) return;
-    el.classList.add("year-progress-visible");
-  }
-  function hide(el: HTMLElement | null): void {
-    if (!el) return;
-    el.classList.remove("year-progress-visible");
-  }
-
-  function positionLabel(els: YearProgressEls, progress: number): void {
-    const cw = els.track.offsetWidth;
-    const lw = els.label.offsetWidth || 0;
-    const pw = els.popup.offsetWidth || 0;
-    const gap = 3;
-    const labelLeft = Math.min(cw * progress + gap, Math.max(0, cw - lw));
-    els.label.style.left = labelLeft + "px";
-    els.cover.style.left = labelLeft + "px";
-    els.cover.style.width = lw + "px";
-    els.popup.style.left =
-      Math.min(cw * progress + gap, Math.max(0, cw - pw)) + "px";
-  }
-
-  function setProgress(els: YearProgressEls, progress: number): void {
-    const text = (progress * 100).toFixed(1) + "%";
-    els.fill.style.width = text;
-    els.label.textContent = text;
-    els.container.setAttribute("title", text);
-    els.container.setAttribute(
-      "aria-valuenow",
-      String(Math.round(progress * 100))
-    );
-    positionLabel(els, progress);
-  }
-
-  function animateProgress(
-    els: YearProgressEls,
-    target: number,
-    onComplete?: () => void
-  ): void {
-    const startTs = performance.now();
-    function step(ts: number): void {
-      const t = Math.min(1, (ts - startTs) / ANIMATION_DURATION);
-      const current = target * t;
-      els.fill.style.width = (current * 100).toFixed(3) + "%";
-      els.label.textContent = (current * 100).toFixed(1) + "%";
-      positionLabel(els, current);
-      if (t < 1) {
-        requestAnimationFrame(step);
-      } else {
-        setProgress(els, target);
-        onComplete?.();
-      }
-    }
-    requestAnimationFrame(step);
-  }
-
-  let popupHideTimer: ReturnType<typeof setTimeout> | null = null;
-
-  function bindEvents(els: YearProgressEls, getProgress: () => number): void {
-    if (els.track.dataset.bound) return;
-    let hoverTimer: ReturnType<typeof setTimeout> | null = null;
-
-    els.track.addEventListener("mouseenter", () => {
-      if (hoverTimer) clearTimeout(hoverTimer);
-      show(els.label);
-      show(els.cover);
-      positionLabel(els, getProgress());
+    track.addEventListener("mouseenter", () => {
+      placeLabel();
+      label.classList.add("year-progress-visible");
+    });
+    track.addEventListener("mouseleave", () => {
+      label.classList.remove("year-progress-visible");
     });
 
-    els.track.addEventListener("mouseleave", () => {
-      if (hoverTimer) clearTimeout(hoverTimer);
-      hoverTimer = setTimeout(() => {
-        hide(els.label);
-        hide(els.cover);
-      }, HOVER_HIDE_DELAY);
-    });
-
-    els.track.addEventListener("click", () => {
-      const now = new Date();
-      const end = new Date(now.getFullYear() + 1, 0, 1);
-      const daysLeft = Math.ceil((end.getTime() - now.getTime()) / 86400000);
-      els.popup.textContent = `今年还剩下${daysLeft}天，要珍惜时间哦 😁`;
-      show(els.popup);
-      positionLabel(els, getProgress());
-      if (popupHideTimer) clearTimeout(popupHideTimer);
-      popupHideTimer = setTimeout(() => hide(els.popup), LABEL_HIDE_DELAY);
-    });
-
-    els.track.dataset.bound = "1";
+    track.dataset.bound = "1";
   }
 
-  function init(): void {
-    const raw = getElements();
-    if (
-      !raw.container ||
-      !raw.track ||
-      !raw.fill ||
-      !raw.label ||
-      !raw.cover ||
-      !raw.popup
-    )
-      return;
-    const els: YearProgressEls = raw as YearProgressEls;
-
-    const target = calcProgress();
-    let currentProgress = 0;
-
-    show(els.label);
-    show(els.cover);
-
-    animateProgress(els, target, () => {
-      currentProgress = target;
-      setTimeout(() => {
-        hide(els.label);
-        hide(els.cover);
-      }, LABEL_HIDE_DELAY);
-    });
-
-    const startTs = performance.now();
-    const progressInterval = setInterval(() => {
-      const t = Math.min(1, (performance.now() - startTs) / ANIMATION_DURATION);
-      currentProgress = target * t;
-      if (t >= 1) clearInterval(progressInterval);
-    }, 16);
-
-    bindEvents(els, () => currentProgress || target);
-  }
-
-  function update(): void {
-    const raw = getElements();
-    if (
-      !raw.container ||
-      !raw.track ||
-      !raw.fill ||
-      !raw.label ||
-      !raw.cover ||
-      !raw.popup
-    )
-      return;
-    const els: YearProgressEls = raw as YearProgressEls;
-    const target = calcProgress();
-    setProgress(els, target);
-    bindEvents(els, () => target);
-  }
-
-  init();
+  initYearProgress();
 </script>

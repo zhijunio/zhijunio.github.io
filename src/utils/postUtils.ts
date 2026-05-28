@@ -1,7 +1,5 @@
 /**
- * 博客与文章集合相关工具
- *
- * @fileoverview 文章过滤/排序/路径、描述提取、列表时间展示、LLMs 站点地图；content/about 等静态页 frontmatter
+ * 文章过滤、排序、路径、摘要与首页 feed。
  */
 
 import { getCollection } from "astro:content";
@@ -9,243 +7,97 @@ import type { CollectionEntry } from "astro:content";
 
 import { SITE } from "@/config";
 
-const SITE_TZ = SITE.timezone || "Asia/Shanghai";
+const SITE_TZ = SITE.timezone;
+const SCHEDULED_POST_MARGIN_MS = 15 * 60 * 1000;
+const DESC_MAX_LINES = 3;
+const DESC_MAX_CHARS = 200;
 
-/** 与 `src/content.config.ts` 集合名一致 */
 export type BlogLikeCollection = "posts";
-
 export type BlogLikeEntry = CollectionEntry<BlogLikeCollection>;
 
 export async function getAllBlogLike(): Promise<BlogLikeEntry[]> {
   return getCollection("posts");
 }
 
-// --- 描述提取（Markdown → 纯文本摘要）---
-
-/** 匹配 `<!-- more -->` 之前的内容，捕获组 $1 为摘要 */
 const tagMoreRegex = /^(.*?)<!--\s*more\s*-->/s;
 
-/** Markdown 语法替换规则，按顺序应用 */
-const regexReplacers: Record<string, [RegExp, string]> = {
-  header: [/#{1,6} (.*?)/g, "$1 "],
-  star: [/\*{1,3}(.*?)\*{1,3}/g, "$1"],
-  underscore: [/_{1,3}(.*?)_{1,3}/g, "$1"],
-  strikeout: [/~~~[\s\S]*?~~~/g, ""],
-  horizontalRule: [/^(-{3,}|\*{3,})$/gm, ""],
-  quote: [/> (.*?)/g, "$1"],
-  codeInline: [/`(.*?)`/g, "$1"],
-  codeBlock: [/```[\s\S]*?```/g, ""],
-  latexInline: [/\$(.*?)\$/g, ""],
-  latexBlock: [/\$\$[\s\S]*?\$\$/g, ""],
-  image1: [/!\[(.*?)\]\((.*?)\)/g, ""],
-  image2: [/!\[(.*?)\]\[(.*?)\]/g, ""],
-  link1: [/\[(.*?)\]\((.*?)\)/g, "$1 "],
-  link2: [/\[(.*?)\]\[(.*?)\]/g, "$1 "],
-  linkRef: [/\[(.*?)\]: (.*?)/g, ""],
-};
+const descriptionStrippers: [RegExp, string][] = [
+  [/```[\s\S]*?```/g, ""],
+  [/!\[[^\]]*\]\([^)]+\)/g, ""],
+  [/\[([^\]]+)\]\([^)]+\)/g, "$1"],
+  [/#{1,6}\s+/g, ""],
+  [/`([^`]+)`/g, "$1"],
+];
 
-// --- PostUtils ---
-
-export class PostUtils {
-  /** `http://` 或 `https://` 开头 */
-  static isHttpUrl(url: string): boolean {
-    return url.startsWith("http://") || url.startsWith("https://");
-  }
-
-  static filter(post: BlogLikeEntry): boolean {
-    const { data } = post;
-    const isPublishTimePassed =
-      Date.now() > new Date(data.date).getTime() - SITE.scheduledPostMargin;
-    return !data.draft && (import.meta.env.DEV || isPublishTimePassed);
-  }
-
-  static getPublishedPosts(posts: BlogLikeEntry[]): BlogLikeEntry[] {
-    return posts.filter(this.filter);
-  }
-
-  static sort(posts: BlogLikeEntry[]): BlogLikeEntry[] {
-    return this.getPublishedPosts(posts).sort(
-      (a, b) =>
-        Math.floor(new Date(b.data.updated ?? b.data.date).getTime() / 1000) -
-        Math.floor(new Date(a.data.updated ?? a.data.date).getTime() / 1000)
-    );
-  }
-
-  /**
-   * 按发布时间 `date` 降序（不使用 `updated`），与文章列表「最近更新」逻辑区分。
-   * 用于 RSS 等需与 `pubDate` 一致的排序。
-   */
-  static sortByPublishedDate(posts: BlogLikeEntry[]): BlogLikeEntry[] {
-    return this.getPublishedPosts(posts).sort(
-      (a, b) =>
-        new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
-    );
-  }
-
-  static getLocalDateString(
-    date: Date,
-    timeZone: string = SITE.timezone
-  ): string {
-    const f = new Intl.DateTimeFormat("en-CA", {
-      timeZone,
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-    });
-    const parts = f.formatToParts(date);
-    const y = parts.find(p => p.type === "year")!.value;
-    const m = parts.find(p => p.type === "month")!.value;
-    const d = parts.find(p => p.type === "day")!.value;
-    return `${y}-${m}-${d}`;
-  }
-
-  /**
-   * 文章 URL：`/{collection}/{slug}`（如 `/posts/...`）。frontmatter `slug` 按元数据原样使用（仅 trim）；未指定时由文件名去掉 `YYYY-MM-DD-` 前缀，整段再 trim（不作 kebab-case）。
-   *
-   * @param explicitSlug - frontmatter `slug`
-   * @param _date - 保留参数（排序/展示仍用）；不再参与 URL，避免破坏既有调用签名
-   * @param _timeZone - 同上
-   * @param collection - 内容集合名，与 URL 首段一致
-   */
-  static getPath(
-    id: string,
-    _filePath: string | undefined,
-    includeBase = true,
-    _date?: Date,
-    _timeZone?: string,
-    explicitSlug?: string | null,
-    collection: BlogLikeCollection = "posts"
-  ): string {
-    const basePath = includeBase ? `/${collection}` : "";
-    const blogId = id.split("/");
-    const fileName = blogId.length > 0 ? blogId.slice(-1)[0] : id;
-    let slug = fileName.replace(/\.md$/, "").trim();
-    const datePrefixMatch = slug.match(/^(\d{4}-\d{2}-\d{2})-(.+)$/);
-    if (datePrefixMatch) {
-      slug = datePrefixMatch[2].trim();
-    }
-
-    const fromFrontmatter = explicitSlug?.trim();
-    if (fromFrontmatter) {
-      slug = fromFrontmatter;
-    }
-
-    return [basePath, slug].filter(Boolean).join("/");
-  }
-
-  /**
-   * 文章配图在 `public/images/{目录}/` 下的目录名（与 {@link PostUtils.getPath} 末段相同，即 `slug` 语义）。
-   *
-   * 对外 URL：`astro dev` 同源 `/images/...`，生产 CDN，见 `src/utils/blogImages/`。
-   */
-  static getPostImageDirName(
-    id: string,
-    filePath: string | undefined,
-    date?: Date,
-    timeZone?: string,
-    explicitSlug?: string | null,
-    collection: BlogLikeCollection = "posts"
-  ): string {
-    const pathNoPosts = PostUtils.getPath(
-      id,
-      filePath,
-      false,
-      date,
-      timeZone,
-      explicitSlug,
-      collection
-    );
-    const segments = pathNoPosts.split("/").filter(Boolean);
-    return segments[segments.length - 1] ?? "post";
-  }
-
-  /**
-   * 将 frontmatter 中的图片引用解析为根相对 URL。
-   *
-   * - `http(s)://...`：原样返回
-   * - 以 `/` 开头：根相对路径原样返回（旧式 `/images/foo/01.webp` 等）
-   * - 否则视为相对文章配图目录的文件名（可含子路径段），解析为 `/images/{imageDirName}/{ref}`
-   */
-  static resolveBlogImageRef(
-    raw: string | undefined | null,
-    imageDirName: string
-  ): string | undefined {
-    const t = typeof raw === "string" ? raw.trim() : "";
-    if (!t) return undefined;
-    if (PostUtils.isHttpUrl(t)) return t;
-    if (t.startsWith("/")) return t;
-    const rel = t.replace(/\\/g, "/").replace(/^(\.\/)+/, "");
-    if (!rel || rel.split("/").some(s => s === ".." || s === "")) {
-      return undefined;
-    }
-    const dir = imageDirName.trim() || "post";
-    return `/images/${dir}/${rel}`;
-  }
-
-  static getDescription(markdownContent: string): string {
-    const lines = markdownContent
-      .split(/\r?\n/)
-      .slice(0, SITE.genDescriptionMaxLines);
-    const processedContent = lines.join("");
-    const moreTagMatch = processedContent.match(tagMoreRegex);
-    let short = moreTagMatch
-      ? moreTagMatch[1]
-      : processedContent.substring(0, SITE.genDescriptionCount) + " ...";
-
-    for (const patternKey in regexReplacers) {
-      const [pattern, replacement] = regexReplacers[patternKey];
-      short = short.replace(pattern, replacement);
-    }
-    return short;
-  }
-
-  /**
-   * 获取纯文本描述（去除 HTML 标签）
-   * 用于相关文章卡片等场景
-   * @param markdownContent Markdown 内容
-   * @param maxLength 最大字符数，默认 80
-   */
-  static getPlainTextDescription(
-    markdownContent: string,
-    maxLength: number = 80
-  ): string {
-    const lines = markdownContent
-      .split(/\r?\n/)
-      .slice(0, SITE.genDescriptionMaxLines);
-    const processedContent = lines.join("");
-    const moreTagMatch = processedContent.match(tagMoreRegex);
-    let short = moreTagMatch
-      ? moreTagMatch[1]
-      : processedContent.substring(0, SITE.genDescriptionCount);
-
-    // 移除 HTML 标签
-    short = short.replace(/<[^>]+>/g, "");
-
-    // 移除 Markdown 语法
-    for (const patternKey in regexReplacers) {
-      const [pattern, replacement] = regexReplacers[patternKey];
-      short = short.replace(pattern, replacement);
-    }
-
-    // 清理多余空白
-    short = short.replace(/\s+/g, " ").trim();
-
-    // 截断
-    if (short.length > maxLength) {
-      short = short.slice(0, maxLength) + "…";
-    }
-
-    return short;
-  }
+export function isHttpUrl(url: string): boolean {
+  return url.startsWith("http://") || url.startsWith("https://");
 }
 
-// --- 列表时间展示 ---
+function isPublished(post: BlogLikeEntry): boolean {
+  const { data } = post;
+  const ok =
+    Date.now() > new Date(data.date).getTime() - SCHEDULED_POST_MARGIN_MS;
+  return !data.draft && (import.meta.env.DEV || ok);
+}
 
-/** 列表 `<time>`：展示文案、机器可读 ISO、悬浮提示（发布时刻） */
-export interface ArticleTimeFields {
-  display: string;
-  iso: string;
-  titleAttr: string;
+export function getPublishedPosts(posts: BlogLikeEntry[]): BlogLikeEntry[] {
+  return posts.filter(isPublished);
+}
+
+/** 文章页 URL：`/{collection}/{slug}` */
+export function getPostUrl(
+  slug: string,
+  collection: BlogLikeCollection = "posts"
+): string {
+  return `/${collection}/${slug.trim()}`;
+}
+
+/** 动态路由 `[...slug]` 的 param（无 leading slash） */
+export function getPostSlugParam(slug: string): string {
+  return slug.trim();
+}
+
+export function resolveBlogImageRef(
+  raw: string | undefined | null,
+  imageDir: string
+): string | undefined {
+  const t = typeof raw === "string" ? raw.trim() : "";
+  if (!t) return undefined;
+  if (isHttpUrl(t)) return t;
+  if (t.startsWith("/")) return t;
+  const rel = t.replace(/\\/g, "/").replace(/^(\.\/)+/, "");
+  if (!rel || rel.split("/").some(s => s === ".." || s === "")) {
+    return undefined;
+  }
+  const dir = imageDir.trim() || "post";
+  return `/images/${dir}/${rel}`;
+}
+
+export function getDescription(markdownContent: string): string {
+  const lines = markdownContent.split(/\r?\n/).slice(0, DESC_MAX_LINES);
+  const processedContent = lines.join("");
+  const moreTagMatch = processedContent.match(tagMoreRegex);
+  let short = moreTagMatch
+    ? moreTagMatch[1]
+    : processedContent.substring(0, DESC_MAX_CHARS) + " ...";
+  for (const [pattern, replacement] of descriptionStrippers) {
+    short = short.replace(pattern, replacement);
+  }
+  return short.replace(/\s+/g, " ").trim();
+}
+
+export function sortPosts(posts: BlogLikeEntry[]): BlogLikeEntry[] {
+  return getPublishedPosts(posts).sort(
+    (a, b) =>
+      Math.floor(new Date(b.data.updated ?? b.data.date).getTime() / 1000) -
+      Math.floor(new Date(a.data.updated ?? a.data.date).getTime() / 1000)
+  );
+}
+
+export function sortPostsByDate(posts: BlogLikeEntry[]): BlogLikeEntry[] {
+  return getPublishedPosts(posts).sort(
+    (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+  );
 }
 
 function parseInstant(value: Date | string): Date {
@@ -256,73 +108,23 @@ function parseInstant(value: Date | string): Date {
   return date;
 }
 
-function effectiveTimezone(timezoneProp: string | undefined): string {
-  return timezoneProp || SITE_TZ;
+export function formatFeedDate(
+  pubDatetime: Date | string,
+  modDatetime?: Date | string | null
+): { display: string; iso: string } {
+  const pub = parseInstant(pubDatetime);
+  const mod = modDatetime != null ? parseInstant(modDatetime) : null;
+  const latest = mod && mod.getTime() > pub.getTime() ? mod : pub;
+  return {
+    display: new Intl.DateTimeFormat("sv-SE", {
+      timeZone: SITE_TZ,
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    }).format(latest),
+    iso: latest.toISOString(),
+  };
 }
-
-function formatDateInTz(date: Date, timeZone: string): string {
-  return new Intl.DateTimeFormat("sv-SE", {
-    timeZone,
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  }).format(date);
-}
-
-function formatDateTimeInTz(date: Date, timeZone: string): string {
-  return new Intl.DateTimeFormat("sv-SE", {
-    timeZone,
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: false,
-  })
-    .format(date)
-    .replace(" ", " ");
-}
-
-function formatRelativeToNow(latest: Date, now = new Date()): string {
-  const diffSec = Math.round((latest.getTime() - now.getTime()) / 1000);
-  const rtf = new Intl.RelativeTimeFormat("zh-CN", { numeric: "auto" });
-  const absSec = Math.abs(diffSec);
-  if (absSec < 60) return rtf.format(diffSec, "second");
-  const diffMin = Math.round(diffSec / 60);
-  if (Math.abs(diffMin) < 60) return rtf.format(diffMin, "minute");
-  const diffHour = Math.round(diffSec / 3600);
-  if (Math.abs(diffHour) < 24) return rtf.format(diffHour, "hour");
-  const diffDay = Math.round(diffSec / 86400);
-  if (Math.abs(diffDay) < 30) return rtf.format(diffDay, "day");
-  const diffMonth = Math.round(diffDay / 30);
-  if (Math.abs(diffMonth) < 12) return rtf.format(diffMonth, "month");
-  return rtf.format(Math.round(diffDay / 365), "year");
-}
-
-/** 文章发布/更新时间在列表卡片中的展示（最新时间 + 时区；`titleAttr` 为发布时间） */
-export class ArticleTime {
-  static getDisplay(
-    pubDatetime: Date | string,
-    modDatetime: Date | string | null | undefined,
-    timezoneProp: string | undefined,
-    format: "relative" | "absolute"
-  ): ArticleTimeFields {
-    const pub = parseInstant(pubDatetime);
-    const mod = modDatetime != null ? parseInstant(modDatetime) : null;
-    const latest = mod && mod.getTime() > pub.getTime() ? mod : pub;
-    const iso = latest.toISOString();
-    const tz = effectiveTimezone(timezoneProp);
-    const titleAttr = formatDateTimeInTz(pub, tz);
-    const display =
-      format === "absolute"
-        ? formatDateInTz(latest, tz)
-        : formatRelativeToNow(latest);
-    return { display, iso, titleAttr };
-  }
-}
-
-// --- 首页 feed（博客 + 周报混排）---
 
 export const HOME_FEED_PAGE_SIZE = SITE.postPerIndex;
 
@@ -331,40 +133,20 @@ export type HomeFeedItem = {
   href: string;
   dateDisplay: string;
   dateIso: string;
-  dateTitle: string;
-  description: string;
 };
 
 export function toHomeFeedItem(entry: BlogLikeEntry): HomeFeedItem {
-  const date = ArticleTime.getDisplay(
-    entry.data.date,
-    entry.data.updated,
-    entry.data.timezone,
-    "absolute"
-  );
+  const date = formatFeedDate(entry.data.date, entry.data.updated);
   return {
     title: entry.data.title,
-    href: PostUtils.getPath(
-      entry.id,
-      entry.filePath,
-      true,
-      entry.data.date,
-      entry.data.timezone,
-      entry.data.slug,
-      entry.collection
-    ),
+    href: getPostUrl(entry.data.slug, entry.collection),
     dateDisplay: date.display,
     dateIso: date.iso,
-    dateTitle: date.titleAttr,
-    description: (
-      entry.data.description?.trim() ||
-      PostUtils.getDescription(entry.body ?? "")
-    ).trim(),
   };
 }
 
 export async function getAllHomeFeedItems(): Promise<HomeFeedItem[]> {
-  return PostUtils.sort(await getAllBlogLike()).map(toHomeFeedItem);
+  return sortPosts(await getAllBlogLike()).map(toHomeFeedItem);
 }
 
 export function paginateHomeFeedItems(
@@ -386,4 +168,3 @@ export function paginateHomeFeedItems(
     nextPage: safePage < totalPages ? safePage + 1 : null,
   };
 }
-

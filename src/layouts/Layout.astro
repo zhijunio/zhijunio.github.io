@@ -1,9 +1,4 @@
 ---
-/**
- * 全站基础布局
- *
- * @fileoverview 提供 HTML 骨架、meta/OG/JSON-LD、Header、BackToTop；子页通过 props 传入 title、description、canonicalURL 等页面元信息。
- */
 import { SITE } from "@/config";
 import {
   devLocalImageRef,
@@ -12,44 +7,22 @@ import {
 import "@/styles/global.css";
 import Header from "@/components/Header.astro";
 import BackToTop from "@/components/BackToTop.astro";
-/**
- * 组件属性接口
- *
- * @property title - 页面标题，可不传；未传或为空时使用 SITE.title（网站名称）
- * @property author - 作者名称
- * @property description - 页面描述，可不传；未传或为空时使用 SITE.description（站点描述）
- * @property canonicalURL - 规范链接
- * @property pubDatetime - 发布时间
- * @property modDatetime - 更新时间
- * @property ogImage - 社交分享图：根相对路径（如 /images/x.webp）、或 https 绝对 URL；未传则用默认 OG
- * @property ogImageAlt - og:image / twitter:image 与 JSON-LD 图片说明；未传则用标题
- */
+
 export interface Props {
   title?: string;
-  author?: string;
   description?: string;
   ogImage?: string;
-  /** 分享图替代文案（SEO 与无障碍摘要） */
-  ogImageAlt?: string;
-  /** 文章标签，用于生成 keywords meta 标签 */
-  tags?: string[];
   canonicalURL?: string;
-  schemaType?: string;
   robots?: string;
   pubDatetime?: Date;
   modDatetime?: Date | null;
 }
 
-// 解构属性，设置默认值（title 未传或为空时用网站名称）
 const {
   title: titleProp,
-  author = SITE.author,
   description: descriptionProp,
   ogImage: ogImageProp,
-  ogImageAlt: ogImageAltProp,
-  tags: tagsProp,
   canonicalURL = new URL(Astro.url.pathname.replace(/\.html?$/, ""), Astro.url),
-  schemaType,
   robots,
   pubDatetime,
   modDatetime,
@@ -57,119 +30,57 @@ const {
 
 const title = titleProp?.trim() || SITE.title;
 const fullDescription = descriptionProp?.trim() || SITE.description;
-const keywords = tagsProp?.filter(Boolean).join(", ") || "";
 const robotsContent = robots?.trim() || "index,follow";
-const pathname = Astro.url.pathname.replace(/\.html?$/, "") || "/";
-const hasAfterMain = Astro.slots.has("after-main");
 const canonicalHref = String(canonicalURL);
 const isArticlePage = Boolean(pubDatetime);
-const isHomePage = pathname === "/";
-const isCollectionPage = /^\/posts(\/|$)/.test(pathname);
+const isHomePage = Astro.url.pathname.replace(/\.html?$/, "") === "/";
 const ogType = isArticlePage ? "article" : "website";
-const defaultSchemaType = isArticlePage
-  ? "BlogPosting"
-  : isHomePage
-    ? "WebSite"
-    : isCollectionPage
-      ? "CollectionPage"
-      : "WebPage";
-const resolvedSchemaType = schemaType?.trim() || defaultSchemaType;
 
-const ogEnabled = SITE.og.enabled;
-
-/** 默认 OG 静态图：根相对路径或绝对 URL */
-const normalizeOgImageRef = (p: string) => {
-  const t = p.trim();
-  if (!t) return "/og.webp";
-  if (/^https?:\/\//i.test(t)) return t;
-  return t.startsWith("/") ? t : `/${t}`;
-};
-
-const ogImage = devLocalImageRef(
-  ogImageProp ?? normalizeOgImageRef(SITE.og.defaultImage)
+const ogImageRef = devLocalImageRef(
+  ogImageProp?.trim() ||
+    (SITE.defaultOgImage.startsWith("/")
+      ? SITE.defaultOgImage
+      : `/${SITE.defaultOgImage}`)
 );
-const ogImageAlt = ogImageAltProp?.trim() || title;
-/** 自定义文章配图时尺寸多非 1200×630，不输出误导性的 og:image 宽高 */
-const useOgImageDimensions = !ogImageProp?.trim();
-/** 根相对 OG 图拼绝对 URL：开发用当前 dev 机，构建/预览用配置的 SITE.website */
+const useDefaultOgDimensions = !ogImageProp?.trim();
 const siteOrigin = import.meta.env.DEV
   ? Astro.url.origin
   : (Astro.site?.origin ?? Astro.url.origin);
-/** 分享图绝对地址：见 {@link publicImageAbsoluteUrl} */
-const socialImageURLString = (() => {
-  if (!ogEnabled) return "";
-  const ref = ogImage.trim();
-  if (!ref) return publicImageAbsoluteUrl("/og.webp", siteOrigin);
+const socialImageURL = (() => {
+  const ref = ogImageRef.trim();
+  if (!ref) return publicImageAbsoluteUrl(SITE.defaultOgImage, siteOrigin);
   if (/^https?:\/\//i.test(ref)) return ref;
   return publicImageAbsoluteUrl(ref, siteOrigin);
 })();
-/** OG 图尺寸（推荐 1200×630） */
-const OG_IMAGE_WIDTH = 1200;
-const OG_IMAGE_HEIGHT = 630;
 
-/**
- * 结构化数据（JSON-LD）
- *
- * 用于搜索引擎理解页面内容，提升 SEO 效果
- * @see https://schema.org/BlogPosting
- */
-const structuredData = resolvedSchemaType === "BlogPosting"
+const structuredData = isArticlePage
   ? {
       "@context": "https://schema.org",
-      "@type": resolvedSchemaType,
+      "@type": "BlogPosting",
       headline: title,
       description: fullDescription,
       url: canonicalHref,
       mainEntityOfPage: canonicalHref,
-      ...(ogEnabled && socialImageURLString
-        ? {
-            image: {
-              "@type": "ImageObject",
-              url: socialImageURLString,
-              ...(useOgImageDimensions
-                ? { width: OG_IMAGE_WIDTH, height: OG_IMAGE_HEIGHT }
-                : {}),
-              caption: ogImageAlt,
-            },
-          }
-        : {}),
+      image: socialImageURL,
       datePublished: pubDatetime?.toISOString(),
       ...(modDatetime && { dateModified: modDatetime.toISOString() }),
-      ...(tagsProp?.length && { keywords: tagsProp.join(", ") }),
-      author: [
-        {
-          "@type": "Person",
-          name: author,
-        },
-      ],
+      author: [{ "@type": "Person", name: SITE.author }],
       publisher: {
         "@type": "Organization",
         name: SITE.title,
         url: SITE.website,
       },
     }
-  : resolvedSchemaType === "WebSite"
+  : isHomePage
     ? {
         "@context": "https://schema.org",
-        "@type": resolvedSchemaType,
+        "@type": "WebSite",
         name: SITE.title,
         url: SITE.website,
         description: fullDescription,
         inLanguage: SITE.lang,
       }
-    : {
-        "@context": "https://schema.org",
-        "@type": resolvedSchemaType,
-        name: title,
-        url: canonicalHref,
-        description: fullDescription,
-        isPartOf: {
-          "@type": "WebSite",
-          name: SITE.title,
-          url: SITE.website,
-        },
-        inLanguage: SITE.lang,
-      };
+    : null;
 ---
 
 <!doctype html>
@@ -180,47 +91,30 @@ const structuredData = resolvedSchemaType === "BlogPosting"
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="canonical" href={canonicalURL} />
     <link rel="preconnect" href="https://cos.zhijun.io" crossorigin />
-    <meta name="generator" content={Astro.generator} />
 
-    <!-- General Meta Tags -->
     <title>{title}</title>
-    <meta name="title" content={title} />
     <meta name="description" content={fullDescription} />
-    <meta name="author" content={author} />
-    {keywords && <meta name="keywords" content={keywords} />}
+    <meta name="author" content={SITE.author} />
     <meta name="robots" content={robotsContent} />
-    <meta
-      name="theme-color"
-      id="meta-theme-color"
-      content="#fcfdff"
-    />
+    <meta name="theme-color" content="#fcfdff" />
 
-    <!-- Open Graph / Facebook -->
     <meta property="og:title" content={title} />
     <meta property="og:description" content={fullDescription} />
     <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={socialImageURL} />
+    <meta property="og:image:alt" content={title} />
     {
-      ogEnabled && (
+      useDefaultOgDimensions && (
         <>
-          <meta property="og:image" content={socialImageURLString} />
-          {useOgImageDimensions && (
-            <>
-              <meta property="og:image:width" content={String(OG_IMAGE_WIDTH)} />
-              <meta
-                property="og:image:height"
-                content={String(OG_IMAGE_HEIGHT)}
-              />
-            </>
-          )}
-          <meta property="og:image:alt" content={ogImageAlt} />
+          <meta property="og:image:width" content="1200" />
+          <meta property="og:image:height" content="630" />
         </>
       )
     }
-    <meta property="og:locale" content={SITE.langOg} />
+    <meta property="og:locale" content="zh_CN" />
     <meta property="og:site_name" content={SITE.title} />
     <meta property="og:type" content={ogType} />
 
-    <!-- Article Published/Modified time -->
     {
       pubDatetime && (
         <meta
@@ -238,12 +132,15 @@ const structuredData = resolvedSchemaType === "BlogPosting"
       )
     }
 
-    <!-- Google JSON-LD Structured data -->
-    <script
-      type="application/ld+json"
-      is:inline
-      set:html={JSON.stringify(structuredData)}
-    />
+    {
+      structuredData && (
+        <script
+          type="application/ld+json"
+          is:inline
+          set:html={JSON.stringify(structuredData)}
+        />
+      )
+    }
 
     <link
       rel="alternate"
@@ -269,35 +166,11 @@ const structuredData = resolvedSchemaType === "BlogPosting"
     <slot name="head" />
   </head>
   <body>
-    <a id="skip-link" href="#main-content">跳转到主要内容</a>
+    <a class="skip-link" href="#main-content">跳转到主要内容</a>
     <Header />
     <main id="main-content">
       <slot />
     </main>
-    {hasAfterMain && <slot name="after-main" />}
     <BackToTop />
-
-    <style is:global>
-      #skip-link {
-        position: absolute;
-        top: -100%;
-        left: 50%;
-        z-index: 50;
-        transform: translateX(-50%);
-        border-radius: 0 0 var(--radius) var(--radius);
-        background: var(--accent);
-        padding: 0.75rem 1.5rem;
-        font-weight: 500;
-        color: #fff;
-        text-decoration: none;
-        transition: top 0.2s ease-out;
-      }
-
-      #skip-link:focus-visible {
-        top: 0;
-        outline: 2px solid var(--accent);
-        outline-offset: 2px;
-      }
-    </style>
   </body>
 </html>

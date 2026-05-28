@@ -9,7 +9,7 @@
 - P1 Shiki 语言审计脚本、`SHIKI_LANGS` 自动同步（后续增量）
 - P2 Lighthouse、`stale-while-revalidate` 调优
 - 修改文章页加载逻辑（`PostDetails` 条件加载已符合设计）
-- 移除 BackToTop、Umami、Photosuite 功能
+- 移除 Umami 等已删功能；不删 BackToTop/Photosuite/年进度/代码复制
 - Mermaid 构建期出图或点击加载改造
 
 ## Acceptance

@@ -56,6 +56,12 @@ jobs:
       - name: "🔍 Astro check"
         run: pnpm run check
 
+      - name: "🎨 Shiki langs audit"
+        run: pnpm run audit:shiki
+
+      - name: "📋 List pages lean tests"
+        run: pnpm run test:assert-lean
+
       - name: "🚀 Build the project"
         run: pnpm run build
 
