@@ -1,0 +1,18 @@
+---
+import Photosuite from "@/components/Photosuite.astro";
+import MermaidLoader from "@/components/MermaidLoader.astro";
+import CodeCopyButton from "@/components/CodeCopyButton.astro";
+
+interface Props {
+  body: string;
+}
+
+const { body } = Astro.props;
+const hasInlineImages = /!\[[\s\S]*?\]\([^)]+\)|<img\s/i.test(body);
+const needsMermaid = /```mermaid\b/i.test(body);
+const needsCodeCopy = /```[\s\S]*?```/.test(body);
+---
+
+{hasInlineImages && <Photosuite />}
+{needsMermaid && <MermaidLoader />}
+{needsCodeCopy && <CodeCopyButton />}

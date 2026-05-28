@@ -5,15 +5,14 @@ import {
   remarkInjectImageDir,
   remarkStripLeadImageDirDup,
 } from "./src/utils/blogImages";
+import { remarkMermaid } from "./src/utils/remarkMermaid";
+import { remarkPlainShortCode } from "./src/utils/remarkPlainShortCode";
 import { defineConfig } from "astro/config";
 import rehypeSlug from "rehype-slug";
 import rehypeWrapAll from "rehype-wrap-all";
 import rehypeExternalLinks from "rehype-external-links";
 import photosuite from "photosuite";
-import { remarkMermaid } from "./src/utils/remarkMermaid";
-import { remarkPlainShortCode } from "./src/utils/remarkPlainShortCode";
 
-/** 正文围栏代码实际用到的 Shiki 语言（扫描 content/ 统计，不含 mermaid） */
 const SHIKI_LANGS = [
   "bash",
   "shell",
@@ -47,10 +46,7 @@ const SHIKI_LANGS = [
 export default defineConfig({
   site: SITE.website,
   compressHTML: true,
-  /** 关闭 Dev Toolbar，减轻开发态客户端请求并避免 optimizeDeps 504 */
-  devToolbar: {
-    enabled: false,
-  },
+  devToolbar: { enabled: false },
   integrations: [
     photosuite({
       scope: "#article",
@@ -84,7 +80,6 @@ export default defineConfig({
   build: { format: "file" },
   vite: {
     optimizeDeps: {
-      /** photosuite/client 预构建易在热更后 504 Outdated Optimize Dep */
       exclude: ["photosuite/client", "@resvg/resvg-js"],
     },
   },

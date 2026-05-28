@@ -1,0 +1,64 @@
+/* 文章详情 */
+
+#article h1 {
+  margin: 0 0 2rem;
+  font-size: clamp(1.2rem, 2.6vw, 1.5rem);
+  line-height: 1.35;
+  font-weight: 600;
+  text-align: center;
+  text-wrap: balance;
+}
+
+#post-banner {
+  display: block;
+  max-width: 100%;
+  margin: 0 auto 2rem;
+  border: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
+  border-radius: var(--radius);
+}
+
+#article .post-content {
+  line-height: 1.8;
+}
+
+#main-content .post-content :where(h2, h3, h4) {
+  scroll-margin-top: var(--site-header-sticky-offset);
+}
+
+#main-content nav[aria-label="文章导航"] {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 2rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+}
+
+@media (min-width: 640px) {
+  #main-content nav[aria-label="文章导航"] {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  #main-content nav[aria-label="文章导航"] .nav-next {
+    margin-left: auto;
+    text-align: right;
+  }
+}
+
+#main-content nav[aria-label="文章导航"] a {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  max-width: 100%;
+  overflow: hidden;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#main-content nav[aria-label="文章导航"] a:hover {
+  color: var(--accent);
+}

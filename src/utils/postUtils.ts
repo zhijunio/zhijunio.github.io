@@ -167,3 +167,22 @@ export function paginateHomeFeedItems(
 export function toPostNavLink(entry: PostEntry): PostNavLink {
   return { path: getPostUrl(entry.data.slug), title: entry.data.title };
 }
+
+export function postModifiedIso(entry: PostEntry): string {
+  return new Date(entry.data.updated ?? entry.data.date).toISOString();
+}
+
+export async function getFeedPaginationStaticPaths() {
+  const all = await getAllHomeFeedItems();
+  const totalPages = getFeedTotalPages(all.length);
+  if (totalPages <= 1) return [];
+
+  return Array.from({ length: totalPages - 1 }, (_, index) => {
+    const page = index + 2;
+    const { items, nextPage } = paginateHomeFeedItems(all, page);
+    return {
+      params: { page: String(page) },
+      props: { items, nextPage, page },
+    };
+  });
+}

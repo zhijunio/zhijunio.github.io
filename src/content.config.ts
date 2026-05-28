@@ -6,7 +6,7 @@ import { defineCollection } from "astro:content";
 import { z } from "astro/zod";
 import { glob } from "astro/loaders";
 
-const postDate = z
+const contentDate = z
   .union([z.date(), z.string()])
   .transform(v =>
     v instanceof Date ? v : new Date(String(v).replace(" ", "T"))
@@ -20,8 +20,8 @@ const posts = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string().optional(),
-    date: postDate,
-    updated: postDate.optional().nullable(),
+    date: contentDate,
+    updated: contentDate.optional().nullable(),
     draft: z.boolean().optional(),
     banner: z.string().optional(),
     slug: z.string().trim().min(1),

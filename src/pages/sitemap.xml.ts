@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 import { SITE } from "@/config";
-import { getPosts, getPostUrl, sortPosts } from "@/utils/postUtils";
+import { getPosts, getPostUrl, postModifiedIso, sortPosts } from "@/utils/postUtils";
 
 function escapeXml(value: string): string {
   return value
@@ -14,9 +14,7 @@ function escapeXml(value: string): string {
 export const GET: APIRoute = async () => {
   const sortedPosts = sortPosts(await getPosts());
   const latest = sortedPosts[0]
-    ? new Date(
-        sortedPosts[0].data.updated ?? sortedPosts[0].data.date
-      ).toISOString()
+    ? postModifiedIso(sortedPosts[0])
     : new Date().toISOString();
 
   const urls = [
@@ -24,7 +22,7 @@ export const GET: APIRoute = async () => {
     { path: "/about", lastmod: latest, priority: "0.80" },
     ...sortedPosts.map(post => ({
       path: getPostUrl(post.data.slug),
-      lastmod: new Date(post.data.updated ?? post.data.date).toISOString(),
+      lastmod: postModifiedIso(post),
       priority: "0.64",
     })),
   ];
