@@ -4,25 +4,13 @@ import type { HomeFeedItem } from "@/utils/postUtils";
 interface Props {
   items: HomeFeedItem[];
   nextPage?: number | null;
-  /** 分页页码（≥2）；首页不传 */
-  page?: number;
 }
 
-const { items, nextPage = null, page } = Astro.props;
-const showPager = page !== undefined && page >= 2;
-const prevHref = page === 2 ? "/" : page ? `/page/${page - 1}` : null;
+const { items, nextPage = null } = Astro.props;
 ---
 
-<section aria-label="最近记录">
-  {
-    showPager && (
-      <nav class="home-feed-pager" aria-label="分页">
-        <a href="/">首页</a>
-        {prevHref && <a href={prevHref}>上一页</a>}
-      </nav>
-    )
-  }
-  <ol id="home-feed-list" aria-label="最近记录列表">
+<section aria-label="文章列表">
+  <ol id="home-feed-list">
     {
       items.map(item => (
         <li>
@@ -43,11 +31,21 @@ const prevHref = page === 2 ? "/" : page ? `/page/${page - 1}` : null;
   </ol>
   {
     nextPage !== null && (
-      <p class="home-feed-more-wrap">
-        <a class="home-feed-more" href={`/page/${nextPage}`}>
-          查看更多 …
-        </a>
-      </p>
+      <div
+        id="home-feed-sentinel"
+        data-next-page={nextPage}
+        aria-hidden="true"
+      />
     )
   }
+  <p id="home-feed-status" class="home-feed-status" hidden />
 </section>
+
+{
+  nextPage !== null && (
+    <script>
+      import { initHomeFeedInfiniteScroll } from "@/utils/homeFeedScroll";
+      initHomeFeedInfiniteScroll();
+    </script>
+  )
+}

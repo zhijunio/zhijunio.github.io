@@ -6,6 +6,10 @@
 /posts/:year/:month/:day/:slug  /posts/:slug  301
 /posts/:year/:month/:day/:slug/  /posts/:slug  301
 
+# 首页已改为滚动加载，旧分页 URL 回首页
+/page/:page  /  301
+/page/:page/  /  301
+
 # 周报旧路径 /briefs（无 /posts 列表页，根路径回首页）
 /briefs  /  301
 /briefs/:slug  /posts/:slug  301

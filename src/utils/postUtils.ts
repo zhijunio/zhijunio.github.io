@@ -14,9 +14,7 @@ const DESC_MAX_CHARS = 200;
 
 export type PostEntry = CollectionEntry<"posts">;
 
-export type PostNavLink = { path: string; title: string };
-
-export const HOME_FEED_PAGE_SIZE = SITE.postPerIndex;
+const HOME_FEED_PAGE_SIZE = SITE.postPerIndex;
 
 const tagMoreRegex = /^(.*?)<!--\s*more\s*-->/s;
 
@@ -32,7 +30,7 @@ export async function getPosts(): Promise<PostEntry[]> {
   return getCollection("posts");
 }
 
-export function isHttpUrl(url: string): boolean {
+function isHttpUrl(url: string): boolean {
   return url.startsWith("http://") || url.startsWith("https://");
 }
 
@@ -106,7 +104,7 @@ function parseInstant(value: Date | string): Date {
   return date;
 }
 
-export function formatFeedDate(
+function formatFeedDate(
   pubDatetime: Date | string,
   modDatetime?: Date | string | null
 ): { display: string; iso: string } {
@@ -147,7 +145,7 @@ export async function getAllHomeFeedItems(): Promise<HomeFeedItem[]> {
   return sortPosts(await getPosts()).map(toHomeFeedItem);
 }
 
-export function getFeedTotalPages(itemCount: number): number {
+function getFeedTotalPages(itemCount: number): number {
   return Math.max(1, Math.ceil(itemCount / HOME_FEED_PAGE_SIZE));
 }
 

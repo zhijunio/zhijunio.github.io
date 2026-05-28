@@ -8,22 +8,11 @@ import type { HomeFeedItem } from "@/utils/postUtils";
 interface Props {
   items: HomeFeedItem[];
   nextPage?: number | null;
-  page?: number;
-  robots?: string;
 }
 
-const { items, nextPage = null, page, robots } = Astro.props;
-const feedHeading =
-  page !== undefined && page >= 2 ? `最近记录 · 第 ${page} 页` : "最近记录";
-const layoutTitle =
-  page !== undefined && page >= 2 ? `第 ${page} 页` : undefined;
+const { items, nextPage = null } = Astro.props;
 ---
 
-<Layout
-  title={layoutTitle}
-  description={SITE.description}
-  robots={robots}
->
-  <h1 class="feed-page-title">{feedHeading}</h1>
-  <HomeFeed items={items} nextPage={nextPage} page={page} />
+<Layout title={undefined} description={SITE.description}>
+  <HomeFeed items={items} nextPage={nextPage} />
 </Layout>

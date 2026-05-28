@@ -1,20 +1,4 @@
-/* 首页与分页列表 */
-
-.feed-page-title {
-  margin: 0 0 1.25rem;
-  font-size: 1.25rem;
-  font-weight: 650;
-  line-height: 1.3;
-  color: var(--text-primary);
-}
-
-.home-feed-pager {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem 1rem;
-  margin: 0 0 1rem;
-  font-size: 0.875rem;
-}
+/* 首页文章列表 */
 
 #home-feed-list {
   display: grid;
@@ -87,30 +71,16 @@
   -webkit-line-clamp: 3;
 }
 
-.home-feed-more-wrap {
-  margin: 1.25rem 0 0;
+#home-feed-sentinel {
+  height: 1px;
+  margin-top: 0.5rem;
+}
+
+.home-feed-status {
+  margin: 1rem 0 0;
   text-align: center;
-}
-
-.home-feed-more {
-  display: inline-block;
-  padding: 0.35rem 1rem;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--card-background);
+  font-size: 0.8125rem;
   color: var(--text-secondary);
-  font-size: 0.875rem;
-  text-decoration: none;
-  transition:
-    border-color 0.18s ease,
-    color 0.18s ease,
-    background-color 0.18s ease;
-}
-
-.home-feed-more:hover {
-  border-color: color-mix(in srgb, var(--accent) 34%, var(--border));
-  color: var(--accent);
-  background: var(--card-background-hover);
 }
 
 @media (max-width: 768px) {
@@ -124,10 +94,6 @@
 
   #home-feed-list li > article > p:first-of-type {
     margin-bottom: 0.5rem;
-  }
-
-  .feed-page-title {
-    font-size: 1.125rem;
   }
 
   #home-feed-list .home-feed-title {

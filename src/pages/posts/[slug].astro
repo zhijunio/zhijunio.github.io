@@ -6,8 +6,9 @@ import {
   getPostUrl,
   sortPosts,
   type PostEntry,
-  type PostNavLink,
 } from "@/utils/postUtils";
+
+type PostNavLink = { path: string; title: string };
 
 export const getStaticPaths = (async () => {
   const posts = sortPosts(await getPosts());

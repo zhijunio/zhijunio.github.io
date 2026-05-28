@@ -17,7 +17,8 @@
 ```
 ├── content/posts/            # 文章（子目录可选，仅分类）
 ├── content/pages/about.md    # 关于页（`/about` 由 `[slug].astro` 生成）
-├── src/layouts/FeedPage.astro   # 首页与分页列表
+├── src/layouts/FeedPage.astro   # 首页列表（滚动加载更多）
+├── src/pages/feed/[page].json.ts # 首页分页 JSON（构建期静态）
 ├── src/styles/feed|post|chrome.css  # 列表/文章/顶栏样式（按需引入）
 ├── src/components|layouts|pages|utils/
 ├── public/images/         # 配图（生产走 CDN）
@@ -33,7 +34,7 @@
 - **代码复制**：正文含围栏代码时按需加载
 - **全站**：年进度条、回到顶部、RSS、sitemap、robots、OG/JSON-LD
 
-列表页（`/`、`/page/N`、`/about`）不加载 Mermaid / 复制 / Photosuite。
+列表页（`/`、`/about`）不加载 Mermaid / 复制 / Photosuite；首页向下滚动时请求 `/feed/N.json` 追加列表。
 
 ## Frontmatter（节选）
 
