@@ -1,16 +1,13 @@
 /**
- * Astro 内容集合配置文件
- *
- * @fileoverview 内容集合 `posts`：`content/tech` 长文与 `content/weekly` 周报；`pages` 为 about 等静态页。
- *
- * @see https://docs.astro.build/en/guides/content-collections/
+ * 内容集合：`content/posts` 文章、`content/pages` 静态页。
  */
 
 import { defineCollection } from "astro:content";
 import { z } from "astro/zod";
 import { glob } from "astro/loaders";
-/** 文章 Markdown 根目录（含 tech/、weekly/；不含 about.md） */
-export const POSTS_CONTENT_PATH = "content";
+
+export const POSTS_CONTENT_PATH = "content/posts";
+export const PAGES_CONTENT_PATH = "content/pages";
 
 const articleSchema = () =>
   z.object({
@@ -29,16 +26,10 @@ const articleSchema = () =>
         if (v == null) return v;
         return v instanceof Date ? v : new Date(String(v).replace(" ", "T"));
       }),
-    tags: z.array(z.string()).default([]),
     draft: z.boolean().optional(),
     banner: z.string().optional(),
     slug: z.string().trim().min(1, "slug 不能为空"),
   });
-
-const pageSchema = z.object({
-  title: z.string(),
-  description: z.string().optional(),
-});
 
 const posts = defineCollection({
   loader: glob({
@@ -50,10 +41,14 @@ const posts = defineCollection({
 
 const pages = defineCollection({
   loader: glob({
-    pattern: "about.md",
-    base: `./${POSTS_CONTENT_PATH}`,
+    pattern: "**/[^_]*.md",
+    base: `./${PAGES_CONTENT_PATH}`,
   }),
-  schema: pageSchema,
+  schema: () =>
+    z.object({
+      title: z.string(),
+      description: z.string().optional(),
+    }),
 });
 
 export const collections = { posts, pages };

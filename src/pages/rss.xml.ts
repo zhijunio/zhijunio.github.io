@@ -28,7 +28,6 @@ export async function GET() {
         link: getPostUrl(data.slug, post.collection),
         title: data.title,
         description: getDescription(body ?? ""),
-        ...(data.tags.length > 0 ? { categories: data.tags } : {}),
         pubDate: new Date(data.date),
       };
     }),

@@ -73,6 +73,10 @@ export function resolveBlogImageRef(
   return `/images/${dir}/${rel}`;
 }
 
+export function getEntryDescription(entry: BlogLikeEntry): string {
+  return entry.data.description?.trim() || getDescription(entry.body ?? "");
+}
+
 export function getDescription(markdownContent: string): string {
   const lines = markdownContent.split(/\r?\n/).slice(0, DESC_MAX_LINES);
   const processedContent = lines.join("");
@@ -133,6 +137,7 @@ export type HomeFeedItem = {
   href: string;
   dateDisplay: string;
   dateIso: string;
+  description: string;
 };
 
 export function toHomeFeedItem(entry: BlogLikeEntry): HomeFeedItem {
@@ -142,6 +147,7 @@ export function toHomeFeedItem(entry: BlogLikeEntry): HomeFeedItem {
     href: getPostUrl(entry.data.slug, entry.collection),
     dateDisplay: date.display,
     dateIso: date.iso,
+    description: getEntryDescription(entry),
   };
 }
 

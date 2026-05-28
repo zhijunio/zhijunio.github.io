@@ -33,7 +33,8 @@ const fullDescription = descriptionProp?.trim() || SITE.description;
 const robotsContent = robots?.trim() || "index,follow";
 const canonicalHref = String(canonicalURL);
 const isArticlePage = Boolean(pubDatetime);
-const isHomePage = Astro.url.pathname.replace(/\.html?$/, "") === "/";
+const isHomePage =
+  (Astro.url.pathname.replace(/\.html?$/, "") || "/") === "/";
 const ogType = isArticlePage ? "article" : "website";
 
 const ogImageRef = devLocalImageRef(

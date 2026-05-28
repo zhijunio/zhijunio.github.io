@@ -5,7 +5,7 @@ import Photosuite from "@/components/Photosuite.astro";
 import MermaidLoader from "@/components/MermaidLoader.astro";
 import CodeCopyButton from "@/components/CodeCopyButton.astro";
 import {
-  getDescription,
+  getEntryDescription,
   getPostUrl,
   isHttpUrl,
   resolveBlogImageRef,
@@ -35,8 +35,7 @@ const hasInlineImages = /!\[[\s\S]*?\]\([^)]+\)|<img\s/i.test(body);
 const needsMermaid = /```mermaid\b/i.test(body);
 const needsCodeCopy = /```[\s\S]*?```/.test(body);
 
-const fullDescription =
-  postDescription?.trim() || getDescription(body);
+const fullDescription = getEntryDescription(post);
 
 const navPosts = posts.map(p => ({
   path: getPostUrl(p.data.slug, p.collection),

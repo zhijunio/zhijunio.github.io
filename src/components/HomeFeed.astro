@@ -33,6 +33,11 @@ const prevHref = page === 2 ? "/" : page ? `/page/${page - 1}` : null;
             <h2>
               <a href={item.href}>{item.title}</a>
             </h2>
+            {
+              item.description && (
+                <p class="home-feed-desc">{item.description}</p>
+              )
+            }
           </article>
         </li>
       ))
@@ -114,6 +119,17 @@ const prevHref = page === 2 ? "/" : page ? `/page/${page - 1}` : null;
   #home-feed-list h2 a:hover {
     color: var(--accent);
     text-decoration: underline;
+  }
+
+  #home-feed-list .home-feed-desc {
+    margin: 0.45rem 0 0;
+    color: var(--text-secondary);
+    font-size: 0.8125rem;
+    line-height: 1.55;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
   }
 
   .home-feed-more-wrap {

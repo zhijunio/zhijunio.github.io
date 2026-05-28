@@ -14,14 +14,10 @@ export interface Props {
 }
 
 export const getStaticPaths = (async () => {
-  const all = await getAllBlogLike();
-  const posts = sortPosts(all);
+  const posts = sortPosts(await getAllBlogLike());
 
   return posts.map(post => ({
-    params: {
-      section: post.collection,
-      slug: getPostSlugParam(post.data.slug),
-    },
+    params: { slug: getPostSlugParam(post.data.slug) },
     props: { post, posts },
   }));
 }) satisfies GetStaticPaths;

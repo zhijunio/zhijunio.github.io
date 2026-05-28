@@ -9,5 +9,5 @@ alwaysApply: true
 - **Photosuite**：有正文内联图的文章按需加载。
 - **代码复制**：文章含围栏代码块时加载 `CodeCopyButton`（仅 `PostDetails`）；列表页不加载。
 - **文章列表页**：不要 `/posts.html`；发现靠首页分页、RSS、单篇 URL（`/{collection}/{slug}`）。
-- **列表页资源边界**：`index`、`page/[page]`、`about` 仅用 `Layout` + 列表组件；`pnpm build` 跑 `assert-list-pages-lean`。
+- **列表页资源边界**：`index`、`page/[page]`、`about` 仅用 `Layout` + 列表组件，不加载 Mermaid / 复制 / Photosuite。
 - **全站 UI**：年进度条、回到顶部；已移除 Umami、Pagefind、Giscus、主题切换。

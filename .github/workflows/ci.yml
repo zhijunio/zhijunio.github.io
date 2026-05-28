@@ -1,154 +1,84 @@
 name: CI
 
 on:
-  pull_request:
-    types:
-      - opened
-      - edited
-      - synchronize
-      - reopened
-  workflow_dispatch:
-  workflow_call:
   push:
-    branches:
-      - main
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
 
 jobs:
-  build:
-    name: Code standards & build
+  ci:
     runs-on: ubuntu-latest
-    timeout-minutes: 3
-    env:
-      # 避免 Node 20 弃用警告，让 Actions 使用 Node 24 运行
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
-    strategy:
-      matrix:
-        node-version: [25]
-
+    timeout-minutes: 15
     steps:
-      - name: "☁️ Checkout repository"
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v6
 
-      - name: "📦 Install pnpm"
-        uses: pnpm/action-setup@v6
+      - uses: pnpm/action-setup@v6
         with:
           version: 11.4.0
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v6
+      - uses: actions/setup-node@v6
         with:
-          node-version: ${{ matrix.node-version }}
-          cache: "pnpm"
+          node-version: 25
+          cache: pnpm
 
-      - name: "📦 Install dependencies"
-        run: pnpm install
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run ci
 
-      - name: "🔎 Lint code"
-        run: pnpm run lint
-
-      - name: "📝 Checking code format"
-        run: pnpm run format:check
-
-      - name: "📄 Markdown lint"
-        run: pnpm run md:check
-
-      - name: "🔍 Astro check"
-        run: pnpm run check
-
-      - name: "🎨 Shiki langs audit"
-        run: pnpm run audit:shiki
-
-      - name: "📋 List pages lean tests"
-        run: pnpm run test:assert-lean
-
-      - name: "🚀 Build the project"
-        run: pnpm run build
-
-  cdn-changes:
-    name: Detect CDN changes
+  publish-cdn:
+    name: CDN images
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && !contains(github.event.head_commit.message, '[skip ci]')) }}
-    outputs:
-      run: ${{ steps.detect.outputs.run }}
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && !contains(github.event.head_commit.message, '[skip ci]'))
+    permissions:
+      contents: write
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v6
         with:
-          fetch-depth: 2
+          fetch-depth: 0
 
-      - name: Detect CDN-related changes
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 11.4.0
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 25
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Detect image changes
         id: detect
         run: |
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
             echo "run=true" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          if git diff --name-only HEAD^ HEAD | grep -qE '^(public/images/|public/favicon\.ico|public/og\.webp|scripts/convert-to-webp\.mjs|\.github/workflows/ci\.yml)'; then
+          if git diff --name-only HEAD^ HEAD | grep -qE '^(public/images/|public/favicon\.ico|public/og\.webp|scripts/convert-to-webp\.mjs)'; then
             echo "run=true" >> "$GITHUB_OUTPUT"
           else
             echo "run=false" >> "$GITHUB_OUTPUT"
           fi
 
-  publish-cdn:
-    name: WebP + R2 sync
-    needs: cdn-changes
-    if: ${{ needs.cdn-changes.outputs.run == 'true' }}
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v6
-        with:
-          version: 11.4.0
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: 25
-          cache: pnpm
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Convert images to WebP
-        run: pnpm run convert-to-webp
-
-      - name: Commit WebP changes
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add public/images
-          if git diff --cached --quiet; then
-            echo "No image changes to commit."
-          else
-            git commit -m "chore(图片): 自动转换 webp [skip ci]"
-            git push
-          fi
-
-      - name: Install rclone
-        run: curl -fsSL https://rclone.org/install.sh | sudo bash
-
-      - name: Configure rclone
+      - name: WebP + commit + R2
+        if: steps.detect.outputs.run == 'true'
         env:
           RCLONE_CONFIG: ${{ secrets.RCLONE_CONFIG }}
         run: |
+          pnpm run convert-to-webp
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/images
+          if ! git diff --cached --quiet; then
+            git commit -m "chore(图片): 自动转换 webp [skip ci]"
+            git push
+          fi
           if [[ -z "${RCLONE_CONFIG}" ]]; then
-            echo "::error::缺少仓库 Secret：RCLONE_CONFIG（本地 rclone config file 中 [r2] 段及 remote 配置）"
+            echo "::error::缺少 Secret: RCLONE_CONFIG"
             exit 1
           fi
           mkdir -p ~/.config/rclone
           printf '%s\n' "${RCLONE_CONFIG}" > ~/.config/rclone/rclone.conf
           chmod 600 ~/.config/rclone/rclone.conf
-
-      - name: Sync to R2
-        run: pnpm run images:sync
+          curl -fsSL https://rclone.org/install.sh | sudo bash
+          pnpm run images:sync

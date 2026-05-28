@@ -68,10 +68,7 @@ export default defineConfig({
     rehypePlugins: [
       rehypeSlug,
       [rehypeExternalLinks, { target: "_blank", rel: "noopener noreferrer" }],
-      [
-        rehypeWrapAll,
-        { selector: "table", wrapper: "div.responsive-table" },
-      ],
+      [rehypeWrapAll, { selector: "table", wrapper: "div.responsive-table" }],
       rehypeArticleContentImages,
     ],
     syntaxHighlight: "shiki",

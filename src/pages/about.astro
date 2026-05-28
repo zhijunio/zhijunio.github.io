@@ -1,41 +1,18 @@
 ---
-import { getEntry, render } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
-import { SITE } from "@/config";
+import { getEntry, render } from "astro:content";
 
 const page = await getEntry("pages", "about");
 if (!page) {
-  throw new Error("content/about.md not found");
+  return Astro.redirect("/404");
 }
 
 const { Content } = await render(page);
-const pageTitle = page.data.title || SITE.title;
-const pageDescription = page.data.description || SITE.description;
-const aboutLd = {
-  "@context": "https://schema.org",
-  "@type": "AboutPage",
-  name: pageTitle,
-  url: new URL("/about", SITE.website).href,
-  description: pageDescription,
-  isPartOf: {
-    "@type": "WebSite",
-    name: SITE.title,
-    url: SITE.website,
-  },
-  inLanguage: SITE.lang,
-};
+const { title, description } = page.data;
 ---
 
-<Layout title={pageTitle} description={pageDescription}>
-  <script
-    slot="head"
-    type="application/ld+json"
-    is:inline
-    set:html={JSON.stringify(aboutLd)}
-  />
-  <article id="article">
-    <div class="post-content page-content">
-      <Content />
-    </div>
+<Layout title={title} description={description}>
+  <article id="article" class="post-content page-content">
+    <Content />
   </article>
 </Layout>

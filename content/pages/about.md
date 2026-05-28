@@ -35,10 +35,8 @@ WeChat: [@zhijunio](https://blog.zhijun.io/images/wechat.webp) ｜ Twitter：[@z
 ### 文章
 
 - [Teach Yourself Programming in Ten Years](https://norvig.com/21-days.html) - 十年自学编程
-- [Get better at programming by learning how things work](https://jvns.ca/blog/learn-how-things-work/) - 通过学习事物运作原理来提高编程技能。
 - [Learn In Public](https://www.swyx.io/learn-in-public/) - 公开你的学习
 - [Software Engineering - The Soft Parts](https://addyosmani.com/blog/software-engineering-soft-parts/) - 在软件工程领域学到的“软技能”
-- [How do I upskill myself, and what tools & techniques do I use?](https://www.youtube.com/watch?v=oOAaGvpQTCo) - 我该如何提升自己的技能？我需要使用哪些工具和技巧？
 - [Feeling Left Behind in Tech? This Is Your 90-Day Comeback Plan](https://www.sivalabs.in/feel-left-behind-in-tech-this-is-90-day-comeback-plan/) -
   技术从业者 90 天逆袭计划
 
