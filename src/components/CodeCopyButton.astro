@@ -2,7 +2,7 @@
 /** 为文章内 Shiki 代码块（pre.astro-code）添加复制按钮 */
 ---
 
-<script is:inline data-astro-rerun>
+<script is:inline>
   function getCodeText(pre) {
     return (pre.textContent || "").replace(/\n$/, "");
   }
@@ -85,7 +85,6 @@
   } else {
     scheduleInit();
   }
-  document.addEventListener("astro:page-load", scheduleInit);
 </script>
 
 <style is:global>

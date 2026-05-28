@@ -21,9 +21,13 @@
   --radius: 8px;
 
   /**
-   * 与 body > header 吸顶后的可视高度对齐（导航 + 年度进度等）。
-   * 用于标题锚点 scroll-margin。
+   * 吸顶顶栏高度，用于标题锚点 scroll-margin。
+   * 启用年进度条时由下方 :has 规则自动加大。
    */
+  --site-header-sticky-offset: 3.25rem;
+}
+
+:root:has(#year-progress) {
   --site-header-sticky-offset: 5.25rem;
 }
 
