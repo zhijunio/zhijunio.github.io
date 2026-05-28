@@ -16,8 +16,7 @@
 
 ```
 ├── content/posts/tech|weekly/  # 文章
-├── content/pages/about.md    # 关于页正文
-├── src/pages/about.astro     # 关于路由（读 pages 集合）
+├── content/pages/about.md    # 关于页（`/about` 由 `[slug].astro` 生成）
 ├── src/components|layouts|pages|utils/
 ├── public/images/         # 配图（生产走 CDN）
 ├── scripts/               # 构建辅助与校验
