@@ -7,10 +7,10 @@ import { getEntryDescription, resolveBlogImageRef } from "@/utils/postUtils";
 import { siteImageHref } from "@/utils/blogImages";
 
 const { post } = Astro.props;
-const { title, date, updated, banner, slug } = post.data;
+const { title, date, updated, cover, slug } = post.data;
 
-const bannerSrc = (() => {
-  const path = resolveBlogImageRef(banner, slug);
+const coverSrc = (() => {
+  const path = resolveBlogImageRef(cover, slug);
   return path ? siteImageHref(path) : undefined;
 })();
 
@@ -24,16 +24,16 @@ const body = post.body ?? "";
   pubDatetime={date}
   modDatetime={updated}
 >
-  <ArticleExtras body={body} />
+  <ArticleExtras body={body} hasCover={Boolean(coverSrc)} />
   <article id="article">
     <h1>{title}</h1>
 
     {
-      bannerSrc && (
+      coverSrc && (
         <img
-          id="post-banner"
-          src={bannerSrc}
-          alt={`${title} — 横幅`}
+          id="post-cover"
+          src={coverSrc}
+          alt={`${title} — 封面`}
           fetchpriority="high"
           decoding="async"
         />

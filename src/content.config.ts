@@ -23,7 +23,7 @@ const posts = defineCollection({
     date: contentDate,
     updated: contentDate.optional().nullable(),
     draft: z.boolean().optional(),
-    banner: z.string().optional(),
+    cover: z.string().optional(),
     slug: z.string().trim().min(1),
   }),
 });

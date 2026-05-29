@@ -3,7 +3,7 @@ title: "agentic-expense-manager：Spring Boot Agentic 开发脚手架"
 date: 2026-05-19 14:20:00+08:00
 slug: agentic-expense-manager-learning-guide
 tags: [ "java", "spring-boot", "spring-modulith","sdd" ]
-draft: false
+cover: "cover.webp"
 description: "sivaprasadreddy/agentic-expense-manager 不是成品记账 App，而是 Spring Boot 4 + Modulith + 29 条 UC 需求清单的 Agent 试验场。本文按目录拆解每个文件能学什么，并归纳八类学习维度。"
 ---
 
@@ -38,6 +38,8 @@ src/test/                         # 模块化测试 + Testcontainers
 AGENTS.md / CLAUDE.md             # 给 AI 的操作手册
 pom.xml + compose.yaml + Taskfile.yml
 ```
+
+![agentic-expense-manager 仓库结构导读图](01-framework-repo-map.webp)
 
 建议阅读顺序：**README → requirements.md → ModularityTest → users 模块 → 测试与 CI → AGENTS.md**。
 
@@ -114,6 +116,8 @@ pom.xml + compose.yaml + Taskfile.yml
 | `domain/models/package-info.java` | `@NamedInterface("user-models")`：控制 Modulith 暴露面 |
 | `SecurityUserDetailsService.java` | 接入 Spring Security 的适配 |
 
+![users 模块的垂直切片与边界](02-framework-users-slice.webp)
+
 Web 层是 **Thymeleaf SSR**，不是前后端分离；适合 Agent 一次改完一条 UC 的闭环。
 
 ### 资源与模板
@@ -134,6 +138,8 @@ Web 层是 **Thymeleaf SSR**，不是前后端分离；适合 Agent 一次改完
 | `TestcontainersConfiguration.java` | `@ServiceConnection` 注入 Postgres + Mailpit |
 | `BaseIT.java` | `@SpringBootTest` + `MockMvcTester`（Boot 4 测试 API） |
 | `UserAuthControllerTests` 等 | Web 集成测试样板 |
+
+![Agentic 与 SDD 的工程闭环](03-flow-agentic-loop.webp)
 
 ## 八类学习维度（系统归纳）
 
@@ -184,6 +190,8 @@ Docker Compose、Taskfile、Mailpit 本地验邮件。
 2. 新建 `accounts` 模块（仿 `users`：`AccountsAPI`、domain、web、Flyway `V002__...`）
 3. 跑 `./mvnw clean verify`，满足 JaCoCo
 4. 把 requirements 里对应 Status 改为 COMPLETED
+
+![认领下一条 UC 的执行路径](04-flow-next-uc.webp)
 
 仓库教的是 **「在约束下用 Agent 交付下一条 UC」**，不是复制一个 FinTech。
 

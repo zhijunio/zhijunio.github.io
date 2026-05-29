@@ -5,14 +5,16 @@ import CodeCopyButton from "@/components/CodeCopyButton.astro";
 
 interface Props {
   body: string;
+  hasCover?: boolean;
 }
 
-const { body } = Astro.props;
+const { body, hasCover = false } = Astro.props;
 const hasInlineImages = /!\[[\s\S]*?\]\([^)]+\)|<img\s/i.test(body);
+const needsPhotosuite = hasCover || hasInlineImages;
 const needsMermaid = /```mermaid\b/i.test(body);
 const needsCodeCopy = /```[\s\S]*?```/.test(body);
 ---
 
-{hasInlineImages && <Photosuite />}
+{needsPhotosuite && <Photosuite />}
 {needsMermaid && <MermaidLoader />}
 {needsCodeCopy && <CodeCopyButton />}

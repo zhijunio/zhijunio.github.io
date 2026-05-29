@@ -1,11 +1,27 @@
 /* 文章详情 */
 
-#post-banner {
+#post-cover {
   display: block;
   max-width: 100%;
   margin: 0 auto 2rem;
   border: 1px solid color-mix(in srgb, var(--text) 9%, transparent);
   border-radius: 8px;
+}
+
+#article > .photosuite-item:has(#post-cover) {
+  display: block;
+  max-width: 100%;
+  margin: 0 auto 2rem;
+  border: 1px solid color-mix(in srgb, var(--text) 9%, transparent);
+  border-radius: 8px;
+}
+
+#article > .photosuite-item:has(#post-cover) > a {
+  display: block;
+}
+
+#article > .photosuite-item:has(#post-cover) #post-cover {
+  width: 100%;
 }
 
 #article > h1 {
