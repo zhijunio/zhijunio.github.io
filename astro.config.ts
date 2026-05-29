@@ -9,6 +9,7 @@ import { remarkPlainShortCode } from "./src/utils/remarkPlainShortCode";
 import { unified } from "@astrojs/markdown-remark";
 import { defineConfig } from "astro/config";
 import rehypeSlug from "rehype-slug";
+// @ts-expect-error — rehype-wrap-all 无类型定义
 import rehypeWrapAll from "rehype-wrap-all";
 import rehypeExternalLinks from "rehype-external-links";
 import { imageUrl as photosuiteImageUrl } from "photosuite";

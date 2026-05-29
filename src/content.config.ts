@@ -3,8 +3,8 @@
  */
 
 import { defineCollection } from "astro:content";
-import { z } from "astro/zod";
 import { glob } from "astro/loaders";
+import { z } from "astro/zod";
 
 const contentDate = z
   .union([z.date(), z.string()])
