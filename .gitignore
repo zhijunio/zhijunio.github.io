@@ -25,7 +25,3 @@ pnpm-debug.log*
 # Python (scripts/*.py)
 __pycache__/
 *.py[cod]
-
-.agents
-
-.baoyu-skills
