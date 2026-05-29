@@ -11,7 +11,7 @@ description: 关于 ZhiJun：开发背景、正在使用的工具、联系方式
 
 欢迎交流指正，也期待与同样热爱技术的你一起讨论。
 
-[🐙 GitHub](https://github.com/zhijunio) ｜ [🐦 Twitter](https://twitter.com/zhijunio) ｜ [▶️ YouTube](https://www.youtube.com/zhijunio) ｜ [✈️ Telegram](https://t.me/zhijun_share)
+[🐙 GitHub](https://github.com/zhijunio)、[🐦 Twitter](https://twitter.com/zhijunio)、[▶️ YouTube](https://www.youtube.com/zhijunio)、[✈️ Telegram](https://t.me/zhijun_share)
 
 ## 我的收藏
 
@@ -36,10 +36,6 @@ description: 关于 ZhiJun：开发背景、正在使用的工具、联系方式
 - [Software Engineering - The Soft Parts](https://addyosmani.com/blog/software-engineering-soft-parts/) - 在软件工程领域学到的“软技能”
 - [Feeling Left Behind in Tech? This Is Your 90-Day Comeback Plan](https://www.sivalabs.in/feel-left-behind-in-tech-this-is-90-day-comeback-plan/) -
   技术从业者 90 天逆袭计划
-
-### 书籍
-
-从 2026 年开始，记录每周阅读的书籍。
 
 ### 工具
 

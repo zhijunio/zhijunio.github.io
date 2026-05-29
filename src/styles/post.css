@@ -8,6 +8,13 @@
   border-radius: 8px;
 }
 
+#article > h1 {
+  font-size: 1.75rem;
+  line-height: 1.28;
+  margin-top: 0.25rem;
+  margin-bottom: 1rem;
+}
+
 #article .post-content {
   line-height: 1.8;
 }
@@ -18,4 +25,13 @@
 
 :root:has(#year-progress) #main-content .post-content :where(h2, h3, h4) {
   scroll-margin-top: 5.25rem;
+}
+
+@media (max-width: 768px) {
+  #article > h1 {
+    font-size: 1.25rem;
+    line-height: 1.35;
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+  }
 }

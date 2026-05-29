@@ -1,5 +1,9 @@
 /* 首页文章列表（无卡片，分隔线列表） */
 
+#main-content:has(#home-feed-list) {
+  padding-top: 0;
+}
+
 #home-feed-list {
   margin: 0;
   padding: 0;

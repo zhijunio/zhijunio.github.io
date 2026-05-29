@@ -82,8 +82,8 @@
 #year-progress {
   width: 100%;
   max-width: 960px;
-  margin: 0.2rem auto 0;
-  padding: 0 1.5rem 0.3rem;
+  margin: 0.15rem auto 0;
+  padding: 0 1.5rem 0.1rem;
 }
 
 #year-progress-track {
@@ -143,6 +143,15 @@
   #year-progress {
     padding-left: 1rem;
     padding-right: 1rem;
+  }
+
+  #year-progress {
+    margin-top: 0.1rem;
+    padding-bottom: 0;
+  }
+
+  #year-progress-track {
+    min-height: 8px;
   }
 }
 
