@@ -1,3 +1,21 @@
 ---
 import "photosuite/dist/photosuite.css";
 ---
+
+<script>
+  import { CDN_IMAGES_BASE } from "@/config";
+  import { photosuite } from "photosuite/client";
+
+  const options = {
+    scope: "#article",
+    imageBase: import.meta.env.PROD ? CDN_IMAGES_BASE : "/images",
+    exif: false,
+  };
+
+  function runPhotosuite() {
+    photosuite(options);
+  }
+
+  runPhotosuite();
+  document.addEventListener("astro:page-load", runPhotosuite);
+</script>

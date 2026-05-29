@@ -8,8 +8,7 @@ export const CDN_IMAGES_BASE = `${CDN_ORIGIN}/images`;
 export const SITE = {
   website: "https://blog.zhijun.io",
   author: "ZhiJun",
-  description:
-    "记录 AI、Java、MicroServices、Architecture、Kubernetes 的博客",
+  description: "记录 AI、Java、MicroServices、Architecture、Kubernetes 的博客",
   title: "ZhiJun Blog",
 
   logo: "/images/avatar.webp",

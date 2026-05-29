@@ -8,19 +8,12 @@
   }
 
   async function copyText(text) {
+    if (!navigator.clipboard?.writeText) return false;
     try {
       await navigator.clipboard.writeText(text);
       return true;
     } catch {
-      const ta = document.createElement("textarea");
-      ta.value = text;
-      ta.setAttribute("readonly", "");
-      ta.style.cssText = "position:fixed;left:-9999px;top:0";
-      document.body.appendChild(ta);
-      ta.select();
-      const ok = document.execCommand("copy");
-      document.body.removeChild(ta);
-      return ok;
+      return false;
     }
   }
 

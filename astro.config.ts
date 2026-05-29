@@ -6,11 +6,12 @@ import {
 } from "./src/utils/blogImages";
 import { remarkMermaid } from "./src/utils/remarkMermaid";
 import { remarkPlainShortCode } from "./src/utils/remarkPlainShortCode";
+import { unified } from "@astrojs/markdown-remark";
 import { defineConfig } from "astro/config";
 import rehypeSlug from "rehype-slug";
 import rehypeWrapAll from "rehype-wrap-all";
 import rehypeExternalLinks from "rehype-external-links";
-import photosuite from "photosuite";
+import { imageUrl as photosuiteImageUrl } from "photosuite";
 
 const SHIKI_LANGS = [
   "bash",
@@ -46,21 +47,24 @@ export default defineConfig({
   site: SITE.website,
   compressHTML: true,
   devToolbar: { enabled: false },
-  integrations: [
-    photosuite({
-      scope: "#article",
-      imageBase: getImagesAssetBase(),
-      exif: false,
-    }),
-  ],
   markdown: {
-    remarkPlugins: [remarkMermaid, remarkPlainShortCode, remarkBlogImages],
-    rehypePlugins: [
-      rehypeSlug,
-      [rehypeExternalLinks, { target: "_blank", rel: "noopener noreferrer" }],
-      [rehypeWrapAll, { selector: "table", wrapper: "div.responsive-table" }],
-      rehypeArticleContentImages,
-    ],
+    processor: unified({
+      remarkPlugins: [
+        remarkMermaid,
+        remarkPlainShortCode,
+        remarkBlogImages,
+        [
+          photosuiteImageUrl,
+          { scope: "#article", imageBase: getImagesAssetBase(), exif: false },
+        ],
+      ],
+      rehypePlugins: [
+        rehypeSlug,
+        [rehypeExternalLinks, { target: "_blank", rel: "noopener noreferrer" }],
+        [rehypeWrapAll, { selector: "table", wrapper: "div.responsive-table" }],
+        rehypeArticleContentImages,
+      ],
+    }),
     syntaxHighlight: "shiki",
     shikiConfig: {
       theme: "github-light",
