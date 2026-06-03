@@ -16,7 +16,7 @@ importers:
         version: 4.0.18
       astro:
         specifier: ^6.0.0
-        version: 6.4.3(@types/node@25.9.1)(rollup@4.61.0)(yaml@2.8.2)
+        version: 6.4.4(@types/node@25.9.1)(rollup@4.61.0)(yaml@2.8.2)
       mermaid:
         specifier: ^11.12.3
         version: 11.15.0
@@ -1050,8 +1050,8 @@ packages:
     resolution: {integrity: sha512-+QDcgc7e+au6EZ0YjMmRRjNoQo5bDMlaR45aWDoFsuxQTCM9qmCHRoiKJPELgckJ8Wmr7vcfpa9eCDHBFh6G4w==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  astro@6.4.3:
-    resolution: {integrity: sha512-heArIk8zLcxuoj1WgBH2zGdAD8zKSU1mEcBvS6hYMEHRPlbtvB+4Y8ri9Z27hzeryvGaFgrH32zjghEfV2y07g==}
+  astro@6.4.4:
+    resolution: {integrity: sha512-hVe8tq3lqt/Dr0UyB//yUmQSlHMTU8scTiF/vQddQVahLE4TTaSdH5H0nb7OvRcwo0UmlAO8DWYar4jNaS7H+A==}
     engines: {node: '>=22.12.0', npm: '>=9.6.5', pnpm: '>=7.1.0'}
     hasBin: true
 
@@ -3728,7 +3728,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  astro@6.4.3(@types/node@25.9.1)(rollup@4.61.0)(yaml@2.8.2):
+  astro@6.4.4(@types/node@25.9.1)(rollup@4.61.0)(yaml@2.8.2):
     dependencies:
       '@astrojs/compiler': 4.0.0
       '@astrojs/internal-helpers': 0.10.0
