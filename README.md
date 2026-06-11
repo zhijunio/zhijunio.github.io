@@ -1,6 +1,6 @@
 # ZhiJun Blog
 
-基于 **Astro 6** 的静态技术博客（中文），文章在 `content/posts/`（`tech/`、`weekly/` 等子目录仅作分类，路由统一为 `/posts/{slug}`）。
+基于 **Astro 6** 的静态技术博客（中文），文章在 `content/posts/`（`tech/`、`review/` 等子目录仅作分类，路由统一为 `/posts/{slug}`）。
 
 ## 技术栈
 

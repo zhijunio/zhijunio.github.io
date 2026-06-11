@@ -1,5 +1,5 @@
 /**
- * `content/posts` 下均为文章；`tech/`、`weekly/` 等子目录仅便于本地分类，不影响 URL 或 schema。
+ * `content/posts` 下均为文章；`tech/`、`review/` 等子目录仅便于本地分类，不影响 URL 或 schema。
  */
 
 import { defineCollection } from "astro:content";

@@ -11,7 +11,7 @@
 ## 内容模型
 
 - `content/posts/**/*.md` 只放真实文章。
-- `content/posts` 下的 `tech/`、`weekly/` 等子目录仅用于本地整理，不影响文章 URL。
+- `content/posts` 下的 `tech/`、`review/` 等子目录仅用于本地整理，不影响文章 URL。
 - 不要把 prompt、outline、草稿、生成记录、临时脚本放进 `content/posts`，否则会被内容集合误收录。
 
 ## 图片约定

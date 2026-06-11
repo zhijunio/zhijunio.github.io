@@ -75,7 +75,7 @@ ls -la src/pages/posts 2>/dev/null || echo "No posts dir"
 #### 1. 文章存放位置
 
 - **上游**：文章在项目根目录 `posts/` 下，按子目录分类（如 `posts/life/`、`posts/technology/`）。
-- **当前**：改为 Astro Content Collections，长文在 **`content/tech/`**，周报在 **`content/weekly/`**；`src/content.config.ts` 中 `POSTS_CONTENT_PATH` 为 `"content"`，集合仍命名为 `posts`。
+- **当前**：改为 Astro Content Collections，长文在 **`content/posts/tech/`**，周回顾在 **`content/posts/review/`**（原 `weekly/`）；集合仍命名为 `posts`。
 
 #### 2. 文章 URL 格式
 
@@ -134,7 +134,7 @@ ls -la src/pages/posts 2>/dev/null || echo "No posts dir"
 
 #### 3. 内容 Schema（`src/content.config.ts`）
 
-- **路径**：`POSTS_CONTENT_PATH = "content"`，glob 匹配 `{tech,weekly}/**/*.{md,mdx}`。
+- **路径**：glob 匹配 `content/posts/**/*.{md,mdx}`（`tech/`、`review/` 等子目录仅分类）。
 - **frontmatter**：含 `slug`（必填）、`mermaid`、`math` 等；URL 与 `public/images/{slug}/` 配图目录一致。
 
 #### 4. 依赖与脚本（`package.json`、`pnpm-lock.yaml`）
@@ -194,7 +194,7 @@ ls -la src/pages/posts 2>/dev/null || echo "No posts dir"
 - **.mcp.json**：删除。
 - **docs**：删除 `redirect.conf`、`reverse-proxy.conf`。
 - **posts/**：删除上游全部示例/原博客文章（约 120+ 篇，含 life、technology、outdoors、photo、book、startup、annual-reviews
-  等），当前博客内容在 **`content/tech/`** 与 **`content/weekly/`**。
+  等），当前博客内容在 **`content/posts/tech/`** 与 **`content/posts/review/`**。
 - **public**：删除 `feeds.js`、`dev.svg`、`astro-lhasa-lighthouse-score.svg`、`astro-lhasa-v1-thumbnail.svg`、
   `assets/forrest-gump-quote.webp`；修改 favicon、apple-touch-icon、`_redirects`、`lazy-list.js`、`tocbot`、`toggle-theme.js`
   等。
