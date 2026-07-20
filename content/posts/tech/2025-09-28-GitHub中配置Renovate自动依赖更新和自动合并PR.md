@@ -16,19 +16,19 @@ description: "详细介绍如何在 GitHub 项目中配置 Renovate，实现依�
 
 ## 为什么需要自动依赖更新？
 
-### 🔒 安全性
+### 安全性
 
 - 及时获取安全补丁
 - 减少安全漏洞风险
 - 自动处理已知的CVE
 
-### 🚀 功能更新
+### 功能更新
 
 - 获取新功能和性能改进
 - 保持技术栈的现代化
 - 减少技术债务
 
-### ⏰ 效率提升
+### 效率提升
 
 - 自动化重复性工作
 - 减少手动维护成本
@@ -386,7 +386,7 @@ description: "详细介绍如何在 GitHub 项目中配置 Renovate，实现依�
   "semanticCommitScope": "deps",
   "branchPrefix": "renovate/",
   "prTitle": "{{semanticPrefix}}{{depName}} to {{newVersion}}",
-  "prBody": "## 🤖 Renovate Update\n\nThis PR contains the following updates:\n\n{{#each updates}}\n- [{{#if this.isLockfileUpdate}}lockfile{{else}}package{{/if}}] {{this.depName}} {{#if this.isLockfileUpdate}}lockfile{{else}}from {{this.currentValue}} to {{this.newValue}}{{/if}}\n{{/each}}\n\n{{#if schedule}}\n**Schedule**: {{schedule}}\n{{/if}}\n\n{{#if automerge}}\n**Automerge**: {{automerge}}\n{{/if}}\n\n---\n\n{{#if hasReleaseNotes}}\n## 📝 Release Notes\n\n{{#each releases}}\n### {{this.title}}\n\n{{#each this.releases}}\n- {{this.version}} - {{this.date}}\n{{#each this.changes}}\n- {{this}}\n{{/each}}\n{{/each}}\n{{/each}}\n{{/if}}\n\n## ✅ Checklist\n\n- [ ] Code changes reviewed\n- [ ] Tests passing\n- [ ] No breaking changes\n- [ ] Documentation updated (if needed)"
+  "prBody": "## Renovate Update\n\nThis PR contains the following updates:\n\n{{#each updates}}\n- [{{#if this.isLockfileUpdate}}lockfile{{else}}package{{/if}}] {{this.depName}} {{#if this.isLockfileUpdate}}lockfile{{else}}from {{this.currentValue}} to {{this.newValue}}{{/if}}\n{{/each}}\n\n{{#if schedule}}\n**Schedule**: {{schedule}}\n{{/if}}\n\n{{#if automerge}}\n**Automerge**: {{automerge}}\n{{/if}}\n\n---\n\n{{#if hasReleaseNotes}}\n## Release Notes\n\n{{#each releases}}\n### {{this.title}}\n\n{{#each this.releases}}\n- {{this.version}} - {{this.date}}\n{{#each this.changes}}\n- {{this}}\n{{/each}}\n{{/each}}\n{{/each}}\n{{/if}}\n\n## Checklist\n\n- [ ] Code changes reviewed\n- [ ] Tests passing\n- [ ] No breaking changes\n- [ ] Documentation updated (if needed)"
 }
 ```
 
@@ -591,11 +591,11 @@ Renovate会在仓库中创建一个依赖仪表板Issue，显示：
 
 通过合理配置Renovate，可以实现：
 
-- 🔄 自动检测依赖更新
-- 📝 自动创建Pull Request
-- ✅ 自动合并符合条件的更新
-- 🏷️ 智能标签和分类
-- 📊 完整的更新监控
+- 自动检测依赖更新
+- 自动创建Pull Request
+- 自动合并符合条件的更新
+- 智能标签和分类
+- 完整的更新监控
 
 选择适合您项目的配置方案：
 

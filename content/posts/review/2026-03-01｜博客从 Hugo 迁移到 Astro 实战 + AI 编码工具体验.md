@@ -58,61 +58,61 @@ VPS 系统重装了之后，花了时间重新设置系统、部署 Docker 服�
 每日简报，机器人回复的内容：
 
 ```bash
-Good morning, zhijunio! ☀️
+Good morning, zhijunio!
 
-📅 Thursday, March 5th, 2026 — 6:30 AM (Shanghai)
+Thursday, March 5th, 2026 — 6:30 AM (Shanghai)
 
-🌤️ Weather
+Weather
 Unable to fetch current weather (API not configured). Consider checking your preferred weather app.
 
-📋 Today's Focus
+Today's Focus
 No scheduled events or tasks found in memory. This is a fresh start — perfect for setting your own priorities!
 
-💡 Suggestions
+Suggestions
 
 • Review your calendar for any meetings today
 • Check email for urgent messages
 • Consider what 1-3 things you want to accomplish today
 
-🔧 System Status
+System Status
 
 • Workspace: Running normally
 • Last activity: System uptime ~1.5 days
 
 ───
 
-Have a productive day! 🦞
+Have a productive day!
 ```
 
 这个回复比较简单，或许可以做一些更复杂的简报，甚至可以替代 [Github 每日简报代码](https://github.com/zhijunio/zhijunio/blob/main/daily_review.py)，完成以下信息的推送。
 
 ```markdown
-📅 每日简报 | 2026年03月05日，今年第 64 天。武汉天气:  阴 4°C ~ 16°C
+每日简报 | 2026年03月05日，今年第 64 天。武汉天气:  阴 4°C ~ 16°C
 
 ███░░░░░░░░░░░░░░░░░ 17.5% (64/365)
 
-📈 今日指数：
+今日指数：
 • 黄金：1,144.00 元/克
 • 比特币：$73,338 USD
 
-🌐 域名状态：
+域名状态：
 • huaiyu.com 状态: ok 过期时间: 2026-10-18
 • zhijunio.com 状态: clientTransferProhibited 过期时间: 2026-04-27
 
-⌨️ 编程时间：
+编程时间：
 • 昨天写代码花了 6 小时 41 分钟
 • 使用编辑器：Chrome 47%, Ghostty 22%, IntelliJ IDEA 18%
 • 主要语言：Other 63%, Markdown 16%, Java 9%
 
-🏃‍跑步距离：
+‍跑步距离：
 • 昨天跑了 5.01 公里
 • 本月跑了 20.27 公里
 • 今年跑了 237.05 公里
 
-💬 每日名言：
+每日名言：
 强扭的瓜甜不甜不重要，只要能解渴就行了。
 
-📜 每日诗词：
+每日诗词：
 《瑞龙吟·德清清明竞渡》
 大溪面。遥望绣羽冲烟，锦梭飞练。桃花三十六陂，鲛宫睡起，娇雷乍转。
 去如箭。催趁戏旗游鼓，素澜雪溅。东风冷湿蛟腥，澹阴送昼。轻霏弄晚。
@@ -120,14 +120,14 @@ Have a productive day! 🦞
 
 —— 宋代·吴文英
 
-⭐️ GitHub Java Trending：
+1/5️ GitHub Java Trending：
 • NationalSecurityAgency /ghidra (https://github.com/NationalSecurityAgency/ghidra)
 • OpenAPITools /openapi-generator (https://github.com/OpenAPITools/openapi-generator)
 • elastic /elasticsearch (https://github.com/elastic/elasticsearch)
 • FCL-Team /FoldCraftLauncher (https://github.com/FCL-Team/FoldCraftLauncher)
 • apache /iceberg (https://github.com/apache/iceberg)
 
-📰 OSChina 最新资讯：
+OSChina 最新资讯：
 • GPT-5.4 意外泄露：200 万上下文窗口与持久状态化特性引关注 (https://www.oschina.net/news/407648)
 • 时序数据库 Apache IoTDB V2.0.7/V1.3.7 发布 (https://my.oschina.net/u/9120954/blog/19208910)
 • OpenAI 与美国国防部达成合作后导致 ChatGPT 卸载量飙升 (https://www.oschina.net/news/407604)

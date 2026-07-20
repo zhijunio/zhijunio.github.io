@@ -450,14 +450,14 @@ apply initialize-spring-boot-migration
 
 ### 主要功能
 
-- ✅ 自动化 Spring Boot 2 → 3 升级（目标最新 3.5.x）
-- ✅ JDK 8 → 21 迁移
-- ✅ `javax.*` → `jakarta.*` 命名空间迁移
-- ✅ Hibernate 5 → 6 适配
-- ✅ 配置属性更新
-- ✅ 依赖版本解析
-- ✅ Dockerfile Java 基础镜像升级
-- ✅ 完整的验证和测试流程
+- 自动化 Spring Boot 2 → 3 升级（目标最新 3.5.x）
+- JDK 8 → 21 迁移
+- `javax.*` → `jakarta.*` 命名空间迁移
+- Hibernate 5 → 6 适配
+- 配置属性更新
+- 依赖版本解析
+- Dockerfile Java 基础镜像升级
+- 完整的验证和测试流程
 
 ### 迁移场景覆盖
 

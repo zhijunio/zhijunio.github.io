@@ -14,31 +14,31 @@ tags: ["spring-ai", "docker", "rag"]
 
 > **核心价值**: 本文详细介绍如何使用Docker Model Runner部署本地AI模型，结合Spring AI框架实现RAG（检索增强生成）功能，构建完整的向量搜索和AI聊天系统。
 
-## 📦 项目源码
+## 项目源码
 
 完整的项目源码已上传到GitHub仓库，包含所有配置文件和示例代码：**GitHub仓库** [https://github.com/zhijunio/docker-ai-app](https://github.com/zhijunio/docker-ai-app)
 
-## 🤔 为什么选择Docker Model Runner？
+## 为什么选择Docker Model Runner？
 
 Docker Model Runner是Docker官方推出的AI模型管理工具，相比传统的本地AI方案有以下优势：
 
-1. **⚡ 零配置** - 无需复杂的容器管理，直接集成到Docker Desktop
-2. **🔌 OpenAI兼容** - 使用标准的OpenAI API格式，易于集成
-3. **💾 资源优化** - 模型按需加载，自动管理内存使用
-4. **🔒 安全可靠** - 数据完全在本地处理，不会离开你的设备
-5. **💰 成本可控** - 一次部署，长期使用，无需按调用次数付费
+1. ** 零配置** - 无需复杂的容器管理，直接集成到Docker Desktop
+2. ** OpenAI兼容** - 使用标准的OpenAI API格式，易于集成
+3. ** 资源优化** - 模型按需加载，自动管理内存使用
+4. ** 安全可靠** - 数据完全在本地处理，不会离开你的设备
+5. ** 成本可控** - 一次部署，长期使用，无需按调用次数付费
 
-## 🏗️ 技术架构
+## 技术架构
 
 我们的**本地AI应用解决方案**基于以下技术栈：
 
-- **🐳 Docker Model Runner**: 运行AI模型，提供OpenAI兼容API
-- **🌱 Spring AI 1.1.0**: 提供统一的AI应用开发框架
-- **🐘 PostgreSQL 16 + pgvector 0.8.1**: 存储向量数据，支持RAG功能
-- **🤖 ai/gemma3**: 文本生成模型（基于Gemma架构）
-- **🔍 ai/embeddinggemma**: 768维向量嵌入模型（基于Gemma架构）
-- **🌐 REST API**: 提供标准化的接口服务
-- **📊 HNSW索引**: 高效的向量相似性搜索算法
+- ** Docker Model Runner**: 运行AI模型，提供OpenAI兼容API
+- ** Spring AI 1.1.0**: 提供统一的AI应用开发框架
+- ** PostgreSQL 16 + pgvector 0.8.1**: 存储向量数据，支持RAG功能
+- ** ai/gemma3**: 文本生成模型（基于Gemma架构）
+- ** ai/embeddinggemma**: 768维向量嵌入模型（基于Gemma架构）
+- ** REST API**: 提供标准化的接口服务
+- ** HNSW索引**: 高效的向量相似性搜索算法
 
 ### 核心技术特点
 
@@ -56,18 +56,18 @@ Docker Model Runner是Docker官方推出的AI模型管理工具，相比传统�
 3. **上下文增强**: 检索相关文档作为上下文，提升AI回答的准确性
 4. **模型本地化**: 使用Docker Model Runner在本地运行AI模型，确保数据安全
 
-## 🛠️ 环境准备
+## 环境准备
 
 ### 系统要求
 
 在开始之前，请确保你的系统满足以下要求：
 
-- **🐳 Docker Desktop**: 4.40+ (macOS) 或 4.41+ (Windows)
-- **☕ Java**: JDK 17
-- **📦 Maven**: 3.9+
-- **💾 内存**: 至少16GB（推荐32GB）
+- ** Docker Desktop**: 4.40+ (macOS) 或 4.41+ (Windows)
+- ** Java**: JDK 17
+- ** Maven**: 3.9+
+- ** 内存**: 至少16GB（推荐32GB）
 
-> 💡 **提示**: 内存要求较高是因为AI模型需要大量内存来运行。如果内存不足，可以考虑使用更小的模型。
+> **提示**: 内存要求较高是因为AI模型需要大量内存来运行。如果内存不足，可以考虑使用更小的模型。
 
 ### 启用Docker Model Runner
 
@@ -79,9 +79,9 @@ Docker Model Runner是Docker官方推出的AI模型管理工具，相比传统�
 4. **启用TCP支持** → 勾选 "Enable host-side TCP support" (默认端口12434)
 5. **应用设置** → 点击 "Apply & Restart" 重启Docker Desktop
 
-> ⚠️ **注意**: 重启后需要等待Docker Desktop完全启动才能继续下一步。
+> **注意**: 重启后需要等待Docker Desktop完全启动才能继续下一步。
 
-## 💻 Spring AI应用开发
+## Spring AI应用开发
 
 ### 1. 项目初始化
 
@@ -110,7 +110,7 @@ Docker Model Runner是Docker官方推出的AI模型管理工具，相比传统�
 
 在`application.yml`中配置Docker Model Runner：
 
-> 📝 **配置说明**: 以下配置包含了聊天模型、嵌入模型、向量存储和数据库连接等关键设置。特别注意`distance-type: EUCLIDEAN_DISTANCE`配置，这是解决Spring AI 1.1.0与pgvector 0.8.1兼容性的关键。
+> **配置说明**: 以下配置包含了聊天模型、嵌入模型、向量存储和数据库连接等关键设置。特别注意`distance-type: EUCLIDEAN_DISTANCE`配置，这是解决Spring AI 1.1.0与pgvector 0.8.1兼容性的关键。
 
 ```yaml
 # Spring AI + Docker Model Runner 配置
@@ -168,7 +168,7 @@ logging:
 
 创建AI聊天服务，实现RAG（检索增强生成）功能：
 
-> 💡 **核心功能**: 这个服务类集成了向量搜索和AI聊天，实现了RAG（检索增强生成）模式。通过向量相似性搜索检索相关文档，将其作为上下文提供给AI模型，从而生成更准确、更有依据的回答。
+> **核心功能**: 这个服务类集成了向量搜索和AI聊天，实现了RAG（检索增强生成）模式。通过向量相似性搜索检索相关文档，将其作为上下文提供给AI模型，从而生成更准确、更有依据的回答。
 
 ```java
 @Service
@@ -228,7 +228,7 @@ public class AIChatService {
 
 创建REST API接口，提供聊天、流式响应和文档管理功能：
 
-> 🌐 **API设计**: 提供标准的REST接口，支持JSON格式的请求和响应，以及Server-Sent Events流式输出。
+> **API设计**: 提供标准的REST接口，支持JSON格式的请求和响应，以及Server-Sent Events流式输出。
 
 ```java
 @RestController
@@ -275,9 +275,9 @@ public class ChatController {
 }
 ```
 
-## 🚀 部署与运行
+## 部署与运行
 
-### 🐳 Docker配置
+### Docker配置
 
 创建 `docker-compose.yml` 文件配置PostgreSQL数据库：
 
@@ -306,11 +306,11 @@ volumes:
 ./start.sh
 ```
 
-## 🧪 测试验证
+## 测试验证
 
 完成开发后，让我们测试各个功能模块：
 
-### 💬 基础聊天功能
+### 基础聊天功能
 
 测试基本的AI聊天功能：
 
@@ -320,7 +320,7 @@ curl -X POST http://localhost:8080/api/chat \
   -d "{"message": "请用中文介绍一下Spring AI框架"}"
 ```
 
-### 🌊 流式响应
+### 流式响应
 
 测试实时流式输出功能：
 
@@ -329,7 +329,7 @@ curl -X POST http://localhost:8080/api/chat \
 curl -X GET "http://localhost:8080/api/chat/stream?message=Hello%20AI"
 ```
 
-### 📚 文档管理
+### 文档管理
 
 测试RAG功能，包括文档添加和基于文档的聊天：
 
@@ -355,7 +355,7 @@ curl http://localhost:8080/actuator/health
 curl http://localhost:8080/actuator/health/ai
 ```
 
-## 📁 项目结构
+## 项目结构
 
 完整的项目目录结构如下：
 
@@ -379,7 +379,7 @@ docker-ai-app/
 └── pom.xml                          # Maven配置（JDK 17）
 ```
 
-## ⚡ 高级功能
+## 高级功能
 
 ### 对话记忆管理
 
@@ -402,7 +402,7 @@ public class ConversationMemory {
 }
 ```
 
-## 🔧 故障排除
+## 故障排除
 
 ### 常见问题
 
@@ -478,7 +478,7 @@ public class ConversationMemory {
    - 设置日志轮转和清理策略
    - 建立灾难恢复计划
 
-## ❓ 常见问题解答
+## 常见问题解答
 
 ### Q: Docker Model Runner与传统的AI模型部署有什么区别？
 
@@ -515,7 +515,7 @@ public class ConversationMemory {
 3. **缓存策略**: 实现结果缓存减少重复计算
 4. **资源监控**: 监控CPU、内存和GPU使用情况
 
-## 🎉 总结
+## 总结
 
 通过Docker Model Runner和Spring AI构建本地AI应用，我们实现了：
 
@@ -528,15 +528,15 @@ public class ConversationMemory {
 
 ### 技术价值
 
-- **🔒 完全的数据控制** - 敏感数据始终在本地处理，保护隐私安全
-- **💰 成本效益** - 一次部署，长期使用，无API费用
-- **⚙️ 高度可定制** - 可以根据需求调整模型和配置
-- **📚 学习价值** - 深入理解AI技术的工作原理
-- **⚡ 零配置** - 无需API密钥或复杂设置
+- ** 完全的数据控制** - 敏感数据始终在本地处理，保护隐私安全
+- ** 成本效益** - 一次部署，长期使用，无API费用
+- ** 高度可定制** - 可以根据需求调整模型和配置
+- ** 学习价值** - 深入理解AI技术的工作原理
+- ** 零配置** - 无需API密钥或复杂设置
 
 ---
 
-## 📚 相关资源
+## 相关资源
 
 ### 官方文档
 

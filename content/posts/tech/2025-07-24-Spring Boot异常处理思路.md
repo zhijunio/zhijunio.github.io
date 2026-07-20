@@ -688,22 +688,22 @@ public class GlobalExceptionHandler {
 
 | 异常类型 | HTTP状态码 | 错误类型 | 处理方式 | 可重试 | X-Error-Details 示例 |
 |---------|-----------|---------|---------|--------|-------------------|
-| `MethodArgumentNotValidException` | 400 | CLIENT | 参数验证失败 | ❌ | `用户名不能为空, 邮箱格式不正确` |
-| `BindException` | 400 | CLIENT | 数据绑定异常 | ❌ | `字段类型不匹配` |
-| `HttpMessageNotReadableException` | 400 | CLIENT | 请求体解析异常 | ❌ | `JSON格式错误` |
-| `MissingServletRequestParameterException` | 400 | CLIENT | 缺少请求参数 | ❌ | `缺少必需参数: userId` |
-| `AuthenticationException` | 401 | CLIENT | 认证失败 | ❌ | `用户未登录` |
-| `BadCredentialsException` | 401 | CLIENT | 凭据无效 | ❌ | `用户名或密码错误` |
-| `AccessDeniedException` | 403 | CLIENT | 访问被拒绝 | ❌ | `权限不足` |
-| `RateLimitException` | 429 | RATE_LIMIT | 限流异常 | ✅ | `请求频率超限，请60秒后重试` |
-| `BusinessException` | 500/1000+ | BUSINESS | 业务异常 | ❌ | `用户不存在: 12345` |
-| `Exception` | 500 | SYSTEM | 系统异常 | ✅ | `数据库连接失败` |
+| `MethodArgumentNotValidException` | 400 | CLIENT | 参数验证失败 | | `用户名不能为空, 邮箱格式不正确` |
+| `BindException` | 400 | CLIENT | 数据绑定异常 | | `字段类型不匹配` |
+| `HttpMessageNotReadableException` | 400 | CLIENT | 请求体解析异常 | | `JSON格式错误` |
+| `MissingServletRequestParameterException` | 400 | CLIENT | 缺少请求参数 | | `缺少必需参数: userId` |
+| `AuthenticationException` | 401 | CLIENT | 认证失败 | | `用户未登录` |
+| `BadCredentialsException` | 401 | CLIENT | 凭据无效 | | `用户名或密码错误` |
+| `AccessDeniedException` | 403 | CLIENT | 访问被拒绝 | | `权限不足` |
+| `RateLimitException` | 429 | RATE_LIMIT | 限流异常 | | `请求频率超限，请60秒后重试` |
+| `BusinessException` | 500/1000+ | BUSINESS | 业务异常 | | `用户不存在: 12345` |
+| `Exception` | 500 | SYSTEM | 系统异常 | | `数据库连接失败` |
 
 ### 5.3 异常重试策略
 
 #### 5.3.1 可重试异常类型
 
-**✅ 可以重试的异常：**
+** 可以重试的异常：**
 
 1. **限流异常（RateLimitException）**
    - **原因**：请求频率超限，属于临时性限制
@@ -715,7 +715,7 @@ public class GlobalExceptionHandler {
    - **重试策略**：使用指数退避策略，最大重试3次
    - **示例**：数据库连接失败、网络超时、外部服务暂时不可用
 
-**❌ 不可重试的异常：**
+** 不可重试的异常：**
 
 1. **客户端异常（400系列）**
    - **原因**：请求参数错误、数据格式错误等

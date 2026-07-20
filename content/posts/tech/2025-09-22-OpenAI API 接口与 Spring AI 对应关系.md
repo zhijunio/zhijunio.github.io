@@ -848,12 +848,12 @@ public class TTSService {
 
 Spring AI 通过统一的 API 对 OpenAI 的各种接口进行了完整封装，主要对应关系包括：
 
-1. **ChatClient** ↔ **Chat Completions API** - 聊天对话
-2. **EmbeddingModel** ↔ **Embeddings API** - 文本嵌入
-3. **ImageModel** ↔ **Images API** - 图像生成
-4. **AudioTranscriptionModel** ↔ **Audio Transcriptions API** - 音频转录
-5. **AudioSpeechModel** ↔ **Text-to-Speech API** - 文本转语音
-6. **CompletionModel** ↔ **Completions API** - 文本补全
+1. **ChatClient** <-> **Chat Completions API** - 聊天对话
+2. **EmbeddingModel** <-> **Embeddings API** - 文本嵌入
+3. **ImageModel** <-> **Images API** - 图像生成
+4. **AudioTranscriptionModel** <-> **Audio Transcriptions API** - 音频转录
+5. **AudioSpeechModel** <-> **Text-to-Speech API** - 文本转语音
+6. **CompletionModel** <-> **Completions API** - 文本补全
 
 这种设计使得开发者可以：
 

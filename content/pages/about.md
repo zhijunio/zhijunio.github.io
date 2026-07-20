@@ -11,7 +11,7 @@ description: 关于 ZhiJun：开发背景、正在使用的工具、联系方式
 
 欢迎交流指正，也期待与同样热爱技术的你一起讨论。
 
-[🐙 GitHub](https://github.com/zhijunio)、[🐦 Twitter](https://twitter.com/zhijunio)、[▶️ YouTube](https://www.youtube.com/zhijunio)、[✈️ Telegram](https://t.me/zhijun_share)
+[GitHub](https://github.com/zhijunio)、[Twitter](https://twitter.com/zhijunio)、[YouTube](https://www.youtube.com/zhijunio)、[Telegram](https://t.me/zhijun_share)
 
 ## 我的收藏
 

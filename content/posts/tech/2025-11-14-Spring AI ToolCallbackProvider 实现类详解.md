@@ -65,10 +65,10 @@ ChatClient chatClient = ChatClient.builder(chatModel)
 
 **特点**：
 
-- ✅ 自动扫描 `@Tool` 注解的方法
-- ✅ 支持多个工具对象
-- ✅ 自动处理参数类型转换
-- ✅ 与 Spring Bean 集成良好
+- 自动扫描 `@Tool` 注解的方法
+- 支持多个工具对象
+- 自动处理参数类型转换
+- 与 Spring Bean 集成良好
 
 **Builder 方法**：
 

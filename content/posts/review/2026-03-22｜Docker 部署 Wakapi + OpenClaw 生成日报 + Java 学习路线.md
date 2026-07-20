@@ -708,10 +708,10 @@ clinkding config test
 - [Superpowers-入门快速指南](https://mp.weixin.qq.com/s/dFMtmtSxO0M9YRfxQT5dRQ)
   > Superpowers是让AI写代码更靠谱的一套工作方法，专为普通开发者设计。它通过固定的做事步骤避免AI想到哪写到哪，像给AI请个好主管。核心三步是：brainstorm搞清楚需求，write-plan写实施计划，execute-plan
 
-- [muety/wakapi: 📊 A minimalist, self-hosted WakaTime-compatible backend for coding statistics](https://github.com/muety/wakapi)
+- [muety/wakapi: A minimalist, self-hosted WakaTime-compatible backend for coding statistics](https://github.com/muety/wakapi)
   > 一个兼容WakaTime的可自行架设的后端程序，和 WakaTime 一样可以用来统计代码。
 
-- [chenqimiao/qm-music: 🎧☁️ Your Private Music Service](https://github.com/chenqimiao/qm-music)
+- [chenqimiao/qm-music: Your Private Music Service](https://github.com/chenqimiao/qm-music)
   > 个基于 Subsonic 构建的轻量级私有云音乐服务器，专为音乐爱好者设计的轻量级高性能解决方案。支持 Docker 一键部署，完美兼容 Subsonic 生态客户端（如音流/feishin/Amperfy/substreamer/music-assistant），让您随时随地安全访问个人音乐库。
 
 - [Navidrome](https://www.navidrome.org/)
@@ -789,23 +789,23 @@ clinkding config test
 
 - [甲骨文三万人裁员震动业界](https://www.msn.com/en-gb/money/other/oracle-could-axe-30-000-jobs-as-ai-data-centre-costs-surge-the-biggest-tech-layoff-of-2026-so-far/ar-AA1YN4zt?ocid=sapphireappshare)
 
-  > **AI基建**成本飙升是主因 😰。三万员工面临失业危机。员工沦为 (T_T) 降本增效工具。
+  > **AI基建**成本飙升是主因 。三万员工面临失业危机。员工沦为 (T_T) 降本增效工具。
 
 - 清华团队发布 [全自动互动课程系统（AI资讯）](https://github.com/THU-MAIC/OpenMAIC)
 
-  > 输入**话题或PDF**即可生成课件。**AI老师** 🤖 负责全程讲解。**虚拟同学**陪你实时讨论。在线教育门槛 (ﾉ´ヮ`)ﾉ 瞬间降低。
+  > 输入**话题或PDF**即可生成课件。**AI老师** 负责全程讲解。**虚拟同学**陪你实时讨论。在线教育门槛 (ﾉ´ヮ`)ﾉ 瞬间降低。
 
 - [LangChain推出Open SWE框架](https://x.com/hongming731/status/2034030641906598125)
 
-  > 核心采用**隔离沙箱** 🛡️ 技术。主打**多智能体**编排模式。支持**Slack**工作流集成 💬。上下文可自动注入运行环境。
+  > 核心采用**隔离沙箱** 技术。主打**多智能体**编排模式。支持**Slack**工作流集成 。上下文可自动注入运行环境。
 
 - [LangChain发布DeepAgents框架](https://github.com/langchain-ai/deepagents)
 
-  > 内置**LangGraph**核心引擎 ⚙️。支持自动派生多个子智能体。通过本地文件实现 (｡◕‿◕｡) 数据持久化。专为复杂任务编排设计。
+  > 内置**LangGraph**核心引擎 。支持自动派生多个子智能体。通过本地文件实现 (｡◕‿◕｡) 数据持久化。专为复杂任务编排设计。
 
 - [GSD规格驱动AI开发引争议](https://newshacker.me/story?id=47417804)
 
-  > **规格驱动开发** 📋 流程
+  > **规格驱动开发** 流程
 
 - [Nacos 3.2 发布](https://mp.weixin.qq.com/s/txhTqrup9stO_t4VkJ7mzw?scene=1)
 

@@ -158,7 +158,7 @@ description: 重启公众号与四篇博文同步、OpenClaw 翻译技能与多�
 
 - [https://github.com/zhuima/awesome-cloudflare](https://github.com/zhuima/awesome-cloudflare)
 
-  > 精选的 Cloudflare 工具、开源项目、指南、博客和其他资源列表。/ ⛅️ A curated list of Cloudflare tools, open source projects, guides, blogs and other resources.
+  > 精选的 Cloudflare 工具、开源项目、指南、博客和其他资源列表。/ A curated list of Cloudflare tools, open source projects, guides, blogs and other resources.
 
 - [https://x.com/sylvainxai/status/2037772956483678532?s=52](https://x.com/sylvainxai/status/2037772956483678532?s=52)
 

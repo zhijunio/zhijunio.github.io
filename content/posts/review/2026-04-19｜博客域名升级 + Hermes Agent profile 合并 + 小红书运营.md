@@ -65,7 +65,7 @@ description: "本周记录：博客升级到 blog.zhijun.io 域名、重启小�
   > An SVG-to-CSS converter to easily transform SVG shapes into CSS shapes
 
 - [firecrawl/open-lovable](https://github.com/firecrawl/open-lovable)
-  > 🔥 Clone and recreate any website as a modern React app in seconds
+  > Clone and recreate any website as a modern React app in seconds
 
 - [自掏腰包一万元，拥抱 AI 这一年，我的工具、实践和思考](https://cloud.tencent.com/developer/article/2652654)
   > 作者分享一年 AI 实践：工具链配置（aerospace/Cockpit/tmux）、从 Prompt Engineering 到 Harness Engineering 的演进、让 Agent 辅助学习的知识管理方法。探讨 AI Native 协作模式与最佳实践沉淀。
