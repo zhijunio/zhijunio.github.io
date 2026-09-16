@@ -7,6 +7,37 @@
   --bg: #fcfcfc;
   --text: #1c1917;
   --muted: #78716c;
+  --container: 880px;
+
+  /* 字体 */
+  --font-sans:
+    "PingFang SC", "Hiragino Sans GB", "Source Han Sans CN", "Noto Sans CJK SC",
+    "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono:
+    ui-monospace, "SF Mono", "Roboto Mono", Menlo, Monaco, Consolas, monospace;
+
+  /* 字号阶梯 */
+  --text-xs: 0.75rem; /* 12 — meta / caption */
+  --text-sm: 0.8125rem; /* 13 — 次要说明 */
+  --text-md: 0.875rem; /* 14 — 摘要 / 标签云 */
+  --text-base: 0.9375rem; /* 15 — 正文 */
+  --text-lg: 1.0625rem; /* 17 — h3 / 小标题 */
+  --text-xl: 1.1875rem; /* 19 — h2 */
+  --text-2xl: 1.375rem; /* 22 — 页标题 */
+  --text-3xl: 1.5rem; /* 24 — 大页标题（少用） */
+
+  /* 行高 */
+  --leading-tight: 1.3;
+  --leading-snug: 1.4;
+  --leading-normal: 1.65;
+  --leading-relaxed: 1.7;
+
+  /* 垂直节奏 */
+  --space-xs: 0.35rem;
+  --space-sm: 0.55rem;
+  --space-md: 0.75rem;
+  --space-lg: 1.15rem;
+  --space-xl: 1.65rem;
 }
 
 /* ================================
@@ -22,14 +53,15 @@
    ================================ */
 
 html {
-  font-family:
-    "PingFang SC", "Hiragino Sans GB", "Source Han Sans CN", "Noto Sans CJK SC",
-    "Microsoft YaHei", Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: var(--font-sans);
+  font-size: 100%;
   background: var(--bg);
   color: var(--text);
   scroll-behavior: smooth;
   overflow-x: hidden;
   overflow-x: clip;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -46,7 +78,8 @@ body {
   flex-direction: column;
   background: var(--bg);
   color: var(--text);
-  line-height: 1.65;
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
   overflow-x: hidden;
   overflow-x: clip;
 }
@@ -124,36 +157,37 @@ h3,
 h4,
 h5,
 h6 {
-  margin: 1rem 0 1rem 0;
+  margin: var(--space-md) 0;
   color: var(--text);
   font-weight: 650;
-  line-height: 1.25;
+  line-height: var(--leading-tight);
   letter-spacing: -0.01em;
   text-wrap: balance;
 }
 
 h1 {
-  font-size: 2rem;
+  font-size: var(--text-2xl);
 }
 
 h2 {
-  font-size: 1.5rem;
+  font-size: var(--text-xl);
 }
 
 h3 {
-  font-size: 1.25rem;
+  font-size: var(--text-lg);
 }
 
 h4 {
-  font-size: 1.125rem;
-}
-
-h5 {
   font-size: 1rem;
 }
 
+h5 {
+  font-size: var(--text-base);
+}
+
 h6 {
-  font-size: 0.9375rem;
+  font-size: var(--text-md);
+  color: color-mix(in srgb, var(--text) 88%, var(--muted));
 }
 
 p {
@@ -173,8 +207,8 @@ menu {
 
 #main-content :is(.post-content, .page-content) :where(ul, ol, menu) {
   list-style-position: outside;
-  padding-left: 1em;
-  margin: 1rem 0 1.15rem;
+  padding-left: 1.15em;
+  margin: var(--space-md) 0 var(--space-lg);
 }
 
 #main-content :is(.post-content, .page-content) :where(ul, menu) {
@@ -186,7 +220,11 @@ menu {
 }
 
 #main-content :is(.post-content, .page-content) :where(li) {
-  margin-bottom: 0.45rem;
+  margin-bottom: 0.25rem;
+}
+
+#main-content :is(.post-content, .page-content) :where(li) > :where(ul, ol) {
+  margin: 0.25rem 0 0.35rem;
 }
 
 #main-content :is(.post-content, .page-content) > :first-child {
@@ -199,54 +237,56 @@ menu {
 
 #main-content :is(.post-content, .page-content) {
   min-width: 0;
+  font-size: 1em;
+  line-height: var(--leading-relaxed);
   overflow-wrap: anywhere;
 }
 
 #main-content :is(.post-content, .page-content) p {
-  margin: 0.85rem 0;
+  margin: 0.65rem 0;
 }
 
 #main-content :is(.post-content, .page-content) :where(h2, h3, h4) {
-  margin-top: 2rem;
-  margin-bottom: 0.85rem;
-  line-height: 1.32;
+  margin-top: var(--space-xl);
+  margin-bottom: var(--space-sm);
+  line-height: var(--leading-snug);
   letter-spacing: -0.005em;
 }
 
 #main-content :is(.post-content, .page-content) h2 {
-  font-size: 1.55rem;
+  font-size: var(--text-xl);
 }
 
 #main-content :is(.post-content, .page-content) h3 {
-  font-size: 1.28rem;
+  font-size: var(--text-lg);
 }
 
 #main-content :is(.post-content, .page-content) h4 {
-  font-size: 1.08rem;
+  font-size: 1rem;
 }
 
 #main-content :is(.post-content, .page-content) :where(h5, h6) {
-  margin-top: 1.5rem;
-  margin-bottom: 0.65rem;
-  line-height: 1.35;
+  margin-top: var(--space-lg);
+  margin-bottom: var(--space-xs);
+  line-height: var(--leading-snug);
 }
 
 #main-content :is(.post-content, .page-content) h5 {
-  font-size: 0.98rem;
+  font-size: var(--text-base);
 }
 
 #main-content :is(.post-content, .page-content) h6 {
-  font-size: 0.9rem;
+  font-size: var(--text-md);
   color: color-mix(in srgb, var(--text) 88%, var(--muted));
 }
 
 /* 文章 / 静态页页面标题（正文 h1 勿与页标题混用） */
 #article > h1 {
-  margin: 0 0 2rem;
-  font-size: clamp(1.625rem, 3.2vw, 2rem);
-  line-height: 1.3;
+  margin: 0.15rem 0 var(--space-xs);
+  font-size: var(--text-2xl);
+  line-height: var(--leading-tight);
   font-weight: 650;
-  text-align: center;
+  text-align: left;
   text-wrap: balance;
 }
 
@@ -262,14 +302,14 @@ menu {
 }
 
 .page-empty > h1 {
-  margin: 0 0 1.5rem;
-  font-size: 1.125rem;
+  margin: 0 0 var(--space-lg);
+  font-size: var(--text-lg);
   font-weight: 650;
   color: var(--muted);
 }
 
 .page-empty > a {
-  font-size: 1rem;
+  font-size: var(--text-base);
   font-weight: 500;
 }
 
@@ -291,8 +331,8 @@ main > section > ol {
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 1rem;
-  font-size: 0.9375rem;
+  margin-bottom: var(--space-lg);
+  font-size: var(--text-md);
 }
 
 th,
@@ -329,13 +369,13 @@ td {
    ================================ */
 
 code {
-  font-family: "Roboto Mono", "SF Mono", Monaco, Inconsolata, monospace;
-  font-size: 0.875rem;
+  font-family: var(--font-mono);
+  font-size: 0.875em;
 }
 
 :not(pre) > code {
   background: color-mix(in srgb, var(--accent) 12%, var(--bg));
-  padding: 0.2em 0.4em;
+  padding: 0.12em 0.35em;
   border-radius: 4px;
 }
 
@@ -346,14 +386,14 @@ code {
 
 #main-content :is(.post-content, .page-content) pre.astro-code,
 #article .code-block-wrap > pre.astro-code {
-  margin: 1.25rem 0;
-  padding: 0.85rem 1rem;
+  margin: var(--space-lg) 0;
+  padding: 0.7rem 0.85rem;
   border: 1px solid color-mix(in srgb, var(--text) 11%, var(--accent) 10%);
-  border-radius: 8px;
+  border-radius: 4px;
   max-width: 100%;
   overflow-x: auto;
-  font-size: 0.875rem;
-  line-height: 1.6;
+  font-size: var(--text-sm);
+  line-height: 1.55;
   background-color: color-mix(in srgb, var(--accent) 10%, var(--bg)) !important;
   color: var(--text);
 }
@@ -380,14 +420,13 @@ code {
    ================================ */
 
 blockquote {
-  margin: 1.25rem 0;
-  padding: 0.5rem 1rem 0.5rem 1.1rem;
-  border-left: 3px solid var(--accent);
-  color: color-mix(in srgb, var(--text) 82%, var(--muted));
-  font-size: 0.98rem;
-  line-height: 1.75;
-  background: color-mix(in srgb, var(--accent) 10%, var(--bg));
-  border-radius: 0 8px 8px 0;
+  margin: var(--space-lg) 0;
+  padding: 0.15rem 0 0.15rem 0.9rem;
+  border-left: 2px solid color-mix(in srgb, var(--text) 18%, transparent);
+  color: color-mix(in srgb, var(--text) 78%, var(--muted));
+  font-size: 0.98em;
+  line-height: var(--leading-relaxed);
+  background: transparent;
 }
 
 blockquote > :first-child {
@@ -409,15 +448,15 @@ img {
 }
 
 figure {
-  margin: 1.5rem 0;
+  margin: var(--space-xl) 0;
 }
 
 figcaption {
-  margin-top: 0.5rem;
-  font-size: 0.875rem;
+  margin-top: var(--space-sm);
+  font-size: var(--text-md);
   color: var(--muted);
   text-align: center;
-  line-height: 1.6;
+  line-height: var(--leading-snug);
 }
 
 /* ================================
@@ -425,18 +464,18 @@ figcaption {
    ================================ */
 
 hr {
-  margin: 1.5rem 0;
+  margin: var(--space-xl) 0;
   border: 0;
   border-top: 1px solid color-mix(in srgb, var(--text) 14%, var(--bg));
 }
 
 @media (max-width: 768px) {
   #main-content :is(.post-content, .page-content) :where(h2, h3, h4) {
-    margin-top: 1.75rem;
+    margin-top: var(--space-lg);
   }
 
   #main-content :is(.post-content, .page-content) h2 {
-    font-size: 1.28rem;
+    font-size: 1.125rem;
   }
 
   #main-content :is(.post-content, .page-content) img {
@@ -529,7 +568,7 @@ main,
   flex: 1;
   width: 100%;
   min-width: 0;
-  max-width: 960px;
+  max-width: var(--container);
   margin: 0 auto;
   padding: 0.5rem 1.5rem 2rem;
   overflow-x: clip;
@@ -585,20 +624,28 @@ mark {
    ================================ */
 
 @media (max-width: 768px) {
-  h1 {
-    font-size: 1.5rem;
+  body {
+    font-size: 0.92rem;
   }
 
-  h2 {
+  h1 {
     font-size: 1.25rem;
   }
 
+  h2 {
+    font-size: 1.125rem;
+  }
+
   h3 {
-    font-size: 1.1875rem;
+    font-size: 1.05rem;
   }
 
   h4 {
-    font-size: 1.0625rem;
+    font-size: 1rem;
+  }
+
+  #article > h1 {
+    font-size: 1.25rem;
   }
 
   main,

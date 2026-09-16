@@ -1,0 +1,29 @@
+---
+import type { GetStaticPaths } from "astro";
+import HomeFeed from "@/components/HomeFeed.astro";
+import Layout from "@/layouts/Layout.astro";
+import {
+  getFeedItemsByCategory,
+  getPosts,
+  listCategoryTerms,
+  sortPosts,
+} from "@/utils/postUtils";
+import "@/styles/taxonomy.css";
+
+export const getStaticPaths = (async () => {
+  const posts = sortPosts(await getPosts());
+  return listCategoryTerms(posts).map(term => ({
+    params: { category: term.slug },
+    props: { name: term.name, items: getFeedItemsByCategory(posts, term.slug) },
+  }));
+}) satisfies GetStaticPaths;
+
+const { name, items } = Astro.props;
+---
+
+<Layout title={name} description={`分类「${name}」下的文章`}>
+  <section class="taxonomy-page">
+    <h1>{name}</h1>
+    <HomeFeed items={items} showCategory={false} />
+  </section>
+</Layout>

@@ -6,10 +6,21 @@ import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 
 import { SITE } from "@/config";
+import {
+  CATEGORY_ORDER,
+  categoryLabel,
+  categoryPath,
+  tagPath,
+  taxonomySlug,
+} from "@/utils/taxonomy";
+import type { HomeFeedItem } from "@/utils/homeFeed";
+
+export type { HomeFeedItem };
+export { CATEGORY_ORDER, categoryLabel, categoryPath, tagPath, taxonomySlug };
 
 const SITE_TZ = SITE.timezone;
 const SCHEDULED_POST_MARGIN_MS = 15 * 60 * 1000;
-const DESC_MAX_LINES = 3;
+const DESC_MAX_LINES = 2;
 const DESC_MAX_CHARS = 200;
 
 export type PostEntry = CollectionEntry<"posts">;
@@ -107,40 +118,109 @@ function parseInstant(value: Date | string): Date {
   return date;
 }
 
-function formatFeedDate(
-  pubDatetime: Date | string,
-  modDatetime?: Date | string | null
-): { display: string; iso: string } {
+export function formatFeedDate(pubDatetime: Date | string): {
+  display: string;
+  iso: string;
+} {
   const pub = parseInstant(pubDatetime);
-  const mod = modDatetime != null ? parseInstant(modDatetime) : null;
-  const latest = mod && mod.getTime() > pub.getTime() ? mod : pub;
   return {
     display: new Intl.DateTimeFormat("sv-SE", {
       timeZone: SITE_TZ,
       year: "numeric",
       month: "2-digit",
       day: "2-digit",
-    }).format(latest),
-    iso: latest.toISOString(),
+    }).format(pub),
+    iso: pub.toISOString(),
   };
 }
 
-export type HomeFeedItem = {
-  title: string;
-  href: string;
-  dateDisplay: string;
-  dateIso: string;
-  description: string;
+export function getEntryTags(entry: PostEntry): string[] {
+  return (entry.data.tags ?? []).map(tag => tag.trim()).filter(Boolean);
+}
+
+function getEntryCategorySlug(entry: PostEntry): string | undefined {
+  const slug = entry.data.category?.trim();
+  return slug || undefined;
+}
+
+export type TaxonomyTerm = {
+  slug: string;
+  name: string;
+  count: number;
 };
 
+function sortTerms(terms: TaxonomyTerm[]): TaxonomyTerm[] {
+  return terms.sort(
+    (a, b) => b.count - a.count || a.name.localeCompare(b.name, "zh-CN")
+  );
+}
+
+export function listTagTerms(posts: PostEntry[]): TaxonomyTerm[] {
+  const map = new Map<string, TaxonomyTerm>();
+  for (const post of posts) {
+    for (const tag of getEntryTags(post)) {
+      const slug = taxonomySlug(tag);
+      if (!slug || slug === "index") continue;
+      const existing = map.get(slug);
+      if (existing) existing.count += 1;
+      else map.set(slug, { slug, name: tag, count: 1 });
+    }
+  }
+  return sortTerms([...map.values()]);
+}
+
+export function listCategoryTerms(posts: PostEntry[]): TaxonomyTerm[] {
+  const map = new Map<string, TaxonomyTerm>();
+  for (const post of posts) {
+    const slug = getEntryCategorySlug(post);
+    if (!slug || slug === "index") continue;
+    const existing = map.get(slug);
+    if (existing) existing.count += 1;
+    else map.set(slug, { slug, name: categoryLabel(slug), count: 1 });
+  }
+  return [...map.values()].sort((a, b) => {
+    const ia = CATEGORY_ORDER.indexOf(
+      a.slug as (typeof CATEGORY_ORDER)[number]
+    );
+    const ib = CATEGORY_ORDER.indexOf(
+      b.slug as (typeof CATEGORY_ORDER)[number]
+    );
+    const oa = ia === -1 ? 99 : ia;
+    const ob = ib === -1 ? 99 : ib;
+    return oa - ob || b.count - a.count;
+  });
+}
+
+export function getFeedItemsByTag(
+  posts: PostEntry[],
+  tagSlug: string
+): HomeFeedItem[] {
+  return posts
+    .filter(post =>
+      getEntryTags(post).some(tag => taxonomySlug(tag) === tagSlug)
+    )
+    .map(toHomeFeedItem);
+}
+
+export function getFeedItemsByCategory(
+  posts: PostEntry[],
+  categorySlug: string
+): HomeFeedItem[] {
+  return posts
+    .filter(post => getEntryCategorySlug(post) === categorySlug)
+    .map(toHomeFeedItem);
+}
+
 function toHomeFeedItem(entry: PostEntry): HomeFeedItem {
-  const date = formatFeedDate(entry.data.date, entry.data.updated);
+  const date = formatFeedDate(entry.data.date);
   return {
     title: entry.data.title,
     href: getPostUrl(entry.data.slug),
     dateDisplay: date.display,
     dateIso: date.iso,
     description: getEntryDescription(entry),
+    tags: getEntryTags(entry),
+    category: entry.data.category,
   };
 }
 

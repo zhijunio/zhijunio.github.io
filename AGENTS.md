@@ -11,7 +11,8 @@
 ## 内容模型
 
 - `content/posts/**/*.md` 只放真实文章。
-- `content/posts` 下的 `tech/`、`review/` 等子目录仅用于本地整理，不影响文章 URL。
+- `content/posts` 下按分类分子目录：`ai/`、`java/`、`iot/`、`ops/`、`arch/`、`notes/`，仅用于本地整理，不影响文章 URL。对外分类以 frontmatter `category` 为准，并与目录名一致。
+- 标签用受控词表（见文章 `tags`），不要和分类同名（不要打 `ai`、`weekly`、`java` 等）。
 - 不要把 prompt、outline、草稿、生成记录、临时脚本放进 `content/posts`，否则会被内容集合误收录。
 
 ## 图片约定
@@ -37,8 +38,9 @@
 - 样式调整优先小步修改现有变量和现有组件，不做无关重构。
 - 首页使用首屏 SSR + `/feed/{n}.json` 向下滚动追加；不要恢复 `/page/N` HTML 分页。
 - 不要引入 `/posts.html` 归档页；文章入口以首页、RSS、单篇 URL 为主。
-- `index`、`about` 这类列表/静态页只加载必要资源，不要带正文增强脚本。
-- 已移除并默认保持移除：页脚、TOC、相关文章推荐、社交分享按钮、文章上下篇导航、标签页、分类页、全站搜索、主题切换、Giscus。
+- `index`、`about`、标签/分类索引页只加载必要资源，不要带正文增强脚本。
+- 已移除并默认保持移除：页脚、TOC、相关文章推荐、社交分享按钮、文章上下篇导航、全站搜索、主题切换、Giscus。
+- 标签页 `/tags`、`/tags/{tag}` 与分类页 `/categories`、`/categories/{category}` 已恢复，导航为「分类 | 标签 | 关于」。
 
 ## AI 生图技能
 

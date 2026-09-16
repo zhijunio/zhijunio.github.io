@@ -5,6 +5,9 @@ import { siteImageHref } from "@/utils/blogImages";
 
 const logoSrc = SITE.logo?.trim() ? siteImageHref(SITE.logo.trim()) : "";
 const pathname = Astro.url.pathname.replace(/\.html?$/, "") || "/";
+const isTagsPage = pathname === "/tags" || pathname.startsWith("/tags/");
+const isCategoriesPage =
+  pathname === "/categories" || pathname.startsWith("/categories/");
 const isAboutPage = pathname === "/about" || pathname.startsWith("/about/");
 ---
 
@@ -27,6 +30,22 @@ const isAboutPage = pathname === "/about" || pathname.startsWith("/about/");
       <span class="site-title">{SITE.title}</span>
     </a>
     <ul class="nav-links">
+      <li>
+        <a
+          href="/categories"
+          {...isCategoriesPage ? { "aria-current": "page" as const } : {}}
+        >
+          分类
+        </a>
+      </li>
+      <li>
+        <a
+          href="/tags"
+          {...isTagsPage ? { "aria-current": "page" as const } : {}}
+        >
+          标签
+        </a>
+      </li>
       <li>
         <a
           href="/about"

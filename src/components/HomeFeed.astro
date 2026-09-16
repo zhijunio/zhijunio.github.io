@@ -1,13 +1,19 @@
 ---
 import "@/styles/feed.css";
-import type { HomeFeedItem } from "@/utils/postUtils";
+import type { HomeFeedItem } from "@/utils/homeFeed";
+import {
+  categoryLabel,
+  categoryPath,
+  tagPath,
+} from "@/utils/taxonomy";
 
 interface Props {
   items: HomeFeedItem[];
   nextPage?: number | null;
+  showCategory?: boolean;
 }
 
-const { items, nextPage = null } = Astro.props;
+const { items, nextPage = null, showCategory = true } = Astro.props;
 ---
 
 <section aria-label="文章列表">
@@ -16,11 +22,25 @@ const { items, nextPage = null } = Astro.props;
       items.map(item => (
         <li>
           <article>
-            <p>
-              <time datetime={item.dateIso}>{item.dateDisplay}</time>
-            </p>
             <p class="home-feed-title">
               <a href={item.href}>{item.title}</a>
+            </p>
+            <p class="home-feed-meta">
+              <time datetime={item.dateIso}>{item.dateDisplay}</time>
+              {showCategory && item.category ? (
+                <a class="home-feed-category" href={categoryPath(item.category)}>
+                  {categoryLabel(item.category)}
+                </a>
+              ) : null}
+              {item.tags.length ? (
+                <span class="home-feed-tags">
+                  {item.tags.map(tag => (
+                    <a class="home-feed-tag" href={tagPath(tag)}>
+                      #{tag}
+                    </a>
+                  ))}
+                </span>
+              ) : null}
             </p>
             {item.description ? (
               <p class="home-feed-desc">{item.description}</p>
@@ -35,11 +55,13 @@ const { items, nextPage = null } = Astro.props;
 <template id="home-feed-item-template">
   <li>
     <article>
-      <p>
-        <time datetime=""></time>
-      </p>
       <p class="home-feed-title">
         <a href=""></a>
+      </p>
+      <p class="home-feed-meta">
+        <time datetime=""></time>
+        <a class="home-feed-category" hidden href=""></a>
+        <span class="home-feed-tags" hidden></span>
       </p>
       <p class="home-feed-desc" hidden></p>
     </article>

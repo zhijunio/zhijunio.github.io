@@ -1,4 +1,5 @@
-import type { HomeFeedItem } from "@/utils/postUtils";
+import type { HomeFeedItem } from "@/utils/homeFeed";
+import { categoryLabel, categoryPath, tagPath } from "@/utils/taxonomy";
 
 type FeedPageJson = {
   items: HomeFeedItem[];
@@ -20,6 +21,10 @@ function appendHomeFeedItems(
     const time = node.querySelector("time");
     const link = node.querySelector<HTMLAnchorElement>(".home-feed-title a");
     const desc = node.querySelector<HTMLParagraphElement>(".home-feed-desc");
+    const tags = node.querySelector<HTMLElement>(".home-feed-tags");
+    const category = node.querySelector<HTMLAnchorElement>(
+      ".home-feed-category"
+    );
     if (!time || !link) continue;
 
     time.dateTime = item.dateIso;
@@ -32,6 +37,32 @@ function appendHomeFeedItems(
         desc.hidden = false;
       } else {
         desc.hidden = true;
+      }
+    }
+    if (category) {
+      if (item.category) {
+        category.href = categoryPath(item.category);
+        category.textContent = categoryLabel(item.category);
+        category.hidden = false;
+      } else {
+        category.removeAttribute("href");
+        category.textContent = "";
+        category.hidden = true;
+      }
+    }
+    if (tags) {
+      tags.replaceChildren();
+      if (item.tags.length) {
+        for (const tag of item.tags) {
+          const chip = document.createElement("a");
+          chip.className = "home-feed-tag";
+          chip.href = tagPath(tag);
+          chip.textContent = `#${tag}`;
+          tags.append(chip);
+        }
+        tags.hidden = false;
+      } else {
+        tags.hidden = true;
       }
     }
     frag.append(node);

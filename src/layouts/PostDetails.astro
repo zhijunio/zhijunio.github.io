@@ -3,11 +3,23 @@ import "@/styles/post.css";
 import { render } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import ArticleExtras from "@/components/ArticleExtras.astro";
-import { getEntryDescription, resolveBlogImageRef } from "@/utils/postUtils";
+import {
+  formatFeedDate,
+  getEntryDescription,
+  getEntryTags,
+  resolveBlogImageRef,
+} from "@/utils/postUtils";
 import { siteImageHref } from "@/utils/blogImages";
+import {
+  categoryLabel,
+  categoryPath,
+  tagPath,
+} from "@/utils/taxonomy";
 
 const { post } = Astro.props;
-const { title, date, updated, cover, slug } = post.data;
+const { title, date, updated, cover, slug, category } = post.data;
+const created = formatFeedDate(date);
+const tags = getEntryTags(post);
 
 const coverSrc = (() => {
   const path = resolveBlogImageRef(cover, slug);
@@ -27,6 +39,23 @@ const body = post.body ?? "";
   <ArticleExtras body={body} hasCover={Boolean(coverSrc)} />
   <article id="article">
     <h1>{title}</h1>
+    <p class="post-meta">
+      <time datetime={created.iso}>{created.display}</time>
+      <a class="post-category" href={categoryPath(category)}>
+        {categoryLabel(category)}
+      </a>
+      {
+        tags.length ? (
+          <span class="post-tags">
+            {tags.map(tag => (
+              <a class="post-tag" href={tagPath(tag)}>
+                #{tag}
+              </a>
+            ))}
+          </span>
+        ) : null
+      }
+    </p>
 
     {
       coverSrc && (

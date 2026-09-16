@@ -1,0 +1,25 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { getPosts, listTagTerms, sortPosts, tagPath } from "@/utils/postUtils";
+import "@/styles/taxonomy.css";
+
+const terms = listTagTerms(sortPosts(await getPosts()));
+---
+
+<Layout title="标签" description="按标签浏览文章">
+  <section class="taxonomy-page" aria-label="标签列表">
+    <h1>标签</h1>
+    <ul class="taxonomy-cloud">
+      {
+        terms.map(term => (
+          <li>
+            <a href={tagPath(term.slug)}>
+              #{term.name}
+              <span class="taxonomy-count">({term.count})</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</Layout>

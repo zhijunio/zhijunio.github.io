@@ -1,0 +1,39 @@
+/* 标签 / 分类索引与详情 */
+
+.taxonomy-page > h1 {
+  margin: 0 0 var(--space-lg);
+  font-size: var(--text-2xl);
+  font-weight: 650;
+  line-height: var(--leading-tight);
+}
+
+.taxonomy-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs) 0.85rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.taxonomy-cloud a {
+  color: var(--muted);
+  font-size: var(--text-md);
+  line-height: var(--leading-snug);
+  text-decoration: none;
+}
+
+.taxonomy-cloud a:hover {
+  color: var(--accent);
+}
+
+.taxonomy-count {
+  font-variant-numeric: tabular-nums;
+  opacity: 0.75;
+}
+
+@media (max-width: 768px) {
+  .taxonomy-page > h1 {
+    font-size: 1.25rem;
+  }
+}

@@ -4,8 +4,12 @@ import { escapeXml } from "@/utils/escapeXml";
 import {
   getPosts,
   getPostUrl,
+  listCategoryTerms,
+  listTagTerms,
   postModifiedIso,
   sortPosts,
+  categoryPath,
+  tagPath,
 } from "@/utils/postUtils";
 
 export const GET: APIRoute = async () => {
@@ -16,7 +20,19 @@ export const GET: APIRoute = async () => {
 
   const urls = [
     { path: "/", lastmod: latest, priority: "1.00" },
+    { path: "/categories", lastmod: latest, priority: "0.70" },
+    { path: "/tags", lastmod: latest, priority: "0.70" },
     { path: "/about", lastmod: latest, priority: "0.80" },
+    ...listCategoryTerms(sortedPosts).map(term => ({
+      path: categoryPath(term.slug),
+      lastmod: latest,
+      priority: "0.55",
+    })),
+    ...listTagTerms(sortedPosts).map(term => ({
+      path: tagPath(term.slug),
+      lastmod: latest,
+      priority: "0.50",
+    })),
     ...sortedPosts.map(post => ({
       path: getPostUrl(post.data.slug),
       lastmod: postModifiedIso(post),

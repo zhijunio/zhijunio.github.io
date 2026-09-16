@@ -1,5 +1,6 @@
 /**
- * `content/posts` 下均为文章；`tech/`、`review/` 等子目录仅便于本地分类，不影响 URL 或 schema。
+ * `content/posts` 下均为文章；`ai/`、`java/`、`iot/`、`ops/`、`arch/`、`notes/` 子目录与 frontmatter `category` 一致，不影响 URL。
+ * 对外分类使用 frontmatter `category`：ai / java / iot / ops / arch / notes。
  */
 
 import { defineCollection } from "astro:content";
@@ -25,6 +26,8 @@ const posts = defineCollection({
     draft: z.boolean().optional(),
     cover: z.string().optional(),
     slug: z.string().trim().min(1),
+    tags: z.array(z.string()).optional(),
+    category: z.enum(["ai", "java", "iot", "ops", "arch", "notes"]),
   }),
 });
 
