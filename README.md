@@ -44,7 +44,7 @@ slug: "url-slug"
 date: 2026-02-26 08:00:00+08:00
 description: "可选"
 draft: false
-banner: "01.webp" # 相对 public/images/{slug}/
+cover: "01.webp" # 相对 public/images/{slug}/
 ```
 
 URL：`/{collection}/{slug}`（如 `/posts/my-slug`）。无全站 `/posts.html` 归档页。

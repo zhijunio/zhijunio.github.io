@@ -13,11 +13,11 @@ description: "结合后台配置与源码实现，分析 ThingsBoard 中 OAuth2 
 
 <!--more-->
 
-![create-oauth2-client-in-thingsboard](oauth-2-client-login-in-thingsboard/01.webp)
+![create-oauth2-client-in-thingsboard](01.webp)
 
 然后，创建一个域：
 
-![create-domain-in-thingsboard](oauth-2-client-login-in-thingsboard/02.webp)
+![create-domain-in-thingsboard](02.webp)
 
 域名的名称可以是 ip 加端口，也可以是域名，如果是名称，需要做好 DNS 解析。
 
@@ -27,7 +27,7 @@ description: "结合后台配置与源码实现，分析 ThingsBoard 中 OAuth2 
 
 注销登录之后，在登录页面可以看到 使用 Github 登录的按钮。
 
-![login-github-page-in-thingsboard](oauth-2-client-login-in-thingsboard/03.webp)
+![login-github-page-in-thingsboard](03.webp)
 
 ## 源码实现
 

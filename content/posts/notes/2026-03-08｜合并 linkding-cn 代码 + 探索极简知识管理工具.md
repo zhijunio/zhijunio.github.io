@@ -17,9 +17,9 @@ description: 这周一边用 AI Agent 合并 linkding-cn 代码、整理 Spring 
 
 ## 技术
 
-1、花了一天的时间，使用 Cursor 将 [linkding-cn 代码合并到 linkding](/posts/2026/03/06/merge-linkding-cn-to-linkding)。不得不说，使用 AI Agent 做这种工作比人操作真的是容易很多。
+1、花了一天的时间，使用 Cursor 将 [linkding-cn 代码合并到 linkding](/posts/merge-linkding-cn-to-linkding)。不得不说，使用 AI Agent 做这种工作比人操作真的是容易很多。
 
-2、参考 [Spring Boot 2 升 3：两条命令搞定 95%，AI 收尾](https://atbug.com/openrewrite-recipe-first-spring-boot-2-to-3-migration/) 将 [Spring Boot 2 升级到 Spring Boot 3](/posts/2026/03/06/spring-boot-2-to-3-upgrade-guide)，其中一种方式也是使用 AI，具体是AI Skill 来实现。
+2、参考 [Spring Boot 2 升 3：两条命令搞定 95%，AI 收尾](https://atbug.com/openrewrite-recipe-first-spring-boot-2-to-3-migration/) 将 [Spring Boot 2 升级到 Spring Boot 3](/posts/spring-boot-2-to-3-upgrade-guide)，其中一种方式也是使用 AI，具体是AI Skill 来实现。
 
 3、将 VPS 服务器上的 memos 版本 从 v0.18.2 升级到了最新版本 v0.26.2，并简单统计了一下 memos **版本功能**，可以发现从 0.22.0 版本开始去掉了我在意的分享功能；从 v0.24.1 版本开始改成了我不喜欢的布局和背景色。
 

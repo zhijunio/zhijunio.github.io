@@ -7,7 +7,7 @@ tags: [ "spring-ai" ]
 description: "在 《Spring AI 对话记忆 》中我们用 MessageChatMemoryAdvisor + JDBC 实现了多轮对话记忆。本文基于同一套记忆能力，升级为 Server-Sent Events (SSE) 流式输出，并配上自定义前端让 DeepSeek 的回复实时逐字出现。"
 ---
 
-在 《[Spring AI 对话记忆](/posts/2026/01/03/spring-ai-chat-memory/) 》中我们用 **MessageChatMemoryAdvisor + JDBC** 实现了多轮对话记忆。本文基于同一套记忆能力，升级为 **Server-Sent Events (SSE)** 流式输出，并配上自定义前端让 DeepSeek 的回复实时逐字出现。
+在 《[Spring AI 对话记忆](/posts/spring-ai-chat-memory) 》中我们用 **MessageChatMemoryAdvisor + JDBC** 实现了多轮对话记忆。本文基于同一套记忆能力，升级为 **Server-Sent Events (SSE)** 流式输出，并配上自定义前端让 DeepSeek 的回复实时逐字出现。
 <!--more-->
 
 ## 源代码
@@ -168,7 +168,7 @@ spring.ai.chat.memory.repository.jdbc.initialize-schema=always
 
 6. **查看数据库**。可以看到数据库里面创建一个 `spring_ai_chat_memory` 表：
 
-   ![spring-ai-chat-memory-postgres-table]( /images/spring-ai-chat-memory-postgres-table.webp)
+   ![spring-ai-chat-memory-postgres-table](01.webp)
 
 ## 小结
 

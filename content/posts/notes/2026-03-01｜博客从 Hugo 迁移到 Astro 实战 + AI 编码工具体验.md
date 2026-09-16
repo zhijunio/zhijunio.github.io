@@ -12,19 +12,19 @@ description: 这周主要在两条线上投入时间：把博客从 Hugo 迁移�
 
 ## 博客从 Hugo 迁移到 Astro
 
-花了一个多星期将[博客从 Hugo 迁移到了 Astro](/posts/2026/02/26/from-hugo-to-astro-blog)，并美化主题。当然，这篇文章只记录迁移的部分内容，后续我又对 Astro 主题做了进一步重构。
+花了一个多星期将[博客从 Hugo 迁移到了 Astro](/posts/from-hugo-to-astro-blog)，并美化主题。当然，这篇文章只记录迁移的部分内容，后续我又对 Astro 主题做了进一步重构。
 
 初始的 Hugo 搭建的博客如下图，使用的是 [rose-hugo](https://github.com/zhijunio/rose-hugo) 主题，这个主题是我基于 [Mainroad](https://github.com/Vimux/Mainroad) 主题做了一些修改。
 
-![blog-hugo-rose-theme](/images/20260301-week-review/01.webp)
+![blog-hugo-rose-theme](01.webp)
 
-后来看到了 [Frost's Blog](https://frostming.com/)，发现该博客风格比较简洁，于是想使用该主题，但是找不到该博客主题的源码，于是使用 AI 复刻了该主题。再后来，看到 [游钓四方](https://blog.lhasa.icu/) 之后，发现该博客访问速度快、样式美规紧凑、主题源码开源，于是就有了 [博客从 Hugo 迁移到了 Astro](/posts/2026/02/26/from-hugo-to-astro-blog) 这篇文章。
+后来看到了 [Frost's Blog](https://frostming.com/)，发现该博客风格比较简洁，于是想使用该主题，但是找不到该博客主题的源码，于是使用 AI 复刻了该主题。再后来，看到 [游钓四方](https://blog.lhasa.icu/) 之后，发现该博客访问速度快、样式美规紧凑、主题源码开源，于是就有了 [博客从 Hugo 迁移到了 Astro](/posts/from-hugo-to-astro-blog) 这篇文章。
 
 在迁移过程中，遇到的最大的问题是主题切换的功能一直存在问题，于是禁用了 Astro 动画，改为整个页面刷新，并且修改了 critters 的配置（`mergeStylesheets: false`），避免 CSS 裁剪或重排导致样式被覆盖。
 
 再后来看到 [Yiran's Blog](https://zdyxry.github.io/) 之后，参考该网站，将导航修改为固定模式、Footer 部分添加了社交链接、重构了 Astro 布局、去掉了分类页面（将分类列表添加到了归档页面上方，同时添加了按年份导航）。
 
-![blog-astro-archives](/images/20260301-week-review/02.webp)
+![blog-astro-archives](02.webp)
 
 总结一下，花在博客主题改造和排错的时间太多了，有点因小失大。毕竟铁打的营盘流水的兵，三十年河东三十年河西。博客只是一个记录文字的工具，博客构建工具层出不穷，博客主题也会随着时间流逝让人出现审美疲劳，说不定以后的哪天又换了一个博客生成器和主题。所以，完全不应该在博客主题上花费太多时间了，而应该把时间花在学习有用、回报率高的事情上，比如说 AI、大模型等等。
 
@@ -32,9 +32,9 @@ description: 这周主要在两条线上投入时间：把博客从 Hugo 迁移�
 
 一直在使用 Cursor 作为 vibe coding 的主力工具，因为账号是公司开通的，不用担心费用问题。奈何20美元的额度总是早早用完了，导致只能使用免费在模型。以下是最近一个月 Curosr 的提交代码统计。
 
-![cursor-dashboard-20260305](/images/20260301-week-review/03.webp)
+![cursor-dashboard-20260305](03.webp)
 
-为了解决这个问题，于是尝试了 Codex CLI（[Codex CLI 安装、配置、使用与认证指南](/posts/2026/03/03/codex-cli-guide)）和 Gemini（[Gemini CLI 安装、配置、使用与认证指南](/posts/2026/03/02/gemini-cli-guide)）以及 Claude Code（[Claude Code 安装、配置、使用与认证指南](/posts/2026/03/05/claude-code-guide)）。
+为了解决这个问题，于是尝试了 Codex CLI（[Codex CLI 安装、配置、使用与认证指南](/posts/codex-cli-guide)）和 Gemini（[Gemini CLI 安装、配置、使用与认证指南](/posts/gemini-cli-guide)）以及 Claude Code（[Claude Code 安装、配置、使用与认证指南](/posts/claude-code-guide)）。
 
 公司也提供了 Codex 的 token，只是之前一直没有配置好，所以用的少。摸索了一下之后，就把配置搞定了。这里推荐一个工具，叫做 [CC Switch](https://github.com/farion1231/cc-switch)，可以通过图形化的方式配置 Claude Code、Codex、Gemini CLI、OpenCode 和 OpenClaw 等 CLI 工具。
 
@@ -50,9 +50,9 @@ Claude Code 我没有在官网购买订阅，因为没有 Visa 信用卡，所�
 
 因为要安装 OpenClaw，我把我的 VPS 服务器重装了系统。因为之前使用到是 Centos 8，能够安装到 Nodejs 版本低，无法成功安装 OpenClaw。重装后的系统是 AlmaLinux 9，是 Centos 9 的开源版本，命令一致，对于熟悉 Centos 的我来说，很容易上手。
 
-VPS 系统重装了之后，花了时间重新设置系统、部署 Docker 服务，并且更新了文章 [我的VPS服务部署记录](/posts/2023/01/25/notes-about-deploy-services-in-vps)。
+VPS 系统重装了之后，花了时间重新设置系统、部署 Docker 服务，并且更新了文章 [我的VPS服务部署记录](/posts/notes-about-deploy-services-in-vps)。
 
-[OpenClaw 安装、配置与使用指南](/posts/2026/03/04/openclaw-install-config-usage-guide) 这篇文章记录了我安装 OpenClaw 的过程。
+[OpenClaw 安装、配置与使用指南](/posts/openclaw-install-config-usage-guide) 这篇文章记录了我安装 OpenClaw 的过程。
 
 目前，我使用 OpenClaw 主要做了两件事，一是让它每天早上给我发送每日简报；二是通过电报机器人发送链接，让机器人保存为书签。
 
@@ -136,7 +136,7 @@ OSChina 最新资讯：
 • OpenResty 1.29.2.1 正式发布 (https://www.oschina.net/news/407583/openresty-1-29-2-1-released)
 ```
 
-让机器人保存链接为书签，这里使用 Linkding 这个技能。对应的渠道是使用到电报。配置方法请参考 [OpenClaw 安装、配置与使用指南](/posts/2026/03/04/openclaw-install-config-usage-guide) 这篇文章。
+让机器人保存链接为书签，这里使用 Linkding 这个技能。对应的渠道是使用到电报。配置方法请参考 [OpenClaw 安装、配置与使用指南](/posts/openclaw-install-config-usage-guide) 这篇文章。
 
 使用 OpenClaw 几天后的感受是，OpenClaw 的兴起，会让很多 APP 没有存在的必要。因为通过 Skills 可以实现很多的 APP 能实现的技能，甚至很多 SASS 软件的存在也不重要了。
 

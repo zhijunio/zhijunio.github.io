@@ -725,8 +725,8 @@ A: 可以使用 `messager.printMessage()` 输出调试信息，或使用 IDE 的
 
 ## 相关文章
 
-- [Vibesafe4j 详细介绍](/posts/2025/11/13/vibesafe4j-introduction/) - 了解 Vibesafe4j 框架基础
-- [Spring AI 介绍](/posts/2025/09/18/spring-ai/) - Spring AI 框架使用指南
+- [Vibesafe4j 详细介绍](/posts/vibesafe4j-introduction) - 了解 Vibesafe4j 框架基础
+- [Spring AI 介绍](/posts/spring-ai) - Spring AI 框架使用指南
 
 ## 参考资源
 

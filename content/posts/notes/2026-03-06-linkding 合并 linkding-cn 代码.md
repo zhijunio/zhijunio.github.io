@@ -134,7 +134,7 @@ bash scripts/build-docker.sh
 
 先登录原来的系统，导出所有标签作为备份。
 
-参考 [我的VPS服务部署记录](/posts/2023/01/25/notes-about-deploy-services-in-vps#linkding)这篇文章，修改 docker-compose
+参考 [我的VPS服务部署记录](/posts/notes-about-deploy-services-in-vps#linkding)这篇文章，修改 docker-compose
 文件如下：
 
 ```yaml
