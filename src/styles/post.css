@@ -42,12 +42,14 @@
 }
 
 #article > .post-meta .post-tags {
-  display: contents;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: inherit;
 }
 
 #article > .post-meta .post-category,
 #article > .post-meta .post-tag {
-  color: var(--muted);
+  color: color-mix(in srgb, var(--text) 62%, var(--muted));
   text-decoration: none;
 }
 

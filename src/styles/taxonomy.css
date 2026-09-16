@@ -17,7 +17,7 @@
 }
 
 .taxonomy-cloud a {
-  color: var(--muted);
+  color: color-mix(in srgb, var(--text) 72%, var(--muted));
   font-size: var(--text-md);
   line-height: var(--leading-snug);
   text-decoration: none;

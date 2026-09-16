@@ -68,12 +68,14 @@
 }
 
 #home-feed-list .home-feed-tags {
-  display: contents;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: inherit;
 }
 
 #home-feed-list .home-feed-category,
 #home-feed-list .home-feed-tag {
-  color: var(--muted);
+  color: color-mix(in srgb, var(--text) 62%, var(--muted));
   text-decoration: none;
 }
 
