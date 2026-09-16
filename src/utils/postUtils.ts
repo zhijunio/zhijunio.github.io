@@ -91,7 +91,7 @@ function excerptFromMarkdown(markdownContent: string): string {
   return short.replace(/\s+/g, " ").trim();
 }
 
-/** `updated`：首页/站点图；`date`：RSS 按发布时间 */
+/** 默认 `updated`（首页 / RSS）；`date` 仅按发布时间 */
 export function sortPosts(
   posts: PostEntry[],
   by: "updated" | "date" = "updated"

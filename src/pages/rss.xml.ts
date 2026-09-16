@@ -9,7 +9,8 @@ import {
 } from "@/utils/postUtils";
 
 export async function GET() {
-  const sortedPosts = sortPosts(await getPosts(), "date").slice(0, 10);
+  // 与首页一致：按 updated ?? date 排序；多给订阅器一些条目
+  const sortedPosts = sortPosts(await getPosts()).slice(0, 30);
   const iconUrl = `${SITE.website.replace(/\/$/, "")}/favicon.ico`;
 
   return rss({
@@ -22,7 +23,7 @@ export async function GET() {
       link: getPostUrl(post.data.slug),
       title: post.data.title,
       description: getEntryDescription(post),
-      pubDate: new Date(post.data.date),
+      pubDate: new Date(post.data.updated ?? post.data.date),
     })),
   });
 }
