@@ -23,7 +23,7 @@ docker run --rm -p 4318:4318 ghcr.io/categolj/lognroll:native
 
 打开 `http://localhost:4318`，用户名留空，密码 `changeme`。应用要把日志发到 `http://localhost:4318/v1/logs` 。Apple Silicon 上官方 native 镜像可能起不来，改用 JVM 版镜像。
 
-![Lognroll 登录后的界面](01.png)
+![Lognroll 登录后的界面](01.webp)
 
 ## Spring Boot 4+
 
@@ -146,7 +146,7 @@ curl http://localhost:8080/actuator/health
 
 刷新日志，这条请求会出现，`trace_id` 列有值就说明 Appender 和 Tracing 接上了。
 
-![Lognroll 中带 trace_id 的请求日志](02.png)
+![Lognroll 中带 trace_id 的请求日志](02.webp)
 
 ## 其他 OTLP 实现
 

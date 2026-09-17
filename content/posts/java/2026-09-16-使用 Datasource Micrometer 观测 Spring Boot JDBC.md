@@ -261,53 +261,53 @@ done
 
 地址以启动日志为准，不要抄文里的端口。
 
-![Grafana 首页，左侧 Drilldown](01.png)
+![Grafana 首页，左侧 Drilldown](01.webp)
 
 ### Traces
 
 Drilldown → Traces。数据源是 Tempo。
 
-![Traces Drilldown，Span rate](02.png)
+![Traces Drilldown，Span rate](02.webp)
 
 Span rate 柱顶的 ◇（Exemplar）→ View trace。
 
-![Span rate 上的 Exemplar 和 View trace](03.png)
+![Span rate 上的 Exemplar 和 View trace](03.webp)
 
 `connection` span 里能看到 acquired / commit 的时间和次数。
 
-![connection span 的 acquired 与 commit 事件](04.png)
+![connection span 的 acquired 与 commit 事件](04.webp)
 
 点 SQL span。带 `RETURNING` 时，summary 经常是 `INSERT counters SELECT`，`db.query.text` 才是完整语句。属性名已经是 OpenTelemetry semantic conventions（`db.system.name`、`db.query.text` 等），这是 `datasource-micrometer-opentelemetry` 做的。
 
-![INSERT span 上的 db.query.text](05.png)
+![INSERT span 上的 db.query.text](05.webp)
 
 时间轴上的文档图标，或 span 详情里的 Related logs，可以把这条 Trace 对应的日志拆到旁边看。没加 Logback Appender 时这里是空的。
 
-![从 Trace 打开关联日志](06.png)
+![从 Trace 打开关联日志](06.webp)
 
 Loki 会按 `service_name` 和 `trace_id` 滤出这次请求的 INFO 和 SQL DEBUG。
 
-![按 trace_id 查出的 increment 日志和 SQL](07.png)
+![按 trace_id 查出的 increment 日志和 SQL](07.webp)
 
 ### Metrics
 
 Drilldown → Metrics，过滤 `jdbc`。能看到 `jdbc.connection_acquired_total`、`jdbc.connection_commit_total`、连接占用时间等。[指标列表](https://jdbc-observations.github.io/datasource-micrometer/docs/current/docs/html/#observability-metrics)。
 
-![Metrics Drilldown 过滤 jdbc](08.png)
+![Metrics Drilldown 过滤 jdbc](08.webp)
 
 ### Logs
 
 Drilldown → Logs，选 `counter-api` → Show logs。
 
-![Logs Drilldown 里的 counter-api](09.png)
+![Logs Drilldown 里的 counter-api](09.webp)
 
-![counter-api 的日志列表](10.png)
+![counter-api 的日志列表](10.webp)
 
 点开一条，Links 里的 Trace 跳回 Tempo。
 
-![日志字段里的 trace_id 和 Trace 链接](11.png)
+![日志字段里的 trace_id 和 Trace 链接](11.webp)
 
-![从日志跳到的 Trace View](12.png)
+![从日志跳到的 Trace View](12.webp)
 
 ## 生产怎么开
 
