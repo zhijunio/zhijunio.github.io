@@ -29,7 +29,7 @@ gRPC，常见路径是 Servlet 模式：gRPC 和普通 HTTP 共用一个端口�
 
 ## 示例代码
 
-完整可跑的代码在 [zhijunio/spring-boot-grpc-samples](https://github.com/zhijunio/spring-boot-grpc-samples)：`grpc-server` 听 9090，`grpc-client` 用 HTTP 8082 调 stub。`main` 是默认 Netty 路径；HTTP Basic 在 `security` 分支。Reactor、Native、Servlet 同端口只在文里写，没有放进示例。
+完整可跑的代码在 [zhijunio/spring-boot-grpc-samples](https://github.com/zhijunio/spring-boot-grpc-samples)：`grpc-server` 听 9090，`grpc-client` 无 Web，启动时用 `CommandLineRunner` 打一次 `SayHello`，`grpc-client-secure` 对应 `grpc-server-secure`（默认通道带 HTTP Basic），`grpc-client-tomcat-secure` 对应 `grpc-server-tomcat-secure`，`auth-server` / `grpc-server-oauth2` / `grpc-client-oauth2` 是 JWT client_credentials，`grpc-server-tomcat` 是 Tomcat Servlet 同端口，`grpc-server-secure` 是 Netty HTTP Basic / preauth，`grpc-server-tomcat-secure` 是 Tomcat + Security。形状对齐官方 [samples/grpc-server](https://github.com/spring-projects/spring-grpc/tree/main/samples/grpc-server)、[samples/grpc-client](https://github.com/spring-projects/spring-grpc/tree/main/samples/grpc-client)、[samples/grpc-tomcat](https://github.com/spring-projects/spring-grpc/tree/main/samples/grpc-tomcat)、[samples/grpc-secure](https://github.com/spring-projects/spring-grpc/tree/main/samples/grpc-secure)、[samples/grpc-tomcat-secure](https://github.com/spring-projects/spring-grpc/tree/main/samples/grpc-tomcat-secure)、[samples/grpc-oauth2](https://github.com/spring-projects/spring-grpc/tree/main/samples/grpc-oauth2)。Reactor、Native 只在文里写，没有放进示例。
 
 ## 依赖
 
@@ -62,31 +62,27 @@ curl -s https://start.spring.io/starter.tgz \
 cd grpc-server
 ```
 
-接下来写 Protocol Buffers 的 `.proto`。服务定义参考 [gRPC 文档](https://grpc.io/docs/what-is-grpc/core-concepts/#service-definition) 里的示例。这篇只做一元调用和服务端流，客户端流和双向流不写实现。
+接下来写 Protocol Buffers 的 `.proto`。服务定义跟官方 `samples/grpc-server` 一样：一元调用 `SayHello`，服务端流 `StreamHello`。客户端流和双向流这篇不写。
 
 ```bash
 cat <<EOF > src/main/proto/hello.proto
 syntax = "proto3";
 
-package com.example;
-
 option java_package = "com.example.proto";
-option java_outer_classname = "HelloServiceProto";
+option java_outer_classname = "HelloWorldProto";
 option java_multiple_files = true;
 
-service HelloService {
-  rpc SayHello (HelloRequest) returns (HelloResponse);
-  rpc LotsOfReplies (HelloRequest) returns (stream HelloResponse);
-  rpc LotsOfGreetings(stream HelloRequest) returns (HelloResponse);
-  rpc BidiHello(stream HelloRequest) returns (stream HelloResponse);
+service Simple {
+  rpc SayHello (HelloRequest) returns (HelloReply) {}
+  rpc StreamHello (HelloRequest) returns (stream HelloReply) {}
 }
 
 message HelloRequest {
-  string greeting = 1;
+  string name = 1;
 }
 
-message HelloResponse {
-  string reply = 1;
+message HelloReply {
+  string message = 1;
 }
 EOF
 ```
@@ -97,50 +93,81 @@ EOF
 
 ```bash
 $ find target/generated-sources/protobuf -type f
-target/generated-sources/protobuf/com/example/proto/HelloServiceProto.java
+target/generated-sources/protobuf/com/example/proto/HelloWorldProto.java
 target/generated-sources/protobuf/com/example/proto/HelloRequest.java
-target/generated-sources/protobuf/com/example/proto/HelloResponseOrBuilder.java
+target/generated-sources/protobuf/com/example/proto/HelloReplyOrBuilder.java
 target/generated-sources/protobuf/com/example/proto/HelloRequestOrBuilder.java
-target/generated-sources/protobuf/com/example/proto/HelloServiceGrpc.java
-target/generated-sources/protobuf/com/example/proto/HelloResponse.java
+target/generated-sources/protobuf/com/example/proto/SimpleGrpc.java
+target/generated-sources/protobuf/com/example/proto/HelloReply.java
 ```
 
-实现服务：继承 `HelloServiceGrpc.HelloServiceImplBase`，标上 `@GrpcService`，就会进容器并挂到 gRPC 服务器上。只标 `@Service` 也可以，因为同样是 `BindableService` bean。
+实现服务：继承 `SimpleGrpc.SimpleImplBase`，标上 `@Service`（官方示例也是这样），就会进容器并挂到 gRPC 服务器上。标 `@GrpcService` 也可以，因为同样是 `BindableService` bean。服务里 `error*` 抛 `IllegalArgumentException`，`internal*` 抛 `RuntimeException`。官方 `StreamHello` 每条之间 `sleep` 1 秒；示例仓库为了测试不卡，把间隔去掉了。
 
 ```bash
-cat <<EOF > src/main/java/com/example/HelloService.java
+cat <<EOF > src/main/java/com/example/GrpcServerService.java
 package com.example;
 
-import com.example.proto.HelloRequest;
-import com.example.proto.HelloResponse;
-import com.example.proto.HelloServiceGrpc;
-import io.grpc.stub.StreamObserver;
-import org.springframework.grpc.server.service.GrpcService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.stereotype.Service;
 
-@GrpcService
-public class HelloService extends HelloServiceGrpc.HelloServiceImplBase {
+import com.example.proto.HelloReply;
+import com.example.proto.HelloRequest;
+import com.example.proto.SimpleGrpc;
+
+import io.grpc.stub.StreamObserver;
+
+@Service
+public class GrpcServerService extends SimpleGrpc.SimpleImplBase {
+
+    private static final Log log = LogFactory.getLog(GrpcServerService.class);
 
     @Override
-    public void sayHello(HelloRequest request, StreamObserver<HelloResponse> responseObserver) {
-        HelloResponse response = HelloResponse.newBuilder()
-                .setReply("Hello %s!".formatted(request.getGreeting()))
-                .build();
-        responseObserver.onNext(response);
+    public void sayHello(HelloRequest req, StreamObserver<HelloReply> responseObserver) {
+        log.info("Hello " + req.getName());
+        if (req.getName().startsWith("error")) {
+            throw new IllegalArgumentException("Bad name: " + req.getName());
+        }
+        if (req.getName().startsWith("internal")) {
+            throw new RuntimeException();
+        }
+        HelloReply reply = HelloReply.newBuilder().setMessage("Hello ==> " + req.getName()).build();
+        responseObserver.onNext(reply);
         responseObserver.onCompleted();
     }
 
     @Override
-    public void lotsOfReplies(HelloRequest request, StreamObserver<HelloResponse> responseObserver) {
-        for (int i = 0; i < 10; i++) {
-            responseObserver.onNext(HelloResponse.newBuilder()
-                    .setReply("[%05d] Hello %s!".formatted(i, request.getGreeting()))
-                    .build());
+    public void streamHello(HelloRequest req, StreamObserver<HelloReply> responseObserver) {
+        log.info("Hello " + req.getName());
+        for (int count = 0; count < 10; count++) {
+            HelloReply reply = HelloReply.newBuilder()
+                    .setMessage("Hello(" + count + ") ==> " + req.getName())
+                    .build();
+            responseObserver.onNext(reply);
         }
         responseObserver.onCompleted();
     }
 
 }
 EOF
+```
+
+gRPC 线上只认 **Status**，不会把 Java 异常原样传给客户端。服务方法里抛出来的未处理异常，默认多半变成 `UNKNOWN`。`GrpcExceptionHandler` 就是把这些异常翻成 Status 的扩展点：做成 bean 后，Spring gRPC 在调用失败时问它一次；认出的类型返回 `StatusException`（可以带 description 和 metadata trailer），不认的返回 `null`，交给后面的 handler 或默认行为。
+
+官方 sample 把 `IllegalArgumentException` 映射成 `INVALID_ARGUMENT`，并在 trailer 里放 `error-code`。`RuntimeException` 故意不处理，客户端看到的就是 `UNKNOWN`。`spring.grpc.server.exception-handler.enabled=false` 会关掉这套拦截；`GrpcServerIntegrationTests` 里两条都覆盖了。
+
+```java
+@Bean
+GrpcExceptionHandler grpcExceptionHandler() {
+    return (exception) -> {
+        if (exception instanceof IllegalArgumentException) {
+            Metadata metadata = new Metadata();
+            metadata.put(Metadata.Key.of("error-code", Metadata.ASCII_STRING_MARSHALLER), "INVALID_ARGUMENT");
+            return Status.INVALID_ARGUMENT.withDescription(exception.getMessage()).asException(metadata);
+        }
+        return null;
+    };
+}
 ```
 
 Initializr 勾了 OpenTelemetry。还没起接收端的时候，OTLP metrics 会连不上、日志刷错。先关掉，等后面「可观测性」再接到 LGTM：
@@ -168,7 +195,7 @@ brew install grpcurl
 ```bash
 $ grpcurl --plaintext localhost:9090 list 
 
-com.example.HelloService
+com.example.Simple
 grpc.health.v1.Health
 grpc.reflection.v1.ServerReflection
 ```
@@ -194,124 +221,99 @@ $ grpcurl --plaintext localhost:9090 grpc.health.v1.Health/Check
 }
 ```
 
-再看自己写的 `com.example.HelloService` 有哪些方法：
+再看自己写的 `Simple` 有哪些方法：
 
 ```bash
-$ grpcurl --plaintext localhost:9090 describe com.example.HelloService
+$ grpcurl --plaintext localhost:9090 describe Simple
 
-com.example.HelloService is a service:
-service HelloService {
-  rpc BidiHello ( stream .com.example.HelloRequest ) returns ( stream .com.example.HelloResponse );
-  rpc LotsOfGreetings ( stream .com.example.HelloRequest ) returns ( .com.example.HelloResponse );
-  rpc LotsOfReplies ( .com.example.HelloRequest ) returns ( stream .com.example.HelloResponse );
-  rpc SayHello ( .com.example.HelloRequest ) returns ( .com.example.HelloResponse );
+Simple is a service:
+service Simple {
+  rpc SayHello ( .HelloRequest ) returns ( .HelloReply );
+  rpc StreamHello ( .HelloRequest ) returns ( stream .HelloReply );
 }
 ```
 
 先打 `SayHello`。请求用 JSON；本地没开 TLS，加上 `--plaintext`。
 
 ```bash
-$ grpcurl -d '{"greeting":"John Doe"}' --plaintext localhost:9090 com.example.HelloService/SayHello
+$ grpcurl -d '{"name":"Alien"}' --plaintext localhost:9090 Simple/SayHello
 {
-  "reply": "Hello John Doe!"
+  "message": "Hello ==\u003e Alien"
 }
 ```
 
-接下来执行 `LotsOfReplies`，这是服务端连续回多条的方法。
+接下来执行 `StreamHello`，这是服务端连续回多条的方法。
 
 ```bash
-$ grpcurl -d '{"greeting":"John Doe"}' --plaintext localhost:9090 com.example.HelloService/LotsOfReplies
+$ grpcurl -d '{"name":"Alien"}' --plaintext localhost:9090 Simple/StreamHello
 {
-  "reply": "[00000] Hello John Doe!"
+  "message": "Hello(0) ==\u003e Alien"
 }
 {
-  "reply": "[00001] Hello John Doe!"
+  "message": "Hello(1) ==\u003e Alien"
 }
 {
-  "reply": "[00002] Hello John Doe!"
+  "message": "Hello(2) ==\u003e Alien"
 }
 {
-  "reply": "[00003] Hello John Doe!"
+  "message": "Hello(3) ==\u003e Alien"
 }
 {
-  "reply": "[00004] Hello John Doe!"
+  "message": "Hello(4) ==\u003e Alien"
 }
 {
-  "reply": "[00005] Hello John Doe!"
+  "message": "Hello(5) ==\u003e Alien"
 }
 {
-  "reply": "[00006] Hello John Doe!"
+  "message": "Hello(6) ==\u003e Alien"
 }
 {
-  "reply": "[00007] Hello John Doe!"
+  "message": "Hello(7) ==\u003e Alien"
 }
 {
-  "reply": "[00008] Hello John Doe!"
+  "message": "Hello(8) ==\u003e Alien"
 }
 {
-  "reply": "[00009] Hello John Doe!"
+  "message": "Hello(9) ==\u003e Alien"
 }
 ```
 
-接下来写测试。
+接下来写测试。形状对齐官方 [samples/grpc-server](https://github.com/spring-projects/spring-grpc/tree/main/samples/grpc-server)，不要留 Initializr 那个会占 9090 的空 `contextLoads`。
 
-Spring Boot 4.1 **不会**再自动扫出 stub bean。测试里要注入 `HelloServiceBlockingStub`，必须加上 `@ImportGrpcClients`。
+Spring Boot 4.1 **不会**再自动扫出 stub bean。测试里要注入 `SimpleBlockingStub`，必须加上 `@ImportGrpcClients`。
 `@AutoConfigureTestGrpcTransport` 会走进程内通道，不用占 9090。
 
-```bash
-cat<<EOF > src/test/java/com/example/HelloServiceTest.java
-package com.example;
-
-import com.example.proto.HelloRequest;
-import com.example.proto.HelloResponse;
-import com.example.proto.HelloServiceGrpc;
-import java.util.ArrayList;
-import java.util.List;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.grpc.test.autoconfigure.AutoConfigureTestGrpcTransport;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.grpc.client.ImportGrpcClients;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-@SpringBootTest
+```java
+@SpringBootTest(
+		properties = { "spring.grpc.server.port=0",
+				"spring.grpc.client.channel.default.target=0.0.0.0:${local.grpc.sever.port}" },
+		useMainMethod = UseMainMethod.ALWAYS)
+@DirtiesContext
 @AutoConfigureTestGrpcTransport
-@ImportGrpcClients(types = HelloServiceGrpc.HelloServiceBlockingStub.class)
-class HelloServiceTest {
+@ImportGrpcClients
+class GrpcServerApplicationTests {
 
 	@Autowired
-	HelloServiceGrpc.HelloServiceBlockingStub stub;
+	private SimpleGrpc.SimpleBlockingStub stub;
 
 	@Test
-	void sayHello() {
-		HelloResponse response = this.stub.sayHello(HelloRequest.newBuilder().setGreeting("John Doe").build());
-		assertThat(response.getReply()).isEqualTo("Hello John Doe!");
-	}
-
-	@Test
-	void lotsOfReplies() {
-		List<String> replies = new ArrayList<>();
-		this.stub.lotsOfReplies(HelloRequest.newBuilder().setGreeting("John Doe").build())
-			.forEachRemaining(r -> replies.add(r.getReply()));
-		assertThat(replies).containsExactly("[00000] Hello John Doe!", "[00001] Hello John Doe!",
-				"[00002] Hello John Doe!", "[00003] Hello John Doe!", "[00004] Hello John Doe!",
-				"[00005] Hello John Doe!", "[00006] Hello John Doe!", "[00007] Hello John Doe!",
-				"[00008] Hello John Doe!", "[00009] Hello John Doe!");
+	void serverResponds() {
+		HelloReply response = this.stub.sayHello(HelloRequest.newBuilder().setName("Alien").build());
+		assertEquals("Hello ==> Alien", response.getMessage());
 	}
 
 }
-
-EOF
 ```
 
-跑测试：
+官方属性名是 `local.grpc.sever.port`（少一个 `r`）。配了 `@AutoConfigureTestGrpcTransport` 之后走进程内通道，这条用不上。
+
+仓库里其余测试也按官方搬了：`GrpcServerSideTests`、`GrpcServerIntegrationTests`（异常映射、随机端口、SSL、进程内和 Netty 双通道）、`GrpcServerHealthIntegrationTests`、`GrpcClientApplicationTests`（各种 stub factory）。`error` → `INVALID_ARGUMENT` 以及 trailer 里的 `error-code` 在 Integration 里测。
+
+跑测试（注意，项目中使用的 Java 25，本地的 Java 版本应该也是 25）：
 
 ```bash
 ./mvnw test
 ```
-
-Initializr 还会生成一个 `*ApplicationTests`，里面是空的 `contextLoads`。它会把整台 Netty 拉起来，默认仍占 **9090**。本机已经 `spring-boot:run` 的话，这个测试会端口冲突。可以删掉，或者只保留上面带 `@AutoConfigureTestGrpcTransport` 的测试。
 
 ### 进程内服务器
 
@@ -337,10 +339,10 @@ spring.grpc.server.inprocess.name=hello
 同进程里的客户端，通道不要写成 `static://localhost:9090`，改成 `in-process:` 加上**同一个名字**：
 
 ```properties
-spring.grpc.client.channel.hello.target=in-process:hello
+spring.grpc.client.channel.default.target=in-process:hello
 ```
 
-`@ImportGrpcClients(target = "hello", ...)` 不用改，还是对这条叫 `hello` 的通道。
+`@ImportGrpcClients` 默认连 `default` 通道，不用改。
 
 配了 `inprocess.name` 之后，进程内工厂是**额外**加上的，默认的 Netty **仍然会监听 9090**。这不是关掉 9090 的开关。不想让测试占端口，用 `@AutoConfigureTestGrpcTransport`。
 
@@ -357,7 +359,7 @@ curl -s https://start.spring.io/starter.tgz \
        -d baseDir=grpc-client \
        -d packageName=com.example \
        -d javaVersion=25 \
-       -d dependencies=spring-grpc-client,web,actuator,configuration-processor,prometheus,opentelemetry,native \
+       -d dependencies=spring-grpc-client,actuator,configuration-processor,prometheus,opentelemetry,native \
        -d type=maven-project \
        -d applicationName=GrpcClientApplication | tar -xzvf -
 cd grpc-client
@@ -369,25 +371,21 @@ cd grpc-client
 cat <<EOF > src/main/proto/hello.proto
 syntax = "proto3";
 
-package com.example;
-
 option java_package = "com.example.proto";
-option java_outer_classname = "HelloServiceProto";
+option java_outer_classname = "HelloWorldProto";
 option java_multiple_files = true;
 
-service HelloService {
-  rpc SayHello (HelloRequest) returns (HelloResponse);
-  rpc LotsOfReplies (HelloRequest) returns (stream HelloResponse);
-  rpc LotsOfGreetings(stream HelloRequest) returns (HelloResponse);
-  rpc BidiHello(stream HelloRequest) returns (stream HelloResponse);
+service Simple {
+  rpc SayHello (HelloRequest) returns (HelloReply) {}
+  rpc StreamHello (HelloRequest) returns (stream HelloReply) {}
 }
 
 message HelloRequest {
-  string greeting = 1;
+  string name = 1;
 }
 
-message HelloResponse {
-  string reply = 1;
+message HelloReply {
+  string message = 1;
 }
 EOF
 ```
@@ -399,179 +397,94 @@ EOF
 ```
 
 和 1.0 不同的是： **客户端 stub 不会再自动扫包注册成 bean**
-。你要在配置类或启动类上显式写 `@ImportGrpcClients`，指定要注入哪种 stub，以及它连哪条通道（这里把通道叫做 `hello`）：
+。要在配置类或启动类上写 `@ImportGrpcClients`。官方 [samples/grpc-client](https://github.com/spring-projects/spring-grpc/tree/main/samples/grpc-client) 不指定 `types`，会按 classpath 里生成的 stub 注册，并连默认通道 `default`。也可以写成 `@ImportGrpcClients(types = SimpleGrpc.SimpleBlockingStub.class)`，只注入这一种。
 
 ```bash
 cat <<EOF > src/main/java/com/example/GrpcClientApplication.java
 package com.example;
 
-import com.example.proto.HelloServiceGrpc;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.grpc.client.ImportGrpcClients;
 
-@SpringBootApplication(proxyBeanMethods = false)
-@ImportGrpcClients(target = "hello", types = HelloServiceGrpc.HelloServiceBlockingStub.class)
+import com.example.proto.HelloRequest;
+import com.example.proto.SimpleGrpc;
+
+@SpringBootApplication
+@ImportGrpcClients
 public class GrpcClientApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(GrpcClientApplication.class, args);
     }
 
+    @Bean
+    CommandLineRunner runner(SimpleGrpc.SimpleBlockingStub stub) {
+        return args -> {
+            System.out.println(stub.sayHello(HelloRequest.newBuilder().setName("Alien").build()));
+        };
+    }
+
 }
 EOF
 ```
 
-通道名字要对应到实际要连的地址。Spring Boot 4.1 中属性前缀是 `spring.grpc.client.channel.<名字>.target`。
+通道名字要对应到实际要连的地址。Spring Boot 4.1 中属性前缀是 `spring.grpc.client.channel.<名字>.target`。默认通道叫 `default`：
 
 ```bash
 cat <<EOF >> src/main/resources/application.properties
-server.port=8082
-spring.grpc.client.channel.hello.target=static://localhost:9090
+spring.grpc.client.channel.default.target=static://localhost:9090
 management.otlp.metrics.export.enabled=false
 EOF
 ```
 
-为了方便用 curl 验证，外面再包一层普通的 Spring MVC。浏览器或 curl 发 HTTP 请求，控制器里再调用 gRPC stub：
+官方 sample 写成 `static://0.0.0.0:${launched.grpc.port:9090}`，方便测试里动态改端口。本地手跑服务端用 `localhost:9090` 即可。
 
-```bash
-cat <<EOF > src/main/java/com/example/HelloController.java
-package com.example;
-
-import com.example.proto.HelloRequest;
-import com.example.proto.HelloResponse;
-import com.example.proto.HelloServiceGrpc;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-@RestController
-public class HelloController {
-
-    private final HelloServiceGrpc.HelloServiceBlockingStub helloServiceStub;
-
-    public HelloController(HelloServiceGrpc.HelloServiceBlockingStub helloServiceStub) {
-        this.helloServiceStub = helloServiceStub;
-    }
-
-    @GetMapping("/")
-    public Reply sayHello(@RequestParam String greeting) {
-        HelloResponse response = helloServiceStub.sayHello(
-                HelloRequest.newBuilder().setGreeting(greeting).build());
-        return new Reply(response.getReply());
-    }
-
-    @GetMapping("/lots-of-replies")
-    public List<Reply> lotsOfReplies(@RequestParam String greeting) {
-        Iterator<HelloResponse> replies = helloServiceStub.lotsOfReplies(
-                HelloRequest.newBuilder().setGreeting(greeting).build());
-        List<Reply> result = new ArrayList<>();
-        replies.forEachRemaining(r -> result.add(new Reply(r.getReply())));
-        return result;
-    }
-
-    public record Reply(String reply) {
-    }
-
-}
-EOF
-```
-
-启动客户端：
+这是纯 gRPC 客户端，**没有** HTTP 口。确认服务端已在 9090 起来，再启动客户端：
 
 ```bash
 ./mvnw spring-boot:run
 ```
 
-客户端 HTTP 口是 8082，用 curl 打：
+启动日志末尾会打出 protobuf 的文本格式：
 
-```bash
-$ curl -s "http://localhost:8082?greeting=John%20Doe" | jq .
-{
-  "reply": "Hello John Doe!"
-}
-
-$ curl -s "http://localhost:8082/lots-of-replies?greeting=John%20Doe" | jq .
-[
-  {
-    "reply": "[00000] Hello John Doe!"
-  },
-  {
-    "reply": "[00001] Hello John Doe!"
-  },
-  {
-    "reply": "[00002] Hello John Doe!"
-  },
-  {
-    "reply": "[00003] Hello John Doe!"
-  },
-  {
-    "reply": "[00004] Hello John Doe!"
-  },
-  {
-    "reply": "[00005] Hello John Doe!"
-  },
-  {
-    "reply": "[00006] Hello John Doe!"
-  },
-  {
-    "reply": "[00007] Hello John Doe!"
-  },
-  {
-    "reply": "[00008] Hello John Doe!"
-  },
-  {
-    "reply": "[00009] Hello John Doe!"
-  }
-]
+```
+message: "Hello ==> Alien"
 ```
 
-HTTP 已经转到 gRPC 了。
+客户端进程会继续挂着，和官方 sample 一样。需要连别的端口时，改 `spring.grpc.client.channel.default.target`，或设环境变量覆盖。
 
-客户端测试不必真的连 9090。用 `@WebMvcTest` 只拉起 MVC，再用 `@MockitoBean` 把 stub 换成假的，就能测 `HelloController` 有没有把
-HTTP 参数转成 gRPC 请求：
+官方客户端测试会用 testjars 另拉起一份 `grpc-server`。这篇不搬那套，只测 `CommandLineRunner` 有没有用 `Alien` 去调 `SayHello`：
 
 ```bash
-cat<<EOF > src/test/java/com/example/HelloControllerTest.java
+cat<<EOF > src/test/java/com/example/GrpcClientApplicationTests.java
 package com.example;
 
-import com.example.proto.HelloRequest;
-import com.example.proto.HelloResponse;
-import com.example.proto.HelloServiceGrpc;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.boot.CommandLineRunner;
 
-import static org.mockito.ArgumentMatchers.any;
+import com.example.proto.HelloReply;
+import com.example.proto.HelloRequest;
+import com.example.proto.SimpleGrpc;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(HelloController.class)
-class HelloControllerTest {
-
-	@Autowired
-	MockMvc mockMvc;
-
-	@MockitoBean
-	HelloServiceGrpc.HelloServiceBlockingStub helloServiceStub;
+class GrpcClientApplicationTests {
 
 	@Test
-	void sayHello() throws Exception {
-		when(this.helloServiceStub.sayHello(any(HelloRequest.class)))
-			.thenReturn(HelloResponse.newBuilder().setReply("Hello John Doe!").build());
+	void runnerCallsSayHello() throws Exception {
+		SimpleGrpc.SimpleBlockingStub stub = mock(SimpleGrpc.SimpleBlockingStub.class);
+		HelloRequest request = HelloRequest.newBuilder().setName("Alien").build();
+		when(stub.sayHello(request)).thenReturn(HelloReply.newBuilder().setMessage("Hello ==> Alien").build());
 
-		this.mockMvc.perform(get("/").param("greeting", "John Doe"))
-			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.reply").value("Hello John Doe!"));
+		CommandLineRunner runner = new GrpcClientApplication().runner(stub);
+		runner.run();
+
+		verify(stub).sayHello(request);
 	}
 
 }
@@ -579,7 +492,7 @@ EOF
 ```
 
 ```bash
-./mvnw -Dtest=HelloControllerTest test
+./mvnw test
 ```
 
 ## 可观测性
@@ -603,22 +516,11 @@ management.opentelemetry.tracing.export.otlp.compression=gzip
 EOF
 ```
 
-重启两边，再打一遍客户端请求：
+重启两边，客户端启动时会打一次 `SayHello`，Tempo 里能看到服务端和客户端的 gRPC span。前面关掉的是 OTLP **metrics** 导出，tracing 这条不受影响。
 
-```bash
-curl -s "http://localhost:8082?greeting=John%20Doe"
-curl -s "http://localhost:8082/lots-of-replies?greeting=John%20Doe" | jq .
-```
+Prometheus scrape 走的是 **HTTP Actuator**，不是 gRPC。默认 Netty 听的 **9090 不是 HTTP**，`curl localhost:9090/actuator/prometheus` 打不通。这篇服务端、客户端都没勾 Web，所以两边都没有 `/actuator` HTTP 口；示例里 metrics 的 OTLP 也是关着的，指标不会进 LGTM。
 
-Grafana 在 http://localhost:3000，Tempo 里能看到服务端和客户端的 gRPC span。前面关掉的是 OTLP **metrics** 导出，tracing 这条不受影响。
-
-Prometheus scrape 走的是 **HTTP Actuator**，不是 gRPC。默认 Netty 听的 **9090 不是 HTTP**，`curl localhost:9090/actuator/prometheus` 打不通。这篇服务端没勾 Web，所以服务端没有 `/actuator` HTTP 口；示例里 metrics 的 OTLP 也是关着的，服务端指标不会进 LGTM。客户端勾了 Web，端口是 8082：
-
-```bash
-curl -s http://localhost:8082/actuator/prometheus | grep grpc | grep -v '^disk'
-```
-
-如果一定要在服务端也 scrape Prometheus，给服务端加上 Web，或者单独开 `management.server.port`，别指望 9090。
+如果一定要 scrape Prometheus，加上 Web，或者单独开 `management.server.port`，别指望 9090。
 
 ## 使用 Reactor 引入响应式编程
 
@@ -672,116 +574,76 @@ Spring Boot 4.1 **不再**帮你管 `reactor-grpc-stub` 的版本，要自己写
 ./mvnw clean compile
 ```
 
-`target/generated-sources/protobuf` 里会多一个 `ReactorHelloServiceGrpc.java`。原来的 `HelloServiceGrpc` 还在。
+`target/generated-sources/protobuf` 里会多一个 `ReactorSimpleGrpc.java`。原来的 `SimpleGrpc` 还在。
 
 ### 客户端改成 Reactor stub
 
-`HelloController` 改成注入 `ReactorHelloServiceStub`，接口返回 `Mono` / `Flux`：
+`CommandLineRunner` 改成注入 `ReactorSimpleStub`：
 
 ```java
 package com.example;
 
-import com.example.proto.HelloRequest;
-import com.example.proto.ReactorHelloServiceGrpc;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
-@RestController
-public class HelloController {
-
-    private final ReactorHelloServiceGrpc.ReactorHelloServiceStub helloServiceStub;
-
-    public HelloController(ReactorHelloServiceGrpc.ReactorHelloServiceStub helloServiceStub) {
-        this.helloServiceStub = helloServiceStub;
-    }
-
-    @GetMapping("/")
-    public Mono<Reply> sayHello(@RequestParam String greeting) {
-        return helloServiceStub.sayHello(HelloRequest.newBuilder().setGreeting(greeting).build())
-                .map(r -> new Reply(r.getReply()));
-    }
-
-    @GetMapping("/lots-of-replies")
-    public Flux<Reply> lotsOfReplies(@RequestParam String greeting) {
-        return helloServiceStub.lotsOfReplies(HelloRequest.newBuilder().setGreeting(greeting).build())
-                .map(r -> new Reply(r.getReply()));
-    }
-
-    public record Reply(String reply) {
-    }
-
-}
-```
-
-Reactor 的 stub **不会**跟着 BlockingStub 自动进来，要单独 `@ImportGrpcClients`。通道名还是前面的 `hello`：
-
-```java
-package com.example;
-
-import com.example.proto.ReactorHelloServiceGrpc;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.grpc.client.ImportGrpcClients;
 
-@Configuration(proxyBeanMethods = false)
-@ImportGrpcClients(target = "hello", types = ReactorHelloServiceGrpc.ReactorHelloServiceStub.class)
-public class GrpcConfig {
+import com.example.proto.HelloRequest;
+import com.example.proto.ReactorSimpleGrpc;
+
+@SpringBootApplication
+@ImportGrpcClients(types = ReactorSimpleGrpc.ReactorSimpleStub.class)
+public class GrpcClientApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(GrpcClientApplication.class, args);
+    }
+
+    @Bean
+    CommandLineRunner runner(ReactorSimpleGrpc.ReactorSimpleStub stub) {
+        return args -> {
+            stub.sayHello(HelloRequest.newBuilder().setName("Alien").build())
+                    .doOnNext(System.out::println)
+                    .block();
+        };
+    }
 
 }
 ```
 
-启动类上如果还留着 `HelloServiceBlockingStub` 的 `@ImportGrpcClients`，可以删掉，避免两个 stub 抢同一套通道配置。
+Reactor 的 stub **不会**跟着 BlockingStub 自动进来，要在 `@ImportGrpcClients` 里写 `types`。通道仍是 `default`。启动类上如果还留着不带 `types` 的 `@ImportGrpcClients`，会同时注册 Blocking stub，删掉只留上面这一份即可。
 
-`HelloControllerTest` 也要跟着改：`@MockitoBean` 换成 `ReactorHelloServiceStub`，`when(...).thenReturn(...)` 改成返回
-`Mono.just(...)`。
+重启客户端后，同样会打印 `Hello ==> Alien`。流式调用可以 `stub.streamHello(...).doOnNext(System.out::println).blockLast()`。
 
-重启客户端后，curl 还是可以当普通 JSON 用：
-
-```bash
-curl -s "http://localhost:8082/?greeting=John%20Doe"
-curl -s "http://localhost:8082/lots-of-replies?greeting=John%20Doe"
-```
-
-返回类型是 `Flux` 时，客户端还可以要流式响应。按行 JSON：
-
-```bash
-curl "http://localhost:8082/lots-of-replies?greeting=John%20Doe" -H "Accept: application/x-ndjson"
-```
-
-或者 Server-Sent Events：
-
-```bash
-curl "http://localhost:8082/lots-of-replies?greeting=John%20Doe" -H "Accept: text/event-stream"
-```
+如果外面再包一层 MVC，才谈得上 `Accept: application/x-ndjson` 或 SSE；官方 client sample 没有 Web。
 
 ### 服务端也改成 Reactor
 
 ```java
 package com.example;
 
+import com.example.proto.HelloReply;
 import com.example.proto.HelloRequest;
-import com.example.proto.HelloResponse;
-import com.example.proto.ReactorHelloServiceGrpc;
-import org.springframework.grpc.server.service.GrpcService;
+import com.example.proto.ReactorSimpleGrpc;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-@GrpcService
-public class HelloService extends ReactorHelloServiceGrpc.HelloServiceImplBase {
+@Service
+public class GrpcServerService extends ReactorSimpleGrpc.SimpleImplBase {
 
     @Override
-    public Mono<HelloResponse> sayHello(Mono<HelloRequest> request) {
+    public Mono<HelloReply> sayHello(Mono<HelloRequest> request) {
         return request
-                .map(req -> HelloResponse.newBuilder().setReply("Hello %s!".formatted(req.getGreeting())).build());
+                .map(req -> HelloReply.newBuilder().setMessage("Hello ==> " + req.getName()).build());
     }
 
     @Override
-    public Flux<HelloResponse> lotsOfReplies(Mono<HelloRequest> request) {
+    public Flux<HelloReply> streamHello(Mono<HelloRequest> request) {
         return request.flatMapMany(req -> Flux.range(0, 10)
-                .map(i -> HelloResponse.newBuilder()
-                        .setReply("[%05d] Hello %s!".formatted(i, req.getGreeting()))
+                .map(i -> HelloReply.newBuilder()
+                        .setMessage("Hello(" + i + ") ==> " + req.getName())
                         .build()));
     }
 
@@ -797,9 +659,9 @@ public class HelloService extends ReactorHelloServiceGrpc.HelloServiceImplBase {
 ```java
 package com.example;
 
+import com.example.proto.HelloReply;
 import com.example.proto.HelloRequest;
-import com.example.proto.HelloResponse;
-import com.example.proto.ReactorHelloServiceGrpc;
+import com.example.proto.ReactorSimpleGrpc;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.grpc.test.autoconfigure.AutoConfigureTestGrpcTransport;
@@ -813,24 +675,24 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @AutoConfigureTestGrpcTransport
-@ImportGrpcClients(types = ReactorHelloServiceGrpc.ReactorHelloServiceStub.class)
-class HelloServiceTest {
+@ImportGrpcClients(types = ReactorSimpleGrpc.ReactorSimpleStub.class)
+class GrpcServerServiceTest {
 
     @Autowired
-    ReactorHelloServiceGrpc.ReactorHelloServiceStub stub;
+    ReactorSimpleGrpc.ReactorSimpleStub stub;
 
     @Test
     void sayHello() {
-        Mono<HelloResponse> response = this.stub.sayHello(HelloRequest.newBuilder().setGreeting("John Doe").build());
+        Mono<HelloReply> response = this.stub.sayHello(HelloRequest.newBuilder().setName("Alien").build());
         StepVerifier.create(response)
-                .assertNext(r -> assertThat(r.getReply()).isEqualTo("Hello John Doe!"))
+                .assertNext(r -> assertThat(r.getMessage()).isEqualTo("Hello ==> Alien"))
                 .verifyComplete();
     }
 
     @Test
-    void lotsOfReplies() {
-        Flux<HelloResponse> response = this.stub
-                .lotsOfReplies(HelloRequest.newBuilder().setGreeting("John Doe").build());
+    void streamHello() {
+        Flux<HelloReply> response = this.stub
+                .streamHello(HelloRequest.newBuilder().setName("Alien").build());
         StepVerifier.create(response)
                 .expectNextCount(10)
                 .verifyComplete();
@@ -843,13 +705,13 @@ class HelloServiceTest {
 
 ## Servlet 同端口
 
-前面默认的服务端是 **Netty 自己听 9090**。就算 pom 里已经有 WebMVC，4.1 也不会自动把 gRPC 绑到 HTTP 那个口上。如果你想像 4.0 早期教程那样，**普通 HTTP 和 gRPC 共用一个端口**（一般是 8080），要自己改成 Servlet 实现。
+前面默认的服务端是 **Netty 自己听 9090**。就算 pom 里已经有 WebMVC，4.1 也不会自动把 gRPC 绑到 HTTP 那个口上。如果你想像 4.0 早期教程那样，**普通 HTTP 和 gRPC 共用一个端口**，要自己改成 Servlet 实现。完整示例在仓库的 `grpc-server-tomcat`，对齐官方 [samples/grpc-tomcat](https://github.com/spring-projects/spring-grpc/tree/main/samples/grpc-tomcat)。官方把 `server.port` 也设成 **9090**，HTTP/2 和 gRPC 都在这个口上。
 
-`HelloService` 不用改。变的是传输层：请求进 Tomcat（或 Jetty），由 `grpc-servlet-jakarta` 转给 gRPC。容器必须开 **HTTP/2**，明文调试用的是 h2c。
+`GrpcServerService` 不用改。变的是传输层：请求进 Tomcat，由 `grpc-servlet-jakarta` 转给 gRPC。容器必须开 **HTTP/2**，明文调试用的是 h2c。官方还加了一个 `TomcatConnectorCustomizer`，把 HTTP/2 的 `overheadWindowUpdateThreshold` 设成 0，避免 window update 被当成 overhead。
 
 ### 改依赖
 
-排除 `grpc-netty`，加上 WebMVC 和 Servlet 适配：
+加上 WebMVC 和 Servlet 适配。官方 sample **不排除** `grpc-netty`：默认走 Servlet 同端口；测试里关掉 `spring.grpc.server.servlet.enabled` 时，还可以再起独立的 Netty 口。
 
 ```xml
 <dependency>
@@ -859,12 +721,6 @@ class HelloServiceTest {
 <dependency>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-grpc-server</artifactId>
-    <exclusions>
-        <exclusion>
-            <groupId>io.grpc</groupId>
-            <artifactId>grpc-netty</artifactId>
-        </exclusion>
-    </exclusions>
 </dependency>
 <dependency>
     <groupId>io.grpc</groupId>
@@ -872,35 +728,35 @@ class HelloServiceTest {
 </dependency>
 ```
 
-`webmvc` 已经带 Tomcat。打开 HTTP/2：
+`webmvc` 已经带 Tomcat。打开 HTTP/2，端口跟官方一样用 9090：
 
 ```properties
 server.http2.enabled=true
-server.port=8080
+server.port=9090
 ```
 
-这种模式下 **`spring.grpc.server.port` 无效**，端口只看 `server.port`。keepalive、Netty 专属属性也会被忽略。
+这种模式下默认 **`spring.grpc.server.port` 无效**，端口只看 `server.port`。keepalive、Netty 专属属性也会被忽略。
 
-如果 **不排除** `grpc-netty`，同时又有 WebMVC：HTTP 仍走 8080，gRPC 继续走 9090，那是两个口，不是同端口。
+如果 **不排除** `grpc-netty`，同时又把 `spring.grpc.server.servlet.enabled=false`：HTTP 仍走 `server.port`，gRPC 走 `spring.grpc.server.port`，那是两个口。官方 `ListenOnTwoPortsTests` 就是这条。
 
 ### 怎么调
 
-服务起来后，`grpcurl` 打 **8080**，不是 9090：
+服务起来后，`grpcurl` 打 **9090**（和 Netty 示例同一个数字，但是 Tomcat）：
 
 ```bash
-grpcurl --plaintext localhost:8080 list
-grpcurl -d '{"greeting":"John Doe"}' --plaintext localhost:8080 com.example.HelloService/SayHello
+grpcurl --plaintext localhost:9090 list
+grpcurl -d '{"name":"Alien"}' --plaintext localhost:9090 Simple/SayHello
 ```
 
-客户端通道也改成 8080：
+客户端通道仍是 9090：
 
 ```properties
-spring.grpc.client.channel.hello.target=static://localhost:8080
+spring.grpc.client.channel.default.target=static://localhost:9090
 ```
 
-Actuator 和 MVC 接口跟 gRPC 在同一个进程、同一个端口。`HelloController` 那种「外面 HTTP、里面再调 gRPC」如果和服务器放在**同一个应用**里，通道可以写成进程内；分两个进程时，客户端仍指向这台机的 8080。
+Actuator 和 gRPC 在同一个进程、同一个端口。`curl http://localhost:9090/actuator/health` 这次能打通。
 
-测试还是优先 `@AutoConfigureTestGrpcTransport`。如果一定要真走 Servlet 网络，用 `WebEnvironment.RANDOM_PORT`，地址写成 `static://127.0.0.1:${local.server.port}`。这才是 1.0 同端口文章里那套写法适用的场景。
+测试不要用 `@AutoConfigureTestGrpcTransport` 冒充 Servlet。官方是 `WebEnvironment.RANDOM_PORT`，地址写成 `static://127.0.0.1:${local.server.port}`。这才是 1.0 同端口文章里那套写法适用的场景。
 
 安全改走 `SecurityFilterChain`，见下面「安全」一节的 Servlet 部分。WebFlux 目前不能和 gRPC 共用一个 HTTP 端口。
 
@@ -923,7 +779,7 @@ Spring gRPC 能编 GraalVM Native Image。前面 Initializr 已经勾了 `native
 
 ## 安全
 
-这篇默认是 **Netty 独立端口 9090**。示例在 [spring-boot-grpc-samples](https://github.com/zhijunio/spring-boot-grpc-samples) 的 `security` 分支：服务端加 HTTP Basic，客户端通道自动带上同样的凭证。Servlet 同端口、TLS、OAuth2 下面另写，仓库里没有。
+这篇默认是 **Netty 独立端口 9090**。完整示例在 [spring-boot-grpc-samples](https://github.com/zhijunio/spring-boot-grpc-samples) 的 `grpc-server-secure`，对齐官方 [samples/grpc-secure](https://github.com/spring-projects/spring-grpc/tree/main/samples/grpc-secure)。Servlet 同端口的 Security 在 `grpc-server-tomcat-secure`。OAuth2 在 `auth-server` / `grpc-server-oauth2` / `grpc-client-oauth2`，对齐官方 [samples/grpc-oauth2](https://github.com/spring-projects/spring-grpc/tree/main/samples/grpc-oauth2)。TLS 没有单独模块；`grpc-server` 的 `GrpcServerIntegrationTests` 里有 ssl profile（`test.jks`），和官方 sample 一样。
 
 服务端 pom 加上：
 
@@ -934,181 +790,109 @@ Spring gRPC 能编 GraalVM Native Image。前面 Initializr 已经勾了 `native
 </dependency>
 ```
 
-start.spring.io 上勾选 ID 是 `security`。Boot 会配好 `GrpcSecurity` 和 `AuthenticationManager`。但 **只有 gRPC、没有 Web 时，不会自动建 `UserDetailsService`**，`spring.security.user.name` / `password` 也不会生效。要自己写一个，密码用 `{noop}`：
+start.spring.io 上勾选 ID 是 `security`。Boot 会配好 `GrpcSecurity` 和 `AuthenticationManager`。但 **只有 gRPC、没有 Web 时，不会自动建 `UserDetailsService`**，`spring.security.user.name` / `password` 也不会生效。要自己写一个。官方 sample 密码和用户名相同，用 `{noop}`：
 
 ```java
 @Bean
-UserDetailsService userDetailsService() {
+InMemoryUserDetailsManager inMemoryUserDetailsManager() {
     return new InMemoryUserDetailsManager(
-            User.withUsername("user").password("{noop}password").roles("USER").build());
+            User.withUsername("user").password("{noop}user").authorities("ROLE_USER").build(),
+            User.withUsername("admin").password("{noop}admin").authorities("ROLE_ADMIN").build());
 }
 ```
 
 ### Netty：用 GrpcSecurity 配拦截器
 
-Netty 这条线 **不是** `SecurityFilterChain`。写一个全局拦截器，用 `GrpcSecurity` 配，风格接近 Web 的 `HttpSecurity`。方法名是 `服务/方法`。Reflection 和 Health 要放行，否则 `grpcurl list` 也会失败。
+Netty 这条线 **不是** `SecurityFilterChain`。写一个全局拦截器，用 `GrpcSecurity` 配，风格接近 Web 的 `HttpSecurity`。方法名是 `服务/方法`。proto 没有 `package`，和官方 sample 一样写成 `Simple/SayHello`。Reflection 和 Health 要放行，否则 `grpcurl list` 也会失败。
 
-拦截器 bean **不要叫 `grpcSecurity`**。自动配置已经用这个名字注册了 `GrpcSecurity` 本身，重名会 `BeanDefinitionOverrideException`。示例里叫 `authenticationProcessInterceptor`：
+拦截器 bean **不要叫 `grpcSecurity`**。自动配置已经用这个名字注册了 `GrpcSecurity` 本身，重名会 `BeanDefinitionOverrideException`。官方 sample 叫 `securityInterceptor`：
 
 ```java
-package com.example;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.grpc.server.GlobalServerInterceptor;
-import org.springframework.grpc.server.security.AuthenticationProcessInterceptor;
-import org.springframework.grpc.server.security.GrpcSecurity;
-import org.springframework.security.config.Customizer;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-
-@Configuration(proxyBeanMethods = false)
-public class GrpcSecurityConfiguration {
-
-    @Bean
-    UserDetailsService userDetailsService() {
-        return new InMemoryUserDetailsManager(
-                User.withUsername("user").password("{noop}password").roles("USER").build());
-    }
-
-    @Bean
-    @GlobalServerInterceptor
-    AuthenticationProcessInterceptor authenticationProcessInterceptor(GrpcSecurity grpc) throws Exception {
-        return grpc
-                .authorizeRequests(requests -> requests
-                        .methods("com.example.HelloService/SayHello").hasAuthority("ROLE_USER")
-                        .methods("com.example.HelloService/LotsOfReplies").hasAuthority("ROLE_USER")
-                        .methods("grpc.*/*").permitAll()
-                        .allRequests().authenticated())
-                .httpBasic(Customizer.withDefaults())
-                .preauth(Customizer.withDefaults())
-                .build();
-    }
-
+@Bean
+@GlobalServerInterceptor
+ServerInterceptor securityInterceptor(GrpcSecurity security) throws Exception {
+    return security
+            .authorizeRequests(requests -> requests
+                    .methods("Simple/StreamHello").hasAuthority("ROLE_ADMIN")
+                    .methods("Simple/SayHello").hasAuthority("ROLE_USER")
+                    .methods("grpc.*/*").permitAll()
+                    .allRequests().denyAll())
+            .httpBasic(withDefaults())
+            .preauth(withDefaults())
+            .build();
 }
 ```
 
-也可以把规则写在服务方法上，打开 `@EnableMethodSecurity` 再用 `@PreAuthorize("hasRole('USER')")`。示例没用这条。
+`SayHello` 要 `ROLE_USER`，`StreamHello` 要 `ROLE_ADMIN`。也可以把规则写在服务方法上，打开 `@EnableMethodSecurity` 再用 `@PreAuthorize`。官方 sample 把这行注释掉了，鉴权全走拦截器。
 
-客户端 **不必** 加 `spring-boot-starter-security`。`BasicAuthenticationInterceptor` 在 `spring-grpc-core` 里，grpc-client starter 已经带了。用 `GrpcChannelBuilderCustomizer` 只匹配名叫 `hello` 的通道：
+`.preauth(withDefaults())` 允许用 metadata 头 `X-USER` 声明用户名（不配密码）。HTTP Basic 仍要用户名和密码。
+
+客户端 **不必** 加 `spring-boot-starter-security`。`BasicAuthenticationInterceptor` 在 `spring-grpc-core` 里，grpc-client starter 已经带了。`grpc-client-secure` 给默认通道挂上 Basic，对应 `grpc-server-secure` 里的 `user`/`user`：
 
 ```java
-package com.example;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.grpc.client.GrpcChannelBuilderCustomizer;
-import org.springframework.grpc.client.interceptor.security.BasicAuthenticationInterceptor;
-
-@Configuration(proxyBeanMethods = false)
-public class GrpcClientSecurityConfiguration {
-
-    @Bean
-    GrpcChannelBuilderCustomizer<?> helloChannelCustomizer() {
-        return GrpcChannelBuilderCustomizer.matching("hello",
-                (builder) -> builder.intercept(new BasicAuthenticationInterceptor("user", "password")));
-    }
-
+@Bean
+GrpcChannelBuilderCustomizer<?> basicAuthCustomizer() {
+    return GrpcChannelBuilderCustomizer.matching("default",
+            (builder) -> builder.intercept(new BasicAuthenticationInterceptor("user", "user")));
 }
 ```
 
-`grpcurl` 把 Basic 放进 metadata（`user:password` 做 Base64）。Health / Reflection 仍可不带：
+`grpc-server-secure` 的测试里另开名叫 `secure` 的通道，同样用这个 interceptor，和默认通道分开：
+
+```java
+@Bean
+GrpcChannelBuilderCustomizer<?> basicStubsCustomizer() {
+    return GrpcChannelBuilderCustomizer.matching("secure",
+            (builder) -> builder.intercept(new BasicAuthenticationInterceptor("user", "user")));
+}
+```
+
+`grpcurl` 两种都能打 `SayHello`。Health / Reflection 仍可不带：
 
 ```bash
 grpcurl --plaintext localhost:9090 list
+grpcurl --plaintext -H 'X-USER: user' \
+  -d '{"name":"Alien"}' localhost:9090 Simple/SayHello
 grpcurl --plaintext \
-  -H 'authorization: Basic dXNlcjpwYXNzd29yZA==' \
-  -d '{"greeting":"John Doe"}' \
-  localhost:9090 com.example.HelloService/SayHello
+  -H "authorization: Basic $(printf 'user:user' | base64)" \
+  -d '{"name":"Alien"}' localhost:9090 Simple/SayHello
 ```
 
-不带这行 header 打 `SayHello`，会拿到 `UNAUTHENTICATED`。
+不带凭证打 `SayHello`，会拿到 `UNAUTHENTICATED`。用 `user` 去打 `StreamHello`，会拿到 `PERMISSION_DENIED`（要 `admin`）。
 
 ### 测试也要过 Security
 
-`@AutoConfigureTestGrpcTransport` 的进程内通道工厂 **不会** 应用 `GrpcChannelBuilderCustomizer`（构造时 customizer 列表是空的）。生产里给 `hello` 通道加的 Basic，测试里加不上。
+`grpc-server-secure` 用随机 gRPC 端口（`spring.grpc.server.port=0`），再开三条客户端通道：不带凭证、带 Basic、只调 Reflection。`@AutoConfigureTestGrpcTransport` 的进程内通道工厂 **不会** 应用 `GrpcChannelBuilderCustomizer`，所以这条测试不走进程内，走真 TCP。
 
-测试要给 stub 带凭证，用 `@GlobalClientInterceptor`：
-
-```java
-package com.example;
-
-import io.grpc.ClientInterceptor;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.grpc.client.GlobalClientInterceptor;
-import org.springframework.grpc.client.interceptor.security.BasicAuthenticationInterceptor;
-
-@TestConfiguration(proxyBeanMethods = false)
-class TestGrpcBasicAuthConfiguration {
-
-    @Bean
-    @GlobalClientInterceptor
-    ClientInterceptor testBasicAuth() {
-        return new BasicAuthenticationInterceptor("user", "password");
-    }
-
-}
-```
-
-带凭证的测试 `@Import` 这份配置，调用应成功。另写一个测试 **不要** Import，断言 `UNAUTHENTICATED`：
-
-```java
-@SpringBootTest
-@AutoConfigureTestGrpcTransport
-@ImportGrpcClients(types = HelloServiceGrpc.HelloServiceBlockingStub.class)
-class HelloServiceUnauthenticatedTest {
-
-    @Autowired
-    HelloServiceGrpc.HelloServiceBlockingStub stub;
-
-    @Test
-    void sayHelloRejectedWithoutCredentials() {
-        assertThatExceptionOfType(StatusRuntimeException.class)
-            .isThrownBy(() -> this.stub.sayHello(HelloRequest.newBuilder().setGreeting("John Doe").build()))
-            .satisfies((ex) -> assertThat(ex.getStatus().getCode()).isEqualTo(Status.Code.UNAUTHENTICATED));
-    }
-
-}
-```
-
-不要为了让测试变绿去关 Security。客户端 `HelloControllerTest` 仍是 `@WebMvcTest` + `@MockitoBean`，不打真 gRPC，也就不经过 Basic。
+不要为了让测试变绿去关 Security。`grpc-client` 没有带 Basic，连无认证的 `grpc-server`；打 `grpc-server-secure` 用 `grpc-client-secure`；打 `grpc-server-tomcat-secure` 用 `grpc-client-tomcat-secure`。
 
 ### Servlet 同端口：走 SecurityFilterChain
 
-gRPC 已经改成和 Tomcat 共用一个端口时（见上一节），按普通 Web 应用写 `SecurityFilterChain` 即可。Spring Boot 会配好 `SecurityContextServerInterceptor`
-，让安全上下文进到 gRPC 调用线程。匹配路径可以用 `GrpcRequest`：
+gRPC 已经改成和 Tomcat 共用一个端口时，按普通 Web 应用写 `SecurityFilterChain` 即可。完整示例在 `grpc-server-tomcat-secure`，对齐官方 [samples/grpc-tomcat-secure](https://github.com/spring-projects/spring-grpc/tree/main/samples/grpc-tomcat-secure)。客户端用 `grpc-client-tomcat-secure`，拦截器和 `grpc-client-secure` 一样，仍是默认通道上的 `BasicAuthenticationInterceptor("user", "user")`，不必加 `starter-security`。有 Web 时，`spring.security.user.name` / `password` **会生效**，不必再手写 `UserDetailsService`：
+
+```properties
+spring.security.user.name=user
+spring.security.user.password=user
+```
+
+Spring Boot 会配好 `SecurityContextServerInterceptor`，让安全上下文进到 gRPC 调用线程。官方 sample 不另写 `GrpcSecurity`，默认 HTTP Basic，未认证打 `SayHello` 是 `UNAUTHENTICATED`。
+
+若要按方法收紧，匹配路径可以用 `GrpcRequest`：
 
 ```java
-package com.example;
-
-import org.springframework.boot.grpc.server.autoconfigure.security.web.servlet.GrpcRequest;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.web.SecurityFilterChain;
-
-@Configuration(proxyBeanMethods = false)
-public class ServletGrpcSecurityConfiguration {
-
-    @Bean
-    SecurityFilterChain grpcSecurityFilterChain(HttpSecurity http) throws Exception {
-        http.securityMatcher(GrpcRequest.toAnyService());
-        http.authorizeHttpRequests(requests -> requests
-                .requestMatchers("/com.example.HelloService/SayHello").hasRole("USER")
-                .requestMatchers("/grpc.*/*").permitAll()
-                .anyRequest().authenticated());
-        http.httpBasic(Customizer.withDefaults());
-        return http.build();
-    }
-
+@Bean
+SecurityFilterChain grpcSecurityFilterChain(HttpSecurity http) throws Exception {
+    http.securityMatcher(GrpcRequest.toAnyService());
+    http.authorizeHttpRequests(requests -> requests
+            .requestMatchers("/Simple/SayHello").hasRole("USER")
+            .requestMatchers("/grpc.*/*").permitAll()
+            .anyRequest().authenticated());
+    http.httpBasic(Customizer.withDefaults());
+    return http.build();
 }
 ```
 
-gRPC 和 CSRF 合不来，**gRPC 请求默认关 CSRF**。如果你要自己配 CSRF，设 `spring.grpc.server.security.csrf.enabled=false`
-会关掉这个自动行为。Servlet 路径也可以继续在方法上用 `@PreAuthorize`。
+gRPC 和 CSRF 合不来，**gRPC 请求默认关 CSRF**。如果你要自己配 CSRF，设 `spring.grpc.server.security.csrf.enabled=false` 会关掉这个自动行为。官方还有一个测试专门演示整条 `SecurityFilterChain` 手动 `csrf.disable()`。Servlet 路径也可以继续在方法上用 `@PreAuthorize`。
 
 ### TLS 和 mTLS
 
@@ -1123,30 +907,69 @@ spring.grpc.server.ssl.bundle=grpc
 客户端单向 TLS：
 
 ```properties
-spring.grpc.client.channel.hello.ssl.enabled=true
+spring.grpc.client.channel.default.ssl.enabled=true
 ```
 
-双向 TLS 时，客户端也指定 bundle：`spring.grpc.client.channel.hello.ssl.bundle=grpc`。服务端要校验证书可以设
+双向 TLS 时，客户端也指定 bundle：`spring.grpc.client.channel.default.ssl.bundle=grpc`。服务端要校验证书可以设
 `spring.grpc.server.ssl.client-auth=require`。本地自签证书排错，可以临时
-`spring.grpc.client.channel.hello.bypass-certificate-validation=true`，不要带进生产。
+`spring.grpc.client.channel.default.bypass-certificate-validation=true`，不要带进生产。
 
 ### OAuth2 Resource Server
 
-classpath 加上 `spring-boot-starter-security` 和 `spring-security-oauth2-resource-server`（JWT 还要能解 JWT，一般再带
-jose）。配置和普通 Web 资源服务器一样：
+完整示例在 `auth-server`、`grpc-server-oauth2`、`grpc-client-oauth2`。官方 [samples/grpc-oauth2](https://github.com/spring-projects/spring-grpc/tree/main/samples/grpc-oauth2) 用 testjars 在测试里起随机端口认证服务器；这边测试同样用 testjars。运行时用独立的 `auth-server`（9000），三个进程能跑通。
+
+资源服务器用 `spring-boot-starter-oauth2-resource-server`。JWK 默认指向 `auth-server:9000`；测试里 `@OAuth2ClientProviderIssuerUri` 会改 `spring.security.oauth2.client.provider.spring.issuer-uri`，所以写成占位：
 
 ```properties
-spring.security.oauth2.resourceserver.jwt.jwk-set-uri=https://auth.example.com/oauth2/jwks
+spring.security.oauth2.resourceserver.jwt.jwk-set-uri=${spring.security.oauth2.client.provider.spring.issuer-uri:http://localhost:9000}/oauth2/jwks
+spring.security.oauth2.client.registration.spring.client-id=spring
+spring.security.oauth2.client.registration.spring.client-secret=secret
+spring.security.oauth2.client.registration.spring.authorization-grant-type=client_credentials
+spring.security.oauth2.client.registration.spring.provider=local
+spring.security.oauth2.client.provider.local.token-uri=${spring.security.oauth2.client.provider.spring.issuer-uri:http://localhost:9000}/oauth2/token
 ```
 
-Netty 上在 `GrpcSecurity` 里打开：
+资源服务器 main 里这份 client 配置是给测试用的：`ClientCredentialsTokenSupplier` 要 `ClientRegistrationRepository`。真正跑客户端时用 `grpc-client-oauth2`，token 打 `http://localhost:9000/oauth2/token`。
+
+Netty 上在 `GrpcSecurity` 里打开 JWT。方法名写成 `Simple/SayHello`：
 
 ```java
-.oauth2ResourceServer(resourceServer -> resourceServer.jwt(Customizer.withDefaults()))
+@Bean
+@GlobalServerInterceptor
+AuthenticationProcessInterceptor jwtSecurityFilterChain(GrpcSecurity grpc) throws Exception {
+    return grpc
+            .authorizeRequests(requests -> requests
+                    .methods("Simple/StreamHello").hasAuthority("SCOPE_profile")
+                    .methods("Simple/SayHello").authenticated()
+                    .methods("grpc.*/*").permitAll()
+                    .allRequests().denyAll())
+            .oauth2ResourceServer(resourceServer -> resourceServer.jwt(withDefaults()))
+            .build();
+}
 ```
 
-客户端把 access token 塞进 metadata，可用 `BearerTokenAuthenticationInterceptor`。不透明 token 走 introspection，属性和 Web
-应用相同。
+没有 Web 时，还要 `@Import(AuthenticationConfiguration.class)`，否则 `AuthenticationManager` 配不齐。
+
+客户端用 `spring-boot-starter-oauth2-client`，不必加 Web。默认通道挂 `BearerTokenAuthenticationInterceptor`，token 用 `ClientCredentialsTokenSupplier` 向 `auth-server` 换：
+
+```java
+@Bean
+GrpcChannelBuilderCustomizer<?> bearerCustomizer(ClientRegistrationRepository registry) {
+    return GrpcChannelBuilderCustomizer.matching("default", (builder) -> builder.intercept(
+            new BearerTokenAuthenticationInterceptor(
+                    new ClientCredentialsTokenSupplier(registry, () -> "spring"))));
+}
+```
+
+client 是 `spring` / `secret`，grant 是 `client_credentials`。`SayHello` 只要合法 JWT；`StreamHello` 要 `SCOPE_profile`。默认换到的令牌没有这个 scope，打流会 `PERMISSION_DENIED`。
+
+```bash
+cd auth-server && ./mvnw spring-boot:run
+cd grpc-server-oauth2 && ./mvnw spring-boot:run
+cd grpc-client-oauth2 && ./mvnw spring-boot:run
+```
+
+不透明 token 走 introspection，属性和 Web 应用相同。仓库没有单独的 opaque 运行模块；`grpc-server-oauth2` 的 `OpaqueTokenServerApplicationTests` 同样用 testjars 起认证服务器，再覆盖拦截器，introspection 地址是 `issuer-uri + /oauth2/introspect`，client 仍是 `spring` / `secret`。
 
 ## 和 1.0 对照
 
@@ -1154,7 +977,7 @@ Netty 上在 `GrpcSecurity` 里打开：
 |------------|--------------------------------------------------|-------------------------------------------------------------|
 | starter    | `org.springframework.grpc:spring-grpc-*-starter` | `org.springframework.boot:spring-boot-starter-grpc-*`       |
 | 默认跑法   | 勾 Web 时常走 Servlet，和 HTTP 共用 8080         | Netty 独立端口 9090                                         |
-| 服务注册   | 示例里常见 `@Service`                            | 任意 `BindableService` bean 即可；文档示例用 `@GrpcService` |
+| 服务注册   | 示例里常见 `@Service`                            | 任意 `BindableService` bean 即可；官方 sample 用 `@Service`，文档也常见 `@GrpcService` |
 | 客户端通道 | `default-channel.address` / `channels.*.address` | `channel.<name>.target`                                     |
 | Stub 注册  | 常有自动扫描的习惯                               | 必须写 `@ImportGrpcClients`                                 |
 | 测试       | 常绑随机 Web 端口                                | `@AutoConfigureTestGrpcTransport` / `@LocalGrpcServerPort`  |
@@ -1165,7 +988,7 @@ Spring Boot 4 能写 gRPC，但要分清两代。4.0 靠的是独立项目 Sprin
 也换成 `spring-boot-starter-grpc-server` / `grpc-client`。默认是 Netty 听 9090，不再因为勾了 Web 就和 HTTP
 挤一个端口。Reflection 和 Health 跟着 starter 走，不用再手加 `grpc-services`。
 
-写服务时，把 `BindableService` 做成 Spring bean 就会挂上，文档示例用 `@GrpcService`。写客户端时，通道走
+写服务时，把 `BindableService` 做成 Spring bean 就会挂上，官方 sample 用 `@Service`。写客户端时，通道走
 `spring.grpc.client.channel.<名字>.target`，stub 必须 `@ImportGrpcClients`，4.1 不会再自动扫。测试优先
 `@AutoConfigureTestGrpcTransport`，进程里通信，不占 9090。
 
