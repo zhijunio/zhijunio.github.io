@@ -18,6 +18,7 @@ description: 关于 ZhiJun：开发背景、正在使用的工具、联系方式
 ### 博客
 
 - [SivaLabs](https://www.sivalabs.in/blog/) - Java、Spring Boot、微服务、云计算和DevOps教程
+- [IK.AM](https://ik.am/) - 博通公司高级首席架构师
 - [Piotr's TechBlog](https://piotrminkowski.com/) - Java, Spring, Kotlin, microservices, Kubernetes, containers
 - [Dan Vega](https://www.danvega.dev/)- Java 冠军、Spring 开发者布道师、YouTuber 及终身学习者
 - [Pseudoyu](https://www.pseudoyu.com/) - 一名 web3 爱好者、区块链开发者和独立黑客

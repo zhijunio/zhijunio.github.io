@@ -4,32 +4,34 @@
 
 :root {
   --accent: #2563eb;
-  --bg: #fcfcfc;
-  --text: #1c1917;
-  --muted: #78716c;
+  --bg: #fff;
+  --text: #0f172a;
+  --muted: #64748b;
   --container: 880px;
 
-  /* 字体 */
+  /* 字体：系统 UI 栈，后面补中文回退 */
   --font-sans:
-    "PingFang SC", "Hiragino Sans GB", "Source Han Sans CN", "Noto Sans CJK SC",
-    "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC",
+    "Microsoft YaHei", sans-serif;
   --font-mono:
-    ui-monospace, "SF Mono", "Roboto Mono", Menlo, Monaco, Consolas, monospace;
+    "Fira Code", "SF Mono", Monaco, Inconsolata, ui-monospace, Menlo, Consolas,
+    monospace;
 
   /* 字号阶梯 */
-  --text-xs: 0.75rem; /* 12 — meta / caption */
-  --text-sm: 0.8125rem; /* 13 — 次要说明 */
-  --text-md: 0.875rem; /* 14 — 摘要 / 标签云 */
-  --text-base: 0.9375rem; /* 15 — 正文 */
-  --text-lg: 1.0625rem; /* 17 — h3 / 小标题 */
-  --text-xl: 1.1875rem; /* 19 — h2 */
-  --text-2xl: 1.375rem; /* 22 — 页标题 */
-  --text-3xl: 1.5rem; /* 24 — 大页标题（少用） */
+  --text-xs: 0.75rem;
+  --text-sm: 0.8125rem;
+  --text-md: 0.9375rem;
+  --text-base: 0.9375rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.3125rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.625rem;
 
   /* 行高 */
   --leading-tight: 1.3;
   --leading-snug: 1.4;
-  --leading-normal: 1.65;
+  --leading-normal: 1.6;
   --leading-relaxed: 1.7;
 
   /* 垂直节奏 */
@@ -159,7 +161,7 @@ h5,
 h6 {
   margin: var(--space-md) 0;
   color: var(--text);
-  font-weight: 650;
+  font-weight: 600;
   line-height: var(--leading-tight);
   letter-spacing: -0.01em;
   text-wrap: balance;
@@ -178,15 +180,15 @@ h3 {
 }
 
 h4 {
-  font-size: 1rem;
+  font-size: 1.0625rem;
 }
 
 h5 {
-  font-size: var(--text-base);
+  font-size: 1rem;
 }
 
 h6 {
-  font-size: var(--text-md);
+  font-size: 0.9375rem;
   color: color-mix(in srgb, var(--text) 88%, var(--muted));
 }
 
@@ -262,7 +264,7 @@ menu {
 }
 
 #main-content :is(.post-content, .page-content) h4 {
-  font-size: 1rem;
+  font-size: 1.0625rem;
 }
 
 #main-content :is(.post-content, .page-content) :where(h5, h6) {
@@ -272,11 +274,11 @@ menu {
 }
 
 #main-content :is(.post-content, .page-content) h5 {
-  font-size: var(--text-base);
+  font-size: 1rem;
 }
 
 #main-content :is(.post-content, .page-content) h6 {
-  font-size: var(--text-md);
+  font-size: 0.9375rem;
   color: color-mix(in srgb, var(--text) 88%, var(--muted));
 }
 
@@ -285,7 +287,7 @@ menu {
   margin: 0.15rem 0 var(--space-xs);
   font-size: var(--text-2xl);
   line-height: var(--leading-tight);
-  font-weight: 650;
+  font-weight: 600;
   text-align: left;
   text-wrap: balance;
 }
@@ -304,7 +306,7 @@ menu {
 .page-empty > h1 {
   margin: 0 0 var(--space-lg);
   font-size: var(--text-lg);
-  font-weight: 650;
+  font-weight: 600;
   color: var(--muted);
 }
 
@@ -370,11 +372,11 @@ td {
 
 code {
   font-family: var(--font-mono);
-  font-size: 0.875em;
+  font-size: 0.9em;
 }
 
 :not(pre) > code {
-  background: color-mix(in srgb, var(--accent) 12%, var(--bg));
+  background: #f8fafc;
   padding: 0.12em 0.35em;
   border-radius: 4px;
 }
@@ -421,10 +423,11 @@ code {
 
 blockquote {
   margin: var(--space-lg) 0;
-  padding: 0.15rem 0 0.15rem 0.9rem;
-  border-left: 2px solid color-mix(in srgb, var(--text) 18%, transparent);
-  color: color-mix(in srgb, var(--text) 78%, var(--muted));
+  padding: 0.15rem 0 0.15rem 1rem;
+  border-left: 3px solid var(--accent);
+  color: var(--muted);
   font-size: 0.98em;
+  font-style: italic;
   line-height: var(--leading-relaxed);
   background: transparent;
 }
@@ -475,7 +478,15 @@ hr {
   }
 
   #main-content :is(.post-content, .page-content) h2 {
-    font-size: 1.125rem;
+    font-size: 1.1875rem;
+  }
+
+  #main-content :is(.post-content, .page-content) h3 {
+    font-size: 1.0625rem;
+  }
+
+  #main-content :is(.post-content, .page-content) h4 {
+    font-size: 1rem;
   }
 
   #main-content :is(.post-content, .page-content) img {
@@ -579,8 +590,8 @@ main,
    ================================ */
 
 ::selection {
-  background: color-mix(in srgb, var(--accent) 28%, var(--bg));
-  color: var(--text);
+  background: var(--accent);
+  color: #fff;
 }
 
 mark {
@@ -624,20 +635,16 @@ mark {
    ================================ */
 
 @media (max-width: 768px) {
-  body {
-    font-size: 0.92rem;
-  }
-
   h1 {
-    font-size: 1.25rem;
+    font-size: 1.375rem;
   }
 
   h2 {
-    font-size: 1.125rem;
+    font-size: 1.1875rem;
   }
 
   h3 {
-    font-size: 1.05rem;
+    font-size: 1.0625rem;
   }
 
   h4 {
@@ -645,7 +652,7 @@ mark {
   }
 
   #article > h1 {
-    font-size: 1.25rem;
+    font-size: 1.375rem;
   }
 
   main,

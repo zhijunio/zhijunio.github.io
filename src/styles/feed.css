@@ -28,8 +28,8 @@
 
 #home-feed-list .home-feed-title {
   margin: 0 0 0.15rem;
-  font-size: 1rem;
-  font-weight: 650;
+  font-size: 1.125rem;
+  font-weight: 600;
   line-height: var(--leading-snug);
 }
 
