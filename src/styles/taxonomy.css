@@ -5,6 +5,7 @@
   font-size: var(--text-2xl);
   font-weight: 600;
   line-height: var(--leading-tight);
+  text-align: center;
 }
 
 .taxonomy-cloud {

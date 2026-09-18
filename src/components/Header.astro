@@ -11,6 +11,8 @@ const isCategoriesPage =
 const isAboutPage = pathname === "/about" || pathname.startsWith("/about/");
 const isActivityPage =
   pathname === "/activity" || pathname.startsWith("/activity/");
+const isRunningPage =
+  pathname === "/running" || pathname.startsWith("/running/");
 ---
 
 <header class="site-header">
@@ -52,6 +54,14 @@ const isActivityPage =
           {...(isActivityPage ? { "aria-current": "page" as const } : {})}
         >
           动态
+        </a>
+      </li>
+      <li>
+        <a
+          href="/running"
+          {...(isRunningPage ? { "aria-current": "page" as const } : {})}
+        >
+          跑步
         </a>
       </li>
       <li>

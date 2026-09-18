@@ -162,12 +162,11 @@
   }
 
   .site-header .site-brand {
-    /* 窄屏优先保住导航「分类 | 标签 | 关于」 */
-    max-width: calc(100% - 12rem);
+    max-width: calc(100% - 15.5rem);
   }
 
   .site-header .nav-links {
-    gap: 0.25rem 0.5rem;
+    gap: 0.15rem 0.4rem;
   }
 
   .site-header .nav-links a {

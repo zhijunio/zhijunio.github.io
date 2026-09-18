@@ -18,9 +18,12 @@ const { title, description } = page.data;
 ---
 
 <Layout title={title} description={description}>
-  <article id="article">
-    <div class="page-content">
-      <Content />
-    </div>
-  </article>
+  <section class="static-page" aria-label={title}>
+    <h1>关于</h1>
+    <article id="article">
+      <div class="page-content">
+        <Content />
+      </div>
+    </article>
+  </section>
 </Layout>
