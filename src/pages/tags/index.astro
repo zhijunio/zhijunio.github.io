@@ -10,16 +10,14 @@ const terms = listTagTerms(sortPosts(await getPosts()));
   <section class="taxonomy-page" aria-label="标签列表">
     <h1>标签</h1>
     <ul class="taxonomy-cloud">
-      {
-        terms.map(term => (
-          <li>
-            <a href={tagPath(term.slug)}>
-              #{term.name}
-              <span class="taxonomy-count">({term.count})</span>
-            </a>
-          </li>
-        ))
-      }
+      {terms.map(term => (
+        <li>
+          <a href={tagPath(term.slug)}>
+            #{term.name}
+            <span class="taxonomy-count">({term.count})</span>
+          </a>
+        </li>
+      ))}
     </ul>
   </section>
 </Layout>

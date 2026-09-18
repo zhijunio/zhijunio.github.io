@@ -14,26 +14,24 @@ const isAboutPage = pathname === "/about" || pathname.startsWith("/about/");
 <header class="site-header">
   <nav aria-label="站点导航">
     <a href="/" class="site-brand">
-      {
-        logoSrc && (
-          <img
-            class="site-logo"
-            src={logoSrc}
-            alt=""
-            width="22"
-            height="22"
-            decoding="async"
-            fetchpriority="high"
-          />
-        )
-      }
+      {logoSrc && (
+        <img
+          class="site-logo"
+          src={logoSrc}
+          alt=""
+          width="22"
+          height="22"
+          decoding="async"
+          fetchpriority="high"
+        />
+      )}
       <span class="site-title">{SITE.title}</span>
     </a>
     <ul class="nav-links">
       <li>
         <a
           href="/categories"
-          {...isCategoriesPage ? { "aria-current": "page" as const } : {}}
+          {...(isCategoriesPage ? { "aria-current": "page" as const } : {})}
         >
           分类
         </a>
@@ -41,7 +39,7 @@ const isAboutPage = pathname === "/about" || pathname.startsWith("/about/");
       <li>
         <a
           href="/tags"
-          {...isTagsPage ? { "aria-current": "page" as const } : {}}
+          {...(isTagsPage ? { "aria-current": "page" as const } : {})}
         >
           标签
         </a>
@@ -49,7 +47,7 @@ const isAboutPage = pathname === "/about" || pathname.startsWith("/about/");
       <li>
         <a
           href="/about"
-          {...isAboutPage ? { "aria-current": "page" as const } : {}}
+          {...(isAboutPage ? { "aria-current": "page" as const } : {})}
         >
           关于
         </a>

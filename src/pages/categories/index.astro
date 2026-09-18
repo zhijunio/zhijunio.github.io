@@ -15,16 +15,14 @@ const terms = listCategoryTerms(sortPosts(await getPosts()));
   <section class="taxonomy-page" aria-label="分类列表">
     <h1>分类</h1>
     <ul class="taxonomy-cloud">
-      {
-        terms.map(term => (
-          <li>
-            <a href={categoryPath(term.slug)}>
-              {term.name}
-              <span class="taxonomy-count">({term.count})</span>
-            </a>
-          </li>
-        ))
-      }
+      {terms.map(term => (
+        <li>
+          <a href={categoryPath(term.slug)}>
+            {term.name}
+            <span class="taxonomy-count">({term.count})</span>
+          </a>
+        </li>
+      ))}
     </ul>
   </section>
 </Layout>
