@@ -7,7 +7,7 @@
   --bg: #fff;
   --text: #0f172a;
   --muted: #64748b;
-  --container: 880px;
+  --container: 960px;
 
   /* 字体：系统 UI 栈，后面补中文回退 */
   --font-sans:
@@ -242,6 +242,10 @@ menu {
   font-size: 1em;
   line-height: var(--leading-relaxed);
   overflow-wrap: anywhere;
+}
+
+#main-content .post-content {
+  font-size: 1rem;
 }
 
 #main-content :is(.post-content, .page-content) p {

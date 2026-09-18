@@ -2,7 +2,8 @@ name: Memos activity
 
 on:
   schedule:
-    - cron: "35 16 * * *" # 00:35 Asia/Shanghai
+    - cron: "00 02 * * *" # 10:00 Asia/Shanghai
+    - cron: "00 14 * * *" # 22:00 Asia/Shanghai
   workflow_dispatch:
 
 permissions:
