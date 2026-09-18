@@ -15,17 +15,33 @@
 </div>
 
 <script>
-  function yearProgress(): number {
+  function yearProgress(): {
+    pct: number;
+    elapsedDays: number;
+    remainingDays: number;
+  } {
     const now = new Date();
-    const start = new Date(now.getFullYear(), 0, 1);
-    const end = new Date(now.getFullYear() + 1, 0, 1);
-    return Math.min(
-      1,
-      Math.max(
-        0,
-        (now.getTime() - start.getTime()) / (end.getTime() - start.getTime())
-      )
+    const year = now.getFullYear();
+    const start = new Date(year, 0, 1);
+    const end = new Date(year + 1, 0, 1);
+    const elapsedDays =
+      Math.floor(
+        (Date.UTC(year, now.getMonth(), now.getDate()) -
+          Date.UTC(year, 0, 1)) /
+          86_400_000
+      ) + 1;
+    const daysInYear = Math.round(
+      (end.getTime() - start.getTime()) / 86_400_000
     );
+    const pct = Math.min(
+      1,
+      Math.max(0, (now.getTime() - start.getTime()) / (end.getTime() - start.getTime()))
+    );
+    return {
+      pct,
+      elapsedDays,
+      remainingDays: daysInYear - elapsedDays,
+    };
   }
 
   function initYearProgress(): void {
@@ -35,11 +51,14 @@
     const label = document.getElementById("year-progress-label");
     if (!root || !track || !fill || !label || track.dataset.bound) return;
 
-    const pct = yearProgress();
-    const text = (pct * 100).toFixed(1) + "%";
-    fill.style.width = text;
-    label.textContent = text;
-    root.setAttribute("title", text);
+    const { pct, elapsedDays, remainingDays } = yearProgress();
+    const percentage = (pct * 100).toFixed(1) + "%";
+    const tip = `已过 ${elapsedDays} 天，剩余 ${remainingDays} 天`;
+    fill.style.width = percentage;
+    label.textContent = percentage;
+    root.setAttribute("title", tip);
+    track.setAttribute("title", tip);
+    root.setAttribute("aria-label", `本年度进度 ${percentage}，${tip}`);
     root.setAttribute("aria-valuenow", String(Math.round(pct * 100)));
 
     const placeLabel = () => {

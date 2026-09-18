@@ -236,7 +236,10 @@ export function initActivityScroll(): void {
     setStatus("加载中…", true);
 
     try {
-      const res = await fetch(`/activity/feed/${filter}/${pageNo}.json`);
+      const res = await fetch(
+        `/activity/feed/${filter}/${pageNo}.json?v=2`,
+        { cache: "no-store" }
+      );
       if (!res.ok) throw new Error(String(res.status));
       const data = (await res.json()) as FeedPageJson;
       if (token !== request) return;

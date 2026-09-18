@@ -16,7 +16,7 @@ export const GET: APIRoute = ({ props }) => {
   return new Response(JSON.stringify({ items, nextPage }), {
     headers: {
       "Content-Type": "application/json; charset=utf-8",
-      "Cache-Control": "public, max-age=3600",
+      "Cache-Control": "no-cache",
     },
   });
 };

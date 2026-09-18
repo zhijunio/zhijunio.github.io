@@ -208,7 +208,7 @@
 }
 
 .activity-timeline {
-  --activity-time-width: 5rem;
+  --activity-time-width: 3.25rem;
   --activity-node-width: 1.35rem;
   --activity-row-height: 1.7rem;
   position: relative;
@@ -385,11 +385,12 @@
 }
 
 :global(.activity-memo-text p) {
-  margin: 0 0 0.7rem;
+  margin: 0 !important;
+  padding-bottom: 1.6em;
 }
 
 :global(.activity-memo-text p:last-child) {
-  margin-bottom: 0;
+  padding-bottom: 0;
 }
 
 :global(.activity-memo-text h2),
@@ -517,7 +518,7 @@
   }
 
   .activity-timeline {
-    --activity-time-width: 4.2rem;
+    --activity-time-width: 3.25rem;
     --activity-node-width: 1.1rem;
   }
 
