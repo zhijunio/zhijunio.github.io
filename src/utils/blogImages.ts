@@ -121,9 +121,7 @@ type HastElement = {
 };
 
 type HastChild =
-  | HastElement
-  | { type: string; children?: HastChild[] }
-  | unknown;
+  HastElement | { type: string; children?: HastChild[] } | unknown;
 
 type HastRoot = { type: "root"; children?: HastChild[] };
 
