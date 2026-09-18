@@ -65,7 +65,10 @@ function fillLine(line: HTMLParagraphElement, row: ActivityFeedItem) {
     }
     if (row.place) {
       sep();
-      meta.append(row.place);
+      const place = document.createElement("span");
+      place.className = "activity-run-place";
+      place.textContent = row.place;
+      meta.append(place);
     }
     line.append(meta);
     return;
@@ -145,14 +148,19 @@ function appendRows(timeline: HTMLElement, rows: ActivityFeedItem[]) {
     line.className = "activity-line";
     fillLine(line, row);
     content.append(line);
-    if (row.type === "memo" && (row.title || row.images?.length)) {
-      const card = document.createElement("div");
+    if (row.type === "memo" && (row.title || row.html || row.images?.length)) {
+      const card = document.createElement("details");
       card.className = "activity-memo-card";
-      if (row.title) {
-        const text = document.createElement("p");
+      const summary = document.createElement("summary");
+      summary.textContent = row.title;
+      card.append(summary);
+      const body = document.createElement("div");
+      body.className = "activity-memo-content";
+      if (row.html) {
+        const text = document.createElement("div");
         text.className = "activity-memo-text";
-        text.textContent = row.title;
-        card.append(text);
+        text.innerHTML = row.html;
+        body.append(text);
       }
       if (row.images?.length) {
         const images = document.createElement("div");
@@ -171,8 +179,9 @@ function appendRows(timeline: HTMLElement, rows: ActivityFeedItem[]) {
           link.append(img);
           images.append(link);
         }
-        card.append(images);
+        body.append(images);
       }
+      card.append(body);
       content.append(card);
     }
     if (row.text) {

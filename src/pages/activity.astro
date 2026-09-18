@@ -15,7 +15,7 @@ const items = await loadActivities();
 const months = monthHeatmap(items);
 const present = new Set(items.map(item => item.type));
 const filters = ACTIVITY_TYPES.filter(type => present.has(type));
-const feed = activityFeedPage(items, "all", 1);
+const feed = await activityFeedPage(items, "all", 1);
 const showFilters = filters.length > 1;
 
 function dayLabel(date: string): string {
@@ -29,7 +29,10 @@ function dayLabel(date: string): string {
     {months.length > 0 && (
       <div class="activity-heatmap" aria-label="近一年动态">
         {months.map(month => (
-          <div class="activity-month-block">
+          <div
+            class="activity-month-block"
+            style={`--weeks: ${month.weeks.length}`}
+          >
             <div class="activity-month-grid">
               {month.weeks.flatMap(week =>
                 week.map(cell =>
@@ -135,7 +138,7 @@ function dayLabel(date: string): string {
                                   row.minutes != null ||
                                   row.hr != null) &&
                                   " · "}
-                                {row.place}
+                                <span class="activity-run-place">{row.place}</span>
                               </>
                             )}
                           </span>
@@ -221,31 +224,35 @@ function dayLabel(date: string): string {
                       </>
                     )}
                   </p>
-                  {row.type === "memo" && (row.title || row.images?.length) && (
-                    <div class="activity-memo-card">
-                      {row.title && (
-                        <p class="activity-memo-text">{row.title}</p>
-                      )}
-                      {row.images && row.images.length > 0 && (
-                        <div class="activity-images">
-                          {row.images.map(src => (
-                            <a
-                              class="activity-image"
-                              href={src}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              <img
-                                src={src}
-                                alt=""
-                                loading="lazy"
-                                decoding="async"
-                              />
-                            </a>
-                          ))}
-                        </div>
-                      )}
-                    </div>
+                  {row.type === "memo" &&
+                    (row.title || row.html || row.images?.length) && (
+                    <details class="activity-memo-card">
+                      <summary>{row.title}</summary>
+                      <div class="activity-memo-content">
+                        {row.html && (
+                          <div class="activity-memo-text" set:html={row.html}></div>
+                        )}
+                        {row.images && row.images.length > 0 && (
+                          <div class="activity-images">
+                            {row.images.map(src => (
+                              <a
+                                class="activity-image"
+                                href={src}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                <img
+                                  src={src}
+                                  alt=""
+                                  loading="lazy"
+                                  decoding="async"
+                                />
+                              </a>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </details>
                   )}
                   {row.text && <p class="activity-comment">{row.text}</p>}
                 </div>

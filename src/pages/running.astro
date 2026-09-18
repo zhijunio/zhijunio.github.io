@@ -1,0 +1,219 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import "@/styles/running.css";
+import {
+  PERIOD_LABELS,
+  durationLabel,
+  loadRuns,
+  periodStats,
+  runFeedPage,
+  runHeatmap,
+  type PeriodKey,
+} from "@/utils/running";
+
+const runs = loadRuns();
+const periods: PeriodKey[] = ["week", "month", "year", "total"];
+const stats = Object.fromEntries(
+  periods.map(key => [key, periodStats(runs, key)])
+) as Record<PeriodKey, ReturnType<typeof periodStats>>;
+const heat = runHeatmap(runs);
+const feed = runFeedPage(runs, 1);
+---
+
+<Layout title="跑步" description="跑步距离、配速、跑力和近期记录">
+  <section class="running-page" aria-label="跑步">
+    <h1>跑步</h1>
+    {runs.length === 0 ? (
+      <p class="running-empty">还没有跑步记录。</p>
+    ) : (
+      <>
+        <div class="run-periods" id="run-periods">
+          <div class="run-period-nav" role="tablist">
+            {periods.map((key, index) => (
+              <button
+                type="button"
+                role="tab"
+                id={`run-tab-${key}`}
+                aria-controls={`run-panel-${key}`}
+                aria-selected={index === 0 ? "true" : "false"}
+                data-count={stats[key].count}
+              >
+                {PERIOD_LABELS[key]}
+              </button>
+            ))}
+            <span class="run-period-count" id="run-period-count">
+              共计 {stats[periods[0]].count} 次
+            </span>
+          </div>
+          {periods.map((key, index) => {
+            const item = stats[key];
+            return (
+              <div
+                class="run-period"
+                id={`run-panel-${key}`}
+                role="tabpanel"
+                aria-labelledby={`run-tab-${key}`}
+                hidden={index === 0 ? undefined : true}
+              >
+                <dl>
+                  <div class="run-summary-stat--pace">
+                    <dd>{item.pace}</dd>
+                    <dt>配速</dt>
+                  </div>
+                  <div class="run-summary-stat--distance">
+                    <dd>{item.km}<span> km</span></dd>
+                    <dt>距离</dt>
+                  </div>
+                  <div class="run-summary-stat--hr">
+                    <dd>{item.hr ?? "--"}</dd>
+                    <dt>心率</dt>
+                  </div>
+                  <div>
+                    <dd>{item.vdot ?? "--"}</dd>
+                    <dt>跑力</dt>
+                  </div>
+                  <div>
+                    <dd>{item.load || "--"}</dd>
+                    <dt>负荷</dt>
+                  </div>
+                  <div>
+                    <dd>{item.hours}<span> h</span></dd>
+                    <dt>时长</dt>
+                  </div>
+                </dl>
+              </div>
+            );
+          })}
+        </div>
+
+        <script>
+          const periods = document.getElementById("run-periods");
+          periods?.addEventListener("click", event => {
+            const button = (event.target as HTMLElement).closest("button");
+            if (!button || !periods.contains(button)) return;
+            for (const tab of periods.querySelectorAll<HTMLButtonElement>(
+              "[role='tab']"
+            )) {
+              const on = tab === button;
+              tab.setAttribute("aria-selected", String(on));
+              if (on) {
+                const count = tab.dataset.count || "0";
+                document.getElementById("run-period-count")!.textContent =
+                  `共计 ${count} 次`;
+              }
+              const panel = document.getElementById(
+                tab.getAttribute("aria-controls") || ""
+              );
+              if (panel) panel.hidden = !on;
+            }
+          });
+        </script>
+
+        <div class="run-heat" aria-label="近一年跑量">
+          <div class="run-heat-track">
+            <div class="run-heat-months">
+              {heat.labels.map(label => (
+                <span style={`left: ${(label.weekIndex / heat.weeks.length) * 100}%`}>
+                  {label.label}
+                </span>
+              ))}
+            </div>
+            <div class="run-heat-weeks">
+            {heat.weeks.map(week => (
+              <div>
+                {week.map(day => (
+                  <span
+                    class:list={["run-heat-day", { "is-out": !day.inRange }]}
+                    data-level={day.inRange ? day.level : undefined}
+                    title={
+                      day.inRange
+                        ? day.km
+                          ? `${day.date.slice(5)} · ${day.km.toFixed(1)} km · ${durationLabel(day.minutes)}`
+                          : day.date.slice(5)
+                        : undefined
+                    }
+                  />
+                ))}
+              </div>
+            ))}
+            </div>
+          </div>
+        </div>
+
+        <h2>最近活动</h2>
+        <div class="run-list" id="run-list">
+          {feed.items.map(run => (
+            <article class="run-card">
+              <div class="run-main">
+                <div class="run-head">
+                  <time datetime={run.time}>{run.date}</time>
+                  {run.zoneLabel && (
+                    <span class="run-zone" data-zone={run.zone}>
+                      {run.zoneLabel}
+                    </span>
+                  )}
+                </div>
+                <p class="run-kind">
+                  <span>{run.title}</span>
+                  {run.place && (
+                    <span class="run-place">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        aria-hidden="true"
+                        focusable="false"
+                      >
+                        <path d="M12 2.4c3.7 0 6.6 2.9 6.6 6.5 0 4.6-5.4 10.7-6.2 11.6-.2.2-.6.2-.8 0-.8-.9-6.2-7-6.2-11.6 0-3.6 2.9-6.5 6.6-6.5Zm0 4.2a2.4 2.4 0 1 0 0 4.8 2.4 2.4 0 0 0 0-4.8Z" />
+                      </svg>
+                      {run.place}
+                    </span>
+                  )}
+                </p>
+              </div>
+              <div class="run-stats">
+                <div class="run-stat run-stat--distance">
+                  <span class="run-stat-value">
+                    {run.km != null ? run.km.toFixed(1) : "--"}
+                  </span>
+                  <span class="run-stat-label">km</span>
+                </div>
+                <div class="run-stat">
+                  <span class="run-stat-value">{run.minutes ?? "--"}</span>
+                  <span class="run-stat-label">分钟</span>
+                </div>
+                <div class="run-stat run-stat--pace">
+                  <span class="run-stat-value">{run.pace ?? "--"}</span>
+                  <span class="run-stat-label">配速</span>
+                </div>
+                <div class="run-stat run-stat--hr" data-zone={run.zone}>
+                  <span class="run-stat-value">{run.hr ?? "--"}</span>
+                  <span class="run-stat-label">心率</span>
+                </div>
+                <div class="run-stat run-stat--vdot">
+                  <span class="run-stat-value">{run.vdot ?? "--"}</span>
+                  <span class="run-stat-label">跑力</span>
+                </div>
+                <div class="run-stat run-stat--load">
+                  <span class="run-stat-value">{run.load ?? "--"}</span>
+                  <span class="run-stat-label">负荷</span>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+        <div
+          id="run-sentinel"
+          class="run-sentinel"
+          data-next-page={feed.nextPage ?? ""}
+          aria-hidden="true"
+        />
+        <p id="run-status" class="run-status" hidden />
+        <script>
+          import { initRunningScroll } from "@/utils/runningScroll";
+          initRunningScroll();
+        </script>
+      </>
+    )}
+  </section>
+</Layout>

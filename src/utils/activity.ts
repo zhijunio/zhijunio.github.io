@@ -14,6 +14,7 @@ import {
   getPosts,
   sortPosts,
 } from "@/utils/postUtils";
+import { renderMemoMarkdown } from "@/utils/memoMarkdown";
 
 export const ACTIVITY_TYPES = [
   "post",
@@ -39,11 +40,20 @@ export type Activity = {
   km?: number;
   minutes?: number;
   hr?: number;
+  /** 配速，秒/公里 */
+  pace?: number;
+  /** Jack Daniels 跑力 */
+  vdot?: number;
+  /** 1–5，相对最大心率的区间 */
+  zone?: number;
+  /** 训练负荷 */
+  load?: number;
   star?: number;
   slug?: string;
   category?: string;
   tags?: string[];
   images?: string[];
+  html?: string;
   cover?: string;
   updated?: string;
 };
@@ -355,6 +365,7 @@ export type ActivityFeedItem = {
   url?: string;
   tags?: string[];
   images?: string[];
+  html?: string;
   stars?: string;
   star?: number;
   place?: string;
@@ -378,7 +389,7 @@ function activityLead(item: Activity): string {
   return "";
 }
 
-export function toActivityFeedItem(row: ActivityRow): ActivityFeedItem {
+export async function toActivityFeedItem(row: ActivityRow): Promise<ActivityFeedItem> {
   const item = row.item;
   const stars = starMarks(item.star);
   const feed: ActivityFeedItem = {
@@ -397,6 +408,7 @@ export function toActivityFeedItem(row: ActivityRow): ActivityFeedItem {
     if (tags.length) feed.tags = tags;
     const images = memoImages(item);
     if (images.length) feed.images = images;
+    if (item.text?.trim()) feed.html = await renderMemoMarkdown(item.text);
   }
   if (stars) {
     feed.stars = stars;
@@ -418,19 +430,23 @@ export function toActivityFeedItem(row: ActivityRow): ActivityFeedItem {
   return feed;
 }
 
-export function activityFeedPage(
+export async function activityFeedPage(
   items: Activity[],
   filter: ActivityFilter,
   page: number
 ) {
   const source =
     filter === "all" ? items : items.filter(item => item.type === filter);
-  const rows = activityRows(source).map(toActivityFeedItem);
-  const total = Math.ceil(rows.length / ACTIVITY_PAGE_SIZE);
+  const total = Math.ceil(source.length / ACTIVITY_PAGE_SIZE);
   const safe = Math.min(Math.max(page, 1), Math.max(total, 1));
   const start = (safe - 1) * ACTIVITY_PAGE_SIZE;
+  const rows = await Promise.all(
+    activityRows(source)
+      .slice(start, start + ACTIVITY_PAGE_SIZE)
+      .map(toActivityFeedItem)
+  );
   return {
-    items: rows.slice(start, start + ACTIVITY_PAGE_SIZE),
+    items: rows,
     nextPage: safe < total ? safe + 1 : null,
   };
 }
@@ -441,18 +457,23 @@ export async function getActivityFeedStaticPaths() {
     "all",
     ...ACTIVITY_TYPES.filter(type => items.some(item => item.type === type)),
   ];
-  return filters.flatMap(filter => {
-    const count =
-      filter === "all"
-        ? items.length
-        : items.filter(item => item.type === filter).length;
-    const pages = Math.ceil(count / ACTIVITY_PAGE_SIZE);
-    return Array.from({ length: pages }, (_, index) => {
-      const page = index + 1;
-      return {
-        params: { type: filter, page: String(page) },
-        props: activityFeedPage(items, filter, page),
-      };
-    });
-  });
+  const paths = await Promise.all(
+    filters.map(async filter => {
+      const count =
+        filter === "all"
+          ? items.length
+          : items.filter(item => item.type === filter).length;
+      const pages = Math.ceil(count / ACTIVITY_PAGE_SIZE);
+      return Promise.all(
+        Array.from({ length: pages }, async (_, index) => {
+          const page = index + 1;
+          return {
+            params: { type: filter, page: String(page) },
+            props: await activityFeedPage(items, filter, page),
+          };
+        })
+      );
+    })
+  );
+  return paths.flat();
 }
