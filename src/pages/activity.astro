@@ -1,0 +1,324 @@
+---
+import ActivityIcon from "@/components/ActivityIcon.astro";
+import Layout from "@/layouts/Layout.astro";
+import "@/styles/activity.css";
+import {
+  ACTIVITY_LABELS,
+  ACTIVITY_TYPES,
+  activityFeedPage,
+  loadActivities,
+  monthHeatmap,
+  type ActivityType,
+} from "@/utils/activity";
+
+const items = await loadActivities();
+const months = monthHeatmap(items);
+const present = new Set(items.map(item => item.type));
+const filters = ACTIVITY_TYPES.filter(type => present.has(type));
+const feed = activityFeedPage(items, "all", 1);
+const showFilters = filters.length > 1;
+
+function dayLabel(date: string): string {
+  return `${Number(date.slice(5, 7))}月${Number(date.slice(8, 10))}日`;
+}
+---
+
+<Layout title="动态" description="文章、说说、读书、电影、音乐和运动">
+  <section class="activity-page" aria-label="动态">
+    <h1>动态</h1>
+    {months.length > 0 && (
+      <div class="activity-heatmap" aria-label="近一年动态">
+        {months.map(month => (
+          <div class="activity-month-block">
+            <div class="activity-month-grid">
+              {month.weeks.flatMap(week =>
+                week.map(cell =>
+                  cell ? (
+                    <span
+                      class="activity-cell"
+                      data-date={cell.date}
+                      data-level={cell.level}
+                      data-tone={cell.tone || undefined}
+                      data-counts={JSON.stringify(cell.counts)}
+                      title={
+                        cell.count
+                          ? `${dayLabel(cell.date)} · ${cell.count}`
+                          : dayLabel(cell.date)
+                      }
+                    />
+                  ) : (
+                    <span class="activity-pad" />
+                  )
+                )
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    )}
+    {showFilters && (
+      <div class="activity-filters">
+        <input type="radio" name="activity-filter" id="activity-all" checked />
+        <label for="activity-all">全部</label>
+        {filters.map((type: ActivityType) => (
+          <>
+            <input
+              type="radio"
+              name="activity-filter"
+              id={`activity-${type}`}
+            />
+            <label for={`activity-${type}`}>{ACTIVITY_LABELS[type]}</label>
+          </>
+        ))}
+      </div>
+    )}
+    {feed.items.length === 0 ? (
+      <p class="activity-empty">还没有动态。</p>
+    ) : (
+      <>
+        <div class="activity-timeline" id="activity-timeline">
+          {feed.items.map(row => (
+            <>
+              {row.showYear && (
+                <div class="activity-year">
+                  <span>{row.year}</span>
+                </div>
+              )}
+              <article
+                class:list={[
+                  "activity-item",
+                  `activity-type-${row.type}`,
+                  { "is-follow": row.hideTime },
+                ]}
+                data-type={row.type}
+              >
+                <time
+                  class:list={["activity-time", { "is-hidden": row.hideTime }]}
+                  datetime={row.time}
+                >
+                  {row.label}
+                </time>
+                <span class="activity-node" aria-hidden="true">
+                  <ActivityIcon type={row.type} />
+                </span>
+                <div class="activity-content">
+                  <p class="activity-line">
+                    {row.type === "run" ? (
+                      <>
+                        <span class="activity-run-name">{row.title}</span>
+                        {(row.km != null ||
+                          row.minutes != null ||
+                          row.hr != null ||
+                          row.place) && (
+                          <span class="activity-run-meta">
+                            {row.km != null && (
+                              <>
+                                <b>{row.km}</b> 公里
+                              </>
+                            )}
+                            {row.minutes != null && (
+                              <>
+                                {row.km != null && " · "}
+                                <b>{row.minutes}</b> 分钟
+                              </>
+                            )}
+                            {row.hr != null && (
+                              <>
+                                {(row.km != null || row.minutes != null) &&
+                                  " · "}
+                                心率 <b>{row.hr}</b>
+                              </>
+                            )}
+                            {row.place && (
+                              <>
+                                {(row.km != null ||
+                                  row.minutes != null ||
+                                  row.hr != null) &&
+                                  " · "}
+                                {row.place}
+                              </>
+                            )}
+                          </span>
+                        )}
+                      </>
+                    ) : row.type === "food" ? (
+                      <>
+                        {row.lead}{" "}
+                        {row.url ? (
+                          <a
+                            href={row.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {row.title}
+                          </a>
+                        ) : (
+                          <span>{row.title}</span>
+                        )}
+                        {row.stars && (
+                          <span
+                            class="activity-stars"
+                            aria-label={`${row.star} 星`}
+                          >
+                            {row.stars}
+                          </span>
+                        )}
+                        {row.place && (
+                          <span class="activity-place">{row.place}</span>
+                        )}
+                      </>
+                    ) : row.type === "memo" ? (
+                      <>
+                        发布了
+                        {row.url ? (
+                          <a
+                            href={row.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            说说
+                          </a>
+                        ) : (
+                          <span>说说</span>
+                        )}
+                        {row.tags && row.tags.length > 0 && (
+                          <span class="activity-tags">
+                            {row.tags.map(tag => (
+                              <span class="activity-tag">#{tag}</span>
+                            ))}
+                          </span>
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        {row.lead}{" "}
+                        {row.url ? (
+                          <a
+                            href={row.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            《{row.title}》
+                          </a>
+                        ) : (
+                          <span>《{row.title}》</span>
+                        )}
+                        {row.tags && row.tags.length > 0 && (
+                          <span class="activity-tags">
+                            {row.tags.map(tag => (
+                              <span class="activity-tag">#{tag}</span>
+                            ))}
+                          </span>
+                        )}
+                        {row.stars && (
+                          <span
+                            class="activity-stars"
+                            aria-label={`${row.star} 星`}
+                          >
+                            {row.stars}
+                          </span>
+                        )}
+                      </>
+                    )}
+                  </p>
+                  {row.type === "memo" && (row.title || row.images?.length) && (
+                    <div class="activity-memo-card">
+                      {row.title && (
+                        <p class="activity-memo-text">{row.title}</p>
+                      )}
+                      {row.images && row.images.length > 0 && (
+                        <div class="activity-images">
+                          {row.images.map(src => (
+                            <a
+                              class="activity-image"
+                              href={src}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <img
+                                src={src}
+                                alt=""
+                                loading="lazy"
+                                decoding="async"
+                              />
+                            </a>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  {row.text && <p class="activity-comment">{row.text}</p>}
+                </div>
+              </article>
+            </>
+          ))}
+        </div>
+        <div
+          id="activity-sentinel"
+          class="activity-sentinel"
+          data-type="all"
+          data-next-page={feed.nextPage ?? ""}
+          aria-hidden="true"
+        />
+        <p id="activity-status" class="activity-status" hidden />
+        {ACTIVITY_TYPES.map(type => (
+          <template id={`activity-icon-${type}`}>
+            <ActivityIcon type={type} />
+          </template>
+        ))}
+        <script>
+          import { initActivityScroll } from "@/utils/activityScroll";
+          initActivityScroll();
+        </script>
+      </>
+    )}
+  </section>
+</Layout>
+
+<script>
+  const page = document.querySelector(".activity-page");
+  if (page) {
+    const cells = [...page.querySelectorAll<HTMLElement>(".activity-cell")];
+    const levelOf = (count: number) =>
+      count <= 0
+        ? "0"
+        : count === 1
+          ? "1"
+          : count === 2
+            ? "2"
+            : count <= 4
+              ? "3"
+              : "4";
+    const apply = (type: string) => {
+      for (const cell of cells) {
+        const counts = JSON.parse(cell.dataset.counts || "{}") as Record<
+          string,
+          number
+        >;
+        const entries = Object.entries(counts).filter(([, n]) => n > 0);
+        const picked =
+          type === "all" ? entries : entries.filter(([key]) => key === type);
+        const count = picked.reduce((sum, [, n]) => sum + n, 0);
+        cell.dataset.level = levelOf(count);
+        cell.dataset.tone =
+          picked.length === 0
+            ? ""
+            : picked.length === 1
+              ? picked[0][0]
+              : "mixed";
+        const date = cell.dataset.date ?? "";
+        const label = date
+          ? `${Number(date.slice(5, 7))}月${Number(date.slice(8, 10))}日`
+          : "";
+        cell.title = count ? `${label} · ${count}` : label;
+      }
+    };
+    page
+      .querySelectorAll<HTMLInputElement>('input[name="activity-filter"]')
+      .forEach(input => {
+        input.addEventListener("change", () => {
+          if (input.checked) apply(input.id.replace("activity-", ""));
+        });
+      });
+  }
+</script>

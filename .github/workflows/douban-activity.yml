@@ -1,0 +1,43 @@
+name: Douban activity
+
+on:
+  schedule:
+    - cron: "50 16 * * *" # 00:50 Asia/Shanghai
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: douban-activity
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - run: pip install requests
+
+      - name: Fetch Douban collect
+        env:
+          DOUBAN_USER: ${{ secrets.DOUBAN_USER }}
+        run: python3 scripts/fetch_douban.py
+
+      - name: Commit douban.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/data/douban.json
+          if git diff --cached --quiet; then
+            echo "No Douban changes"
+            exit 0
+          fi
+          git commit -m "chore(动态): 同步豆瓣读书、电影和音乐"
+          git push

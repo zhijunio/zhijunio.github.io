@@ -163,7 +163,7 @@
 
   .site-header .site-brand {
     /* 窄屏优先保住导航「分类 | 标签 | 关于」 */
-    max-width: calc(100% - 9.5rem);
+    max-width: calc(100% - 12rem);
   }
 
   .site-header .nav-links {

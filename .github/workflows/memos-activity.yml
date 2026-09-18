@@ -1,0 +1,44 @@
+name: Memos activity
+
+on:
+  schedule:
+    - cron: "35 16 * * *" # 00:35 Asia/Shanghai
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: memos-activity
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - run: pip install requests
+
+      - name: Fetch public memos
+        env:
+          MEMOS_URL: https://memos.zhijun.io
+          MEMOS_TOKEN: ${{ secrets.MEMOS_TOKEN }}
+        run: python3 scripts/fetch_memos.py
+
+      - name: Commit memos.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/data/memos.json
+          if git diff --cached --quiet; then
+            echo "No Memos changes"
+            exit 0
+          fi
+          git commit -m "chore(动态): 同步 Memos 说说"
+          git push

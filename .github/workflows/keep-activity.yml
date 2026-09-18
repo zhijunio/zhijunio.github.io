@@ -1,0 +1,44 @@
+name: Keep activity
+
+on:
+  schedule:
+    - cron: "20 16 * * *" # 00:20 Asia/Shanghai
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: keep-activity
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - run: pip install requests
+
+      - name: Fetch Keep logs
+        env:
+          KEEP_MOBILE: ${{ secrets.KEEP_MOBILE }}
+          KEEP_PASSWORD: ${{ secrets.KEEP_PASSWORD }}
+        run: python3 scripts/fetch_keep_activity.py
+
+      - name: Commit keep.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/data/keep.json
+          if git diff --cached --quiet; then
+            echo "No Keep changes"
+            exit 0
+          fi
+          git commit -m "chore(动态): 同步 Keep 运动数据"
+          git push
