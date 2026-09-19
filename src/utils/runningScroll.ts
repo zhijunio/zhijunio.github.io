@@ -18,9 +18,6 @@ function stat(value: string, label: string) {
   return wrap;
 }
 
-const PIN_SVG =
-  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12 2.4c3.7 0 6.6 2.9 6.6 6.5 0 4.6-5.4 10.7-6.2 11.6-.2.2-.6.2-.8 0-.8-.9-6.2-7-6.2-11.6 0-3.6 2.9-6.5 6.6-6.5Zm0 4.2a2.4 2.4 0 1 0 0 4.8 2.4 2.4 0 0 0 0-4.8Z"/></svg>';
-
 function appendCard(list: HTMLElement, run: RunFeedItem) {
   const card = document.createElement("article");
   card.className = "run-card";
