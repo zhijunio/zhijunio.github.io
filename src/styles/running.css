@@ -128,9 +128,15 @@
   font-weight: 400;
 }
 
-.run-summary-stat--distance dd { color: var(--accent); }
-.run-summary-stat--pace dd { color: #059669; }
-.run-summary-stat--hr dd { color: #c2410c; }
+.run-summary-stat--distance dd {
+  color: var(--accent);
+}
+.run-summary-stat--pace dd {
+  color: #059669;
+}
+.run-summary-stat--hr dd {
+  color: #c2410c;
+}
 
 .run-heat {
   width: 100%;
@@ -189,11 +195,21 @@
   z-index: 1;
 }
 
-.run-heat-day[data-level="1"] { background: #dbeafe; }
-.run-heat-day[data-level="2"] { background: #93c5fd; }
-.run-heat-day[data-level="3"] { background: #60a5fa; }
-.run-heat-day[data-level="4"] { background: #3b82f6; }
-.run-heat-day[data-level="5"] { background: #1d4ed8; }
+.run-heat-day[data-level="1"] {
+  background: #dbeafe;
+}
+.run-heat-day[data-level="2"] {
+  background: #93c5fd;
+}
+.run-heat-day[data-level="3"] {
+  background: #60a5fa;
+}
+.run-heat-day[data-level="4"] {
+  background: #3b82f6;
+}
+.run-heat-day[data-level="5"] {
+  background: #1d4ed8;
+}
 
 .run-list {
   display: flex;
@@ -323,11 +339,21 @@
   color: #059669;
 }
 
-.run-stat--hr[data-zone="1"] .run-stat-value { color: #15803d; }
-.run-stat--hr[data-zone="2"] .run-stat-value { color: #2563eb; }
-.run-stat--hr[data-zone="3"] .run-stat-value { color: #b45309; }
-.run-stat--hr[data-zone="4"] .run-stat-value { color: #c2410c; }
-.run-stat--hr[data-zone="5"] .run-stat-value { color: #b91c1c; }
+.run-stat--hr[data-zone="1"] .run-stat-value {
+  color: #15803d;
+}
+.run-stat--hr[data-zone="2"] .run-stat-value {
+  color: #2563eb;
+}
+.run-stat--hr[data-zone="3"] .run-stat-value {
+  color: #b45309;
+}
+.run-stat--hr[data-zone="4"] .run-stat-value {
+  color: #c2410c;
+}
+.run-stat--hr[data-zone="5"] .run-stat-value {
+  color: #b91c1c;
+}
 
 .run-stat--vdot .run-stat-value {
   color: #8b5cf6;

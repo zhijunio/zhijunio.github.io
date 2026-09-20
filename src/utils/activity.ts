@@ -379,9 +379,7 @@ function activityLead(item: Activity): string {
   if (item.type === "post") return "发布了文章";
   if (item.type === "memo") return "发布了说说";
   if (item.type === "music") {
-    return item.artist?.trim()
-      ? `听过 ${item.artist.trim()} 的`
-      : "听过";
+    return item.artist?.trim() ? `听过 ${item.artist.trim()} 的` : "听过";
   }
   if (item.type === "movie") return "看过电影";
   if (item.type === "book") return "读过";
@@ -389,7 +387,9 @@ function activityLead(item: Activity): string {
   return "";
 }
 
-export async function toActivityFeedItem(row: ActivityRow): Promise<ActivityFeedItem> {
+export async function toActivityFeedItem(
+  row: ActivityRow
+): Promise<ActivityFeedItem> {
   const item = row.item;
   const stars = starMarks(item.star);
   const feed: ActivityFeedItem = {

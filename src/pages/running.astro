@@ -61,7 +61,10 @@ const feed = runFeedPage(runs, 1);
                     <dt>配速</dt>
                   </div>
                   <div class="run-summary-stat--distance">
-                    <dd>{item.km}<span> km</span></dd>
+                    <dd>
+                      {item.km}
+                      <span> km</span>
+                    </dd>
                     <dt>距离</dt>
                   </div>
                   <div class="run-summary-stat--hr">
@@ -77,7 +80,10 @@ const feed = runFeedPage(runs, 1);
                     <dt>负荷</dt>
                   </div>
                   <div>
-                    <dd>{item.hours}<span> h</span></dd>
+                    <dd>
+                      {item.hours}
+                      <span> h</span>
+                    </dd>
                     <dt>时长</dt>
                   </div>
                 </dl>
@@ -108,34 +114,35 @@ const feed = runFeedPage(runs, 1);
             }
           });
         </script>
-
         <div class="run-heat" aria-label="近一年跑量">
           <div class="run-heat-track">
             <div class="run-heat-months">
               {heat.labels.map(label => (
-                <span style={`left: ${(label.weekIndex / heat.weeks.length) * 100}%`}>
+                <span
+                  style={`left: ${(label.weekIndex / heat.weeks.length) * 100}%`}
+                >
                   {label.label}
                 </span>
               ))}
             </div>
             <div class="run-heat-weeks">
-            {heat.weeks.map(week => (
-              <div>
-                {week.map(day => (
-                  <span
-                    class:list={["run-heat-day", { "is-out": !day.inRange }]}
-                    data-level={day.inRange ? day.level : undefined}
-                    title={
-                      day.inRange
-                        ? day.km
-                          ? `${day.date.slice(5)} · ${day.km.toFixed(1)} km · ${durationLabel(day.minutes)}`
-                          : day.date.slice(5)
-                        : undefined
-                    }
-                  />
-                ))}
-              </div>
-            ))}
+              {heat.weeks.map(week => (
+                <div>
+                  {week.map(day => (
+                    <span
+                      class:list={["run-heat-day", { "is-out": !day.inRange }]}
+                      data-level={day.inRange ? day.level : undefined}
+                      title={
+                        day.inRange
+                          ? day.km
+                            ? `${day.date.slice(5)} · ${day.km.toFixed(1)} km · ${durationLabel(day.minutes)}`
+                            : day.date.slice(5)
+                          : undefined
+                      }
+                    />
+                  ))}
+                </div>
+              ))}
             </div>
           </div>
         </div>

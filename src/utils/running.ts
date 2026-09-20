@@ -172,7 +172,10 @@ function keyOf(year: number, month: number, day: number) {
 }
 
 /** 近 12 个自然月，列从周一开始。范围外的格子 inRange=false。 */
-export function runHeatmap(runs: RunRecord[], months = 12): {
+export function runHeatmap(
+  runs: RunRecord[],
+  months = 12
+): {
   weeks: HeatWeek[];
   labels: { label: string; weekIndex: number }[];
 } {
@@ -182,7 +185,10 @@ export function runHeatmap(runs: RunRecord[], months = 12): {
   const startMonth = (startIndex % 12) + 1;
   const startKey = keyOf(startYear, startMonth, 1);
 
-  const byDay = new Map<string, { km: number; minutes: number; count: number }>();
+  const byDay = new Map<
+    string,
+    { km: number; minutes: number; count: number }
+  >();
   for (const run of runs) {
     const key = dayKey(run.time);
     const bucket = byDay.get(key) ?? { km: 0, minutes: 0, count: 0 };
@@ -200,7 +206,9 @@ export function runHeatmap(runs: RunRecord[], months = 12): {
   const span =
     Math.round(
       (Date.parse(`${rangeEnd}T00:00:00Z`) -
-        Date.parse(keyOf(origin.year, origin.month, origin.day) + "T00:00:00Z")) /
+        Date.parse(
+          keyOf(origin.year, origin.month, origin.day) + "T00:00:00Z"
+        )) /
         86400000
     ) + 1;
   const weekCount = Math.ceil(span / 7);
@@ -233,7 +241,9 @@ export function runHeatmap(runs: RunRecord[], months = 12): {
     const key = keyOf(year, month, 1);
     const offset = Math.round(
       (Date.parse(`${key}T00:00:00Z`) -
-        Date.parse(keyOf(origin.year, origin.month, origin.day) + "T00:00:00Z")) /
+        Date.parse(
+          keyOf(origin.year, origin.month, origin.day) + "T00:00:00Z"
+        )) /
         86400000
     );
     const weekIndex = Math.floor(offset / 7);
@@ -248,11 +258,10 @@ export function runHeatmap(runs: RunRecord[], months = 12): {
 function periodStart(key: PeriodKey, now: Date): number {
   if (key === "total") return 0;
   const parts = shanghaiParts(now);
-  if (key === "year") return Date.parse(`${keyOf(parts.year, 1, 1)}T00:00:00+08:00`);
+  if (key === "year")
+    return Date.parse(`${keyOf(parts.year, 1, 1)}T00:00:00+08:00`);
   if (key === "month") {
-    return Date.parse(
-      `${keyOf(parts.year, parts.month, 1)}T00:00:00+08:00`
-    );
+    return Date.parse(`${keyOf(parts.year, parts.month, 1)}T00:00:00+08:00`);
   }
   const weekday = WEEKDAY_INDEX[parts.weekday] ?? 0;
   const monday = addDays(parts.year, parts.month, parts.day, -weekday);
@@ -261,7 +270,11 @@ function periodStart(key: PeriodKey, now: Date): number {
   );
 }
 
-export function periodStats(runs: RunRecord[], key: PeriodKey, now = new Date()): PeriodStats {
+export function periodStats(
+  runs: RunRecord[],
+  key: PeriodKey,
+  now = new Date()
+): PeriodStats {
   const start = periodStart(key, now);
   const picked = runs.filter(run => Date.parse(run.time) >= start);
   let km = 0;

@@ -138,7 +138,9 @@ function dayLabel(date: string): string {
                                   row.minutes != null ||
                                   row.hr != null) &&
                                   " · "}
-                                <span class="activity-run-place">{row.place}</span>
+                                <span class="activity-run-place">
+                                  {row.place}
+                                </span>
                               </>
                             )}
                           </span>
@@ -226,34 +228,37 @@ function dayLabel(date: string): string {
                   </p>
                   {row.type === "memo" &&
                     (row.title || row.html || row.images?.length) && (
-                    <details class="activity-memo-card">
-                      <summary>{row.title}</summary>
-                      <div class="activity-memo-content">
-                        {row.html && (
-                          <div class="activity-memo-text" set:html={row.html}></div>
-                        )}
-                        {row.images && row.images.length > 0 && (
-                          <div class="activity-images">
-                            {row.images.map(src => (
-                              <a
-                                class="activity-image"
-                                href={src}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                <img
-                                  src={src}
-                                  alt=""
-                                  loading="lazy"
-                                  decoding="async"
-                                />
-                              </a>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    </details>
-                  )}
+                      <details class="activity-memo-card">
+                        <summary>{row.title}</summary>
+                        <div class="activity-memo-content">
+                          {row.html && (
+                            <div
+                              class="activity-memo-text"
+                              set:html={row.html}
+                            />
+                          )}
+                          {row.images && row.images.length > 0 && (
+                            <div class="activity-images">
+                              {row.images.map(src => (
+                                <a
+                                  class="activity-image"
+                                  href={src}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  <img
+                                    src={src}
+                                    alt=""
+                                    loading="lazy"
+                                    decoding="async"
+                                  />
+                                </a>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </details>
+                    )}
                   {row.text && <p class="activity-comment">{row.text}</p>}
                 </div>
               </article>
