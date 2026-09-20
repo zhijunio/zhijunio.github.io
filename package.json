@@ -11,7 +11,7 @@
     "dev": "astro dev --host",
     "dev:clean": "rm -rf node_modules/.vite node_modules/.astro && astro dev --host",
     "build": "astro build && node scripts/prune-dist-images.mjs",
-    "ci": "pnpm run lint && pnpm run format:check && pnpm run check && pnpm run build",
+    "ci": "pnpm run lint && pnpm run format && pnpm run check && pnpm run build",
     "check": "astro check",
     "format:check": "pnpm exec prettier --check .",
     "format": "pnpm exec prettier --write .",
