@@ -1,5 +1,6 @@
 ---
 import ActivityIcon from "@/components/ActivityIcon.astro";
+import ActivityHeatmapYear from "@/components/ActivityHeatmapYear.astro";
 import Layout from "@/layouts/Layout.astro";
 import "@/styles/activity.css";
 import {
@@ -7,56 +8,59 @@ import {
   ACTIVITY_TYPES,
   activityFeedPage,
   loadActivities,
-  monthHeatmap,
+  yearHeatmap,
   type ActivityType,
 } from "@/utils/activity";
 
 const items = await loadActivities();
-const months = monthHeatmap(items);
+const years = yearHeatmap(items);
 const present = new Set(items.map(item => item.type));
 const filters = ACTIVITY_TYPES.filter(type => present.has(type));
 const feed = await activityFeedPage(items, "all", 1);
 const showFilters = filters.length > 1;
 
-function dayLabel(date: string): string {
-  return `${Number(date.slice(5, 7))}月${Number(date.slice(8, 10))}日`;
-}
 ---
 
 <Layout title="动态" description="文章、说说、读书、电影、音乐和运动">
   <section class="activity-page" aria-label="动态">
     <h1>动态</h1>
-    {months.length > 0 && (
-      <div class="activity-heatmap" aria-label="近一年动态">
-        {months.map(month => (
+    {years.length > 0 && (
+      <div class="activity-heatmap-wrap">
+        <div class="activity-heatmap-heading">
+          <h2>活动热力图</h2>
+          <span>按年份查看</span>
+        </div>
+        <div class="activity-heatmap-tabs" role="tablist" aria-label="选择年份">
+          {years.map((year, index) => (
+            <button
+              type="button"
+              role="tab"
+              aria-selected={index === years.length - 1}
+              class:list={{ "is-active": index === years.length - 1 }}
+              data-year-tab={year.year}
+            >
+              {year.year}
+            </button>
+          ))}
+        </div>
+        {years.map((year, yearIndex) => (
           <div
-            class="activity-month-block"
-            style={`--weeks: ${month.weeks.length}`}
+            class="activity-heatmap-panel"
+            data-year-panel={year.year}
+            hidden={yearIndex !== years.length - 1}
           >
-            <div class="activity-month-grid">
-              {month.weeks.flatMap(week =>
-                week.map(cell =>
-                  cell ? (
-                    <span
-                      class="activity-cell"
-                      data-date={cell.date}
-                      data-level={cell.level}
-                      data-tone={cell.tone || undefined}
-                      data-counts={JSON.stringify(cell.counts)}
-                      title={
-                        cell.count
-                          ? `${dayLabel(cell.date)} · ${cell.count}`
-                          : dayLabel(cell.date)
-                      }
-                    />
-                  ) : (
-                    <span class="activity-pad" />
-                  )
-                )
-              )}
-            </div>
+            <ActivityHeatmapYear year={year} showWeekdays />
           </div>
         ))}
+        <div class="activity-heatmap-legend" aria-hidden="true">
+          <span>少</span>
+          <i data-level="0" />
+          <i data-level="1" />
+          <i data-level="2" />
+          <i data-level="3" />
+          <i data-level="4" />
+          <span>多</span>
+        </div>
       </div>
     )}
     {showFilters && (
@@ -290,6 +294,19 @@ function dayLabel(date: string): string {
 <script>
   const page = document.querySelector(".activity-page");
   if (page) {
+    const tabs = [...page.querySelectorAll<HTMLButtonElement>("[data-year-tab]")];
+    const panels = [...page.querySelectorAll<HTMLElement>("[data-year-panel]")];
+    for (const tab of tabs) {
+      tab.addEventListener("click", () => {
+        const year = tab.dataset.yearTab;
+        for (const item of tabs) {
+          const active = item === tab;
+          item.classList.toggle("is-active", active);
+          item.setAttribute("aria-selected", String(active));
+        }
+        for (const panel of panels) panel.hidden = panel.dataset.yearPanel !== year;
+      });
+    }
     const cells = [...page.querySelectorAll<HTMLElement>(".activity-cell")];
     const levelOf = (count: number) =>
       count <= 0

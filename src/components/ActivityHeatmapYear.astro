@@ -1,0 +1,49 @@
+---
+import type { HeatYear } from "@/utils/activity";
+
+interface Props {
+  year: HeatYear;
+  showWeekdays?: boolean;
+}
+
+const { year, showWeekdays = false } = Astro.props;
+function dayLabel(date: string): string {
+  return `${Number(date.slice(5, 7))}月${Number(date.slice(8, 10))}日`;
+}
+---
+
+<div class="activity-year-heatmap">
+  {showWeekdays && (
+    <div class="activity-weekdays" aria-hidden="true">
+      <span />
+      <span>一</span>
+      <span>三</span>
+      <span>五</span>
+    </div>
+  )}
+  <div class="activity-heatmap" aria-label={`${year.year} 年动态`}>
+    {year.months.map(month => (
+      <div class="activity-month-block" style={`--weeks: ${month.weeks.length}`}>
+        <span class="activity-month-label">{month.label}</span>
+        <div class="activity-month-grid">
+          {month.weeks.flatMap(week =>
+            week.map(cell =>
+              cell ? (
+                <span
+                  class="activity-cell"
+                  data-date={cell.date}
+                  data-level={cell.level}
+                  data-tone={cell.tone || undefined}
+                  data-counts={JSON.stringify(cell.counts)}
+                  title={cell.count ? `${dayLabel(cell.date)} · ${cell.count}` : dayLabel(cell.date)}
+                />
+              ) : (
+                <span class="activity-pad" />
+              )
+            )
+          )}
+        </div>
+      </div>
+    ))}
+  </div>
+</div>

@@ -249,6 +249,11 @@ export type HeatMonth = {
   weeks: (HeatCell | null)[][];
 };
 
+export type HeatYear = {
+  year: number;
+  months: HeatMonth[];
+};
+
 function level(count: number): HeatCell["level"] {
   if (count <= 0) return 0;
   if (count === 1) return 1;
@@ -275,9 +280,14 @@ function cellFrom(
 }
 
 /** 近若干个自然月，每月一块。列从周一开始，月初留空。 */
-export function monthHeatmap(items: Activity[], months = 12): HeatMonth[] {
+export function monthHeatmap(
+  items: Activity[],
+  months = 12,
+  endDate = new Date()
+): HeatMonth[] {
   const todayKey = dayKey(new Date().toISOString());
-  const [ty, tm] = todayKey.split("-").map(Number);
+  const endKey = dayKey(endDate.toISOString());
+  const [ty, tm] = endKey.split("-").map(Number);
   const startIndex = ty * 12 + (tm - 1) - (months - 1);
 
   const byDay = new Map<string, Partial<Record<ActivityType, number>>>();
@@ -314,6 +324,20 @@ export function monthHeatmap(items: Activity[], months = 12): HeatMonth[] {
     });
   }
   return result;
+}
+
+/** 按年份组织热力图，每年一行。 */
+export function yearHeatmap(items: Activity[]): HeatYear[] {
+  const currentYear = Number(dayKey(new Date().toISOString()).slice(0, 4));
+  const years = items
+    .map(item => Number(dayKey(item.time).slice(0, 4)))
+    .filter(Number.isFinite);
+  const firstYear = Math.min(currentYear, ...(years.length ? years : [currentYear]));
+  return Array.from({ length: currentYear - firstYear + 1 }, (_, index) => {
+    const year = firstYear + index;
+    const end = new Date(`${year}-12-31T12:00:00+08:00`);
+    return { year, months: monthHeatmap(items, 12, end) };
+  });
 }
 
 export type ActivityRow = {
