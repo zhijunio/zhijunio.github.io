@@ -174,7 +174,7 @@ importers:
         version: 4.0.19
       astro:
         specifier: ^7.0.0
-        version: 7.3.6(@astrojs/markdown-remark@7.3.2(supports-color@7.2.0))(@types/node@25.9.9)(yaml@2.8.2)
+        version: 7.3.7(@astrojs/markdown-remark@7.3.2(supports-color@7.2.0))(@types/node@25.9.9)(yaml@2.8.2)
       mermaid:
         specifier: ^12.0.0
         version: 12.1.0
@@ -1433,8 +1433,8 @@ packages:
     resolution: {integrity: sha512-lS5qlx401Q1ZUhQ44XQnM4uT2qI6hA0H+vstrd841xGVxunFOs0ut3DWJGYHK1l7mxRxQdDi1j53pfE7/AyGlA==}
     engines: {node: ^22.22.3 || ^24.16.0 || >=26.3.0}
 
-  astro@7.3.6:
-    resolution: {integrity: sha512-3q0MKxfE4cpr5IoQ9EWrN0gwxeT5tkCaSVe3SrGlLR5fnTIywHqjVqFokQkQiZexfwpNtB9dtBdUcXV9FuD+4w==}
+  astro@7.3.7:
+    resolution: {integrity: sha512-MyxnNzy+HHkLa8iNVcGTXbmSTlkjqkXJyRcMU3EwprbsF7gh3M03DKLAGVcVTmATF8jV1Fen0rkala1JiEyMSg==}
     engines: {node: '>=22.12.0', npm: '>=9.6.5', pnpm: '>=7.1.0'}
     hasBin: true
     peerDependencies:
@@ -4530,7 +4530,7 @@ snapshots:
       - '@emnapi/runtime'
       - supports-color
 
-  astro@7.3.6(@astrojs/markdown-remark@7.3.2(supports-color@7.2.0))(@types/node@25.9.9)(yaml@2.8.2):
+  astro@7.3.7(@astrojs/markdown-remark@7.3.2(supports-color@7.2.0))(@types/node@25.9.9)(yaml@2.8.2):
     dependencies:
       '@astrojs/compiler-rs': 0.5.1
       '@astrojs/internal-helpers': 0.12.0
@@ -4729,12 +4729,12 @@ snapshots:
   css-tree@2.2.1:
     dependencies:
       mdn-data: 2.0.28
-      source-map-js: 1.2.1
+      source-map-js: 1.2.2
 
   css-tree@3.2.1:
     dependencies:
       mdn-data: 2.27.1
-      source-map-js: 1.2.1
+      source-map-js: 1.2.2
 
   css-what@7.0.0: {}
 
@@ -5220,9 +5220,9 @@ snapshots:
       path-expression-matcher: 1.2.0
       strnum: 2.3.0
 
-  fdir@6.5.0(picomatch@4.0.5):
+  fdir@6.5.0(picomatch@4.0.7):
     optionalDependencies:
-      picomatch: 4.0.5
+      picomatch: 4.0.7
 
   file-entry-cache@11.1.5:
     dependencies:
@@ -5613,7 +5613,7 @@ snapshots:
     dependencies:
       '@babel/parser': 7.29.8
       '@babel/types': 7.29.8
-      source-map-js: 1.2.1
+      source-map-js: 1.2.2
 
   markdown-extensions@2.0.0: {}
 
@@ -6629,8 +6629,8 @@ snapshots:
 
   tinyglobby@0.2.17:
     dependencies:
-      fdir: 6.5.0(picomatch@4.0.5)
-      picomatch: 4.0.5
+      fdir: 6.5.0(picomatch@4.0.7)
+      picomatch: 4.0.7
 
   trim-lines@3.0.1: {}
 
