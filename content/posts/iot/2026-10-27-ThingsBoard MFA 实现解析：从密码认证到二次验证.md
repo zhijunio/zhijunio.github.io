@@ -78,6 +78,45 @@ flowchart LR
 
 `/api/2fa/settings` 配置的是平台策略；`/api/2fa/account/settings` 查询的是当前用户实际登记的因素。两者名字相近，但职责不同。强制 MFA 的筛选策略从系统级设置读取。
 
+下面的时序图把两个登录分支展开到 API 调用。邮件和短信会先请求发送验证码；TOTP 和 backup code 不经过发送接口。
+
+```mermaid
+sequenceDiagram
+    actor User as 用户
+    participant Login as 登录认证链
+    participant AuthProvider as RestAuthenticationProvider
+    participant MfaService as DefaultTwoFactorAuthService
+    participant MfaApi as MFA 控制器
+    participant TokenFactory as JwtTokenFactory
+
+    User->>Login: POST /api/auth/login
+    Login->>AuthProvider: 校验用户名和密码
+    AuthProvider->>MfaService: 判断 MFA 配置和强制策略
+    alt 已配置 MFA
+        AuthProvider-->>Login: MfaAuthenticationToken
+        Login-->>User: PRE_VERIFICATION_TOKEN
+        User->>MfaApi: GET /api/auth/2fa/providers
+        opt EMAIL 或 SMS
+            User->>MfaApi: POST /verification/send
+            MfaApi->>MfaService: 发送验证码并执行限流
+        end
+        User->>MfaApi: POST /verification/check
+        MfaApi->>MfaService: 校验第二因素
+        MfaApi->>TokenFactory: 创建正常 token pair
+        MfaApi-->>User: Access Token 和 Refresh Token
+    else 命中强制启用策略且未配置
+        AuthProvider-->>Login: MfaConfigurationToken
+        Login-->>User: MFA_CONFIGURATION_TOKEN
+        User->>MfaApi: 调用 /api/2fa/account/config 系列接口
+        User->>MfaApi: POST /api/auth/2fa/login
+        MfaApi->>MfaService: 再次确认 MFA 已配置
+        MfaApi->>TokenFactory: 创建正常 token pair
+        MfaApi-->>User: Access Token 和 Refresh Token
+    else 无 MFA 要求
+        Login-->>User: 普通登录 token pair
+    end
+```
+
 ## 三、临时 token 为什么不能直接访问业务 API
 
 登录成功处理器 `RestAwareAuthenticationSuccessHandler` 会识别上述两种中间认证结果，并创建对应 authority 的临时 JWT：
@@ -108,6 +147,62 @@ MFA API 通过控制器方法上的 `@PreAuthorize` 限定临时 token 的用途
 | `BACKUP_CODE` | 使用一次性恢复码完成验证 | 码为八位小写十六进制字符串，验证成功后删除 |
 
 邮件和短信验证码暂存在 ThingsBoard 配置的缓存中，缓存内容包括验证码、生成时间和对应的账号配置。验证成功后验证码会被移除。backup code 不能作为唯一配置的因素；用户至少还要有一个常规 MFA 因素。
+
+### MFA 核心类图
+
+类图按职责展示登录认证、HTTP API、MFA 协调服务、配置管理器和因素 provider 之间的关系。它省略了 DAO、审计和通知等外围依赖，突出主要调用链。
+
+```mermaid
+classDiagram
+    direction LR
+
+    class RestAuthenticationProvider
+    class RestAwareAuthenticationSuccessHandler
+    class TwoFactorAuthController
+    class TwoFactorAuthConfigController
+    class TwoFactorAuthService
+    class DefaultTwoFactorAuthService
+    class TwoFaConfigManager
+    class DefaultTwoFaConfigManager
+    class TwoFaProvider
+    class OtpBasedTwoFaProvider
+    class TotpTwoFaProvider
+    class EmailTwoFaProvider
+    class SmsTwoFaProvider
+    class BackupCodeTwoFaProvider
+    class JwtTokenFactory
+    class UserAuthSettings
+    class AccountTwoFaSettings
+    class PlatformTwoFaSettings
+    class TwoFaAccountConfig
+    class TwoFaProviderConfig
+
+    RestAuthenticationProvider --> TwoFactorAuthService : chooses MFA branch
+    RestAwareAuthenticationSuccessHandler --> JwtTokenFactory : creates temporary JWT
+    TwoFactorAuthController --> TwoFactorAuthService : verifies challenge
+    TwoFactorAuthController --> TwoFaConfigManager : reads account settings
+    TwoFactorAuthController --> JwtTokenFactory : issues full token pair
+    TwoFactorAuthConfigController --> TwoFactorAuthService : prepares and verifies config
+    TwoFactorAuthConfigController --> TwoFaConfigManager : saves configuration
+
+    DefaultTwoFactorAuthService ..|> TwoFactorAuthService
+    DefaultTwoFactorAuthService --> TwoFaConfigManager : loads policy and account config
+    DefaultTwoFactorAuthService --> TwoFaProvider : dispatches by provider type
+    DefaultTwoFaConfigManager ..|> TwoFaConfigManager
+    DefaultTwoFaConfigManager --> UserAuthSettings : persists account settings
+
+    TwoFaProvider <|.. TotpTwoFaProvider
+    TwoFaProvider <|.. OtpBasedTwoFaProvider
+    TwoFaProvider <|.. BackupCodeTwoFaProvider
+    OtpBasedTwoFaProvider <|-- EmailTwoFaProvider
+    OtpBasedTwoFaProvider <|-- SmsTwoFaProvider
+
+    UserAuthSettings --> AccountTwoFaSettings : twoFaSettings
+    AccountTwoFaSettings o-- TwoFaAccountConfig : per-factor account data
+    PlatformTwoFaSettings o-- TwoFaProviderConfig : enabled provider policy
+```
+
+`TwoFactorAuthService` 是登录链与 MFA 实现之间的接口；`DefaultTwoFactorAuthService` 负责策略判断、限流和 provider 分发。`DefaultTwoFaConfigManager` 读写平台策略及用户因素配置。EMAIL/SMS 复用 `OtpBasedTwoFaProvider` 的验证码逻辑，TOTP 与 backup code 则各自实现 `TwoFaProvider`。
 
 ## 五、强制 MFA 用户如何完成首次配置
 
