@@ -1,6 +1,6 @@
 ---
 title: "ThingsBoard OAuth2 登录源码解析：新手从授权码到平台 JWT"
-date: 2026-10-27 18:00:00+08:00
+date: 2026-10-27 14:00:00+08:00
 slug: thingsboard-oauth2-login-source
 category: iot
 tags: ["thingsboard", "oauth2", "spring-security"]

@@ -1,6 +1,6 @@
 ---
 title: "ThingsBoard MFA 实现解析：从密码认证到二次验证"
-date: 2026-10-27 16:00:00+08:00
+date: 2026-10-27 11:00:00+08:00
 slug: thingsboard-mfa-implementation
 category: iot
 tags: ["thingsboard", "spring-security"]

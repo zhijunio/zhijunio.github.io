@@ -1,6 +1,6 @@
 ---
 title: "ThingsBoard 认证与授权机制：从 JWT 到资源权限"
-date: 2026-10-27 15:00:00+08:00
+date: 2026-10-27 10:00:00+08:00
 slug: thingsboard-authentication-authorization
 category: iot
 tags: ["thingsboard", "spring-security"]
