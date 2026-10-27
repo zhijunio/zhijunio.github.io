@@ -240,6 +240,12 @@ cd spring-security-7-mfa-demo
 
 打开 `http://localhost:8080/`，使用 `demo` / `changeit` 登录。验证前访问受保护的 `GET /api/me` 应被拒绝；完成一个第二因子后再访问应成功。`GET /api/auth/state` 可用于观察 `primaryAuthenticated` 与 `mfaComplete` 两个阶段。写接口先取 CSRF token，且账户、会话之外的因子状态都会在应用重启后清空。
 
+下面两张截图来自本地运行的示例应用。第一张显示密码主认证已通过，页面仍在等待第二因子；第二张显示第二因子通过后，普通用户 API 已解锁。
+
+![密码主认证通过后，应用仍等待第二因子验证](01-primary-auth-pending-mfa.webp)
+
+![完成第二因子后，普通用户 API 已解锁](02-mfa-complete.webp)
+
 ## 从示例走向真实应用
 
 Spring Security 7 提供标准因子表达和授权集成，不会替应用生成或发送所有凭证。邮件服务、TOTP 秘钥生命周期、钱包 challenge、因子恢复和撤销仍由应用负责。正式部署前还要处理：
