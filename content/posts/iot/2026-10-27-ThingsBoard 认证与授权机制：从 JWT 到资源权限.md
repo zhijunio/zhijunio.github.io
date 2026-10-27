@@ -72,6 +72,22 @@ sequenceDiagram
 
 登出接口会记录审计事件并发布 Session 失效事件；改密和重置密码会发布用户凭据失效事件。`DefaultTokenOutdatingService` 订阅这些事件，将时间写入失效缓存。认证 access 或 refresh token 时，服务会比较 token 的签发时间与用户 ID、session ID 对应的失效时间。因此登出不是清除服务端 HTTP Session，而是让该 session 在失效时间之前签发的 token 不再通过检查；客户端也需要清理本地凭据。
 
+### 登录相关 API
+
+登录和刷新入口由 Spring Security 过滤器处理，不是普通的 Controller 方法。以下是用户登录链路中最常用的接口：
+
+| 方法与路径 | 凭据要求 | 请求内容 | 作用 |
+| --- | --- | --- | --- |
+| `POST /api/auth/login` | 无 | JSON：`username`、`password` | 校验用户名密码。普通登录返回 access/refresh token；启用 MFA 时可能先返回受限的 MFA token。 |
+| `POST /api/auth/token` | 无 access token | JSON：`refreshToken` | 校验 refresh token 后重新签发 token pair。 |
+| `GET /api/auth/user` | access token；`SYS_ADMIN`、`TENANT_ADMIN` 或 `CUSTOMER_USER` | 无 | 获取当前认证用户资料。 |
+| `POST /api/auth/logout` | access token；三类登录用户 | 无 | 记录登出审计并触发当前 session 的 token 失效。客户端仍应清除本地 token。 |
+| `POST /api/auth/changePassword` | access token；三类登录用户 | JSON：`currentPassword`、`newPassword` | 修改当前用户密码、触发用户凭据失效，并返回新的 token pair。 |
+
+除登录和刷新入口外，用户 API 通常通过 `Authorization: Bearer <access-token>` 发送 access token；当前源码也兼容 `X-Authorization: Bearer <access-token>`。refresh token 放在 `/api/auth/token` 的 JSON 请求体中，不能作为普通 API 的 bearer token 使用。
+
+MFA 还有 `/api/auth/2fa/**` 和 `/api/2fa/**` 等挑战与配置接口，所需 token authority 会随流程阶段变化，详见 [ThingsBoard MFA 实现解析](/posts/thingsboard-mfa-implementation)。OAuth2 登录则从浏览器授权入口 `/oauth2/authorization/{registrationId}` 开始，不属于上述 JSON 登录接口。
+
 ## 三、后续请求怎样建立认证上下文
 
 对于受保护的 `/api/**` 请求，`JwtTokenAuthenticationProcessingFilter` 从请求头提取 Bearer token，并交给 `JwtAuthenticationProvider`。Provider 调用 `JwtTokenFactory.parseAccessJwtToken()` 验证签名、有效期和 scope，再调用 `TokenOutdatingService` 检查 token 是否已被撤销。
@@ -153,6 +169,19 @@ flowchart LR
 | `CUSTOMER_USER` | 当前租户中的指定客户 | 设备、资产等还要匹配 customer；仪表板须分配给该 customer；设备相关操作另有允许列表 |
 
 例如，客户用户访问设备时，checker 先检查操作是否在允许列表中，再检查设备 tenant 是否匹配，最后检查设备是否关联到该 customer。`CLAIM_DEVICES` 是一个有意的例外：满足同一 tenant 后，它不要求设备已经属于当前 customer，否则就无法认领尚未分配的设备。这类操作例外说明，不能只根据角色名称推断权限。
+
+### 代表性的资源 API
+
+下面的接口展示了“方法级角色限制”和“实体级权限检查”如何叠加。角色信息来自对应 Controller 的 `@PreAuthorize`，资源归属与操作检查还会在方法内部执行。
+
+| 方法与路径 | 方法级允许角色 | 资源级检查示例 |
+| --- | --- | --- |
+| `GET /api/device/{deviceId}` | `TENANT_ADMIN`、`CUSTOMER_USER` | `Operation.READ`；租户管理员只能读取本租户设备，客户用户还必须拥有该设备。 |
+| `POST /api/device` | `TENANT_ADMIN`、`CUSTOMER_USER` | 新建时把当前用户 tenant 写入设备并检查创建权限；更新时检查 `Operation.WRITE`。 |
+| `DELETE /api/device/{deviceId}` | `TENANT_ADMIN` | 检查 `Operation.DELETE` 和设备归属。 |
+| `POST /api/customer/{customerId}/device/{deviceId}` | `TENANT_ADMIN` | 检查目标 customer 和设备，并验证 `Operation.ASSIGN_TO_CUSTOMER`。 |
+
+例如，调用 `GET /api/device/{deviceId}` 时，先要携带有效 access token；然后该接口要求 `TENANT_ADMIN` 或 `CUSTOMER_USER`；最后 `checkDeviceId(..., Operation.READ)` 再判断实体是否位于当前用户可访问的范围内。只有 JWT 有效，并不代表任意设备 ID 都可以读取。
 
 ## 五、MFA、OAuth2 与其他认证入口
 
