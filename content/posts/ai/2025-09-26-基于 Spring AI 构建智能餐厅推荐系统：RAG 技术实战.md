@@ -13,7 +13,7 @@ description: "通过智能餐厅推荐系统示例，介绍如何用 Spring AI �
 
 ## 源代码
 
-如果您想亲自尝试，可以随时查看我的源代码。为此，您必须克隆我的示例 [GitHub 仓库](https://github.com/zhijunio/spring-ai-restaurant-showcase)。然后，您只需按照我的说明进行操作即可。
+如果您想亲自尝试，可以随时查看我的源代码。为此，您必须克隆我的示例 [GitHub 仓库](https://github.com/zhijunio/spring-ai-restaurant-demo)。然后，您只需按照我的说明进行操作即可。
 
 ## 快速预览
 
@@ -54,8 +54,8 @@ description: "通过智能餐厅推荐系统示例，介绍如何用 Spring AI �
 
 ```bash
 # 1. 下载项目代码
-git clone https://github.com/zhijunio/spring-ai-restaurant-showcase.git
-cd spring-ai-restaurant-showcase
+git clone https://github.com/zhijunio/spring-ai-restaurant-demo.git
+cd spring-ai-restaurant-demo
 
 # 2. 启动数据库
 docker-compose up -d
@@ -170,7 +170,7 @@ docker-compose up -d
 </dependency>
 ```
 
-> **详细依赖列表**：如果你需要完整的 `pom.xml` 配置，可以查看[项目源码](https://github.com/zhijunio/spring-ai-restaurant-showcase)。
+> **详细依赖列表**：如果你需要完整的 `pom.xml` 配置，可以查看[项目源码](https://github.com/zhijunio/spring-ai-restaurant-demo)。
 
 ### 配置 PgVector
 
@@ -241,7 +241,7 @@ public class RagChatService {
 
 **为什么这么简单？** Spring AI 的 `QuestionAnswerAdvisor` 自动处理了向量检索、上下文构建和提示词增强。
 
-> **详细实现**：完整的代码实现请查看[项目源码](https://github.com/zhijunio/spring-ai-restaurant-showcase)。
+> **详细实现**：完整的代码实现请查看[项目源码](https://github.com/zhijunio/spring-ai-restaurant-demo)。
 
 ### 餐厅知识库构建
 
@@ -538,6 +538,6 @@ DELETE FROM vector_store WHERE id = "test-1";
 
 ---
 
-**项目地址**：[GitHub - spring-ai-restaurant-showcase](https://github.com/zhijunio/spring-ai-restaurant-showcase)
+**项目地址**：[GitHub - spring-ai-restaurant-demo](https://github.com/zhijunio/spring-ai-restaurant-demo)
 
 *本文基于 Spring AI 1.1.2 版本编写，代码已在实际项目中验证。*
