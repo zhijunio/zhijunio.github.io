@@ -26,7 +26,7 @@ sequenceDiagram
     participant Factor as TOTP 验证服务
 
     User->>Browser: 输入用户名和密码
-    Browser->>App: POST /login
+    Browser->>App: POST /api/auth/login
     App->>Security: 验证密码
     Security-->>Browser: 创建主认证会话
     Browser->>App: GET /api/me
@@ -92,9 +92,9 @@ class SecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/login", "/api/csrf", "/api/auth/state").permitAll()
+                .requestMatchers("/", "/api/auth/login", "/api/auth/csrf", "/api/auth/state").permitAll()
                 .anyRequest().authenticated())
-            .formLogin(form -> form.loginPage("/").loginProcessingUrl("/login").permitAll())
+            .formLogin(form -> form.loginPage("/").loginProcessingUrl("/api/auth/login").permitAll())
             .build();
     }
 }
@@ -176,14 +176,14 @@ boolean complete(Authentication authentication) {
 
 ```java
 return http.authorizeHttpRequests(auth -> auth
-        .requestMatchers("/", "/login", "/api/csrf", "/api/auth/state").permitAll()
+        .requestMatchers("/", "/api/auth/login", "/api/auth/csrf", "/api/auth/state").permitAll()
         .requestMatchers("/api/auth/mfa/**")
             .access((authentication, context) ->
                 new AuthorizationDecision(hasPrimary(authentication.get())))
         .anyRequest()
             .access((authentication, context) ->
                 new AuthorizationDecision(complete(authentication.get()))))
-    .formLogin(form -> form.loginPage("/").loginProcessingUrl("/login").permitAll())
+    .formLogin(form -> form.loginPage("/").loginProcessingUrl("/api/auth/login").permitAll())
     .build();
 ```
 
@@ -228,7 +228,7 @@ boolean recent(HttpServletRequest request, Authentication authentication) {
 
 ## 第七步：不要关掉 CSRF
 
-示例使用服务端 `JSESSIONID` 会话承载认证状态，因此保留 Spring Security 默认 CSRF 防护。前端先请求 `GET /api/csrf`，再将响应中的 token 放到指定 Header，并在后续请求中继续携带同一个 session cookie。登录、MFA 验证、因子绑定和登出等写请求都需要遵循这一约定。
+示例使用服务端 `JSESSIONID` 会话承载认证状态，因此保留 Spring Security 默认 CSRF 防护。前端先请求 `GET /api/auth/csrf`，再将响应中的 token 放到指定 Header，并在后续请求中继续携带同一个 session cookie。登录、MFA 验证、因子绑定和登出等写请求都需要遵循这一约定。
 
 认证流程应返回清楚的错误状态：未登录为 `401`，缺少授权所需阶段为 `403`，无效或过期凭证在示例中以 `application/problem+json` 返回。不要通过返回成功状态来隐藏实际失败，否则前端状态与服务端授权会失去一致性。
 
@@ -238,15 +238,15 @@ boolean recent(HttpServletRequest request, Authentication authentication) {
 
 | 方法与路径 | 请求 / 响应 | 所需认证阶段 |
 | --- | --- | --- |
-| `GET /api/csrf` | 返回 `{ "headerName": "X-CSRF-TOKEN", "token": "..." }` | 公开，用于初始化 CSRF |
-| `POST /login` | 表单字段 `username`、`password` | 公开的密码主认证 |
+| `GET /api/auth/csrf` | 返回 `{ "headerName": "X-CSRF-TOKEN", "token": "..." }` | 公开，用于初始化 CSRF |
+| `POST /api/auth/login` | 表单字段 `username`、`password` | 公开的密码主认证 |
 | `GET /api/auth/state` | 返回 `primaryAuthenticated`、`mfaComplete`、`username` | 公开，用于查询当前阶段 |
 | `POST /api/auth/mfa/challenge` | JSON `{ "factorType": "EMAIL_OTP" }` 或 `WALLET_SIGNATURE`；返回状态或待签名消息 | 主认证 |
 | `POST /api/auth/mfa/verify` | JSON `{ "factorType": "TOTP", "proof": "123456" }`；成功返回 `{ "status": "verified" }` | 主认证；凭证由服务端验证 |
 | `GET /api/me` | 返回当前用户名和受保护资源消息 | 主认证 + MFA |
 | `GET /api/me/security`、`GET /api/mfa/factors` | 返回安全状态或已绑定因子 | 五分钟内完成过 MFA |
 
-邮件 OTP 和钱包签名需要先请求 challenge；TOTP 与 BIP-39 因子在这个示例里直接提交证明。所有写请求（包括 `POST /login`、challenge、verify、因子管理和 logout）都要发送 `GET /api/csrf` 返回的 token，Header 名使用 `headerName` 的值，并继续携带同一个会话 Cookie。浏览器页面会自动处理这一步。
+邮件 OTP 和钱包签名需要先请求 challenge；TOTP 与 BIP-39 因子在这个示例里直接提交证明。所有写请求（包括 `POST /api/auth/login`、challenge、verify、因子管理和 logout）都要发送 `GET /api/auth/csrf` 返回的 token，Header 名使用 `headerName` 的值，并继续携带同一个会话 Cookie。浏览器页面会自动处理这一步。
 
 无会话返回 `401`；会话未达到路由要求的认证阶段返回 `403`；无效、过期或格式错误的凭证返回 `400`；尝试删除未绑定因子等状态冲突返回 `409`。错误响应使用 RFC 9457 `application/problem+json`。完整契约和因子管理请求见示例仓库的 [API contract](https://github.com/zhijunio/spring-security-7-mfa-demo#api-contract)。
 
