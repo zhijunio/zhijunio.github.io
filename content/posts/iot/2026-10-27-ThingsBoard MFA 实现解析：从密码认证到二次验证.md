@@ -239,6 +239,82 @@ classDiagram
 4. **修改 MFA 配置不代表现有登录会话立即失效。** 检查到的 MFA 配置编辑和删除路径没有主动发布普通 token 失效事件；已有正常 token 仍按常规失效机制或有效期处理。
 5. **邮件和短信验证码的集群行为取决于缓存部署。** 本文确认验证码进入配置的缓存，但没有进一步核对部署中该缓存是否跨节点共享。
 
+## 八、从零实现 MFA：给新手的最小路线
+
+前面几节解释 ThingsBoard 当前怎么做；这一节给出一个可以用于自己项目的实现顺序。它是设计路线，不是 ThingsBoard 代码的逐行复刻。建议先做 **TOTP + 一次性恢复码**，暂缓短信、可信设备等附加机制，先把认证状态和失败路径做对。
+
+MFA 要组合彼此独立的验证因素；密码再加一个 PIN 并不构成真正的多因素认证。TOTP 是容易落地的起点，但仍可能被实时钓鱼代理窃取；高价值系统应评估 WebAuthn/passkey 等抗钓鱼方案。OWASP 的指南也强调按应用威胁模型选择因素，而不是把所有 MFA 方式视为同等强度。
+
+### 1. 先设计状态和数据
+
+把账号因素状态显式区分为 `DISABLED`、`PENDING_ENROLLMENT` 和 `ENABLED`。生成密钥时只进入待确认状态；用户提交正确的一次性密码后，才切换为 `ENABLED`。不要因为生成了二维码就认为 MFA 已经生效。
+
+建议至少记录用户 ID、因素类型、密钥或密钥引用、启用时间、最近一次已接受的 TOTP 时间步，以及待验证登录 challenge 的过期时间、失败次数和消费状态。TOTP 密钥应加密保存；恢复码只在创建时展示一次，存储可用于校验的哈希，不能把明文写入日志。
+
+### 2. 实现 TOTP 登记
+
+用户通过已认证的会话发起登记。服务端用密码学安全随机数生成密钥，生成标准 `otpauth://` URI 并展示二维码；用户用认证器 App 扫码后提交当前动态码。服务端验证成功才启用因素，并生成一组单次使用的恢复码。
+
+TOTP 的客户端和服务端必须使用相同时间步。RFC 6238 建议默认 30 秒；验证器允许少量时钟偏移时，应限制允许窗口，并记录已成功接受的时间步，拒绝同一时间步内再次使用的验证码。[RFC 6238 第 5.2 节](https://www.rfc-editor.org/rfc/rfc6238.html#section-5.2)明确要求验证器不能再次接受已经成功验证过的 OTP。
+
+自己设计 API 时，可以按职责拆成以下几个端点；路径只是示例，不是 ThingsBoard 的实际路由：
+
+| 示例接口 | 职责 |
+| --- | --- |
+| `POST /me/mfa/totp/enroll` | 已登录用户发起登记，生成待确认密钥并返回一次性展示的 QR/`otpauth` 信息。 |
+| `POST /me/mfa/totp/confirm` | 提交 TOTP，验证成功后启用因素并返回一次性恢复码。 |
+| `POST /auth/login` | 校验主凭据；MFA 已启用时返回受限 challenge，而非完整 token。 |
+| `POST /auth/mfa/verify` | 验证 challenge 和第二因素；成功消费 challenge 后签发正式 token pair。 |
+| `DELETE /me/mfa/factors/{id}` | 删除因素；要求重新认证，并在符合策略时保留可用恢复方式。 |
+
+### 3. 把密码登录和 MFA 挑战分成两个状态
+
+密码校验通过后，如果用户没有启用 MFA，可以按普通流程签发完整 token；如果启用了 MFA，则创建短时 challenge，并返回只允许访问 MFA 验证接口的凭据。挑战凭据不应包含完整业务权限，也不应能刷新成普通 token。真正的用户会话要等第二因素验证成功后再创建。
+
+Challenge 可保存在数据库或具备共享能力的缓存中，并至少绑定用户、过期时间、尝试次数和是否已消费。不要只在客户端保存一个“已完成 MFA”的标志；完成状态必须由服务端验证。
+
+### 4. 验证成功后原子地消费挑战
+
+校验第二因素时，先确认 challenge 仍有效，再验证对应因素。验证码错误时增加失败次数并应用限流；验证成功后，必须以原子操作将 challenge 从待处理状态改为已消费，只有成功消费的请求才能签发正式 token。这样两个并发请求即使同时提交同一个正确验证码，也只有一个能完成登录。
+
+下面是说明调用顺序的伪代码，省略了具体存储、异常映射和事务实现：
+
+```java
+public TokenPair completeMfa(String challengeId, String code) {
+    MfaChallenge challenge = challengeStore.requireActive(challengeId);
+    User user = userService.findById(challenge.userId());
+
+    if (!factorVerifier.matches(user, challenge.factorId(), code)) {
+        challengeStore.recordFailure(challengeId);
+        throw new InvalidMfaCodeException();
+    }
+
+    if (!challengeStore.consumeOnce(challengeId)) {
+        throw new ExpiredOrConsumedChallengeException();
+    }
+
+    return tokenService.issueFullTokenPair(user);
+}
+```
+
+`consumeOnce` 必须是带状态条件的原子更新，而不是先读取、再无条件写回。TOTP 还要独立记录因素最近成功的时间步；只消费登录 challenge 不能阻止同一个 TOTP 在另一个 challenge 中重放。
+
+### 5. 把恢复和变更也纳入认证设计
+
+用户更换因素、关闭 MFA 或重置恢复码时，要求重新验证现有因素或走经过审计的恢复流程。恢复流程不能成为比正常 MFA 更弱的绕过入口；恢复码应单次使用，重新生成后使旧码全部失效。OWASP 的 MFA 指南也建议提供一次性恢复码，并根据应用威胁模型评估恢复方式。[OWASP Multifactor Authentication Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Multifactor_Authentication_Cheat_Sheet.html)
+
+短信和电话验证码存在 SIM 换卡、号码转移等风险。高价值或处理敏感数据的系统，不要把短信作为唯一的强 MFA 因素；如果业务必须支持，应记录风险并设置每账号限流和监控。OWASP 当前指南将 PSTN 验证列为受限方式，并建议迁移到更强因素。
+
+### 6. 按使用者能观察到的结果测试
+
+- 登记：正确 TOTP 才能启用；错误或过期验证码不能启用。
+- 登录：启用 MFA 后，密码正确仍只能得到临时 challenge；挑战成功后才拿到完整 token pair。
+- 隔离：临时凭据不能访问业务 API，也不能调用 refresh 接口。
+- 重放和并发：同一 TOTP 时间步不能重复成功；并发消费一个 challenge 时最多一个请求签发 token。
+- 防爆破：验证码错误会计数；达到阈值后按策略限流或锁定；发送接口不能被无限调用。
+- 恢复：恢复码只能使用一次；重新生成后旧码失效；修改或关闭因素要求重新认证。
+- 强制策略：未登记的目标用户被引导完成登记；未完成登记前不会获得完整登录 token。
+
 ## 总结
 
 ThingsBoard 的 MFA 是接在无状态 JWT 登录链中的一个阶段控制机制：凭据通过后，系统发放用途受限的临时 token；用户完成第二因素验证或强制配置后，才进入完整登录状态。平台策略决定“谁需要启用哪些因素”，用户配置记录“这个账号实际登记了什么”，验证服务和 provider 则负责挑战、限流与具体校验。
