@@ -189,6 +189,10 @@ return http.authorizeHttpRequests(auth -> auth
 
 顺序很重要：第二因子接口必须允许“密码已通过、MFA 尚未完成”的用户访问，否则用户无法提交第二个凭证。普通业务接口则要求 `complete(...)` 为真。不要简单把所有请求都 `.authenticated()`，因为那只检查是否登录，不代表通过了第二因子。
 
+示例应用在这个阶段会显示“主认证完成 · 待验证第二因子”。
+
+![密码主认证通过后，应用仍等待第二因子验证](01-primary-auth-pending-mfa.webp)
+
 ## 第六步：给敏感操作增加近期验证
 
 通过 MFA 登录后，用户可能长时间保持会话。添加/删除因子、查看安全设置等操作，可以再要求一次近期 MFA。示例记录验证时间和 subject，并将有效期限制为五分钟：
@@ -228,6 +232,24 @@ boolean recent(HttpServletRequest request, Authentication authentication) {
 
 认证流程应返回清楚的错误状态：未登录为 `401`，缺少授权所需阶段为 `403`，无效或过期凭证在示例中以 `application/problem+json` 返回。不要通过返回成功状态来隐藏实际失败，否则前端状态与服务端授权会失去一致性。
 
+## 接口契约：浏览器如何完成两步认证
+
+示例通过同源 HTTP API 和服务端 `JSESSIONID` 会话完成认证。客户端先读取 CSRF token；密码登录后，只有主认证已通过的会话可以请求 MFA challenge 和提交因子证明；普通用户接口则还要求 MFA 完成。
+
+| 方法与路径 | 请求 / 响应 | 所需认证阶段 |
+| --- | --- | --- |
+| `GET /api/csrf` | 返回 `{ "headerName": "X-CSRF-TOKEN", "token": "..." }` | 公开，用于初始化 CSRF |
+| `POST /login` | 表单字段 `username`、`password` | 公开的密码主认证 |
+| `GET /api/auth/state` | 返回 `primaryAuthenticated`、`mfaComplete`、`username` | 公开，用于查询当前阶段 |
+| `POST /api/auth/mfa/challenge` | JSON `{ "factorType": "EMAIL_OTP" }` 或 `WALLET_SIGNATURE`；返回状态或待签名消息 | 主认证 |
+| `POST /api/auth/mfa/verify` | JSON `{ "factorType": "TOTP", "proof": "123456" }`；成功返回 `{ "status": "verified" }` | 主认证；凭证由服务端验证 |
+| `GET /api/me` | 返回当前用户名和受保护资源消息 | 主认证 + MFA |
+| `GET /api/me/security`、`GET /api/mfa/factors` | 返回安全状态或已绑定因子 | 五分钟内完成过 MFA |
+
+邮件 OTP 和钱包签名需要先请求 challenge；TOTP 与 BIP-39 因子在这个示例里直接提交证明。所有写请求（包括 `POST /login`、challenge、verify、因子管理和 logout）都要发送 `GET /api/csrf` 返回的 token，Header 名使用 `headerName` 的值，并继续携带同一个会话 Cookie。浏览器页面会自动处理这一步。
+
+无会话返回 `401`；会话未达到路由要求的认证阶段返回 `403`；无效、过期或格式错误的凭证返回 `400`；尝试删除未绑定因子等状态冲突返回 `409`。错误响应使用 RFC 9457 `application/problem+json`。完整契约和因子管理请求见示例仓库的 [API contract](https://github.com/zhijunio/spring-security-7-mfa-demo#api-contract)。
+
 ## 运行完整示例
 
 仓库已经把以上步骤连成浏览器应用，并额外演示 Passkey 主认证、邮件 OTP、钱包签名和 BIP-39 MFA 凭证。需要 JDK 25：
@@ -240,9 +262,7 @@ cd spring-security-7-mfa-demo
 
 打开 `http://localhost:8080/`，使用 `demo` / `changeit` 登录。验证前访问受保护的 `GET /api/me` 应被拒绝；完成一个第二因子后再访问应成功。`GET /api/auth/state` 可用于观察 `primaryAuthenticated` 与 `mfaComplete` 两个阶段。写接口先取 CSRF token，且账户、会话之外的因子状态都会在应用重启后清空。
 
-下面两张截图来自本地运行的示例应用。第一张显示密码主认证已通过，页面仍在等待第二因子；第二张显示第二因子通过后，普通用户 API 已解锁。
-
-![密码主认证通过后，应用仍等待第二因子验证](01-primary-auth-pending-mfa.webp)
+完成第二因子后，界面状态变为“MFA 已完成”，普通用户 API 随之解锁。下面是本地运行示例后的页面：
 
 ![完成第二因子后，普通用户 API 已解锁](02-mfa-complete.webp)
 
