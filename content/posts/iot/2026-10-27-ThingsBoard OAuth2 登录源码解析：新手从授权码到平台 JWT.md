@@ -35,7 +35,7 @@ flowchart LR
     H --> I[重定向回 Web 或移动端]
 ```
 
-这里有两种令牌，不能混为一谈：
+这条链路涉及三种令牌，不能混为一谈：
 
 | 令牌 | 由谁签发 | 用途 |
 | --- | --- | --- |
@@ -152,6 +152,8 @@ Spring Security 负责通用 OAuth2 登录协议步骤，ThingsBoard 的自定�
 
 `HttpCookieOAuth2AuthorizationRequestRepository` 将授权请求序列化后放进 `oauth2_auth_request` cookie，默认有效期为 180 秒。回调到达时，Spring Security 可以恢复原始请求并检查对应状态。
 
+`CookieUtils` 为该 cookie 设置了 `HttpOnly`、`Path=/` 和有效期，但此处没有显式设置 `Secure` 或 `SameSite`。部署时应检查 HTTPS、反向代理和浏览器 Cookie 策略；不能只凭这段源码认定生产环境已经配置好这些属性。
+
 Web 登录还可以保存经过校验的 `prevUri`，让登录完成后返回原页面。resolver 会根据当前请求和客户端配置展开 redirect URI；反向代理、外部域名和回调路径配置都会影响最终地址。
 
 ### 4. Spring Security 处理 provider 回调
@@ -160,6 +162,8 @@ Web 登录还可以保存经过校验的 `prevUri`，让登录完成后返回原
 
 Spring Security 的 OAuth2 登录过滤器恢复授权请求、校验状态、使用授权码换取 provider token，并取得 `OAuth2AuthenticationToken` 和外部 principal。到此为止，Spring Security 建立的是“外部身份认证结果”，还不是 ThingsBoard API 会话。
 
+协议认证失败由 `Oauth2AuthenticationFailureHandler` 处理；若认证成功后 mapper 或用户创建失败，则 success handler 捕获异常、清理登录请求 cookie，并重定向到 Web 登录错误地址或移动端 callback 错误参数。
+
 ### 5. Mapper 将外部身份映射为本地用户
 
 `Oauth2AuthenticationSuccessHandler` 取得 provider principal、外部 access token 和对应 `OAuth2Client`，再由 `OAuth2ClientMapperProvider` 按配置选择 mapper。源码中包含 BASIC、CUSTOM、GITHUB 和 APPLE 等 mapper。
@@ -167,11 +171,106 @@ Spring Security 的 OAuth2 登录过滤器恢复授权请求、校验状态、�
 | Mapper | 大致做法 |
 | --- | --- |
 | BASIC | 按客户端配置指定的 principal 属性读取邮箱等信息 |
-| CUSTOM | 将外部身份信息交给配置的自定义映射端点处理 |
-| GITHUB | 可使用 provider access token 查询 GitHub 邮箱信息 |
-| APPLE | 合并 Apple 回调中的姓名信息等属性 |
+| CUSTOM | 将 principal 序列化后 POST 到配置的自定义映射端点，由端点返回 `OAuth2User` |
+| GITHUB | 使用 provider access token 查询邮箱列表，并选择标记为 primary 的邮箱 |
+| APPLE | 邮箱取自 principal；可用 Apple 回调参数中的姓名补充 firstName / lastName |
+
+这几个 mapper 有一些容易忽略的差异：
+
+- **GITHUB：**源码读取了返回项的 `verified` 字段，但筛选条件只检查 `primary`，没有同时检查 `verified`。所以“email 必须已验证”是接入方应确认的信任前提，不是这个 mapper 明确执行的校验。
+- **APPLE：**回调的 `user` 参数只用于补充姓名。若其中的 email 与 principal 中的 email 不同，代码记录警告并忽略回调 email，账号映射仍使用 principal 中配置的 email 属性。
+- **CUSTOM：**请求体是 principal 的 JSON 序列化文本，期望响应可反序列化为 `OAuth2User`。配置可启用 Basic Authentication，也可通过 `sendToken` 把 provider access token 放在 `provider-access-token` 请求头中；发送前会调用 `SsrfProtectionValidator` 校验配置的 URL。因此该端点属于管理员控制的可信服务，不应配置为不受信任的任意地址。
 
 共同基类负责将身份解析到 ThingsBoard 用户。用户不存在时是否创建、创建何种角色、归属哪个 tenant/customer，取决于客户端配置和 mapper 逻辑。不要把“使用 OAuth2 登录”直接理解为“必然自动注册账号”。
+
+#### 用户与租户具体如何映射
+
+可以把 mapper 输出看成一份待映射资料：`OAuth2User` 主要包含 email、姓名，以及可选的 `tenantId` / `tenantName`、`customerId` / `customerName`。BASIC、GITHUB、APPLE mapper 会从 provider principal 和客户端映射配置构造这些字段；CUSTOM mapper 则把 principal 发给管理员配置的映射端点，由端点返回 `OAuth2User`。之后共同基类 `getOrCreateSecurityUserFromOAuth2User()` 才负责匹配或创建平台用户。
+
+实际顺序如下：
+
+1. **先按 email 查找已有用户。** 查询使用系统 tenant 范围。若 OAuth2 客户端属于某个普通 tenant，只允许匹配该 tenant 下的用户；相同 email 若属于其他 tenant（包括系统管理员账号），登录会按“用户不存在”处理，不会跨 tenant 复用。系统 tenant 下注册的 OAuth2 客户端则可以按 email 查找平台范围内的用户。
+2. **没有匹配用户时检查创建开关。** `allowUserCreation=false` 会抛出 `UsernameNotFoundException`，不会自动注册；为 `true` 才创建。已有用户不会因本次 provider 返回的姓名或租户字段而被更新或迁移。
+3. **决定新用户所属 tenant。** 对普通 tenant 注册的客户端，用户始终归属该客户端自己的 tenant，mapper 返回的 `tenantId` / `tenantName` 不会覆盖它。对系统 tenant 注册的客户端，优先使用 mapper 返回的 `tenantId`；没有时按 `tenantName` 查找同名 tenant，不存在则创建。
+4. **决定 customer 和角色。** mapper 提供 `customerId` 时将其用于新用户，保存时还会校验 customer 存在且属于目标 tenant；若校验失败，创建会失败。没有 ID、但提供 `customerName` 时，会在刚确定的 tenant 中按名称查找 customer，不存在则创建。没有 customer（既无 ID 也无名称）的用户赋予 `TENANT_ADMIN`；有 customer 的用户赋予 `CUSTOMER_USER`。因此，租户专属客户端如果没有映射 customer，新建用户会成为该 tenant 的管理员。
+5. **按配置激活新用户。** `activateUser=true` 时，创建用户后会激活对应 credentials；此选项不会改变已有用户的状态。
+
+BASIC / GITHUB / APPLE mapper 的 tenant 名称策略由 `tenantNameStrategy` 决定：
+
+| 策略 | 该源码版本的结果 |
+| --- | --- |
+| `EMAIL` | 整个 email，例如 `alice@example.com` |
+| `DOMAIN` | email 的 `@` 后部分，例如 `example.com` |
+| `CUSTOM` | 用 principal attributes 展开 `tenantNamePattern`，格式如 `%{organization}` |
+
+用同一位用户 `alice@example.com` 来对比这三种策略：
+
+- `EMAIL`：系统 tenant 客户端会查找或创建名为 `alice@example.com` 的 tenant。
+- `DOMAIN`：会查找或创建名为 `example.com` 的 tenant；同域名的用户因此可能落入同一个 tenant。
+- `CUSTOM`：若 `tenantNamePattern` 是 `%{organization}-%{region}`，provider 属性为 `organization=Acme`、`region=west`，则 tenant 名称为 `Acme-west`。
+
+这些名称策略只决定“系统 tenant 客户端如何从 mapper 结果得到 tenant 名称”，不是所有客户端的租户分配规则。下面几个场景可以进一步区分查找、创建与归属：
+
+| 场景 | 结果 |
+| --- | --- |
+| 系统 tenant 客户端；新 email 为 `alice@example.com`；策略为 `DOMAIN`；客户名为 `Acme` | 查找或创建 `example.com` tenant，再查找或创建其中的 `Acme` customer，创建 `CUSTOMER_USER` |
+| 系统 tenant 客户端；新 email 为 `alice@example.com`；策略为 `DOMAIN`；没有 customer 映射 | 查找或创建 `example.com` tenant，不关联 customer，创建 `TENANT_ADMIN` |
+| 普通 tenant `North` 的客户端；新 email 为 `alice@other.com`；策略为 `DOMAIN`；客户名为 `Acme` | 用户仍归属 `North`，在 `North` 中查找或创建 `Acme` customer，创建 `CUSTOMER_USER`；不会因为邮箱域名变成 `other.com` 而另建 tenant |
+| 普通 tenant `North` 的客户端；该 email 已属于另一个 tenant `South` | 登录按“用户不存在”拒绝；即使 `allowUserCreation=true`，也不会在 `North` 再创建一个同 email 用户 |
+| 当前客户端 tenant 下已存在同 email 用户 | 直接使用已有用户；本次 provider 返回的新姓名、customer 或 tenant 映射不会更新或迁移这个用户 |
+| 用户尚不存在且 `allowUserCreation=false` | 登录失败，不创建用户 |
+
+需要留意一个源码与 API 描述不一致之处：此版本 `OAuth2BasicMapperConfig` 的 schema 注释称 `DOMAIN` 取 `@` 前的部分，但 `BasicMapperUtils.getTenantName()` 的实际实现取 `@` 后的域名。理解和验证运行行为时，应以文章固定的 commit 中的实现为准。
+
+下面是一个示意性的 BASIC mapper 配置。假设身份提供方返回 `email`、`given_name`、`family_name` 和 `organization` 属性，并且该 OAuth2 客户端注册在系统 tenant 下：
+
+```json
+{
+  "allowUserCreation": true,
+  "activateUser": true,
+  "type": "BASIC",
+  "basic": {
+    "emailAttributeKey": "email",
+    "firstNameAttributeKey": "given_name",
+    "lastNameAttributeKey": "family_name",
+    "tenantNameStrategy": "DOMAIN",
+    "customerNamePattern": "%{organization}"
+  }
+}
+```
+
+例如 provider 返回 `email=alice@example.com`、`organization=Acme` 时，新用户会被放入名称为 `example.com` 的 tenant，并关联该 tenant 下名为 `Acme` 的 customer；若 customer 尚不存在则会创建，用户角色为 `CUSTOMER_USER`。用户凭据也会按 `activateUser=true` 激活。这里的属性名只是例子，必须换成 provider principal 实际提供的 key；若客户端属于普通 tenant，tenant 归属仍由客户端决定，`tenantNameStrategy` 不会把用户移到其他 tenant。
+
+这套逻辑也说明了 tenant 映射的关键边界：普通 tenant 客户端以客户端所属 tenant 为准，系统 tenant 客户端才会按外部映射结果解析 tenant。外部身份最终按 email 匹配，而不是按 provider 的稳定 subject；因此 provider 返回的 email 必须可靠且经过验证，不能把不可信的 email 属性直接当作跨 provider 的账号绑定凭据。
+
+```mermaid
+flowchart TD
+    A[Provider mapper 生成 OAuth2User] --> B[按 email 查找 ThingsBoard 用户]
+    B --> C{是否找到用户？}
+    C -- 是 --> D{客户端属于系统 tenant？}
+    D -- 是 --> H[使用匹配到的已有用户]
+    D -- 否 --> E{用户 tenant 是否等于客户端 tenant？}
+    E -- 是 --> H
+    E -- 否 --> X[拒绝登录：按用户不存在处理]
+    C -- 否 --> F{allowUserCreation？}
+    F -- 否 --> X
+    F -- 是 --> G{客户端属于系统 tenant？}
+    G -- 是 --> I[用映射的 tenantId；否则按 tenantName 查找或创建]
+    G -- 否 --> J[使用 OAuth2 客户端所属 tenant]
+    I --> K{映射了 customerId 或 customerName？}
+    J --> K
+    K -- 是 --> L[使用 customerId；否则按名称在该 tenant 查找或创建]
+    K -- 否 --> M[不关联 customer]
+    L --> N[创建 CUSTOMER_USER]
+    M --> O[创建 TENANT_ADMIN]
+    N --> P{activateUser？}
+    O --> P
+    P -- 是 --> Q[激活新用户 credentials]
+    P -- 否 --> R[credentials 保持未激活]
+    Q --> S[生成 SecurityUser 并签发平台令牌]
+    R --> S
+    H --> S
+```
 
 ### 6. 签发 ThingsBoard JWT 并重定向
 
