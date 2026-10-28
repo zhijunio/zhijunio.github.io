@@ -9,7 +9,7 @@ description: "从管理配置、授权码回调到用户映射和 ThingsBoard JW
 
 第一次读 ThingsBoard 的 OAuth2 登录代码，很容易把几个不同的东西混在一起：身份提供方的 access token、ThingsBoard 用户、ThingsBoard 自己签发的 JWT，以及 Spring Security 中的 OAuth2 登录对象。
 
-先记住整条链路：**Spring Security 帮 ThingsBoard 向外部身份提供方完成登录；ThingsBoard 再把外部身份映射到本地用户，并签发自己的平台令牌。**
+先记住整条链路：<strong>Spring Security 帮 ThingsBoard 向外部身份提供方完成登录；ThingsBoard 再把外部身份映射到本地用户，并签发自己的平台令牌。</strong>
 
 本文基于 ThingsBoard 本地源码 commit [`d499756`](https://github.com/thingsboard/thingsboard/tree/d499756c8d4ebe0dee37699e5ef4488dde45cdb4)，从配置入口开始追踪授权码登录，并补上适合初学者的组件图和阅读路线。文中的 OAuth2 指 ThingsBoard 作为 OAuth2/OIDC 客户端接入第三方登录，不是 ThingsBoard 为其他应用提供 OAuth2 授权服务器。
 
@@ -136,6 +136,44 @@ Spring Security 负责通用 OAuth2 登录协议步骤，ThingsBoard 的自定�
 
 ## 四、从点击按钮到登录成功
 
+先看一遍完整的成功路径。下面以“用户首次使用第三方账号登录，且客户端允许自动创建用户”为例；后文再分别拆解客户端发现、授权回调和用户映射规则。
+
+```mermaid
+sequenceDiagram
+    actor User as 用户
+    participant Page as ThingsBoard 登录页
+    participant Controller as OAuth2Controller
+    participant Security as Spring Security
+    participant IdP as 外部身份提供方
+    participant Platform as TB 成功处理器与 mapper
+    participant Token as JwtTokenFactory
+
+    User->>Page: 打开登录页
+    Page->>Controller: POST /api/noauth/oauth2Clients
+    Controller-->>Page: 返回当前域名可用的 provider
+    User->>Page: 点击 provider 登录
+    Page->>Security: GET /oauth2/authorization/{registrationId}
+    Security->>Security: 解析客户端配置并创建授权请求
+    Note over Security: 保存 state 和授权请求；按配置加入 nonce / PKCE
+    Security-->>Page: 302 重定向到 provider
+    Page->>IdP: 携带授权请求跳转
+    IdP-->>Page: 回调授权码
+    Page->>Security: 提交授权码回调
+    Security->>Security: 恢复授权请求并校验 state
+    Security->>IdP: 用授权码换取 provider token 和 principal
+    IdP-->>Security: 返回 provider token 和 principal
+    Security->>Platform: 传入 OAuth2AuthenticationToken
+    Platform->>Platform: 选择 mapper，按 email 查找平台用户
+    alt 已有用户且符合客户端 tenant 边界
+        Platform->>Platform: 复用已有用户
+    else 首次登录且允许创建
+        Platform->>Platform: 解析或创建 tenant / customer 和用户
+    end
+    Platform->>Token: 创建平台 token pair
+    Token-->>Platform: ThingsBoard access token 和 refresh token
+    Platform-->>Page: 重定向回应用并携带平台令牌
+```
+
 ### 1. 登录页查询可用 provider
 
 登录页调用 `POST /api/noauth/oauth2Clients`。后端根据当前请求域名查询已启用并绑定到该 Domain 的客户端，再返回登录按钮所需的信息。移动端还会结合应用包名和平台筛选配置。
@@ -177,9 +215,9 @@ Spring Security 的 OAuth2 登录过滤器恢复授权请求、校验状态、�
 
 这几个 mapper 有一些容易忽略的差异：
 
-- **GITHUB：**源码读取了返回项的 `verified` 字段，但筛选条件只检查 `primary`，没有同时检查 `verified`。所以“email 必须已验证”是接入方应确认的信任前提，不是这个 mapper 明确执行的校验。
-- **APPLE：**回调的 `user` 参数只用于补充姓名。若其中的 email 与 principal 中的 email 不同，代码记录警告并忽略回调 email，账号映射仍使用 principal 中配置的 email 属性。
-- **CUSTOM：**请求体是 principal 的 JSON 序列化文本，期望响应可反序列化为 `OAuth2User`。配置可启用 Basic Authentication，也可通过 `sendToken` 把 provider access token 放在 `provider-access-token` 请求头中；发送前会调用 `SsrfProtectionValidator` 校验配置的 URL。因此该端点属于管理员控制的可信服务，不应配置为不受信任的任意地址。
+- <strong>GITHUB：</strong>源码读取了返回项的 `verified` 字段，但筛选条件只检查 `primary`，没有同时检查 `verified`。所以“email 必须已验证”是接入方应确认的信任前提，不是这个 mapper 明确执行的校验。
+- <strong>APPLE：</strong>回调的 `user` 参数只用于补充姓名。若其中的 email 与 principal 中的 email 不同，代码记录警告并忽略回调 email，账号映射仍使用 principal 中配置的 email 属性。
+- <strong>CUSTOM：</strong>请求体是 principal 的 JSON 序列化文本，期望响应可反序列化为 `OAuth2User`。配置可启用 Basic Authentication，也可通过 `sendToken` 把 provider access token 放在 `provider-access-token` 请求头中；发送前会调用 `SsrfProtectionValidator` 校验配置的 URL。因此该端点属于管理员控制的可信服务，不应配置为不受信任的任意地址。
 
 共同基类负责将身份解析到 ThingsBoard 用户。用户不存在时是否创建、创建何种角色、归属哪个 tenant/customer，取决于客户端配置和 mapper 逻辑。不要把“使用 OAuth2 登录”直接理解为“必然自动注册账号”。
 
@@ -189,11 +227,11 @@ Spring Security 的 OAuth2 登录过滤器恢复授权请求、校验状态、�
 
 实际顺序如下：
 
-1. **先按 email 查找已有用户。** 查询使用系统 tenant 范围。若 OAuth2 客户端属于某个普通 tenant，只允许匹配该 tenant 下的用户；相同 email 若属于其他 tenant（包括系统管理员账号），登录会按“用户不存在”处理，不会跨 tenant 复用。系统 tenant 下注册的 OAuth2 客户端则可以按 email 查找平台范围内的用户。
-2. **没有匹配用户时检查创建开关。** `allowUserCreation=false` 会抛出 `UsernameNotFoundException`，不会自动注册；为 `true` 才创建。已有用户不会因本次 provider 返回的姓名或租户字段而被更新或迁移。
-3. **决定新用户所属 tenant。** 对普通 tenant 注册的客户端，用户始终归属该客户端自己的 tenant，mapper 返回的 `tenantId` / `tenantName` 不会覆盖它。对系统 tenant 注册的客户端，优先使用 mapper 返回的 `tenantId`；没有时按 `tenantName` 查找同名 tenant，不存在则创建。
-4. **决定 customer 和角色。** mapper 提供 `customerId` 时将其用于新用户，保存时还会校验 customer 存在且属于目标 tenant；若校验失败，创建会失败。没有 ID、但提供 `customerName` 时，会在刚确定的 tenant 中按名称查找 customer，不存在则创建。没有 customer（既无 ID 也无名称）的用户赋予 `TENANT_ADMIN`；有 customer 的用户赋予 `CUSTOMER_USER`。因此，租户专属客户端如果没有映射 customer，新建用户会成为该 tenant 的管理员。
-5. **按配置激活新用户。** `activateUser=true` 时，创建用户后会激活对应 credentials；此选项不会改变已有用户的状态。
+1. <strong>先按 email 查找已有用户。</strong> 查询使用系统 tenant 范围。若 OAuth2 客户端属于某个普通 tenant，只允许匹配该 tenant 下的用户；相同 email 若属于其他 tenant（包括系统管理员账号），登录会按“用户不存在”处理，不会跨 tenant 复用。系统 tenant 下注册的 OAuth2 客户端则可以按 email 查找平台范围内的用户。
+2. <strong>没有匹配用户时检查创建开关。</strong> `allowUserCreation=false` 会抛出 `UsernameNotFoundException`，不会自动注册；为 `true` 才创建。已有用户不会因本次 provider 返回的姓名或租户字段而被更新或迁移。
+3. <strong>决定新用户所属 tenant。</strong> 对普通 tenant 注册的客户端，用户始终归属该客户端自己的 tenant，mapper 返回的 `tenantId` / `tenantName` 不会覆盖它。对系统 tenant 注册的客户端，优先使用 mapper 返回的 `tenantId`；没有时按 `tenantName` 查找同名 tenant，不存在则创建。
+4. <strong>决定 customer 和角色。</strong> mapper 提供 `customerId` 时将其用于新用户，保存时还会校验 customer 存在且属于目标 tenant；若校验失败，创建会失败。没有 ID、但提供 `customerName` 时，会在刚确定的 tenant 中按名称查找 customer，不存在则创建。没有 customer（既无 ID 也无名称）的用户赋予 `TENANT_ADMIN`；有 customer 的用户赋予 `CUSTOMER_USER`。因此，租户专属客户端如果没有映射 customer，新建用户会成为该 tenant 的管理员。
+5. <strong>按配置激活新用户。</strong> `activateUser=true` 时，创建用户后会激活对应 credentials；此选项不会改变已有用户的状态。
 
 BASIC / GITHUB / APPLE mapper 的 tenant 名称策略由 `tenantNameStrategy` 决定：
 
@@ -244,61 +282,25 @@ BASIC / GITHUB / APPLE mapper 的 tenant 名称策略由 `tenantNameStrategy` �
 这套逻辑也说明了 tenant 映射的关键边界：普通 tenant 客户端以客户端所属 tenant 为准，系统 tenant 客户端才会按外部映射结果解析 tenant。外部身份最终按 email 匹配，而不是按 provider 的稳定 subject；因此 provider 返回的 email 必须可靠且经过验证，不能把不可信的 email 属性直接当作跨 provider 的账号绑定凭据。
 
 ```mermaid
-flowchart TD
-    A[Provider mapper 生成 OAuth2User] --> B[按 email 查找 ThingsBoard 用户]
-    B --> C{是否找到用户？}
-    C -- 是 --> D{客户端属于系统 tenant？}
-    D -- 是 --> H[使用匹配到的已有用户]
-    D -- 否 --> E{用户 tenant 是否等于客户端 tenant？}
-    E -- 是 --> H
-    E -- 否 --> X[拒绝登录：按用户不存在处理]
-    C -- 否 --> F{allowUserCreation？}
-    F -- 否 --> X
-    F -- 是 --> G{客户端属于系统 tenant？}
-    G -- 是 --> I[用映射的 tenantId；否则按 tenantName 查找或创建]
-    G -- 否 --> J[使用 OAuth2 客户端所属 tenant]
-    I --> K{映射了 customerId 或 customerName？}
-    J --> K
-    K -- 是 --> L[使用 customerId；否则按名称在该 tenant 查找或创建]
-    K -- 否 --> M[不关联 customer]
-    L --> N[创建 CUSTOMER_USER]
-    M --> O[创建 TENANT_ADMIN]
-    N --> P{activateUser？}
-    O --> P
-    P -- 是 --> Q[激活新用户 credentials]
-    P -- 否 --> R[credentials 保持未激活]
-    Q --> S[生成 SecurityUser 并签发平台令牌]
-    R --> S
-    H --> S
+flowchart LR
+    A[Mapper 提供 email 与 claims] --> B{已有匹配用户？}
+    B -- 是 --> C{符合 tenant 边界？}
+    C -- 是 --> R[复用用户]
+    C -- 否 --> X[拒绝登录]
+    B -- 否 --> D{允许自动创建？}
+    D -- 否 --> X
+    D -- 是 --> E[确定 tenant<br/>系统客户端：按映射<br/>租户客户端：用所属 tenant]
+    E --> F{有 customer 映射？}
+    F -- 是 --> G[校验或查找 / 创建 customer<br/>角色：CUSTOMER_USER]
+    F -- 否 --> H[不关联 customer<br/>角色：TENANT_ADMIN]
+    R --> I[创建 SecurityUser<br/>签发平台令牌]
+    G --> I
+    H --> I
 ```
 
 ### 6. 签发 ThingsBoard JWT 并重定向
 
 找到或创建本地用户后，success handler 调用 `JwtTokenFactory.createTokenPair()` 签发 ThingsBoard access token 和 refresh token，再将用户带回 Web 页面或移动端。
-
-```mermaid
-sequenceDiagram
-    actor User as 用户
-    participant Login as ThingsBoard 登录页
-    participant Resolver as 授权请求 resolver
-    participant Spring as Spring Security OAuth2 Login
-    participant IdP as 外部身份提供方
-    participant Mapper as ThingsBoard 用户 mapper
-    participant Token as JwtTokenFactory
-
-    User->>Login: 点击 provider 登录按钮
-    Login->>Spring: 访问授权入口和 registrationId
-    Spring->>Resolver: 解析授权请求
-    Resolver-->>Spring: ClientRegistration 和授权码请求
-    Spring->>IdP: 重定向到授权端点
-    IdP-->>Spring: 回调携带授权码
-    Spring->>IdP: 使用授权码换取 token 和用户信息
-    IdP-->>Spring: 返回外部身份 principal
-    Spring->>Mapper: 交付 principal 和 provider token
-    Mapper-->>Spring: 返回 ThingsBoard SecurityUser
-    Spring->>Token: 创建平台 token pair
-    Token-->>Login: 重定向并携带平台令牌
-```
 
 注意，图中的 provider token 在 mapper 阶段用于身份映射；`JwtTokenFactory` 生成的才是 ThingsBoard 平台 token。源码当前通过重定向 URL 的 query 参数交接平台令牌。阅读或部署时应关注浏览器历史、代理访问日志和 referrer 等可能记录 URL 的位置；具体风险还取决于前端如何接收和清理参数，不能只凭后端这一处就判断整体部署是否存在漏洞。
 
@@ -351,4 +353,4 @@ mapper 控制字段提取、账号匹配和用户创建策略。理解某种 pro
 | mapper 选择与身份映射 | `application/.../service/security/auth/oauth2/` 下的 `OAuth2ClientMapper` 和各 provider mapper |
 | 签发平台 JWT | `application/.../service/security/model/token/JwtTokenFactory.java` |
 
-读完这条主链路后，可以再分别深入每个 mapper、客户端配置表和前端接收 token 的页面。最重要的是始终区分三个阶段：**外部协议认证、本地用户映射、ThingsBoard 平台令牌签发**。这也是理解 ThingsBoard OAuth2 登录实现的关键。
+读完这条主链路后，可以再分别深入每个 mapper、客户端配置表和前端接收 token 的页面。最重要的是始终区分三个阶段：<strong>外部协议认证、本地用户映射、ThingsBoard 平台令牌签发</strong>。这也是理解 ThingsBoard OAuth2 登录实现的关键。
