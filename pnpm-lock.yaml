@@ -174,7 +174,7 @@ importers:
         version: 4.0.19
       astro:
         specifier: ^7.0.0
-        version: 7.4.4(@astrojs/markdown-remark@7.3.5(supports-color@7.2.0))(@types/node@26.6.6)(esbuild@0.28.2)(yaml@2.9.1)
+        version: 7.4.5(@astrojs/markdown-remark@7.3.5(supports-color@7.2.0))(@types/node@26.6.6)(esbuild@0.28.2)(yaml@2.9.1)
       mermaid:
         specifier: ^12.0.0
         version: 12.2.0
@@ -1451,8 +1451,8 @@ packages:
     resolution: {integrity: sha512-lS5qlx401Q1ZUhQ44XQnM4uT2qI6hA0H+vstrd841xGVxunFOs0ut3DWJGYHK1l7mxRxQdDi1j53pfE7/AyGlA==}
     engines: {node: ^22.22.3 || ^24.16.0 || >=26.3.0}
 
-  astro@7.4.4:
-    resolution: {integrity: sha512-e+BzhGCaIY/H1tV/BQPTbOPZVZ8wuu6+bbpc+3oSMH2UgoB1l9peSGASk6nswtYra9PO9OoMREhldKtQkZ5TVw==}
+  astro@7.4.5:
+    resolution: {integrity: sha512-n5lET11/qnrOWn4wNpXxD9g2VKkTIa162hHgrkMPChMQC5q/xh2lY2OerK5mpsEAFCNmXsYA7NISE+9Uo7Cxxg==}
     engines: {node: '>=22.23.4', npm: '>=9.6.5', pnpm: '>=7.1.0'}
     hasBin: true
     peerDependencies:
@@ -4551,7 +4551,7 @@ snapshots:
       - '@emnapi/runtime'
       - supports-color
 
-  astro@7.4.4(@astrojs/markdown-remark@7.3.5(supports-color@7.2.0))(@types/node@26.6.6)(esbuild@0.28.2)(yaml@2.9.1):
+  astro@7.4.5(@astrojs/markdown-remark@7.3.5(supports-color@7.2.0))(@types/node@26.6.6)(esbuild@0.28.2)(yaml@2.9.1):
     dependencies:
       '@astrojs/compiler-rs': 0.5.2
       '@astrojs/internal-helpers': 0.13.0
